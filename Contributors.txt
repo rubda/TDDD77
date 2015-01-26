@@ -1,4 +1,4 @@
-Adam Sestorp (Lag ledare)
+Adam Sestorp (Lagledare)
 Sebastian Fast (Arkitekt)
 Martin Söderén (Analysansvarig)
 Johan Isaksson (Testledare)
