@@ -1,0 +1,67 @@
+\section{Översikt av systemet}
+
+\subsection{Grov beskrivning av produkten}
+Systemet representerar en lagerrobot som ska kunna navigera autonomt med hjälp av en tejplinje och hitta paketstationer. Ett manuellt läge skall finnas där robotens alla rörelser skall kunna styras av användaren.
+
+\subsection{Produktkomponenter}
+Den färdiga produkten kommer innehålla följande komponenter
+\begin{itemize}
+\item{Robot}
+\item{Programvara för robot}
+\item{Programvara för att styra roboten från en dator}
+\item{Teknisk dokumentation}
+\item{Användarhandledning}
+\end{itemize}
+
+\subsection{Beroenden till andra system}
+Gloria kommer behöva en PC för att kunna fjärrstyras trådlöst.
+
+\subsection{Ingående delsystem}
+Systemet ska bestå av fyra delsystem. En PC-modul som skall bestå av mjukvara för att styra roboten manuellt. En huvudmodul som skall kommunicera med PC-modulen, läser sensordata från sensormodulen och bestämmer vad styrmodulen skall göra. \\
+
+\tikzstyle{block} = [draw, fill=white!20, rectangle,
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=white!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+% The block diagram code is probably more verbose than necessary
+\begin{center}
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [block] (PC) {PC};
+    \node [block, below of=PC, node distance=2cm] (Huvudmodul) {Huvudmodul};
+    \node [block, right of=Huvudmodul, node distance=3cm] (Styrmodul) {Styrmodul};
+    \node [block, left of=Huvudmodul, node distance=3cm] (Sensormodul) {Sensormodul};
+    \draw [label=right:Blåtand] (PC) -- (Huvudmodul);
+    \draw (Huvudmodul) -- (Sensormodul);
+    \draw (Huvudmodul) -- (Styrmodul);
+\end{tikzpicture}
+\end{center}
+
+\subsection{Avgränsningar}
+Roboten skall endast kunna köras på banor som följer banreglerna.
+
+\subsection{Designfilosofi}
+Funktionaliteten och driftsäkerheten av systemet prioriteras högst, dvs kunna leverera ett paket till rätt plats utan problem.
+
+\subsection{Generella krav på hela systemet}
+
+\begin{LIPSkravlista}
+\LIPSkrav{Orginal}{Roboten skall kunna färdas autonomt längs en bana enligt Bilaga \ref{banregler}}{1}
+\LIPSkrav{2014-09-16}{Roboten skall, om olastad, endast stanna för pålastning vid nästkommande station om där finns ett paket}{1}
+\LIPSkrav{2014-09-16}{Roboten skall, om lastad, endast stanna för avlastning vid nästkommande station om där ej finns ett paket}{1}
+\LIPSkrav{2014-09-12}{Roboten skall, styrd av en användare, kunna plocka upp paket}{1}
+\LIPSkrav{Orginal}{Roboten skall sätta ner paket autonomt}{1}
+\LIPSkrav{Orginal}{Roboten skall kunna ta emot kommandon trådlöst från en dator}{1}
+\LIPSkrav{Orginal}{Roboten skall skicka sensor- och debugdata trådlöst till dator}{1}
+\LIPSkrav{Orginal}{Det skall finnas programvara för att skicka och ta emot data från roboten}{1}
+\LIPSkrav{Orginal}{Det skall finnas möjlighet att ställa om roboten i ett läge där den detekterar och plockar upp ett paket autonomt}{2}
+\LIPSkrav{2014-09-12}{Alla moduler skall vara enkelt utbytbara}{1}
+\LIPSkrav{2014-09-12}{Det skall finnas en brytare som startar roboten}{1}
+\LIPSkrav{2014-09-12}{Det skall finnas möjlighet att ställa roboten i antingen ett autonomt läge eller ett manuellt läge där roboten styrs av användaren}{1}
+\LIPSkrav{2014-09-12}{Varje enskild modul skall innehålla minst en processor}{1}
+    % Krav 23 på säregen form då kravnummer blir konstiga
+    {Krav 23} & {2014-12-08} & {Sensorerna skall kunna kalibreras} & {1} \\\hline
+\end{LIPSkravlista}
