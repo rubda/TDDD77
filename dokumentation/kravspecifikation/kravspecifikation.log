@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.2.4)  5 FEB 2015 14:45
+=======
 This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.2.4)  5 FEB 2015 14:34
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 entering extended mode
 **kravspecifikation.tex
 
@@ -382,10 +386,17 @@ Package caption3 Info: TeX engine: e-TeX on input line 57.
 \c@LIPSaktivitetsnummer=\count99
 \c@paragrafnummer=\count100
 )
+<<<<<<< HEAD
+("C:\Program Files (x86)\MiKTeX\tex\latex\pgf\frontendlayer\tikz.sty"
+("C:\Program Files (x86)\MiKTeX\tex\latex\pgf\basiclayer\pgf.sty"
+("C:\Program Files (x86)\MiKTeX\tex\latex\pgf\utilities\pgfrcs.sty"
+("C:\Program Files (x86)\MiKTeX\tex\generic\pgf\utilities\pgfutil-common.tex"
+=======
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pgf\frontendlayer\tikz.sty"
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty"
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty"
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\utilities\pgfutil-common.tex"
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 \pgfutil@everybye=\toks19
 \pgfutil@tempdima=\dimen120
 \pgfutil@tempdimb=\dimen121
@@ -491,6 +502,11 @@ tex")
 ic.code.tex")
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.random.code
 .tex")
+<<<<<<< HEAD
+("C:\Program Files (x86)\MiKTeX\tex\generic\pgf\math\pgfmathfunctions.integerar
+ithmetics.code.tex")))
+("C:\Program Files (x86)\MiKTeX\tex\generic\pgf\math\pgfmathfloat.code.tex"
+=======
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.comparison.
 code.tex")
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.base.code.t
@@ -502,6 +518,7 @@ ex")
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.integerarit
 hmetics.code.tex")))
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfloat.code.tex"
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 \c@pgfmathroundto@lastzeros=\count108
 ))
 ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex
@@ -574,7 +591,12 @@ File: pgfcorearrows.code.tex 2013/11/07  (rcs-revision 1.40)
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
 \pgf@max=\dimen154
 \pgf@sys@shading@range@num=\count110
+<<<<<<< HEAD
+)
+("C:\Program Files (x86)\MiKTeX\tex\generic\pgf\basiclayer\pgfcoreimage.code.te
+=======
 ) ("C:\Program Files\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoreimage.code.te
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 x"
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
 
@@ -798,8 +820,13 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 18.
 )
+<<<<<<< HEAD
+(C:\Users\Adam\TDDD77\dokumentation\kravspecifikation\tex/kravspecifikation-ove
+rsikt.tex
+=======
 ("C:\Users\Johan Isaksson\Documents\TDDD77\dokumentation\kravspecifikation\tex/
 kravspecifikation-oversikt.tex"
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 Underfull \hbox (badness 10000) in paragraph at lines 18--19
 
  []
@@ -836,17 +863,55 @@ Overfull \hbox (2.2591pt too wide) in paragraph at lines 4--4
  []
 
 )
+<<<<<<< HEAD
+(C:\Users\Adam\TDDD77\dokumentation\kravspecifikation\tex/kravspecifikation-lev
+eranskrav.tex
+Overfull \hbox (2.2591pt too wide) in paragraph at lines 12--12
+=======
 ("C:\Users\Johan Isaksson\Documents\TDDD77\dokumentation\kravspecifikation\tex/
 kravspecifikation-leveranskrav.tex"
 Overfull \hbox (2.2591pt too wide) in paragraph at lines 10--10
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 []|\OT1/cmr/bx/n/10 F[]or[]andring| 
  []
 
 
+<<<<<<< HEAD
+Underfull \hbox (badness 10000) in paragraph at lines 12--12
+[]|\OT1/cmr/m/n/10 Kopia pa av-tal med kund
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 12--12
+[]|\OT1/cmr/m/n/10 Inl[]amning av f[]orstudie-
+ []
+
+
+Underfull \hbox (badness 2600) in paragraph at lines 12--12
+\OT1/cmr/m/n/10 dokument till hand-le-da-re och
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 12--12
+[]|\OT1/cmr/m/n/10 Inl[]amning halvtids-dokument
+ []
+
+
+Underfull \hbox (badness 2443) in paragraph at lines 12--12
+\OT1/cmr/m/n/10 och ut-kast 1 av rap-port till
+ []
+
+
+Underfull \hbox (badness 4291) in paragraph at lines 12--12
+[]|\OT1/cmr/m/n/10 Inl[]amning av slut-rap-port till
+ []
+
+=======
 Underfull \hbox (badness 10000) in paragraph at lines 10--10
 []|\OT1/cmr/m/n/10 Inl[]amning halvtids-dokument
  []
 
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 ) [3]
 ("C:\Users\Johan Isaksson\Documents\TDDD77\dokumentation\kravspecifikation\tex/
 kravspecifikation-dokumentation.tex"
@@ -868,12 +933,27 @@ LaTeX Warning: There were undefined references.
  ) 
 Here is how much of TeX's memory you used:
  15735 strings out of 493921
+<<<<<<< HEAD
+ 330611 string characters out of 3146484
+=======
  330677 string characters out of 3147256
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
  399961 words of memory out of 3000000
  18718 multiletter control sequences out of 15000+200000
  6425 words of font info for 23 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  55i,13n,67p,849b,639s stack positions out of 5000i,500n,10000p,200000b,50000s
+<<<<<<< HEAD
+<C:/Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/
+Program Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Progra
+m Files (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files
+ (x86)/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files (x86)/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files (x86)/MiKTeX/
+fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Program Files (x86)/MiKTeX/fonts/ty
+pe1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files (x86)/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmsy10.pfb>
+Output written on kravspecifikation.pdf (8 pages, 137891 bytes).
+=======
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
 ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
 les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Program Files/MiKTe
@@ -883,6 +963,7 @@ public/amsfonts/cm/cmr9.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
 fonts/cm/cmsl10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
 /cmsy10.pfb>
 Output written on kravspecifikation.pdf (8 pages, 138007 bytes).
+>>>>>>> b4395a0d81736a0b75b39e9ad8e48eb0a6018b5d
 PDF statistics:
  64 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
