@@ -1,2 +1,8 @@
 \section{Prestandakrav}
-Algoritmen ska kunna lösa det givna problemet ungefär lika snabbt eller snabbare än Gurobi. 
+Algoritmen ska kunna lösa ett givet problem lika snabbt eller snabbare än vad det kommersiella lösningsprogrammet Gurobi kan göra. 
+
+Programmet är tänk att användas i ett reglersystem och kommer då användas kontinuerligt för att lösa liknande problem hela tiden. Den ska då använda den tidigare lösningen som utgångspunkt i nästa lösning av problemet då dessa komma påminna mycket om varandra.
+\begin{LIPSkravlista}
+\LIPSkrav{Orginal}{Ska lösa problem lika snabbt eller snabbare än Gurobi}{1}
+\LIPSkrav{Orginal}{Programmet ska använda lösningen från den tidigare iterationen som startpunkt för lösningen i nästa iteration.}{1}
+\end{LIPSkravlista}
