@@ -1,0 +1,99 @@
+# LaTeX-relaterat
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
+*.maf
+*.mtc
+*.mtc0
+*.nav
+*.nlo
+*.out
+*.pdfsync
+*.ps
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdy
+*.tdo
+*.swp
+
+# Eagle backup files
+*.s#?
+
+# Emacs backup files
+*.*~
+
+# meld/merging files
+*.orig
+
+# Atmel Studio files
+*.cproj
+*.atsuo
+*.atsln
+src/styrenhet/Debug/
+src/sensorenhet/Debug
+
+# Ignore list for Eagle, a PCB layout tool
+
+# Backup files
+*.s#?
+*.b#?
+*.l#?
+
+# Eagle project file
+# It contains a serial number and references to the file structure
+# on your computer.
+# comment the following line if you want to have your project file included.
+eagle.epf
+
+# CAM files
+*.$$$
+*.cmp
+*.ly2
+*.l15
+*.sol
+*.plc
+*.stc
+*.sts
+*.crc
+*.crs
+
+*.dri
+*.drl
+*.gpi
+*.pls
+
+*.drd
+*.drd.*
+
+*.info
+
+*.eps
+
+# Python files
+*.pyc
+
+# LaTeXing addon for Atom build files
+*.fls
+
+# Bluetooth connection conf file
+src/tools/connect.conf
+
+# Except .eps files in documentation graphics
+!/dokumentation/**/grafik/*.eps
