@@ -1,5 +1,17 @@
 \section{Inledning}
 Dagens flygplan får mer och mer komplexa styrsystem, vilket medför att det krävs mer assistans för piloten. Vi har fått i uppgift av beställaren att välja och implementera en algoritm för lösa att ett kvadratiskt konvext optimeringsproblem. Detta problemet kommer ifrån den predektiva reglering som kan tillämpas i moderna flygplans styrsystem.
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}}
+& & z^{T}Qz+q^{T}z \\
+& \text{subject to}
+& & Az=b \\
+& & & Fz \leq g \\
+& z \in \mathbb{R}^N \\
+& A \in \mathbb{R}^{m*N}\\
+& F \in \mathbb{R}^{s*N}
+\end{aligned}
+\end{equation*}
 
 \subsection{Parter}
 Systemet har beställts av SAAB, där kontaktperson är Daniel Simon. Leverantör är Grupp 2.
