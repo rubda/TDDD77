@@ -1,7 +1,7 @@
 \section{Översikt av programmet}
 
 \subsection{Grov beskrivning av produkten}
-Programmet skall bestå av en algoritm som löser konvexa kvadratiska optimeringsproblem samt ett gränssnitt mot användaren och andra program.      
+Programmet skall bestå av en algoritm som löser konvexa kvadratiska optimeringsproblem samt ett gränssnitt mot användaren och andra program. Gränssnittet ska vara ett terminalbaserat program som används för att läsa in filer där problemet är definierat, detta ska generera en utdatafil. Även ett gränssnitt mot Mathworks programmeringsspråk och utvecklingsmiljö Matlab ska finnas. Med hjälp av gränssnittet ska man enkelt kunna definiera problem och kalla på programmet för lösning av problemet.    
 
 \subsection{Produktkomponenter}
 Den färdiga produkten kommer innehålla följande komponenter
@@ -12,29 +12,23 @@ Den färdiga produkten kommer innehålla följande komponenter
 \end{itemize}
 
 \subsection{Beroenden till andra system}
-QuadOpt skall kunna integreras med programmen MATLAB och ARES.
+QuadOpt skall kunna integreras med programmen MATLAB och ARES vilket är SAABs simuleringsmiljö för Gripen.
 
 \subsection{Avgränsningar}
-Skall endast lösa en sorts problem, dvs konvexa kvadratiska. 
+Skall endast lösa konvexa kvadratiska optimeringsproblem. 
 
 \subsection{Designfilosofi}
-Funktionaliteten och prestandan av programmet prioriteras högst, dvs kunna lösa problemet korrekt och inom rimlig tidsgräns. 
+Exaktheten och prestandan av programmet prioriteras högst, d.v.s. kunna lösa problemet korrekt och inom rimlig tidsgräns. 
 
 \subsection{Generella krav på hela systemet}
 
 \begin{LIPSkravlista}
 \LIPSkrav{Original}{Lösa konvexa kvadratiska optimeringsproblem}{1}
 \LIPSkrav{Original}{Källkod i C}{1}
-\LIPSkrav{Original}{Skall exekveras från en körbar kompilerad fil}{1}
-\LIPSkrav{Original}{Dokumentation av all källkod}{1}
-\LIPSkrav{Original}{Plattformsoberoende}{1}
-\LIPSkrav{Original}{Kunna utgå från tidigare lösningar i ny lösning}{1}
-\LIPSkrav{Original}{Kunna justera toleransen i optimum}{1}
-\LIPSkrav{Original}{Kunna avbryta efter ett visst antal iterationer}{1}
-\LIPSkrav{Original}{Kunna avbryta efter ett viss tid (ms)}{1}
-\LIPSkrav{Original}{Variabler skall kunna ändras mellan iterationer}{1}
-\LIPSkrav{Original}{Matriser skall kunna ändras mellan iterationer}{1}
-\LIPSkrav{Original}{Skall inte krascha vid specialfall (t ex tomma matriser)}{1}
-\LIPSkrav{Original}{Lösningstiden skall vara runt 2 ms}{2}
-\LIPSkrav{Original}{Skall kunna ändra hur ofta matriser hämtas mellan iterationer}{2}
+\LIPSkrav{Original}{Ska kunna exekveras från en körbar kompilerad fil}{1}
+\LIPSkrav{Original}{Ska kunna exekveras från matlab}{1}
+\LIPSkrav{Original}{Ska kunna användas på Windows, Linux och Mac}{1}
+\LIPSkrav{Original}{Alla matriser ska kunna ändras mellan iterationer}{1}
+\LIPSkrav{Original}{Ska kunna ställa in hur ofta variabler uppdateras}{2}
+\LIPSkrav{Orginal}{Programmet ska använda lösningen från den tidigare iterationen som startpunkt för lösningen i nästa iteration.}{1}
 \end{LIPSkravlista}
