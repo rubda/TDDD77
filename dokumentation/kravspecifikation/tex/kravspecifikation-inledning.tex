@@ -1,8 +1,8 @@
 \section{Inledning}
-Dagens flygplan får mer och mer komplexa styrsystem, vilket medför att det krävs mer assistans för piloten. Vi har fått i uppgift av beställaren att välja och implementera en algoritm för att lösa ett kvadratiskt konvext optimeringsproblem. Detta problemet kommer ifrån den predektiva reglering som kan tillämpas i moderna flygplans styrsystem.
+Dagens flygplan får mer och mer komplexa styrsystem, vilket medför att det krävs mer assistans för piloten. Vi har fått i uppgift av SAAB AB att välja och implementera en algoritm för att lösa ett kvadratiskt konvext optimeringsproblem. Detta problemet kommer ifrån den prediktiva reglering som kan tillämpas i moderna flygplans styrsystem.
 \begin{equation*}
 \begin{aligned}
-& \underset{x}{\text{minimize}}
+& \underset{z}{\text{minimize}}
 & & z^{T}Qz+q^{T}z \\
 & \text{subject to}
 & & Az=b \\
@@ -12,15 +12,22 @@ Dagens flygplan får mer och mer komplexa styrsystem, vilket medför att det kr�
 & F \in \mathbb{R}^{s*N}
 \end{aligned}
 \end{equation*}
-
+\captionof{figure}{Problembeskrivning}
 \subsection{Parter}
 Systemet har beställts av SAAB, där kontaktperson är Daniel Simon. Leverantör är Grupp 2.
 
 \subsection{Syfte och mål}
+Syftet med projektet är att:
+\begin{enumerate}
+ \item gruppen systematiskt ska integrera sina kunskaper som har förvärvats under studietiden, främst inom programmering och datalogi. 
+ \item tillämpa sig  metodkunskaper och ämnesmässiga kunskaper inom datateknik
+ \item tillgodogöra sig innehållet i relevant facklitteratur och relatera sitt arbete till den
+\end{enumerate}
+
 Målet med projektet är att välja och implementera en algoritm för lösning av kvadratiska konvexa optimeringsproblem.
 
 \subsection{Användning}
-Implementationen ska vara generell och kunna lösa problemet tillräckligt snabbt för att kunna användas i ett realtidssytem. Den ska köras på Mac, Windows och Linux.
+Implementationen ska vara generell och kunna lösa problemet lika snabbt eller snabbare än den kommersiella programvaran Gurobi. Den ska köras på Mac, Windows och Linux. På samtliga platformar ska den kunna användas från Matlab. Den ska främst användas för simulering men den ska inte vara begränsad från att användas i ett verkligt system i framtiden. 
 
 \subsection{Bakgrundsinformation}
 Vi är studenter vid Linköpings Universitet som läser kursen TDDD77. Vår beställare är SAAB AB, där vår kontaktperson är Daniel Simon, industridoktorand vid Linköpings universitet. 
