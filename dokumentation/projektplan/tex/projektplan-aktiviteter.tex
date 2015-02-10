@@ -1,57 +1,52 @@
 \section{Aktiviteter}
 
+\subsection{Filsystem}
+Aktiviteter som ska utföras för hantering av in- och utdata från Quadopt.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{1}{Implementation av protokoll mellan huvud- och styrenheten}{}{16}
-	\LIPSaktivitet{2}{Koppla ihop huvud- och styrenheten}{}{4}
-	\LIPSaktivitet{3}{Implementera buss mellan huvud- och sensorenheten}{}{16}
-	\LIPSaktivitet{4}{Koppla ihop huvud- och sensorenheten}{}{4}
-	\LIPSaktivitet{5}{Sätta upp utvecklingsmiljö för AVR}{}{8}
-	\LIPSaktivitet{6}{Installera mjukvara på huvud (OS, Python, drivare)}{}{10}
-	\LIPSaktivitet{7}{Python-modul på PC för att skicka/ta emot data från huvudenheten}{}{16}
+\LIPSaktivitet{1}{Definiera filformat}{}{}
+\LIPSaktivitet{2}{Implementera filhantering}{1}{}
+\LIPSaktivitet{3}{Utför test av filhanteringssystemet}{2}{}
 \end{LIPSaktivitetslista}
+
+\subsection{Huvudalgoritm}
+Aktiviter som ska utföras till implementation av optimeringsalgoritmen.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{8}{Koppla in linjesensorer på sensorenheten}{}{10}
-	\LIPSaktivitet{9}{Koppla in IR-sensor på sensorenheten}{}{2}
-	\LIPSaktivitet{10}{Koppla in motorer och styrenheten}{}{2}
-	\LIPSaktivitet{11}{Koppla in servon på styrenheten}{}{2}
-	\LIPSaktivitet{12}{Upprätta BT förbindelse mellan huvudenheten och PC}{6}{10}
-	\LIPSaktivitet{13}{Sätta upp utvecklingsmiljö för BeagleBoard (wifi)}{6}{4}
-	\LIPSaktivitet{14}{Skriva UI för PC}{7}{20}
-	\LIPSaktivitet{15}{Implementera och testa muxning för linjesensor}{8}{8}
-	\LIPSaktivitet{16}{Implementera styrning av motorer}{10}{8}
-	\LIPSaktivitet{17}{Implementera styrning av servon}{11}{20}
-	\LIPSaktivitet{18}{Testa och felsöka buss mellan huvud- och styrenheten}{1,2,13}{16}
-	\LIPSaktivitet{19}{Testa och felsöka buss mellan huvud- och sensorenheten}{3,4,13}{16}
-	\LIPSaktivitet{24}{Implementera styrlogik}{13}{40}
-	\LIPSaktivitet{25}{Implementera läsning av sensorer}{15,9}{16}
-	\LIPSaktivitet{26}{Mäta respons från motorer och servon}{16,17}{8}
-	\LIPSaktivitet{27}{Implementera tolkning och utförande av kommandon från PC på huvudenheten}{14,19}{12}
-	\LIPSaktivitet{28}{Tolka IR-sensordata}{25}{8}
-	\LIPSaktivitet{29}{Implementera kalibreringsfunktion}{37}{20}
-	\LIPSaktivitet{30}{Implementera tolkning och utförande av kommandon från huvudenheten på sensorenheten}{19,25}{16}
-	\LIPSaktivitet{31}{Testa styra servon från styrenheten}{26}{8}
-	\LIPSaktivitet{32}{Testa styra motorer från styrenheten}{26}{8}
-	\LIPSaktivitet{33}{Testa styra servon från huvudenheten}{18,31}{8}
-	\LIPSaktivitet{34}{Testa styra motorer från huvudenheten}{18,32}{8}
-	\LIPSaktivitet{35}{Implementera läsning av sensordata på huvudenheten}{19,30}{8}
-	\LIPSaktivitet{37}{Skriva testprogram för linjesensor styrenhet}{25}{8}
-	\LIPSaktivitet{38}{Implementera och testa X,Y,Z till servovinkel, konvertering}{31}{32}
-	\LIPSaktivitet{39}{Implementera och testa gränser för armen}{31}{24}
-	\LIPSaktivitet{40}{Implementera smoothing-funktion för servon och motorer}{32}{16}
-	\LIPSaktivitet{41}{Implementera paketnersättningsfunktion}{33}{16}
-	\LIPSaktivitet{42}{Implementera fjärrstyrning från PC}{27,33,34,35}{16}
-	\LIPSaktivitet{43}{Implementera och testa detektion av stoppmarkering}{35,37}{16}
-	\LIPSaktivitet{44}{Implementera och testa detektion av paket}{35,36}{16}
-	\LIPSaktivitet{45}{Implementera och testa detektion av stationer}{35,37}{16}
-	\LIPSaktivitet{46}{Implementera regleringsalgoritm (linjeföljare)}{34,37}{40}
-	\LIPSaktivitet{47}{Testa styrlogik}{43,44,45,46}{40}
-	\LIPSaktivitet{48}{Möten}{}{72}
-	\LIPSaktivitet{49}{Dokumentation: Teknisk Dokumentation}{}{32}
-	\LIPSaktivitet{50}{Dokumentation: Tidsrapport}{}{10}
-	\LIPSaktivitet{51}{Dokumentation: Användarhandledning}{}{8}
-	\LIPSaktivitet{52}{Dokumentation: Efterstudie}{}{8}
-	\LIPSaktivitet{53}{Presentation + PP}{}{32}
-	\LIPSaktivitet{54}{Tejpa testbanor}{}{3}
-	\LIPSaktivitet{55}{Dokumentation: Designspecifikation}{}{100}
-	\LIPSaktivitet{56}{Buffertid}{}{103}
+	\LIPSaktivitet{4}{Implementation av matrisaritmetik}{}{}
+	\LIPSaktivitet{5}{Förstå sig på algoritmen}{}{}	
+	\LIPSaktivitet{6}{Implementera optimeringsalgoritmen}{1, 3, 4}{}
+	\LIPSaktivitet{7}{Optimera optimeringsalgoritmen}{5}{}
+	\LIPSaktivitet{8}{}{}{}
+\end{LIPSaktivitetslista}
+
+\subsection{Gränssnitt}
+
+\begin{LIPSaktivitetslista}
+	\LIPSaktivitet{9}{Skapa ett användargränssnitt}{6}{}
+	\LIPSaktivitet{10}{}{}{}
+	\LIPSaktivitet{11}{}{}{}
+	\LIPSaktivitet{12}{}{}{}
+	\LIPSaktivitet{13}{}{}{}
+	\LIPSaktivitet{14}{}{}{}
+\end{LIPSaktivitetslista}
+
+\subsection{Byggsystem}
+Ett byggsystem krävs för att smidigt kompilera c-koden till de plattformar som gruppen valt att utveckla till.
+\begin{LIPSaktivitetslista}
+	\LIPSaktivitet{15}{Implementering av kompilering till Linux}{}{}
+	\LIPSaktivitet{16}{Implementering av kompilering till Windows}{}{}
+	\LIPSaktivitet{17}{Implementering av kompilering till Mac}{}{}
+	\LIPSaktivitet{18}{}{}{}
+	\LIPSaktivitet{19}{}{}{}
+	\LIPSaktivitet{20}{}{}{}
+\end{LIPSaktivitetslista}
+
+\subsection{Gurobi}
+\begin{LIPSaktivitetslista}
+	\LIPSaktivitet{21}{Installation av Gurobi}{}{}
+	\LIPSaktivitet{22}{Utför test av gurobi}{21}{}
+	\LIPSaktivitet{23}{jämför test med egen algoritm}{6,}{}
+	\LIPSaktivitet{24}{}{}{}
+	\LIPSaktivitet{25}{}{}{}
+	\LIPSaktivitet{26}{}{}{}
+	\LIPSaktivitet{27}{}{}{}
 \end{LIPSaktivitetslista}
