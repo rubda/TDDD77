@@ -5,17 +5,19 @@ Denna del av dokumentet är till för att klargöra vilka standarder som bör f�
 
 \subsection{Innehåll}
 \begin{itemize}
-\item Kod
-\item Kommentering av kod
+\item Skrivning av kod
 \item Testning av kod
 \end{itemize}
 
 \subsubsection{Kod}
-Kod skall vara skriven i språket C och följa standarden ISO-1337.
+Kod skall vara skriven i språket C99 och följa standarden som tas upp i bilaga A. Även kommentering av kod ska följa standarden som tas upp i bilagan. 
+\newline
+\newline
+Koden ska kompileras med strängen som syns nedan. Filerna kommer kompileras med gcc 4.5.4 på Mac och 4.8 på Linux. Flaggorna som har valts är för att få en väldigt sträng ``rättning`` av koden som skrivs. 
 
-\subsubsection{Kommentering}
-Kod ska kommenteras på detta viset:
-/* Funkar detta? */
+\begin{itemize}
+\item gcc -Wall -pedantic -std=c99 -o namn namn.c
+\end{itemize}
 
 \subsubsection{Testning}
 Testning ska ske efter riktlinjerna som finns i ``Testplan", [Isaksson, 2015]. 

@@ -1,11 +1,11 @@
-	\documentclass[titlepage, a4paper]{article}
+\documentclass[titlepage, a4paper]{article}
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
 
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Dennis Ljung}
+\newcommand{\LIPSredaktor}{Sebastian Fast}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Projektplan}
-	\newcommand{\LIPSdokumenttyp}{Projektplan}
+\newcommand{\LIPSdokument}{Arkitekturdokument}
+\newcommand{\LIPSdokumenttyp}{Arkitekturdokument}
 \newcommand{\LIPSgranskatdatum}{-}
 \newcommand{\LIPSgranskare}{Andreas Runfalk}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
@@ -19,13 +19,12 @@
 \newcommand{\LIPSkund}{SAAB}
 \newcommand{\LIPSkundkontakt}{Daniel Simon}
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
-\newcommand{\LIPShandledare}{Andreas Runfalk}
+\newcommand{\LIPShandledare}{Andreas Runefalk}
 
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
-\usepackage{float}
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
@@ -38,7 +37,7 @@
 \LIPSTitelsida
 
 \begin{LIPSprojektidentitet}
-	\LIPSgruppmedlem{Adam Sestorp}{Teamledare}{070 9987270}{adase035@student.liu.se}
+	\LIPSgruppmedlem{Adam Sestorp}{Team leader}{070 9987270}{adase035@student.liu.se}
 	\LIPSgruppmedlem{Dennis Ljung}{Dokumentansvarig}{070 8568148}{denlj069@student.liu.se}
 	\LIPSgruppmedlem{Alexander Yngve}{Utvecklingsansvarig}{076 2749762}{aleyn573@student.liu.se}
 	\LIPSgruppmedlem{Martin Söderén}{Analysansvarig}{070 8163241}{marso329@student.liu.se}
@@ -55,7 +54,7 @@
 \newpage
 
 \begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-02-09}{Första utkast}{Dennis}{}
+\LIPSversionsinfo{0.1}{2015-02-09}{Första utkast}{Ruben Das}{}
 \end{LIPSdokumenthistorik}
 
 \newpage
@@ -63,63 +62,25 @@
 
 % Inledning, översikt osv
 
-\input{tex/projektplan-bestallare}
+\input{tex/arkitekturdokument-syfte.tex}
 
-\input{tex/projektplan-oversikt}
+\input{tex/arkitekturdokument-referenser.tex}
 
-\input{tex/projektplan-fasplan}
+\input{tex/arkitekturdokument-hantering.tex}
 
-\input{tex/projektplan-organisation}
+\input{tex/arkitekturdokument-dokumentation.tex}
 
-\input{tex/projektplan-dokumentplan}
+\input{tex/arkitekturdokument-standarder.tex}
 
-% \input{tex/projektplan-utvecklingsmetodik}
+\input{tex/arkitekturdokument-mjukvarugranskning.tex}
 
-\input{tex/projektplan-utbildningsplan}
+\input{tex/arkitekturdokument-test.tex}
 
-\input{tex/projektplan-rapporteringsplan}
+\input{tex/arkitekturdokument-problem.tex}
 
-\input{tex/projektplan-motesplan}
+\input{tex/arkitekturdokument-dokumenthantering.tex}
 
-\input{tex/projektplan-resursplan}
-
-\input{tex/projektplan-milstolpar}
-
-\input{tex/projektplan-aktiviteter}
-
-\input{tex/projektplan-tidplan}
-
-\input{tex/projektplan-forandringsplan}
-
-\input{tex/projektplan-kvalitetsplan}
-
-% \input{tex/projektplan-prioriteringar}
-
-\input{tex/projektplan-projektslut}
-
-
-%\input{tex/projektplan-referenser}
-
-
-
-\newpage
-\begin{appendices}
-
-% Bilagor
-
-\section{Mötesmallar} \label{ap:motesmall}
-Följande två dokument är mallar avsedda för projektmöten.
-
-\includepdf[pages=-]{../motesprotokoll/motesmall1.pdf}
-
-\includepdf[pages=-]{../motesprotokoll/motesmall2.pdf}
-
-
-\newpage
-\section{Tidsplan} \label{ap:tidsplan}
-\includegraphics[angle=90, scale=0.7]{../tidsplan/tidsplan_v1.0.pdf}
-
-\end{appendices}
+\input{tex/arkitekturdokument-riskhantering.tex}
 
 
 \end{document}
