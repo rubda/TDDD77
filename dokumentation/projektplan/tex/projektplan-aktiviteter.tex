@@ -1,80 +1,73 @@
 \section{Aktiviteter}
 
-
-
 \subsection{Utbildning}
 Följande utbildning krävs för att påbörja projektet.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{1}{Konvexa problem}{}{}
-	\LIPSaktivitet{2}{Kvadratiska optimeringsproblem}{}{}
-	\LIPSaktivitet{3}{Karush kunn tucker}{}{}
-	\LIPSaktivitet{4}{Lagrangemultiplikatorer}{}{}
-	\LIPSaktivitet{5}{Active-set-metoden}{}{}
-	\LIPSaktivitet{6}{Lös enkelt testproblem för hand}{}{}
-	\LIPSaktivitet{7}{Grundutbildning i Latex}{}{}
-	\LIPSaktivitet{8}{Grundutbildning i Git}{}{}
-	\LIPSaktivitet{9}{Grundutbildning i Trello}{}{}
-	\LIPSaktivitet{10}{Grundutbildning i Gurobi}{}{}
-		\LIPSaktivitet{10}{Grundutbildning i Matlab}{}{}
-	
+	\LIPSaktivitet{1}{Konvexa kvadratiska optimeringsproblem}{}{70}
+	\LIPSaktivitet{2}{Karush Kunn Tucker bivilkor}{}{42}
+	\LIPSaktivitet{3}{Lagrangemultiplikatorer}{}{14}
+	\LIPSaktivitet{4}{Active set-metoden}{1, 2, 3}{70}
+	\LIPSaktivitet{5}{Lös enkelt testproblem för hand}{4}{4}
+	\LIPSaktivitet{6}{Grundutbildning i Latex}{}{7}
+	\LIPSaktivitet{7}{Grundutbildning i Git}{}{7}
+	\LIPSaktivitet{8}{Grundutbildning i Trello}{}{7}
+	\LIPSaktivitet{9}{Grundutbildning i Gurobi}{}{7}
+	\LIPSaktivitet{10}{Grundutbildning i Matlab}{}{7}
 \end{LIPSaktivitetslista}
-
 
 \subsection{Filsystem}
 Aktiviteter som ska utföras för hantering av in- och utdata från Quadopt.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{11}{Definiera filformat}{}{}
-	\LIPSaktivitet{12}{Implementera inmating av data till programmet}{1}{}
-	\LIPSaktivitet{13}{Implementera utmatning av data till programmet}{1}{}
-	\LIPSaktivitet{14}{Skapa testfall}{}{}
-	\LIPSaktivitet{15}{Utför test av filhanteringssystemet}{2, 3, 4}{}
+	\LIPSaktivitet{11}{Definiera filformat och filstruktur}{}{10}
+	\LIPSaktivitet{12}{Implementera inmatning av data till programmet}{11}{10}
+	\LIPSaktivitet{13}{Implementera utmatning av data till programmet}{11}{10}
+	\LIPSaktivitet{14}{Utför test av filhanteringssystemet}{12, 13}{4}
 \end{LIPSaktivitetslista}
 
 \subsection{Huvudalgoritm}
 Aktiviter som ska utföras till implementation av optimeringsalgoritmen.
 \begin{LIPSaktivitetslista}
-
-	\LIPSaktivitet{16}{Implementation av matrisaritmetik (multiplikation/addition)}{}{}	
-	\LIPSaktivitet{17}{Implementera optimeringsalgoritmen}{}{}
-	\LIPSaktivitet{18}{Optimera optimeringsalgoritmen}{}{}
-	\LIPSaktivitet{27}{Implementera datastrukturer}{}{}
-	\LIPSaktivitet{28}{Göra interna tester för att se att problemet går att lösa}{}{}
+	\LIPSaktivitet{15}{Implementera datastrukturer}{}{14}
+	\LIPSaktivitet{16}{Implementation av matrisaritmetik (multiplikation/addition)}{15}{20}	
+	\LIPSaktivitet{17}{Implementera optimeringsalgoritmen}{16}{100}
+	\LIPSaktivitet{18}{Göra interna tester för att se att problemet går att lösa}{17}{20}
+	\LIPSaktivitet{19}{Optimering av algoritmen}{}{140}
+	
 \end{LIPSaktivitetslista}
 \subsection{Planering}
 \begin{LIPSaktivitetslista}
-\LIPSaktivitet{9}{Möte varje vecka}{}{50}
+\LIPSaktivitet{20}{Möte varje vecka}{}{200}
 \end{LIPSaktivitetslista}
 
 \subsection{Gränssnitt}
 
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{9}{Definiera gränsnitt mellan modulerna}{}{}
-	\LIPSaktivitet{9}{Skapa ett användargränssnitt}{6}{}
-	\LIPSaktivitet{9}{Testa användargränssnittet}{6}{}
+	\LIPSaktivitet{21}{Definiera gränssnitt mellan modulerna}{}{30}
+	\LIPSaktivitet{22}{Skapa ett användargränssnitt}{21}{15}
+	\LIPSaktivitet{23}{Testa användargränssnittet}{22}{5}
 \end{LIPSaktivitetslista}
 
 \subsection{Byggsystem}
 Ett byggsystem krävs för att smidigt kompilera C-koden till de plattformar som gruppen valt att utveckla till.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{19}{Implementering av kompilering till Linux}{}{}
-	\LIPSaktivitet{20}{Implementering av kompilering till Windows}{}{}
-	\LIPSaktivitet{21}{Implementering av kompilering till Mac}{}{}
-	\LIPSaktivitet{29}{Fixa struktur på Git}{}{}
+	\LIPSaktivitet{24}{Implementering av kompilering till Linux}{}{14}
+	\LIPSaktivitet{25}{Implementering av kompilering till Windows}{}{14}
+	\LIPSaktivitet{26}{Implementering av kompilering till Mac}{}{7}
+	\LIPSaktivitet{27}{Fixa struktur på Git}{}{1}
 \end{LIPSaktivitetslista}
 
 \subsection{Gurobi}
 För att kunna se hur snabb algoritmen är krävs det ett jämförbart program. Vi har valt att jämföra Quadopt med det kommersiella programmet Gurobi.
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{21}{Installation av Gurobi}{}{200}
-	\LIPSaktivitet{22}{Utför test av Gurobi}{21}{}
-	\LIPSaktivitet{23}{Jämför test med egen algoritm}{6,22}{}
+	\LIPSaktivitet{28}{Testa med Gurobi}{9}{15}
+	\LIPSaktivitet{29}{Jämför test med egen algoritm}{28}{15}
 \end{LIPSaktivitetslista}
 
 \subsection{Dokumentation}
 \begin{LIPSaktivitetslista}
-	\LIPSaktivitet{}{Testplan}{}{}
-	\LIPSaktivitet{}{Kvalitetsplan}{}{6}
-	\LIPSaktivitet{}{Arkitektur}{}{}
-	\LIPSaktivitet{}{Teknisk dokumentation}{}{}
-	\LIPSaktivitet{}{Användarhandledning}{}{}
+	\LIPSaktivitet{30}{Testplan}{}{35}
+	\LIPSaktivitet{31}{Kvalitetsplan}{}{14}
+	\LIPSaktivitet{32}{Arkitektur}{}{35}
+	\LIPSaktivitet{33}{Teknisk dokumentation}{32}{30}
+	\LIPSaktivitet{34}{Användarhandledning}{32}{10}
 \end{LIPSaktivitetslista}
