@@ -15,6 +15,7 @@ Följande utbildning krävs för att påbörja projektet.
 	\LIPSaktivitet{8}{Grundutbildning i Git}{}{}
 	\LIPSaktivitet{9}{Grundutbildning i Trello}{}{}
 	\LIPSaktivitet{10}{Grundutbildning i Gurobi}{}{}
+		\LIPSaktivitet{10}{Grundutbildning i Matlab}{}{}
 	
 \end{LIPSaktivitetslista}
 
@@ -32,21 +33,25 @@ Aktiviteter som ska utföras för hantering av in- och utdata från Quadopt.
 \subsection{Huvudalgoritm}
 Aktiviter som ska utföras till implementation av optimeringsalgoritmen.
 \begin{LIPSaktivitetslista}
+
 	\LIPSaktivitet{16}{Implementation av matrisaritmetik (multiplikation/addition)}{}{}	
 	\LIPSaktivitet{17}{Implementera optimeringsalgoritmen}{}{}
 	\LIPSaktivitet{18}{Optimera optimeringsalgoritmen}{}{}
+	\LIPSaktivitet{27}{Implementera datastrukturer}{}{}
+	\LIPSaktivitet{28}{Göra interna tester för att se att problemet går att lösa}{}{}
+\end{LIPSaktivitetslista}
+\subsection{Planering}
+\begin{LIPSaktivitetslista}
+\LIPSaktivitet{9}{Möte varje vecka}{}{50}
 \end{LIPSaktivitetslista}
 
 \subsection{Gränssnitt}
 
 \begin{LIPSaktivitetslista}
-<<<<<<< HEAD
-	\LIPSaktivitet{19}{Skapa ett användargränssnitt mellan QuadOpt-lösaren och externa moduler}{}{}
-=======
+
 	\LIPSaktivitet{9}{Definiera gränsnitt mellan modulerna}{}{}
 	\LIPSaktivitet{9}{Skapa ett användargränssnitt}{6}{}
-	
->>>>>>> 261e5f4b5e6a253950dda3169f8d4a2443beb54a
+	\LIPSaktivitet{9}{Testa användargränssnittet}{6}{}
 \end{LIPSaktivitetslista}
 
 \subsection{Byggsystem}
@@ -55,18 +60,14 @@ Ett byggsystem krävs för att smidigt kompilera C-koden till de plattformar som
 	\LIPSaktivitet{19}{Implementering av kompilering till Linux}{}{}
 	\LIPSaktivitet{20}{Implementering av kompilering till Windows}{}{}
 	\LIPSaktivitet{21}{Implementering av kompilering till Mac}{}{}
+	\LIPSaktivitet{29}{Fixa struktur på Git}{}{}
 \end{LIPSaktivitetslista}
 
 \subsection{Gurobi}
 För att kunna se hur snabb algoritmen är krävs det ett jämförbart program. Vi har valt att jämföra Quadopt med det kommersiella programmet Gurobi.
 \begin{LIPSaktivitetslista}
-<<<<<<< HEAD
-	\LIPSaktivitet{22}{Installation av Gurobi}{}{200}
-	\LIPSaktivitet{23}{Utför test av gurobi}{21}{}
-	\LIPSaktivitet{24}{jämför test med egen algoritm}{6,22}{}
-=======
+
 	\LIPSaktivitet{21}{Installation av Gurobi}{}{200}
 	\LIPSaktivitet{22}{Utför test av Gurobi}{21}{}
 	\LIPSaktivitet{23}{Jämför test med egen algoritm}{6,22}{}
->>>>>>> 261e5f4b5e6a253950dda3169f8d4a2443beb54a
 \end{LIPSaktivitetslista}
