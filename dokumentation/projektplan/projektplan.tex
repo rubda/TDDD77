@@ -7,7 +7,7 @@
 \newcommand{\LIPSdokument}{Projektplan}
 	\newcommand{\LIPSdokumenttyp}{Projektplan}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Andreas Runfalk}
+\newcommand{\LIPSgranskare}{Dennis Ljung}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
@@ -55,7 +55,7 @@
 \newpage
 
 \begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-02-09}{Första utkast}{Dennis}{}
+\LIPSversionsinfo{0.1}{2015-02-16}{Första utkast}{Dennis Ljung}{}
 \end{LIPSdokumenthistorik}
 
 \newpage
@@ -87,39 +87,22 @@
 
 \input{tex/projektplan-aktiviteter}
 
-\input{tex/projektplan-tidplan}
+%\input{tex/projektplan-tidplan}
 
 \input{tex/projektplan-forandringsplan}
 
-\input{tex/projektplan-kvalitetsplan}
+%\input{tex/projektplan-kvalitetsplan}
 
 % \input{tex/projektplan-prioriteringar}
 
 \input{tex/projektplan-projektslut}
 
-
 %\input{tex/projektplan-referenser}
-
-
 
 \newpage
 \begin{appendices}
-
-% Bilagor
-
-\section{Mötesmallar} \label{ap:motesmall}
-Följande två dokument är mallar avsedda för projektmöten.
-
-\includepdf[pages=-]{../motesprotokoll/motesmall1.pdf}
-
-\includepdf[pages=-]{../motesprotokoll/motesmall2.pdf}
-
-
-\newpage
-\section{Tidsplan} \label{ap:tidsplan}
-\includegraphics[angle=90, scale=0.7]{../tidsplan/tidsplan_v1.0.pdf}
-
+	\section{Mötesmall} \label{ap:motesmall}
+	\input{tex/projektplan-motesmall.tex}
 \end{appendices}
-
 
 \end{document}
