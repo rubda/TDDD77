@@ -10,7 +10,7 @@ Denna del av dokumentet är till för att klargöra vilka standarder som bör f�
 \end{itemize}
 
 \subsubsection{Kod}
-Kod skall vara skriven i språket C99 och följa standarden som tas upp i bilaga A. Även kommentering av kod ska följa standarden som tas upp i bilagan. 
+Källkod för optimeringsalgoritmen skall vara skriven i språket C99 och följa standarden som tas upp i bilaga A. Även kommentering av kod ska följa standarden som tas upp i bilagan. 
 \newline
 \newline
 Koden ska kompileras med strängen som syns nedan. Filerna kommer kompileras med gcc 4.8. Flaggorna som har valts är för att få en väldigt sträng ``rättning`` av koden som skrivs. 
@@ -18,6 +18,8 @@ Koden ska kompileras med strängen som syns nedan. Filerna kommer kompileras med
 \begin{itemize}
 \item gcc -Wall -pedantic -std=c99 -o namn namn.c
 \end{itemize}
+
+Källkod för GUI:t ska skrivas i Python efter PEP 8 och PEP 257 standarderna. 
 
 \subsubsection{Testning}
 Testning ska ske efter riktlinjerna som finns i ``Testplan", [Isaksson, 2015]. 
