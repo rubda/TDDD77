@@ -1,24 +1,23 @@
 \section{Testobjekt och funktioner}
-
-\subsection{Filhantering}
 Följande tester ska ske på var och en av de plattformar som programmet utvecklas till.
+\subsection{Filhantering}
+Filsystemet behöver test av följande.
 \begin{itemize}
 	\item{Läsning av QuadOpt-indatafil}
 	\item{Skrivning till QuadOpt-utdatafil}
 \end{itemize}
 
 \subsection{Byggsystem}
-Byggsystemet behöver följande tester.
+Byggsystemet behöver tester av följande.
 \begin{itemize}
 	\item{Kompilering av C-kod till de olika plattformarna}
 \end{itemize}
 
 \subsection{Algoritm}
 \begin{itemize}
-	\item{Matrisaritmetikens korrekthet}
-	\item{Matrisaritmetikens snabbhet}
-	\item{Lagrangemuliplikatorberäkningens korrekthet}
-	\item{Lagrangemuliplikatorberäkningens snabbhet}
+	\item{Matrisaritmetik}
+	\item{Lösning av linjära system}
+	\item{Lagrangemuliplikatorberäkning}
 	\item{Algoritmens exakthet}
 	\item{Algoritmens snabbhet}
 \end{itemize}
@@ -29,3 +28,12 @@ Byggsystemet behöver följande tester.
 	\item{Matlabgränssnitt}
 \end{itemize}
 
+
+\subsection{Användartest}
+Följande test ska utföras i användarens perspektiv. Detta för att se ifall de programmet verkligen innehåller de features som användaren vill ha.
+
+\begin{itemize}
+\item{Test av algoritmkörning}
+\item{Test av parser}
+\item{Test av GUI-funktionalitet}
+\end{itemize}
