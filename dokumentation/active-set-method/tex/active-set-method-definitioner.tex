@@ -1,0 +1,31 @@
+\section{definitioner}
+\subsection{qp subproblem}
+\begin{equation*}
+\begin{aligned}
+& \underset{p}{\text{minimize}}
+& & \frac{1}{2} p^{T}Gp+g_k^{T}p \\
+& \text{subject to}
+& & a_i^Tp= 0 \ for \ all \ i \in W_k \\
+\\
+\\
+& g_k=Gx_k+d
+\end{aligned}
+\end{equation*}
+
+
+där p en vektor av längd n(antalet variabler) som beskriver hur mycket vi ska ändra varje variabel denna iteration.  a$_{\text{i}}$ är radvektorn i A. Detta är 16.27 i boken
+
+\subsection{Lagrange multiplikatorer}
+\begin{equation*}
+\begin{aligned}
+\sum_{i\in \hat{W}}a_i\hat{\lambda_i}=g=G\hat{x}+d
+\end{aligned}
+\end{equation*}
+
+\subsection{stegformula}
+\begin{equation*}
+\begin{aligned}
+\alpha_k\overset{def}{=}min \bigg(1,\underset{i\notin W_k,a_i^Tp_k<0}{min} \frac{b_i-a_i^Tx_k}{a_i^Tp_k} \bigg)
+\end{aligned}
+\end{equation*}
+b$_{\text{i}}$ är radvektorn i b

@@ -2,13 +2,13 @@
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
 
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Johan Isaksson}
+\newcommand{\LIPSredaktor}{Martin Söderén}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Testplan}
-\newcommand{\LIPSdokumenttyp}{Testplan}
+\newcommand{\LIPSdokument}{Active-set-method}
+\newcommand{\LIPSdokumenttyp}{Active-set-method}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Andreas Runfalk}
-\newcommand{\LIPSgodkannare}{Andreas Runfalk}
+\newcommand{\LIPSgranskare}{}
+\newcommand{\LIPSgodkannare}{}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
 \newcommand{\LIPSprojektnamn}{Prediktionsreglering}
@@ -19,12 +19,15 @@
 \newcommand{\LIPSkund}{SAAB}
 \newcommand{\LIPSkundkontakt}{Daniel Simon}
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
-\newcommand{\LIPShandledare}{Andreas Runfalk}
+\newcommand{\LIPShandledare}{Andreas Runefalk}
 
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
@@ -54,7 +57,7 @@
 \newpage
 
 \begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-02-09}{Första utkast}{Johan Isaksson}{}
+\LIPSversionsinfo{0.1}{2015-02-21}{Första utkast}{Martin Söderén}{}
 \end{LIPSdokumenthistorik}
 
 \newpage
@@ -62,22 +65,9 @@
 
 % Inledning, översikt osv
 
-\input{tex/testplan-referenser.tex}
-
-\input{tex/testplan-introduktion.tex}
-
-\input{tex/testplan-testochfunk.tex}
-
-\input{tex/testplan-intetest.tex}
-
-\input{tex/testplan-risker.tex}
-
-\input{tex/testplan-strategi.tex}
-
-\input{tex/testplan-kriterier.tex}
-
-\input{tex/testplan-leverans.tex}
-
+\input{tex/active-set-method-inledning.tex}
+\input{tex/active-set-method-definitioner.tex}
+\input{tex/active-set-method-exempel.tex}
 
 
 \end{document}
