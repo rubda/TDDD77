@@ -38,7 +38,7 @@
 *.s#?
 
 # Emacs backup files
-*.*~
+*~
 
 # meld/merging files
 *.orig
@@ -98,3 +98,6 @@ src/tools/connect.conf
 
 # Except .eps files in documentation graphics
 !/dokumentation/**/grafik/*.eps
+
+# Build directory
+build
