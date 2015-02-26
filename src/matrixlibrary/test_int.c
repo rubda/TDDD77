@@ -1,5 +1,6 @@
 #include "matLib.h"
 #include <assert.h>
+#include<time.h>
 /*make sure typedef int value*/
 
 
@@ -30,6 +31,10 @@ bool is_matrix(matrix* a,matrix* b);															tested
 void print_matrix(matrix* mat);																	not_tested
 */
 int main(void) {
+clock_t begin, end;
+double time_spent;
+begin = clock();
+
 	matrix* a = create_matrix(4, 4);
 	value temp_a[16] = { 18, 60, 57, 96,
             41, 24, 99, 58,
@@ -195,5 +200,8 @@ int main(void) {
 	assert(!get_sub_matrix(3,4,2,4,a,i));
 	assert(!get_sub_matrix(4,5,4,5,a,i));
 	assert(!get_sub_matrix(0,1,0,1,a,i));
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("time taken was: %f \n",time_spent);
 	return 0;
 }
