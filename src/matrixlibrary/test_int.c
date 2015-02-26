@@ -1,18 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#ifndef MATLIB_H
-#define MATLIB_H
-typedef int value;
- struct matrix {
-	 int columns;
-	 int rows;
-	 size_t size;
-	 value *start;
- };
-typedef struct matrix matrix;
-matrix* create_matrix(int row,int col);
+#include "matLib.h"
+#include <assert.h>
+/*make sure typedef int value*/
+
+
+
+
+
+/*
+ * matrix* create_matrix(int row,int col);---> 													tested
 bool insert_value(value insert,int row,int col,matrix* mat);
 bool check_boundaries(int row,int col,matrix* mal);
 void insert_value_without_check(value insert, int row, int col, matrix* mat);
@@ -30,8 +25,23 @@ bool inverse_of_2x2_matrix(matrix* a,matrix* b);
 void multiply_matrix_with_scalar(int scal,matrix* mat);
 bool get_sub_matrix(int start_row,int end_row,int start_col,int end_col,matrix* a,matrix* b);
 bool insert_array(value arr[], matrix* mat);
-bool compare_matrices(matrix* a,matrix* b);
+bool compare_matrices(matrix* a,matrix* b);														tested
 bool is_matrix(matrix* a,matrix* b);
 void print_matrix(matrix* mat);
+*/
+int main(void) {
+	matrix* a = create_matrix(4, 4);
+	value temp_a[16] = { 18, 60, 57, 96,
+            41, 24, 99, 58,
+            14, 30, 97, 66,
+            51, 13, 19, 85 };
+	insert_array(temp_a, a);
 
-#endif /* MATLIB_H */
+	matrix* b = create_matrix(4, 4);
+	insert_array(temp_a, b);
+	assert(compare_matrices(a,b));
+
+
+
+	return 0;
+}

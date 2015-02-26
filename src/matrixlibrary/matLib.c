@@ -1,5 +1,4 @@
 #include "matLib.h"
-#include <time.h>
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
  * row
@@ -14,7 +13,8 @@
 /* creates a matrix row x col. So create_matrix(2,2) will return a pointer to a matrix
  * with 2 rows and 2 columns
  * TODO: check for negative col and row
- * */
+ *
+ * float-safe*/
 matrix* create_matrix(int row, int col) {
 	matrix* mal = (matrix *) malloc(sizeof(matrix *));
 	mal->columns = col;
@@ -27,43 +27,53 @@ matrix* create_matrix(int row, int col) {
 /*always use this when calling direct and no boundary check has been done
  * this is 1-indexed sp insert_value(1000,1,2,mat) will put 1000 in place b
  * if you use it on the matrix in the header description
- * */
+ *
+ * float-safe*/
 bool insert_value(value insert, int row, int col, matrix* mat) {
 	if (!check_boundaries(row, col, mat)) {
 		return false;
 	}
-	*(mat->start + mat->rows * (row-1) + (col-1)) = insert;
+	*(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
 	return true;
 }
 
-/*only used in other functions, not directly*/
+/*only used in other functions, not directly
+ * float-safe*
+ * TODO fix for double*/
 void insert_value_without_check(value insert, int row, int col, matrix* mat) {
-	*(mat->start + mat->rows * (row-1) + (col-1)) = insert;
+	*(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
+
 }
 
 /*always use this when calling direct and no boundary check has been done
  * this is 1-indexed get_value(1,2,mat) will return the value in place b
  * if you use it on the matrix in the header description
- * */
+ *
+ *float-safe */
 value get_value(int row, int col, matrix* mat) {
 	if (!check_boundaries(row, col, mat)) {
 		return false;
 	}
-	return *(mat->start + mat->rows * (row-1) + (col-1));
+	return *(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4);
 }
 
-/*works as get_value but dont do a boundary check, only used inside functions where check are made  */
+/*works as get_value but dont do a boundary check, only used inside functions where check are made
+ * float-safe */
 value get_value_without_check(int row, int col, matrix* mat) {
 
-	return *(mat->start + mat->rows * (row-1) + (col-1));
+	return *(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4);
 }
 
-/*checks if the position exists in the matrix*/
+/*checks if the position exists in the matrix
+ *
+ * float-safe*/
 bool check_boundaries(int row, int col, matrix* mat) {
 	return ((row >= 1) && (col >= 1) && (col <= mat->columns)&& (row <= mat->rows));
 }
 
-/*adds a and b into c*/
+/*adds a and b into c
+ *
+ * float-safe*/
 bool add_matrices(matrix* a, matrix* b, matrix* c) {
 	size_t size;
 	size_t i;
@@ -75,16 +85,19 @@ bool add_matrices(matrix* a, matrix* b, matrix* c) {
 	if (check != b->rows || check != c->rows) {
 		return false;
 	}
-	size = a->columns * a->rows;
 
-	for (i = 0; i < size; i++) {
+	size = a->columns * a->rows*sizeof(value)/4;
+
+	for (i = 0; i < size; i+sizeof(value)/4) {
 		*(c->start + i) = *(a->start + i) + *(b->start + i);
 	}
 	return true;
 
 }
 
-/*subtract a and b into c*/
+/*subtract a and b into c
+ *
+ * float-safe*/
 bool subtract_matrices(matrix* a, matrix* b,matrix* c) {
 	size_t size;
 	size_t i;
@@ -96,64 +109,76 @@ bool subtract_matrices(matrix* a, matrix* b,matrix* c) {
 	if (check != b->rows || check != c->rows) {
 		return false;
 	}
-	size = a->columns * a->rows;
+	size = a->columns * a->rows*sizeof(value)/4;
 
-	for (i = 0; i < size; i++) {
+	for (i = 0; i < size; i+sizeof(value)/4) {
 		*(c->start + i) = *(a->start + i) - *(b->start + i);
 	}
 	return true;
 
 }
 
-/*return the sum of a row in matrix mat*/
+/*return the sum of a row in matrix mat
+ *
+ * float safe*/
 value sum_of_row(int row, matrix* mat) {
 	size_t i = 0;
-	value *start = mat->start + (row - 1) * mat->columns;
+	value *start = mat->start + (row - 1) * mat->columns*sizeof(value)/4;
 	value to_return = 0;
-	for (; i < mat->columns; i++) {
+	for (; i < mat->columns; i+sizeof(value)/4) {
 		to_return += *(start + i);
 	}
 	return to_return;
 }
 
-/*return the sum of a column in matrix mat*/
+/*return the sum of a column in matrix mat
+ *
+ * float-safe*/
 value sum_of_column(int column, matrix* mat) {
 	size_t i = 0;
-	value *start = mat->start + column - 1;
+	value *start = mat->start + (column - 1)*sizeof(value)/4;
 	value to_return = 0;
 	for (; i < mat->rows; i++) {
-		to_return += *(start + i * mat->columns);
+		to_return += *(start + i * mat->columns*sizeof(value)/4);
 	}
 	return to_return;
 }
-/*takes row vector from matrix a and puts it into b which also is a row vector*/
+
+/*takes row vector from matrix a and puts it into b which also is a row vector
+ *
+ * float-safe*/
  bool get_row_vector(int row,matrix* a,matrix* b){
 	 if (b->rows!=1 || b->columns!=a->columns){
 		 return false;
 	 }
 		size_t i = 0;
-		value *start = a->start + (row - 1) * a->columns;
+		value *start = a->start + (row - 1) * a->columns*sizeof(value)/4;
 		for (; i < a->columns; i++) {
-			*(b->start+i)= *(start + i);
+			*(b->start+i*sizeof(value)/4)= *(start + i*sizeof(value)/4);
 		}
 		return true;
  }
 
- /*takes column vector from matrix a and puts it into b which also is a column vector*/
+ /*takes column vector from matrix a and puts it into b which also is a column vector
+  *
+  * float-safe*/
  bool get_column_vector(int column, matrix* a,matrix* b) {
 	 if (b->columns!=1 || b->rows!=a->rows){
 		 return false;
 	 }
+
  	size_t i = 0;
- 	value *start = a->start + column - 1;
+ 	value *start = a->start + (column - 1)*sizeof(value)/4;
  	for (; i < a->rows; i++) {
- 		*(b->start+i)= *(start + i * a->columns);
+ 		*(b->start+i*sizeof(value)/4)= *(start + i * a->columns*sizeof(value)/4);
  	}
  	return true;
  }
 
 
-/*multiply a and b into c*/
+/*multiply a and b into c
+ *
+ * float-safe*/
 bool multiply_matrices(matrix* a, matrix* b,matrix* c) {
 	if ((a->columns != b->rows) || (a->rows != c->rows)
 			|| (b->columns != c->columns)) {
@@ -163,14 +188,18 @@ bool multiply_matrices(matrix* a, matrix* b,matrix* c) {
 	size_t i = 1;
 	size_t k = 1;
 	value sum = 0;
+	value temp_a=0;
+	value temp_b=0;
 	for (; i <= a->rows; i++) {
 		k=1;
 		for (; k <= b->columns; k++) {
 			sum = 0;
 			j=1;
 			for (; j <= b->rows; j++) {
-				sum += get_value_without_check(i, j, a)
-						* get_value_without_check(j, k, b);
+				temp_a=get_value_without_check(i, j, a);
+				temp_b=get_value_without_check(j, k, b);
+				//sum += get_value_without_check(i, j, a) * get_value_without_check(j, k, b);
+				sum+=temp_a*temp_b;
 			}
 			insert_value_without_check(sum, i, k, c);
 
@@ -181,7 +210,9 @@ bool multiply_matrices(matrix* a, matrix* b,matrix* c) {
 
 }
 
-/*transposes matrix a into b*/
+/*transposes matrix a into b
+ *
+ * float-safe*/
 bool transpose_matrix(matrix* a, matrix*b){
 	if((a->columns!=b->rows)||(a->rows!=b->columns)){
 		return false;
@@ -202,28 +233,35 @@ bool transpose_matrix(matrix* a, matrix*b){
 }
 
 /*calculates the inverse of a and puts it into b, this should be used with the value typedef set to float
- * RETURN WILL PROBABLY BE WRONG IF USED IN INT MODE*/
+ * RETURN WILL PROBABLY BE WRONG IF USED IN INT MODE
+ *
+ * float-safe*/
 bool inverse_of_2x2_matrix(matrix* a,matrix* b){
 	if ((a->columns!=2)||(a->rows!=2)||(b->rows!=2)||(b->columns!=2)){
 		return false;
 	}
-	value determinant=1 / ( (*(a->start)) * (*(a->start+3)) - (*(a->start+1))*(*(a->start+2)) );
-	*(b->start)=determinant*(*(a->start+3));
-	*(b->start+1)=-determinant*(*(a->start+1));
-	*(b->start+2)=-determinant*(*(a->start+2));
+	size_t word_size=sizeof(value)/4;
+	value determinant=1 / ( (*(a->start)) * (*(a->start+3*word_size)) - (*(a->start+1*word_size))*(*(a->start+2*word_size)) );
+	*(b->start)=determinant*(*(a->start+3*word_size));
+	*(b->start+1)=-determinant*(*(a->start+1*word_size));
+	*(b->start+2)=-determinant*(*(a->start+2*word_size));
 	*(b->start+4)=determinant*(*(a->start));
 	return true;
 }
 
-/*multiplies matrix mat with scal*/
+/*multiplies matrix mat with scal
+ *
+ * float-safe*/
 void multiply_matrix_with_scalar(int scal,matrix* mat){
 	size_t size=mat->size;
 	size_t i=0;
+	size_t word_size=sizeof(value)/4;
 	for (;i<size;i++){
-		*(mat->start+i)+=scal;
+		*(mat->start+i*word_size)*=scal;
 	}
 }
-/*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b*/
+/*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b
+ * float-safe*/
 bool get_sub_matrix(int start_row,int end_row,int start_col,int end_col,matrix* a,matrix* b){
 if (!check_boundaries(start_row,start_col,a)||!check_boundaries(end_row,end_col,a)){
 return false;
@@ -231,7 +269,25 @@ return false;
 if ((b->rows!=(end_row-start_row+1))||(b->columns!=(end_col-start_col+1))){
 	return false;
 }
+/*how many rows to copy*/
+size_t size=end_row-start_row+1;
 
+/*how many bytes to skip ahead in a matrix */
+size_t start=((start_row-1)*a->columns+start_col-1)*sizeof(value)/4;
+
+/*how many bytes to skip in each step */
+size_t step = (a->columns)*sizeof(value)/4;
+
+/*how many words a row to copy is*/
+size_t row_length=(end_row-start_row+1)*sizeof(value)/4;
+
+/*how many bytes to copy a row is*/
+size_t number_of_bytes=(end_row-start_row+1)*sizeof(value);
+
+size_t i=0;
+for(;i<size;i++){
+	memcpy((void *)(b->start+row_length*i),(void *)(a->start+start+step*i),number_of_bytes);
+}
 
 }
 
@@ -239,7 +295,7 @@ if ((b->rows!=(end_row-start_row+1))||(b->columns!=(end_col-start_col+1))){
 /*insert a array into the matrix, the array must have the same size as number of total elements in the matrix*
  * TODO check elements in array*/
 bool insert_array(value arr[], matrix* mat) {
-	size_t size = mat->columns * mat->rows;
+	size_t size = mat->size;
 	int row = 1;
 	int col = 1;
 	size_t i = 0;
@@ -253,6 +309,20 @@ bool insert_array(value arr[], matrix* mat) {
 	}
 	return true;
 }
+/*returns true if matrices a and b look the same*/
+bool compare_matrices(matrix* a,matrix* b){
+if ((a->columns!=b->columns)||(a->rows!=b->rows)){
+	return false;
+}
+size_t number_of_bytes =a->size*sizeof(value);
+return 0==memcmp((void *)(b->start),(void *)(a->start),number_of_bytes);
+
+}
+
+/*return true if the matrix are the same*/
+bool is_matrix(matrix* a,matrix* b){
+	return ((a->size==b->size)&&(a->rows==b->rows)&&(a->columns==b->columns)&&(a->start==b->start));
+}
 
 /*prints the matrix*/
 void print_matrix(matrix* mat) {
@@ -261,7 +331,7 @@ void print_matrix(matrix* mat) {
 	size_t i = 0;
 	printf("\n");
 	for (; i < size; i++) {
-		printf("%i " , *(mat->start + i));
+		printf("%i " , *(mat->start + i*sizeof(value)/4));
 		col++;
 		if (col >= mat->columns) {
 			col = 0;
@@ -270,15 +340,12 @@ void print_matrix(matrix* mat) {
 	}
 	printf("\n");
 }
-
 /*test program*/
-int main(void) {
+int main_(void) {
 	matrix* b;
 	matrix* c;
 	matrix* d;
-	clock_t begin, end;
-	double time_spent;
-	begin = clock();
+	matrix* e;
 	matrix* a = create_matrix(4, 4);
 	value temp_a[16] = { 18, 60, 57, 96,
             41, 24, 99, 58,
@@ -299,8 +366,13 @@ int main(void) {
 
 	multiply_matrices(a, b, c);
 	print_matrix(c);
-	d = create_matrix(4, 4);
-	transpose_matrix(c,d);
-	print_matrix(d);
+
+	//d = create_matrix(4, 4);
+	//transpose_matrix(c,d);
+	//print_matrix(d);
+	//e = create_matrix(2, 2);
+	//get_sub_matrix(3,4,3,4,d,e);
+	//print_matrix(e);
 	return 0;
 }
+
