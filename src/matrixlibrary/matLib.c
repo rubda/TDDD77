@@ -7,6 +7,9 @@
  * 3			g	h	i
  *
  * the rows and columns are 1-indexed
+ * TODO: create inversion function, a function to solva ax=b, make a test file for float and debug all functions with float,
+ * make printf in print_matrix capable of printing float and int depending on value typedef, test and debug everything for double and perhaps even quad, how do we handle wrong input
+ * in running program?, create a functions that copies everything from one matrix to another
  * */
 
 
@@ -42,13 +45,12 @@ bool insert_value(value insert, int row, int col, matrix* mat) {
  * TODO fix for double*/
 void insert_value_without_check(value insert, int row, int col, matrix* mat) {
 	*(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
-
 }
 
 /*always use this when calling direct and no boundary check has been done
  * this is 1-indexed get_value(1,2,mat) will return the value in place b
  * if you use it on the matrix in the header description
- *
+ *TODO do something cleaver to signal that a get failed, now it just returns 0
  *float-safe */
 value get_value(int row, int col, matrix* mat) {
 	if (!check_boundaries(row, col, mat)) {
@@ -88,7 +90,7 @@ bool add_matrices(matrix* a, matrix* b, matrix* c) {
 
 	size = a->columns * a->rows*sizeof(value)/4;
 
-	for (i = 0; i < size; i+sizeof(value)/4) {
+	for (i = 0; i < size; i+=sizeof(value)/4) {
 		*(c->start + i) = *(a->start + i) + *(b->start + i);
 	}
 	return true;
@@ -111,7 +113,7 @@ bool subtract_matrices(matrix* a, matrix* b,matrix* c) {
 	}
 	size = a->columns * a->rows*sizeof(value)/4;
 
-	for (i = 0; i < size; i+sizeof(value)/4) {
+	for (i = 0; i < size; i+=sizeof(value)/4) {
 		*(c->start + i) = *(a->start + i) - *(b->start + i);
 	}
 	return true;
@@ -122,10 +124,13 @@ bool subtract_matrices(matrix* a, matrix* b,matrix* c) {
  *
  * float safe*/
 value sum_of_row(int row, matrix* mat) {
+	if (!check_boundaries(row,1,mat)){
+		return false;
+	}
 	size_t i = 0;
 	value *start = mat->start + (row - 1) * mat->columns*sizeof(value)/4;
 	value to_return = 0;
-	for (; i < mat->columns; i+sizeof(value)/4) {
+	for (; i < mat->columns; i+=sizeof(value)/4) {
 		to_return += *(start + i);
 	}
 	return to_return;
@@ -135,6 +140,9 @@ value sum_of_row(int row, matrix* mat) {
  *
  * float-safe*/
 value sum_of_column(int column, matrix* mat) {
+	if (!check_boundaries(1,column,mat)){
+		return false;
+	}
 	size_t i = 0;
 	value *start = mat->start + (column - 1)*sizeof(value)/4;
 	value to_return = 0;
@@ -145,9 +153,13 @@ value sum_of_column(int column, matrix* mat) {
 }
 
 /*takes row vector from matrix a and puts it into b which also is a row vector
+ *however get_sub_matrix should be faster
  *
  * float-safe*/
  bool get_row_vector(int row,matrix* a,matrix* b){
+		if (!check_boundaries(row,1,a)){
+			return false;
+		}
 	 if (b->rows!=1 || b->columns!=a->columns){
 		 return false;
 	 }
@@ -160,9 +172,13 @@ value sum_of_column(int column, matrix* mat) {
  }
 
  /*takes column vector from matrix a and puts it into b which also is a column vector
+  *however get_sub_matrix should be faster
   *
   * float-safe*/
  bool get_column_vector(int column, matrix* a,matrix* b) {
+		if (!check_boundaries(1,column,a)){
+			return false;
+		}
 	 if (b->columns!=1 || b->rows!=a->rows){
 		 return false;
 	 }
@@ -174,7 +190,6 @@ value sum_of_column(int column, matrix* mat) {
  	}
  	return true;
  }
-
 
 /*multiply a and b into c
  *
@@ -202,12 +217,9 @@ bool multiply_matrices(matrix* a, matrix* b,matrix* c) {
 				sum+=temp_a*temp_b;
 			}
 			insert_value_without_check(sum, i, k, c);
-
 		}
 	}
-
 	return true;
-
 }
 
 /*transposes matrix a into b
@@ -260,6 +272,7 @@ void multiply_matrix_with_scalar(int scal,matrix* mat){
 		*(mat->start+i*word_size)*=scal;
 	}
 }
+
 /*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b
  * float-safe*/
 bool get_sub_matrix(int start_row,int end_row,int start_col,int end_col,matrix* a,matrix* b){
@@ -291,7 +304,6 @@ for(;i<size;i++){
 
 }
 
-
 /*insert a array into the matrix, the array must have the same size as number of total elements in the matrix*
  * TODO check elements in array*/
 bool insert_array(value arr[], matrix* mat) {
@@ -309,6 +321,7 @@ bool insert_array(value arr[], matrix* mat) {
 	}
 	return true;
 }
+
 /*returns true if matrices a and b look the same*/
 bool compare_matrices(matrix* a,matrix* b){
 if ((a->columns!=b->columns)||(a->rows!=b->rows)){
@@ -316,7 +329,6 @@ if ((a->columns!=b->columns)||(a->rows!=b->rows)){
 }
 size_t number_of_bytes =a->size*sizeof(value);
 return 0==memcmp((void *)(b->start),(void *)(a->start),number_of_bytes);
-
 }
 
 /*return true if the matrix are the same*/
@@ -340,39 +352,3 @@ void print_matrix(matrix* mat) {
 	}
 	printf("\n");
 }
-/*test program*/
-int main_(void) {
-	matrix* b;
-	matrix* c;
-	matrix* d;
-	matrix* e;
-	matrix* a = create_matrix(4, 4);
-	value temp_a[16] = { 18, 60, 57, 96,
-            41, 24, 99, 58,
-            14, 30, 97, 66,
-            51, 13, 19, 85 };
-	insert_array(temp_a, a);
-	print_matrix(a);
-
-	b = create_matrix(4, 4);
-	value temp_b[16] = { 18, 60, 57, 96,
-            41, 24, 99, 58,
-            14, 30, 97, 66,
-            51, 13, 19, 85 };
-	insert_array(temp_b, b);
-	print_matrix(b);
-
-	c = create_matrix(4, 4);
-
-	multiply_matrices(a, b, c);
-	print_matrix(c);
-
-	//d = create_matrix(4, 4);
-	//transpose_matrix(c,d);
-	//print_matrix(d);
-	//e = create_matrix(2, 2);
-	//get_sub_matrix(3,4,3,4,d,e);
-	//print_matrix(e);
-	return 0;
-}
-
