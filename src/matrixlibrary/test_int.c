@@ -35,7 +35,7 @@ clock_t begin, end;
 double time_spent;
 begin = clock();
 
-	matrix* a = create_matrix(4, 4);
+ matrix* a = create_matrix(4, 4);
 	value temp_a[16] = { 18, 60, 57, 96,
             41, 24, 99, 58,
             14, 30, 97, 66,
@@ -203,5 +203,15 @@ begin = clock();
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 	printf("time taken was: %f \n",time_spent);
+	free_matrix(a);
+	free_matrix(b);
+	free_matrix(d);
+	free_matrix(e);
+	free_matrix(f);
+	free_matrix(g);
+	free_matrix(h);
+	free_matrix(i);
+	free_matrix(j);
+
 	return 0;
 }

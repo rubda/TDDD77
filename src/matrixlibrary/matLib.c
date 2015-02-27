@@ -19,7 +19,7 @@
  *
  * float-safe*/
 matrix* create_matrix(int row, int col) {
-	matrix* mal = (matrix *) malloc(sizeof(matrix *));
+	matrix* mal = (matrix *) malloc(sizeof(matrix));
 	mal->columns = col;
 	mal->rows = row;
 	mal->size=row*col;
@@ -351,4 +351,9 @@ void print_matrix(matrix* mat) {
 		}
 	}
 	printf("\n");
+}
+
+void free_matrix(matrix* mat){
+  free(mat->start);
+  free(mat);
 }
