@@ -35,7 +35,7 @@ clock_t begin, end;
 double time_spent;
 begin = clock();
 
-	matrix* a = create_matrix(4, 4);
+ matrix* a = create_matrix(4, 4);
 	value temp_a[16] = { 18, 60, 57, 96,
             41, 24, 99, 58,
             14, 30, 97, 66,
@@ -145,7 +145,6 @@ begin = clock();
 
 	//tests get_column_vector
 	matrix* g = create_matrix(4, 1);
-	value temp_e[4] = { 18, 41, 14, 51};
 	assert(insert_array(temp_d,e));
 	matrix* h = create_matrix(1, 4);
 	assert(!get_row_vector(0,a,h));
@@ -203,5 +202,15 @@ begin = clock();
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 	printf("time taken was: %f \n",time_spent);
+	free_matrix(a);
+	free_matrix(b);
+	free_matrix(d);
+	free_matrix(e);
+	free_matrix(f);
+	free_matrix(g);
+	free_matrix(h);
+	free_matrix(i);
+	free_matrix(j);
+
 	return 0;
 }
