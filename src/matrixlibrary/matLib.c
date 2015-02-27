@@ -19,7 +19,7 @@
  *
  * float-safe*/
 matrix* create_matrix(int row, int col) {
-	matrix* mal = (matrix *) malloc(sizeof(matrix *));
+	matrix* mal = (matrix *) malloc(sizeof(matrix));
 	mal->columns = col;
 	mal->rows = row;
 	mal->size=row*col;
@@ -262,6 +262,7 @@ bool transpose_matrix(matrix* a, matrix*b){
 
 		}
 	}
+	return true;
 }
 
 /*calculates the inverse of a and puts it into b, this should be used with the value typedef set to float
@@ -296,32 +297,34 @@ void multiply_matrix_with_scalar(int scal,matrix* mat){
 /*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b
  * float-safe*/
 bool get_sub_matrix(int start_row,int end_row,int start_col,int end_col,matrix* a,matrix* b){
-if (!check_boundaries(start_row,start_col,a)||!check_boundaries(end_row,end_col,a)){
-return false;
-}
-if ((b->rows!=(end_row-start_row+1))||(b->columns!=(end_col-start_col+1))){
-	return false;
-}
-/*how many rows to copy*/
-size_t size=end_row-start_row+1;
+  if (!check_boundaries(start_row,start_col,a)||
+      !check_boundaries(end_row,end_col,a)){
+    return false;
+  }
+  if ((b->rows!=(end_row-start_row+1))||
+      (b->columns!=(end_col-start_col+1))){
+    return false;
+  }
+  /*how many rows to copy*/
+  size_t size=end_row-start_row+1;
 
-/*how many bytes to skip ahead in a matrix */
-size_t start=((start_row-1)*a->columns+start_col-1)*sizeof(value)/4;
+  /*how many bytes to skip ahead in a matrix */
+  size_t start=((start_row-1)*a->columns+start_col-1)*sizeof(value)/4;
 
-/*how many bytes to skip in each step */
-size_t step = (a->columns)*sizeof(value)/4;
+  /*how many bytes to skip in each step */
+  size_t step = (a->columns)*sizeof(value)/4;
 
-/*how many words a row to copy is*/
-size_t row_length=(end_row-start_row+1)*sizeof(value)/4;
+  /*how many words a row to copy is*/
+  size_t row_length=(end_row-start_row+1)*sizeof(value)/4;
 
-/*how many bytes to copy a row is*/
-size_t number_of_bytes=(end_row-start_row+1)*sizeof(value);
+  /*how many bytes to copy a row is*/
+  size_t number_of_bytes=(end_row-start_row+1)*sizeof(value);
 
-size_t i=0;
-for(;i<size;i++){
-	memcpy((void *)(b->start+row_length*i),(void *)(a->start+start+step*i),number_of_bytes);
-}
-
+  size_t i=0;
+  for(;i<size;i++){
+    memcpy((void *)(b->start+row_length*i),(void *)(a->start+start+step*i),number_of_bytes);
+  }
+  return true;
 }
 
 /*insert a array into the matrix, the array must have the same size as number of total elements in the matrix*
@@ -417,4 +420,8 @@ matrix* prime_factorization(int number) {
 	}
 	free(primes);
 	return to_return;
+
+void free_matrix(matrix* mat){
+  free(mat->start);
+  free(mat);
 }
