@@ -145,7 +145,6 @@ begin = clock();
 
 	//tests get_column_vector
 	matrix* g = create_matrix(4, 1);
-	value temp_e[4] = { 18, 41, 14, 51};
 	assert(insert_array(temp_d,e));
 	matrix* h = create_matrix(1, 4);
 	assert(!get_row_vector(0,a,h));
