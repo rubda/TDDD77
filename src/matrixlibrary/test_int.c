@@ -200,6 +200,21 @@ begin = clock();
 	assert(!get_sub_matrix(3,4,2,4,a,i));
 	assert(!get_sub_matrix(4,5,4,5,a,i));
 	assert(!get_sub_matrix(0,1,0,1,a,i));
+
+	//test insert_row_vector
+	assert(insert_array(temp_a,a));
+	value temp_k[16] = { 18, 60, 57, 96,
+            18, 60, 57, 96,
+            14, 30, 97, 66,
+            51, 13, 19, 85 };
+	assert(insert_array(temp_k,b));
+	assert(insert_array(temp_d,e));
+	assert(insert_row_vector(2,e,a));
+	assert(compare_matrices(a,b));
+
+
+
+
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 	printf("time taken was: %f \n",time_spent);
