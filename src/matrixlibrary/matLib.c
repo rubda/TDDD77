@@ -170,6 +170,58 @@ value sum_of_column(int column, matrix* mat) {
 		}
 		return true;
  }
+
+ /*pivots column, put a pivot element on the diagonal for the  chosen column. Perfect for example gauss-jordan
+  * does the same operation on matrix b
+  *
+  * untested*/
+ bool pivot_column(int column, matrix* a,matrix* b){
+/*if the element is one then we can do no more*/
+	 if (get_value(column,column,a)==1){
+	 return true;
+}
+	 /*if it is not one we can perhaps do better*/
+	 else{
+		 size_t i=1;
+		 size_t column_exchange=0;
+		 bool one=false;
+		 for (;i<=a->rows;i++){
+			 if((get_value(i,column,a)!=0) &&!one){
+				 column_exchange=i;
+				 //if the value is a one that is the best that we can have
+				 if (get_value(i,column,a)==1){
+					 one=true;
+				 }
+			 }
+		 }
+		 /*we have a zero column, if two or more rows in a matrix are linear dependent we will end up here during
+		  * gauss jordan*/
+		 if (column_exchange==0){
+			 return false;
+		 }
+		 switch_rows(column,column_exchange,a);
+		 switch_rows(column,column_exchange,b);
+
+}
+	 return true;
+ }
+/*switches row1 and row2 in a*/
+ bool switch_rows(int row1,int row2,matrix* a){
+	 matrix* b= create_matrix(1,a->columns);
+	 if (!get_row_vector(row1,a,b)){
+		 return false;
+	 }
+	 matrix* c= create_matrix(1,a->columns);
+	 if (!get_row_vector(row2,a,c)){
+		 return false;
+	 }
+	 insert_row_vector(row1,c,a);
+	 insert_row_vector(row2,b,a);
+	 free_matrix(c);
+	 free_matrix(b);
+	 return true;
+ }
+
  /*Inserts row vector a into b:s row*/
  bool insert_row_vector(int row,matrix* a,matrix* b){
 	 if((a->columns!=b->columns)||(a->rows!=1)){
@@ -179,7 +231,7 @@ value sum_of_column(int column, matrix* mat) {
 	 size_t number_of_bytes=b->columns*sizeof(value);
 	 /*memcpy(dest,src,number_of_bytes)*/
 	 memcpy((void *)start,(void *)(a->start),number_of_bytes);
-
+	 return true;
  }
 
  /*takes column vector from matrix a and puts it into b which also is a column vector
@@ -201,6 +253,138 @@ value sum_of_column(int column, matrix* mat) {
  	}
  	return true;
  }
+ /*inserts column vector a into matrix b at position column
+  *
+  * TODO test*/
+ bool insert_column_vector(int column,matrix *a,matrix* b){
+	 if (a->columns!=1 || b->rows!=a->rows){
+		 return false;
+	 }
+	 value *start=b->start+(column-1)*sizeof(value)/4;
+	 size_t size=b->columns;
+	 size_t i=0;
+	 for (;i<size;i++){
+		 memcpy((start+i*size*sizeof(value)/4),a->start+sizeof(value)/4*i,sizeof(value));
+	 }
+
+ }
+ /*adds each element in row1 and row 2 and puts the result on row2*/
+ void add_rows(int row1,int row2,matrix* a){
+	 value* start1=a->start+a->columns*(row1-1)*sizeof(value)/4;
+	 value* start2=a->start+a->columns*(row2-1)*sizeof(value)/4;
+	 size_t i=0;
+	 for(;i<a->columns;i++){
+		 *(start2+i*sizeof(value)/4)+=*(start1+i*sizeof(value)/4);
+	 }
+ }
+ int lowest_common_denominator(int x,int y){
+	   int a, b, t, gcd, lcm;
+	   a = x;
+	   b = y;
+	   while (b != 0) {
+	     t = b;
+	     b = a % b;
+	     a = t;
+	   }
+	   gcd = a;
+	   lcm = (x*y)/gcd;
+	  return lcm;
+	 }
+
+ int greatest_common_denominator(int x,int y){
+	   int a, b, t, gcd;
+	   a = x;
+	   b = y;
+	   while (b != 0) {
+	     t = b;
+	     b = a % b;
+	     a = t;
+	   }
+	  return a;
+	 }
+ /*returns the gcd of a row in matrix a*/
+int gcd_row(int row, matrix* a) {
+	if (row > a->rows) {
+		return -1;
+	}
+	int gcd;
+	if (a->columns == 1) {
+		return get_value(row, 1, a);
+	}
+	size_t i = 3;
+	gcd = greatest_common_denominator(get_value_without_check(row, 1, a),
+			get_value_without_check(row, 2, a));
+	for (; i <= a->columns;i++) {
+		gcd = greatest_common_denominator(gcd,
+				get_value_without_check(row, i, a));
+	}
+	return gcd;
+}
+
+ /*makes each element below the diagonal in column zero, does the same operations on b. This assumes that
+  * there is a pivotelement on the diagonal*/
+ bool eliminate_below_pivot(int column,
+		matrix*a, matrix* b) {
+	if (column == a->rows) {
+		return true;
+	}
+	value pivot = get_value(column, column, a);
+	size_t i = column + 1;
+	print_matrix(a);
+	for (; i <= a->rows; i++) {
+		multiply_row_with_scalar(pivot, i, a);
+		multiply_row_with_scalar(pivot, i, b);
+	}
+	print_matrix(a);
+	i = column + 1;
+	value element;
+	for (; i <= a->rows; i++) {
+		element = get_value(i, column, a);
+		if (element != 0) {
+			int sign = -1;
+			if (element < 0) {
+				sign = 1;
+			}
+			multiply_row_with_scalar(sign * element / pivot, column, a);
+			multiply_row_with_scalar(sign * element / pivot, column, b);
+			print_matrix(a);
+			add_rows(column, i, a);
+			add_rows(column, i, b);
+			print_matrix(a);
+			divide_row_with_scalar(sign * element / pivot, column, a);
+			divide_row_with_scalar(sign * element / pivot, column, b);
+			print_matrix(a);
+		}
+	}
+	i = column + 1;
+	int gcd_curr;
+	for (; i <= a->rows; i++) {
+		gcd_curr=greatest_common_denominator(gcd_row(i,a),gcd_row(i,b));
+		divide_row_with_scalar(gcd_curr, i, a);
+		divide_row_with_scalar(gcd_curr, i, b);
+	}
+
+}
+
+ /*uses row operations on a to make each element below the diagonal zero
+  * does the same operations on b
+  * TODO make b a optional argument*/
+ bool triangulate_matrix(matrix* a,matrix* b){
+	 if ((a->columns!=a->rows)||(a->rows!=b->rows)){
+		 return false;
+	 }
+	 size_t i=1;
+	 for (;i<a->rows;i++){
+		 //print_matrix(a);
+		 pivot_column(i,a,b);
+		 //print_matrix(a);
+		 eliminate_below_pivot(i,a,b);
+		 //print_matrix(a);
+
+	 }
+
+ }
+
 /*solve Ax=b system the x */
  bool solver(matrix* a,matrix* b,matrix* c){
 	 if ((a->columns!=c->rows)||(a->rows!=b->rows)||(c->columns!=b->columns)){
@@ -236,6 +420,7 @@ bool multiply_matrices(matrix* a, matrix* b,matrix* c) {
 				//sum += get_value_without_check(i, j, a) * get_value_without_check(j, k, b);
 				sum+=temp_a*temp_b;
 			}
+
 			insert_value_without_check(sum, i, k, c);
 		}
 	}
@@ -292,6 +477,35 @@ void multiply_matrix_with_scalar(int scal,matrix* mat){
 	for (;i<size;i++){
 		*(mat->start+i*word_size)*=scal;
 	}
+}
+/*multiplies each element on a row in matrix mat with value scal*/
+void multiply_row_with_scalar(int scal,int row,matrix* mat){
+	value* start=mat->start+(row-1)*mat->columns*sizeof(value)/4;
+	size_t i=0;
+	for(;i<mat->columns;i++){
+		*(start+i*sizeof(value)/4)*=scal;
+	}
+
+}
+/*multiplies each element on a row in matrix mat with value scal*/
+void divide_row_with_scalar(int scal,int row,matrix* mat){
+	value* start=mat->start+(row-1)*mat->columns*sizeof(value)/4;
+	size_t i=0;
+	for(;i<mat->columns;i++){
+		*(start+i*sizeof(value)/4)/=scal;
+	}
+
+}
+
+/*multiplies each element in a column in matrix mat with value scal*/
+void multiply_column_with_scalar(int scal,int col,matrix* mat){
+	value* start=mat->start+(col-1);
+	size_t i=0;
+	size_t step=mat->rows*sizeof(value)/4;
+	for(;i<mat->rows;i++){
+		*(start+i*step)*=scal;
+	}
+
 }
 
 /*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b
@@ -420,7 +634,7 @@ matrix* prime_factorization(int number) {
 	}
 	free(primes);
 	return to_return;
-
+}
 void free_matrix(matrix* mat){
   free(mat->start);
   free(mat);

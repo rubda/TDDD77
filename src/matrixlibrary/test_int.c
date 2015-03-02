@@ -211,7 +211,26 @@ begin = clock();
 	assert(insert_row_vector(2,e,a));
 	assert(compare_matrices(a,b));
 
+	//test pivot_column
+	value temp_l[16] = { 20, 30, 40, 50,
+	            18, 0, 57, 96,
+	            14, 1		, 97, 66,
+	            51, 0, 19, 85 };
+	assert(insert_array(temp_l,b));
+	//pivot_column(2,b,a);
 
+	print_matrix(b);
+	printf("the gcd of row 1 in matrix is: %i \n",gcd_row(1,b));
+
+	//print_matrix(b);
+	//multiply_row_with_scalar(5,2,b);
+	//add_rows(2,3,b);
+	//print_matrix(b);
+
+
+	//test elimination
+	assert(insert_array(temp_j,g));
+	assert(triangulate_matrix(b,g));
 
 
 	end = clock();

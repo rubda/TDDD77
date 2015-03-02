@@ -42,6 +42,7 @@
 
 # Python files
 *.pyc
+*.xml
 
 # LaTeXing addon for Atom build files
 *.fls

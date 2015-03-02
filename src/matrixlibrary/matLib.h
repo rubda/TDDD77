@@ -35,6 +35,17 @@ bool is_matrix(matrix* a,matrix* b);
 void print_matrix(matrix* mat);
 int raise(int base, int exp);
 matrix* prime_factorization(int number);
+bool insert_column_vector(int column,matrix *a,matrix* b);
 void free_matrix(matrix* mat);
+bool pivot_column(int column, matrix* a,matrix* b);
+bool switch_rows(int row1,int row2,matrix* a);
+bool insert_row_vector(int row,matrix* a,matrix* b);
+void multiply_row_with_scalar(int scal,int row,matrix* mat);
+void divide_row_with_scalar(int scal,int row,matrix* mat);
+void multiply_column_with_scalar(int scal,int col,matrix* mat);
+void add_rows(int row1,int row2,matrix* a);
+int lowest_common_denominator(int x,int y);
+int greatest_common_denominator(int x,int y);
+int gcd_row(int row, matrix* a);
 
 #endif /* MATLIB_H */
