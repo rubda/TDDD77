@@ -19,7 +19,7 @@
  *
  * float-safe*/
 matrix* create_matrix(int row, int col) {
-	matrix* mal = (matrix *) malloc(sizeof(matrix *));
+	matrix* mal = (matrix *) malloc(sizeof(matrix));
 	mal->columns = col;
 	mal->rows = row;
 	mal->size=row*col;
@@ -154,7 +154,7 @@ value sum_of_column(int column, matrix* mat) {
 
 /*takes row vector from matrix a and puts it into b which also is a row vector
  *however get_sub_matrix should be faster
- *
+ *TODO this should be done with memcpy, should be alot faster
  * float-safe*/
  bool get_row_vector(int row,matrix* a,matrix* b){
 		if (!check_boundaries(row,1,a)){
@@ -169,6 +169,17 @@ value sum_of_column(int column, matrix* mat) {
 			*(b->start+i*sizeof(value)/4)= *(start + i*sizeof(value)/4);
 		}
 		return true;
+ }
+ /*Inserts row vector a into b:s row*/
+ bool insert_row_vector(int row,matrix* a,matrix* b){
+	 if((a->columns!=b->columns)||(a->rows!=1)){
+		 return false;
+	 }
+	 value *start = b->start + (row - 1) * b->columns*sizeof(value)/4;
+	 size_t number_of_bytes=b->columns*sizeof(value);
+	 /*memcpy(dest,src,number_of_bytes)*/
+	 memcpy((void *)start,(void *)(a->start),number_of_bytes);
+
  }
 
  /*takes column vector from matrix a and puts it into b which also is a column vector
@@ -190,6 +201,15 @@ value sum_of_column(int column, matrix* mat) {
  	}
  	return true;
  }
+/*solve Ax=b system the x */
+ bool solver(matrix* a,matrix* b,matrix* c){
+	 if ((a->columns!=c->rows)||(a->rows!=b->rows)||(c->columns!=b->columns)){
+		 return false;
+
+	 }
+
+ }
+
 
 /*multiply a and b into c
  *
@@ -242,6 +262,7 @@ bool transpose_matrix(matrix* a, matrix*b){
 
 		}
 	}
+	return true;
 }
 
 /*calculates the inverse of a and puts it into b, this should be used with the value typedef set to float
@@ -276,32 +297,34 @@ void multiply_matrix_with_scalar(int scal,matrix* mat){
 /*takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b
  * float-safe*/
 bool get_sub_matrix(int start_row,int end_row,int start_col,int end_col,matrix* a,matrix* b){
-if (!check_boundaries(start_row,start_col,a)||!check_boundaries(end_row,end_col,a)){
-return false;
-}
-if ((b->rows!=(end_row-start_row+1))||(b->columns!=(end_col-start_col+1))){
-	return false;
-}
-/*how many rows to copy*/
-size_t size=end_row-start_row+1;
+  if (!check_boundaries(start_row,start_col,a)||
+      !check_boundaries(end_row,end_col,a)){
+    return false;
+  }
+  if ((b->rows!=(end_row-start_row+1))||
+      (b->columns!=(end_col-start_col+1))){
+    return false;
+  }
+  /*how many rows to copy*/
+  size_t size=end_row-start_row+1;
 
-/*how many bytes to skip ahead in a matrix */
-size_t start=((start_row-1)*a->columns+start_col-1)*sizeof(value)/4;
+  /*how many bytes to skip ahead in a matrix */
+  size_t start=((start_row-1)*a->columns+start_col-1)*sizeof(value)/4;
 
-/*how many bytes to skip in each step */
-size_t step = (a->columns)*sizeof(value)/4;
+  /*how many bytes to skip in each step */
+  size_t step = (a->columns)*sizeof(value)/4;
 
-/*how many words a row to copy is*/
-size_t row_length=(end_row-start_row+1)*sizeof(value)/4;
+  /*how many words a row to copy is*/
+  size_t row_length=(end_row-start_row+1)*sizeof(value)/4;
 
-/*how many bytes to copy a row is*/
-size_t number_of_bytes=(end_row-start_row+1)*sizeof(value);
+  /*how many bytes to copy a row is*/
+  size_t number_of_bytes=(end_row-start_row+1)*sizeof(value);
 
-size_t i=0;
-for(;i<size;i++){
-	memcpy((void *)(b->start+row_length*i),(void *)(a->start+start+step*i),number_of_bytes);
-}
-
+  size_t i=0;
+  for(;i<size;i++){
+    memcpy((void *)(b->start+row_length*i),(void *)(a->start+start+step*i),number_of_bytes);
+  }
+  return true;
 }
 
 /*insert a array into the matrix, the array must have the same size as number of total elements in the matrix*
@@ -351,4 +374,54 @@ void print_matrix(matrix* mat) {
 		}
 	}
 	printf("\n");
+}
+
+int raise(int base, int exp) {
+	int i = 0;
+	int temp = base;
+	for (; i < exp; i++) {
+		temp *= base;
+	}
+	return temp;
+}
+
+/*return a row matrix containing all the primes factors of n*/
+matrix* prime_factorization(int number) {
+	if (number <= 0) {
+		matrix* to_return = create_matrix(1, 1);
+		insert_value(0, 1, 1, to_return);
+		return to_return;
+	}
+	int div = 2;
+	int memory = 1;
+	int * primes = (int*) malloc(memory * sizeof(int));
+	int counter = 0;
+
+	while (number != 0) {
+		if (number % div != 0)
+			div = div + 1;
+		else {
+			number = number / div;
+			if (counter == memory) {
+				primes = (int*) realloc((void *) primes,
+						2 * memory * sizeof(int));
+				memory *= 2;
+			}
+			*(primes + counter) = div;
+			counter++;
+			if (number == 1)
+				break;
+		}
+	}
+	matrix* to_return = create_matrix(1, counter);
+	int i;
+	for (i = 0; i < counter; i++) {
+		insert_value(*(primes + i), 1, i + 1, to_return);
+	}
+	free(primes);
+	return to_return;
+
+void free_matrix(matrix* mat){
+  free(mat->start);
+  free(mat);
 }
