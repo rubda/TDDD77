@@ -33,6 +33,8 @@ bool insert_array(value arr[], matrix* mat);
 bool compare_matrices(matrix* a,matrix* b);
 bool is_matrix(matrix* a,matrix* b);
 void print_matrix(matrix* mat);
+int raise(int base, int exp);
+matrix* prime_factorization(int number);
 void free_matrix(matrix* mat);
 
 #endif /* MATLIB_H */
