@@ -173,9 +173,9 @@
 % Aktivitets-lista
 \newenvironment{LIPSaktivitetslista}{
 	\center
-		\tabularx{\textwidth}{| p{0.3cm} | X | c | c |}
+		\tabularx{\textwidth}{| p{0.3cm} | X | c | c | c |}
 			\hline
-			\textbf{Nr} & \textbf{Beskrivning} & \textbf{Beroende av} & \textbf{Timmar} \\\hline
+			\textbf{Nr} & \textbf{Beskrivning} & \textbf{Beroende av} & \textbf{Timmar} & \textbf{datum} \\\hline
 }
 {
 		\endtabularx
@@ -185,7 +185,7 @@
 \newcounter{LIPSaktivitetsnummer}
 \addtocounter{LIPSaktivitetsnummer}{1}
 % \newcommand{\LIPSaktivitet}[4][\arabic{LIPSstolpnummer}]{{#1} & {#2} & {#3} & {#4} \stepcounter{LIPSstolpnummer}\\\hline}
-\newcommand{\LIPSaktivitet}[4]{{#1} & {#2} & {#3} & {#4} \\\hline}
+\newcommand{\LIPSaktivitet}[5]{{#1} & {#2} & {#3} & {#4} & {#5}\\\hline}
 
 % Mall för mötesprotokoll
 \newenvironment{projektmote}[2]{

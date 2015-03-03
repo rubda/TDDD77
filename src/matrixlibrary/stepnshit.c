@@ -69,7 +69,7 @@ matrix* guassian_eliminate(matrix* a, matrix*b) {
         return ans;
      }
 
-     /* just a siple structure for storing different sets */
+     /* just a simple structure for storing different sets */
      struct work_set {
         int count;
         int* data;
@@ -91,4 +91,34 @@ matrix* guassian_eliminate(matrix* a, matrix*b) {
                 }
             }
         }
+     }
+
+     /* copy and return new matrix */
+     matrix * matrix_copy(matrix* source) {
+        //TODO check
+        matrix* m = create_matrix(source->rows,source->columns);
+        memcpy(m->start,source->start,source->size);
+
+     }
+
+     /* calculate the derivative for subproblem, and solve for = 0 */
+     bool derive_and_solve(matrix* G, matrix* g, matrix* p) {
+        matrix* Qd = create_matrix(G->rows,G->columns);
+        matrix* Gt = create_matrix(G->rows,G->columns);
+        transpose_matrix(G,Gt);
+
+        add_matrices(G, Gt, Qd);
+
+        matrix* gm = matrix_copy(g);
+        multiply_matrix_with_scalar(-1,gm);
+
+        //TODO
+        /* solves linear system Ax = b
+         * linear_solve(A,b,x) 
+         * puts answer into p */
+        linear_solve(Gt,gm,p);
+
+
+        return true;
+
      }
