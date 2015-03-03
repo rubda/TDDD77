@@ -20,7 +20,7 @@ def save_file():
     try:
         t = text.get(0.0, END)
         f = open(filename, 'w')
-        f.write(t)
+        f.write(t.rstrip())
         f.close()
     except:
         save_as()
