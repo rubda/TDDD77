@@ -269,7 +269,7 @@ value sum_of_column(int column, matrix* mat) {
 	 for (;i<size;i++){
 		 memcpy((start+i*size*sizeof(value)/4),a->start+sizeof(value)/4*i,sizeof(value));
 	 }
-
+	 return true;
  }
  /*adds each element in row1 and row 2 and puts the result on row2*/
  void add_rows(int row1,int row2,matrix* a){
@@ -295,7 +295,7 @@ value sum_of_column(int column, matrix* mat) {
 	 }
 
  int greatest_common_denominator(int x,int y){
-	   int a, b, t, gcd;
+	   int a, b, t;
 	   a = x;
 	   b = y;
 	   while (b != 0) {
@@ -367,7 +367,7 @@ int gcd_row(int row, matrix* a) {
 		divide_row_with_scalar(gcd_curr, i, b);
 		print_matrix(a);
 	}
-
+	
 }
 
  /*uses row operations on a to make each element below the diagonal zero
@@ -386,7 +386,7 @@ int gcd_row(int row, matrix* a) {
 		 //print_matrix(a);
 
 	 }
-
+	 return true;
  }
 
 /*solve Ax=b system the x */
@@ -395,7 +395,7 @@ int gcd_row(int row, matrix* a) {
 		 return false;
 
 	 }
-
+	 return true;
  }
 
 
