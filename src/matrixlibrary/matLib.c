@@ -36,7 +36,10 @@ bool insert_value(value insert, int row, int col, matrix* mat) {
 	if (!check_boundaries(row, col, mat)) {
 		return false;
 	}
-	*(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
+	/*sizeof(value)/4 might be fucked up*/
+	//*(mat->start + mat->columns * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
+	value* start=mat->start + mat->columns * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4;
+	*(start)=insert;
 	return true;
 }
 
@@ -362,6 +365,7 @@ int gcd_row(int row, matrix* a) {
 		gcd_curr=greatest_common_denominator(gcd_row(i,a),gcd_row(i,b));
 		divide_row_with_scalar(gcd_curr, i, a);
 		divide_row_with_scalar(gcd_curr, i, b);
+		print_matrix(a);
 	}
 
 }
@@ -487,6 +491,7 @@ void multiply_row_with_scalar(int scal,int row,matrix* mat){
 	}
 
 }
+
 /*multiplies each element on a row in matrix mat with value scal*/
 void divide_row_with_scalar(int scal,int row,matrix* mat){
 	value* start=mat->start+(row-1)*mat->columns*sizeof(value)/4;
@@ -580,7 +585,7 @@ void print_matrix(matrix* mat) {
 	size_t i = 0;
 	printf("\n");
 	for (; i < size; i++) {
-		printf("%i " , *(mat->start + i*sizeof(value)/4));
+		printf(FORMAT_STRING , *(mat->start + i*sizeof(value)/4));
 		col++;
 		if (col >= mat->columns) {
 			col = 0;
