@@ -4,7 +4,17 @@
 #include <string.h>
 #ifndef MATLIB_H
 #define MATLIB_H
+
+#define FLOAT
+#ifdef FLOAT
+typedef double value;
+#define FORMAT_STRING "%f "
+#endif
+#ifndef FLOAT
 typedef int value;
+#define FORMAT_STRING "%i "
+#endif
+
  struct matrix {
 	 int columns;
 	 int rows;

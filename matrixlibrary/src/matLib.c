@@ -36,7 +36,10 @@ bool insert_value(value insert, int row, int col, matrix* mat) {
 	if (!check_boundaries(row, col, mat)) {
 		return false;
 	}
-	*(mat->start + mat->rows * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
+	/*sizeof(value)/4 might be fucked up*/
+	//*(mat->start + mat->columns * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4) = insert;
+	value* start=mat->start + mat->columns * (row-1)*sizeof(value)/4 + (col-1)*sizeof(value)/4;
+	*(start)=insert;
 	return true;
 }
 
@@ -266,7 +269,7 @@ value sum_of_column(int column, matrix* mat) {
 	 for (;i<size;i++){
 		 memcpy((start+i*size*sizeof(value)/4),a->start+sizeof(value)/4*i,sizeof(value));
 	 }
-
+	 return true;
  }
  /*adds each element in row1 and row 2 and puts the result on row2*/
  void add_rows(int row1,int row2,matrix* a){
@@ -292,7 +295,7 @@ value sum_of_column(int column, matrix* mat) {
 	 }
 
  int greatest_common_denominator(int x,int y){
-	   int a, b, t, gcd;
+	   int a, b, t;
 	   a = x;
 	   b = y;
 	   while (b != 0) {
@@ -362,8 +365,9 @@ int gcd_row(int row, matrix* a) {
 		gcd_curr=greatest_common_denominator(gcd_row(i,a),gcd_row(i,b));
 		divide_row_with_scalar(gcd_curr, i, a);
 		divide_row_with_scalar(gcd_curr, i, b);
+		print_matrix(a);
 	}
-
+	
 }
 
  /*uses row operations on a to make each element below the diagonal zero
@@ -382,7 +386,7 @@ int gcd_row(int row, matrix* a) {
 		 //print_matrix(a);
 
 	 }
-
+	 return true;
  }
 
 /*solve Ax=b system the x */
@@ -391,7 +395,7 @@ int gcd_row(int row, matrix* a) {
 		 return false;
 
 	 }
-
+	 return true;
  }
 
 
@@ -487,6 +491,7 @@ void multiply_row_with_scalar(int scal,int row,matrix* mat){
 	}
 
 }
+
 /*multiplies each element on a row in matrix mat with value scal*/
 void divide_row_with_scalar(int scal,int row,matrix* mat){
 	value* start=mat->start+(row-1)*mat->columns*sizeof(value)/4;
@@ -580,7 +585,7 @@ void print_matrix(matrix* mat) {
 	size_t i = 0;
 	printf("\n");
 	for (; i < size; i++) {
-		printf("%i " , *(mat->start + i*sizeof(value)/4));
+		printf(FORMAT_STRING , *(mat->start + i*sizeof(value)/4));
 		col++;
 		if (col >= mat->columns) {
 			col = 0;

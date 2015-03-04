@@ -44,6 +44,8 @@ begin = clock();
 
 	matrix* b = create_matrix(4, 4);
 	assert(insert_array(temp_a, b));
+	print_matrix(b);
+
 
 	//tests check_boundaries
 	assert(check_boundaries(1,1,a));
@@ -55,6 +57,7 @@ begin = clock();
 	assert(!check_boundaries(-1,1,a));
 	assert(!check_boundaries(1,-1,a));
 
+
 	//tests compare_matrices,insert_value and get_value
 	assert(compare_matrices(a,b));
 	assert(insert_value(10,1,1,b));
@@ -62,22 +65,31 @@ begin = clock();
 	assert(get_value(1,1,b)==10);
 	assert(insert_value(18,1,1,b));
 	assert(compare_matrices(a,b));
+	print_matrix(b);
+
 
 	//tests is_matrix
 	matrix* c=a;
 	assert(compare_matrices(a,c));
 	assert(!is_matrix(a,b));
 	assert(is_matrix(a,c));
+	print_matrix(b);
+
 
 	//tests insert_value by trying to go outside the matrix
 	assert(insert_value(1,1,1,c));
+	print_matrix(b);
 	assert(insert_value(2,2,2,c));
+	print_matrix(b);
 	assert(insert_value(3,3,3,c));
+	print_matrix(b);
 	assert(insert_value(4,4,4,c));
+	print_matrix(b);
 	assert(!insert_value(5,5,5,c));
 	assert(!insert_value(-1,-1,-1,c));
 	assert(!insert_value(-1,-1,1,c));
 	assert(!insert_value(-1,1,-1,c));
+	print_matrix(b);
 
 	//test get_value
 	assert(get_value(1,1,c)==1);
@@ -89,6 +101,7 @@ begin = clock();
 	assert(get_value(-1,1,c)==0);
 	assert(get_value(5,5,c)==0);
 
+	print_matrix(b);
 	//tests insert and get without boundary checks
 	insert_value_without_check(4,1,1,c);
 	insert_value_without_check(3,2,2,c);
@@ -99,6 +112,7 @@ begin = clock();
 	assert(get_value_without_check(3,3,c)==2);
 	assert(get_value_without_check(4,4,c)==1);
 
+	print_matrix(b);
 	//tests add_matrices
 	value temp_b[16]={
 	36,120,114,192,
@@ -210,28 +224,6 @@ begin = clock();
 	assert(insert_array(temp_d,e));
 	assert(insert_row_vector(2,e,a));
 	assert(compare_matrices(a,b));
-
-	//test pivot_column
-	value temp_l[16] = { 20, 30, 40, 50,
-	            18, 0, 57, 96,
-	            14, 1		, 97, 66,
-	            51, 0, 19, 85 };
-	assert(insert_array(temp_l,b));
-	//pivot_column(2,b,a);
-
-	print_matrix(b);
-	printf("the gcd of row 1 in matrix is: %i \n",gcd_row(1,b));
-
-	//print_matrix(b);
-	//multiply_row_with_scalar(5,2,b);
-	//add_rows(2,3,b);
-	//print_matrix(b);
-
-
-	//test elimination
-	assert(insert_array(temp_j,g));
-	assert(triangulate_matrix(b,g));
-
 
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

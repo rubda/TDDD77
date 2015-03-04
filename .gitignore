@@ -48,5 +48,4 @@
 *.fls
 
 # Build directory
-build
-external/gsl-1.16
+*/obj/*

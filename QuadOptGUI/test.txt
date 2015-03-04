@@ -1,0 +1,10 @@
+parameters
+  Helvete(10,20)
+  Q(20,2)
+end
+
+
+variables
+  Jupzpz(2,10)
+  hellsz(3,40)
+end
