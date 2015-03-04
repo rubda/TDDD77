@@ -3,9 +3,9 @@
 
 % Information nödvändig för generella layout-strukturer
 \newcommand{\LIPSredaktor}{Dennis Ljung}
-\newcommand{\LIPSversion}{0.2}
-\newcommand{\LIPSdokument}{Utvärdering av förstudie}
-\newcommand{\LIPSdokumenttyp}{Utvärdering av förstudie}
+\newcommand{\LIPSversion}{0.1}
+\newcommand{\LIPSdokument}{Kandidatrapport}
+\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
 \newcommand{\LIPSgranskatdatum}{-}
 \newcommand{\LIPSgranskare}{Dennis Ljung}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
@@ -19,17 +19,16 @@
 \newcommand{\LIPSkund}{SAAB}
 \newcommand{\LIPSkundkontakt}{Daniel Simon}
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
-\newcommand{\LIPShandledare}{Andreas Runefalk}
+\newcommand{\LIPShandledare}{Andreas Runfalk}
 
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
+\usepackage{float}
 \usetikzlibrary{shapes, arrows}
-\usepackage{listings}
 
 \pagenumbering{roman}
-
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
@@ -38,7 +37,7 @@
 \LIPSTitelsida
 
 \begin{LIPSprojektidentitet}
-	\LIPSgruppmedlem{Adam Sestorp}{Team leader}{070 9987270}{adase035@student.liu.se}
+	\LIPSgruppmedlem{Adam Sestorp}{Teamledare}{070 9987270}{adase035@student.liu.se}
 	\LIPSgruppmedlem{Dennis Ljung}{Dokumentansvarig}{070 8568148}{denlj069@student.liu.se}
 	\LIPSgruppmedlem{Alexander Yngve}{Utvecklingsansvarig}{076 2749762}{aleyn573@student.liu.se}
 	\LIPSgruppmedlem{Martin Söderén}{Analysansvarig}{070 8163241}{marso329@student.liu.se}
@@ -55,22 +54,41 @@
 \newpage
 
 \begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-02-16}{Första utkast}{Ruben Das}{}
-\LIPSversionsinfo{0.2}{2015-02-28}{Komplettering}{Dennis Ljung}{}
+\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Dennis Ljung}{}
 \end{LIPSdokumenthistorik}
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
 
-% Inledning, översikt osv
+\input{tex/kandidatrapport-inledning}
+\input{tex/kandidatrapport-bakgrund}
+\input{tex/kandidatrapport-teori}
+\input{tex/kandidatrapport-metod}
+\input{tex/kandidatrapport-resultat}
+\input{tex/kandidatrapport-diskussion}
+\input{tex/kandidatrapport-slutsatser}
+\input{tex/kandidatrapport-fortsatt-arbete}
 
-\input{tex/forstudie-syfte.tex}
+\newpage
+\begin{appendices}
+	\input{tex/kandidatrapport-adam}
+	\newpage
+	\input{tex/kandidatrapport-dennis}
+	\newpage
+	\input{tex/kandidatrapport-yngve}
+	\newpage
+	\input{tex/kandidatrapport-martin}
+	\newpage
+	\input{tex/kandidatrapport-ruben}
+	\newpage
+	\input{tex/kandidatrapport-sebastian}
+	\newpage
+	\input{tex/kandidatrapport-johan}
 
-\input{tex/forstudie-mal.tex}
+		
+\end{appendices}
 
-\input{tex/forstudie-utvardering.tex}
 
-\input{tex/forstudie-alphatillstand.tex}
 
 
 
