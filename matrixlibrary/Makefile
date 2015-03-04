@@ -1,4 +1,5 @@
 BUILD_DIR = obj
+INCLUDE_DIR = include
 SRC_DIR = src
 
 CC = gcc
@@ -16,7 +17,7 @@ clean:
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@ 
 
 # Rule for making the library
 
