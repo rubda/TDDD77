@@ -1,0 +1,84 @@
+\documentclass[titlepage, a4paper]{article}
+\input{../mall/layout.tex}	% Importera generella layout-strukturer
+
+% Information nödvändig för generella layout-strukturer
+\newcommand{\LIPSredaktor}{Dennis Ljung}
+\newcommand{\LIPSversion}{0.1}
+\newcommand{\LIPSdokument}{Kandidatrapport}
+\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
+\newcommand{\LIPSgranskatdatum}{-}
+\newcommand{\LIPSgranskare}{Dennis Ljung}
+\newcommand{\LIPSgodkannare}{Andreas Runfalk}
+\newcommand{\LIPSgodkantdatum}{-}
+\newcommand{\LIPSkursnamn}{TDDD77}
+\newcommand{\LIPSprojektnamn}{Prediktionsreglering}
+\newcommand{\LIPSprojektgrupp}{Grupp 2}
+%\newcommand{\LIPSgruppadress}{\todo{Ta bort}}
+\newcommand{\LIPSartaltermin}{VT, 2015}
+\newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
+\newcommand{\LIPSkund}{SAAB}
+\newcommand{\LIPSkundkontakt}{Daniel Simon}
+\newcommand{\LIPSkursansvarig}{Kristian Sandahl}
+\newcommand{\LIPShandledare}{Andreas Runfalk}
+
+% Dokument-specifika paket
+\usepackage{tabularx}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{float}
+\usetikzlibrary{shapes, arrows}
+
+\pagenumbering{roman}
+
+
+\DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
+
+\begin{document}
+
+\LIPSTitelsida
+
+\begin{LIPSprojektidentitet}
+	\LIPSgruppmedlem{Adam Sestorp}{Teamledare}{070 9987270}{adase035@student.liu.se}
+	\LIPSgruppmedlem{Dennis Ljung}{Dokumentansvarig}{070 8568148}{denlj069@student.liu.se}
+	\LIPSgruppmedlem{Alexander Yngve}{Utvecklingsansvarig}{076 2749762}{aleyn573@student.liu.se}
+	\LIPSgruppmedlem{Martin Söderén}{Analysansvarig}{070 8163241}{marso329@student.liu.se}
+	\LIPSgruppmedlem{Ruben Das}{Kvalitetssamordnare}{073 7355892}{rubda680@student.liu.se}
+	\LIPSgruppmedlem{Sebastian Fast}{Arkitekt}{073 3885208}{sebfa861@student.liu.se}
+	\LIPSgruppmedlem{Johan Isaksson}{Testledare}{070 2688785}{johis024@student.liu.se}
+\end{LIPSprojektidentitet}
+
+\newpage
+\tableofcontents	%Innehållsförteckning
+%\listoffigures
+%\listoftables
+
+\newpage
+
+\begin{LIPSdokumenthistorik}
+\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Dennis Ljung}{}
+\end{LIPSdokumenthistorik}
+
+\newpage
+\pagenumbering{arabic}	%Påbörja sidnumrering
+
+\input{tex/kandidatrapport-inledning}
+\input{tex/kandidatrapport-bakgrund}
+\input{tex/kandidatrapport-teori}
+\input{tex/kandidatrapport-metod}
+\input{tex/kandidatrapport-resultat}
+\input{tex/kandidatrapport-diskussion}
+\input{tex/kandidatrapport-slutsatser}
+\input{tex/kandidatrapport-fortsatt-arbete}
+
+\newpage
+\begin{appendices}
+	\section{Adam Sestorp}
+	
+		
+\end{appendices}
+
+
+
+
+
+\end{document}
