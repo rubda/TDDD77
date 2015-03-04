@@ -28,6 +28,7 @@ bool check_boundaries(int row,int col,matrix* mal);
 void insert_value_without_check(value insert, int row, int col, matrix* mat);
 value get_value(int row, int col, matrix* mat);
 value get_value_without_check(int row, int col, matrix* mat);
+value get_max_value_row(matrix* mat);
 bool add_matrices(matrix* a, matrix* b, matrix* c);
 bool subtract_matrices(matrix* a, matrix* b,matrix* c);
 value sum_of_row(int row, matrix* mat);
