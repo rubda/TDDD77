@@ -7,7 +7,7 @@
 
 #define FLOAT
 #ifdef FLOAT
-typedef double value;
+typedef float value;
 #define FORMAT_STRING "%f "
 #endif
 #ifndef FLOAT

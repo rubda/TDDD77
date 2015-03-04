@@ -367,7 +367,7 @@ int gcd_row(int row, matrix* a) {
 		divide_row_with_scalar(gcd_curr, i, b);
 		print_matrix(a);
 	}
-	
+	return true;
 }
 
  /*uses row operations on a to make each element below the diagonal zero
