@@ -6,7 +6,7 @@ CC = gcc
 CFLAGS = -Wall -pedantic --std=c99
 
 .PHONY: all
-all: $(addprefix $(BUILD_DIR)/, test_int_2 test_int libmatrix.a)
+all: $(addprefix $(BUILD_DIR)/, test_int test_int_2 libmatrix.a)
 
 .PHONY: clean
 clean:
@@ -15,7 +15,7 @@ clean:
 
 # General c-file to object file rule
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/%.h Makefile
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@ 
 
