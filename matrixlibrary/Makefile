@@ -15,7 +15,7 @@ clean:
 
 # General c-file to object file rule
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/%.h Makefile
 	mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@ 
 
