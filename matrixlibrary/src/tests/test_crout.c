@@ -18,7 +18,9 @@ begin = clock();
 	matrix* l = create_matrix(4, 4);
 	matrix* u = create_matrix(4, 4);
 	crout(a,l,u);
-
+	//print_matrix(a);
+	//print_matrix(l);
+	//print_matrix(u);
 	matrix* b = create_matrix(4, 1);
 	value temp_b[4] = { 18.0, 60.0, 57.0, 96.0};
 	insert_array(temp_b, b);
@@ -41,7 +43,7 @@ begin = clock();
 	print_matrix(b_new);
 	matrix* diff = create_matrix(4, 1);
 	subtract_matrices(b_new,b,diff);
-printf("difference is: \n");
+	printf("difference is: \n");
 	print_matrix(diff);
 	printf("size of value is %li \n",sizeof(value));
 
