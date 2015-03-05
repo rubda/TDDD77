@@ -1,4 +1,4 @@
-#include "matLib_cleanup.h"
+#include "matLib.h"
 #include <assert.h>
 #include<time.h>
 /*make sure typedef float value*/
