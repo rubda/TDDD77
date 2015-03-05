@@ -91,6 +91,9 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c);
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Solves Ax=B */
+void solve_linear(matrix* a,matrix* x, matrix *b);
+
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 void crout(matrix* a, matrix* l, matrix* u);
 
