@@ -5,8 +5,10 @@ SRC_DIR = src
 CC = gcc
 CFLAGS = -Wall -pedantic --std=c99
 
+TESTS = $(basename $(notdir $(wildcard $(SRC_DIR)/tests/*.c)))
+
 .PHONY: all
-all: $(addprefix $(BUILD_DIR)/, test_int test_int_2 libmatrix.a)
+all: $(BUILD_DIR)/libmatrix.a $(addprefix $(BUILD_DIR)/tests/, $(TESTS))
 
 .PHONY: clean
 clean:
@@ -16,8 +18,9 @@ clean:
 # General c-file to object file rule
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
-	mkdir -p $(BUILD_DIR)
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@ 
+
 
 # Rule for making the library
 
@@ -28,22 +31,12 @@ $(BUILD_DIR)/libmatrix.a: $(BUILD_DIR)/matLib.o
 	ar rcs $@ $<
 	chmod 644 $@
 
-# test_int_2
 
-.PHONY: test_int_2
-test_int_2: $(BUILD_DIR)/test_int_2 
+# Tests
 
-$(BUILD_DIR)/test_int_2: $(addprefix $(BUILD_DIR)/, libmatrix.a test_int_2.o)
-	$(CC) $(CFLAGS) $^ -o $@ -L $(BUILD_DIR) -lmatrix
+.PHONY: tests
+tests: $(addprefix $(BUILD_DIR)/tests/, $(TESTS))
+
+$(BUILD_DIR)/tests/%: $(BUILD_DIR)/tests/%.o $(BUILD_DIR)/libmatrix.a 
+	$(CC) $(CFLAGS) $< -o $@ -L $(BUILD_DIR) -lmatrix
 	chmod 755 $@
-
-# test_int
-
-.PHONY: test_int
-test_int: $(BUILD_DIR)/test_int 
-
-$(BUILD_DIR)/test_int: $(addprefix $(BUILD_DIR)/, libmatrix.a test_int.o)
-	$(CC) $(CFLAGS) $^ -o $@ -L $(BUILD_DIR) -lmatrix
-	chmod 755 $@
-
-

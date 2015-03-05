@@ -1,18 +1,20 @@
-DOCS_DIR = dokumentation
-
-
 .PHONY: all
-all: docs libmatrix
+all: docs libmatrix quadopt
 
 .PHONY: clean
 clean:
-	cd $(DOCS_DIR) ; make clean
+	cd dokumentation ; make clean
 	cd matrixlibrary ; make clean
+	cd quadopt ; make clean
 
 .PHONY: docs
 docs:
-	cd $(DOCS_DIR) ; make all
+	cd dokumentation ; make all
 
 .PHONY: libmatrix
 libmatrix:
 	cd matrixlibrary ; make all
+
+.PHONY: quadopt
+quadopt:
+	cd quadopt ; make all

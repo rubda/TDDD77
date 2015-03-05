@@ -13,9 +13,9 @@
 
 /* Uncomment which mode you want the library to run in */
 //#define INT
-#define FLOAT
+//#define FLOAT
 //#define DOUBLE
-//#define QUAD
+#define QUAD
 
 /* Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -30,7 +30,7 @@ typedef float value;
 
 #ifdef DOUBLE
 typedef double value;
-#define FORMAT_STRING "%f "
+#define FORMAT_STRING "%lf "
 #endif
 
 #ifdef QUAD
@@ -90,6 +90,9 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c);
 
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Solves Ax=B */
+void solve_linear(matrix* a,matrix* x, matrix *b);
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 void crout(matrix* a, matrix* l, matrix* u);

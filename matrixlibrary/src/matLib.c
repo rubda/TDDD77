@@ -6,7 +6,7 @@
 */
 
 /* This is the only include that is allowed in this file */
-#include "matLib_cleanup.h"
+#include "matLib.h"
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -188,6 +188,16 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 	return true;
 }
 
+/* Solves Ax=B */
+void solve_linear(matrix* a,matrix* x, matrix* b){
+	matrix* u=create_matrix(a->rows,a->columns);
+	matrix* l=create_matrix(a->rows,a->columns);
+	crout(a,l,u);
+	forward_backward(l,u,x,b);
+	free_matrix(u);
+	free_matrix(l);
+}
+
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 void crout(matrix* a, matrix* l, matrix* u) {
 	if (a->rows != a->columns) {
@@ -235,7 +245,7 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
 			|| l->rows != l->columns) {
 		return;
 	}
-	if (x->rows != b->rows || x->columns != b->columns || x->columns == 1) {
+	if (x->rows != b->rows || x->columns != b->columns || x->columns != 1) {
 		return;
 	}
 	if (l->columns != x->rows) {
