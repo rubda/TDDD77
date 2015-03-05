@@ -233,12 +233,15 @@ void crout(matrix* a, matrix* l, matrix* u) {
 void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
 	if (l->rows != u->rows || l->columns != u->columns
 			|| l->rows != l->columns) {
+		printf("fel 1 \n");
 		return;
 	}
-	if (x->rows != b->rows || x->columns != b->columns || x->columns == 1) {
+	if (x->rows != b->rows || x->columns != b->columns || x->columns != 1) {
+		printf("fel 2 \n");
 		return;
 	}
 	if (l->columns != x->rows) {
+		printf("fel 3 \n");
 		return;
 	}
 
