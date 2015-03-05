@@ -2,60 +2,7 @@
 
 #include<stdio.h>
 #include<matLib.h>
-/*
 
-int minimum(int a, int b)
-{
-    if (a<=b) {
-        return a;
-    }
-    else {
-        return b;
-    }
-}
-
-matrix* guassian_eliminate(matrix* a, matrix*b) {
-    int min = minimum(a->rows,a->col);
-    for (int k = 0; k < min; k++){
-
-        /* Find the k-th pivot */
-        /*
-        int i_max = 0;
-        int temp = 0, temp_l = 0;
-        for (int i = k; i <= a->rows) {
-            temp = abs(get_value(i,k,a));
-            if (temp > i_max) {
-                i_max = temp;
-            }
-        }
-        i_max = 
-
-    }
-
-
-
-}
- for k = 1 ... min(m,n):
-   Find the k-th pivot:
-   i_max  := argmax (i = k ... m, abs(A[i, k]))
-   if A[i_max, k] = 0
-     error "Matrix is singular!"
-   swap rows(k, i_max)
-   Do for all rows below pivot:
-   for i = k + 1 ... m:
-     Do for all remaining elements in current row:
-     for j = k + 1 ... n:
-       A[i, j]  := A[i, j] - A[k, j] * (A[i, k] / A[k, k])
-     Fill lower triangular matrix with zeros:
-     A[i, k]  := 0
-     */
-
-
-
-     /* stubs for shits */
-     matrix * lagrange;
-     lagrange = create_matrix(A->rows,1);
-    bool get_langrange(matrix* A, matrix* lagrange, work_set* nws) {}
 
 
      value multiply_row_with_vector(matrix* r, matrix* v) {
@@ -139,7 +86,7 @@ matrix* guassian_eliminate(matrix* a, matrix*b) {
         //TODO check
         matrix* m = create_matrix(source->rows,source->columns);
         memcpy(m->start,source->start,source->size);
-
+        return m;
      }
 
      /* calculate the derivative for subproblem, and solve for = 0 */
@@ -164,17 +111,28 @@ matrix* guassian_eliminate(matrix* a, matrix*b) {
 
      }
 
-     /* solves quadratic convex problem in the form min(z) (1/2) * z^T*Q*z + q*z 
-      * s.t. Az >= b,  or  Az >= b + s
+     /* solves quadratic convex problem in the form min(z) (1/2) * z^T*G*z + G*z 
+      * s.t. 1) Az >= b,  or  2) Az >= b + s
+      * fokus on (1) for now
 
 
      */
 
-     matrix* quadopt_solver(matrix* z0, matrix* Q, matrix* q) {
+     matrix* quadopt_solver(matrix* z0, matrix* G, matrix* g {
 
         /* create variables */
-        matrix * A,B; //osv
-        work_set * active_set, sub_set;
+        matrix * A;
+        matrix* b;
+        matrix* lagrange; 
+        matrix* p;
+        matrix* z;
+        //osv
+
+        work_set* active_set;
+        work_set* sub_set;
+
+        value step = 0;
+
 
 
 
@@ -189,30 +147,60 @@ matrix* guassian_eliminate(matrix* a, matrix*b) {
         //TODO check if all matrix dimensions are correct
 
 
+        /* algoritm */
+
+        z = z0;
+
+        while(!is_zero_vector(p) && !is_positive_lagrange(lagrange, active_set))
+        {
+            
 
 
-        /* set initial working set */
 
-        //TODO solve linear system A*z0 = b,  or  A*z0 = b + s;
 
-        work_set_create(active_set, A->rows);
-        for (int i = 1; i <= A->rows; i++) {
-            int ans = 0;
-            for (int j = 1; j <= A->columns; j++) {
-                ans += get_value(i,j,A)*get_value(j,1,z0);
+
+            /* set working set */
+            work_set_create(active_set, A->rows);
+            for (int i = 1; i <= A->rows; i++) {
+                int ans = 0;
+                for (int j = 1; j <= A->columns; j++) {
+                    ans += get_value(i,j,A)*get_value(j,1,z0);
+                }
+
+                if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
+                    work_set_append(active_set,i);
+                }
             }
 
-            if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
-                work_set_append(active_set,i);
+            if (active_set->count == 0)
+            {}
+
+            matrix* Ak = create_matrix(active_set->count,A->columns);
+            matrix* bk = create_matrix(active_set->count,1);
+            for (int i = 0; i < active_set->count; i++) {
+                insert_row(active_set->data[i], A, i+1, Ak); //insert row i from A to row j in Ak, needs to implemented
+                insert_row(active_set->data[i], b, i+1, bk);
             }
-        }
-
-        if (active_set->count == 0)
-        {}
 
 
-        while (!is_positive_matrix(lagrange) && step < step_treshold) {
+            /* solve subproblem
+             * (1/2)*p^T*G*p + gk*p 
+             * s.t. Ak*p = 0
+             * p = 0 is always an answer??
+             */
 
+             /* compute lagrange multiplikatros 
+              * solve Ak*l = gk
+              *
+              */
+
+
+
+            
+            /* calculate new vectors
+             * z_last = z;
+             * z += p*step; 
+             */
 
         }
 
