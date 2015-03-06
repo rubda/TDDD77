@@ -15,7 +15,7 @@ def new_file():
     highlight()
 
 
-def save_file():
+def save_file(event=None):
     global filename
     try:
         t = text.get(0.0, END)
@@ -26,8 +26,8 @@ def save_file():
         save_as()
 
 
-def save_as():
-    f = asksaveasfile(mode='w', defaultextension='.txt')
+def save_as(event=None):
+    f = asksaveasfile(mode='w', defaultextension='.qopt')
     t = text.get(0.0, END)
     try:
         f.write(t.rstrip())
@@ -35,7 +35,7 @@ def save_as():
         showerror(title="Something went wrong", message="Unable to save file...")
 
 
-def open_file():
+def open_file(event=None):
     f = askopenfile(mode='r')
     t = f.read()
     text.delete(0.0, END)
@@ -48,20 +48,20 @@ def popup(event):
     rightClick.post(event.x_root, event.y_root)
 
 
-def copy():
+def copy(event=None):
     global clipboard
     sel = text.selection_get()
     clipboard = sel
 
 
-def cut():
+def cut(event=None):
     global clipboard
     sel = text.selection_get()
     clipboard = sel
     text.delete(SEL_FIRST, SEL_LAST)
 
 
-def paste():
+def paste(event=None):
     global clipboard
     text.insert(INSERT, clipboard)
 
@@ -144,7 +144,15 @@ rightClick.add_command(label="Paste", command=paste)
 rightClick.add_separator()
 rightClick.add_command(label="Select All", command=select_all)
 
+# Keybindings
 text.bind("<Button-3>", popup)
+text.bind("<Control-c>", copy)
+text.bind("<Control-v>", paste)
+text.bind("<Control-x>", cut)
+text.bind("<Control-s>", save_file)
+text.bind("<Control-S>", save_as)
+text.bind("<Control-o>", open_file)
+
 root.config(menu=menuBar)
 new_file()
 root.mainloop()
