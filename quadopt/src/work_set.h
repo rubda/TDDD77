@@ -1,6 +1,8 @@
 #ifndef WORK_SET_H
 #define WORK_SET_H
 
+#include <stdbool.h>
+
 /* just a simple structure for storing different sets */
 struct work_set {
 	int count;

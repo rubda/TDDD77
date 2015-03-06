@@ -1,5 +1,8 @@
-#include "matLib.h"
-#include <assert.h>
+#include <matLib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 #include<time.h>
 /*make sure typedef float value*/
 
@@ -18,7 +21,7 @@ int main(void) {
              1,  0,
              0,  1,
             };
- 	 insert_array(temp_a, A);
+ 	insert_array(temp_a, A);
 
  	/* Creates Q matrix */
 	matrix* Q = create_matrix(2, 2);
@@ -53,19 +56,8 @@ int main(void) {
 	printf("z= \n");
 	print_matrix(z);
 
-	matrix* b_new = create_matrix(var, 1);
-	multiply_matrices(a,x,b_new);
-	printf("Ax= \n");
-	print_matrix(b_new);
-	matrix* diff = create_matrix(var, 1);
-	subtract_matrices(b_new,b,diff);
-	printf("difference is: \n");
-	print_matrix(diff);
-	printf("size of value is %li \n",sizeof(value));
-
-
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time taken was: %f \n",time_spent);
+	printf("time taken was: %f \n", time_spent);
 }
 

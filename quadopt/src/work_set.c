@@ -1,4 +1,4 @@
-
+#include "work_set.h"
 
 /* creates a new work set */
 bool work_set_create(work_set* ws, int ws_max) {

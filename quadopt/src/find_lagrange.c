@@ -1,4 +1,5 @@
-#include "matLib.h"
+#include <matLib.h>
+#include <work_set.h>
 
 bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 	
