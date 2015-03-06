@@ -38,9 +38,17 @@ bool work_set_remove(work_set* ws, int val) {
 }
 
 /* removes and deallocates the set */
-bool free_work_set(work_set* ws) {
+bool work_set_free(work_set* ws) {
 	free(ws->data);
     ws->data = NULL;
 	free(ws);
     ws = NULL;
+    return true;
+}
+
+bool work_set_print(work_set* ws) {
+    for (int i = 0; i < count; i++) {
+        printf("%d ,",ws->data[i]);
+    }
+    return true;
 }
