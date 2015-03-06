@@ -11,7 +11,7 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 	add_matrices(g, d, g);
 
 	/* Puts all the related conditions to w_mat depending on the work_set */
-	tmp_mat = create_matrix(A->rows, w->count);
+	matrix* tmp_mat = create_matrix(A->rows, w->count);
 	matrix* w_mat = create_matrix(A->rows, w->count); 
 	for (i = 1; i <= w->count; i++){
 		get_row_vector(w->data[i], A, tmp_mat);
@@ -25,9 +25,10 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 	/* Finds the lowest lagrange value */
 	int min_row = 1;
 	value min_value = get_value(1, 1, solved);
+	value temp;
 
 	for (i = 2; i <= w->count; i++){
-		value temp = get_value(i, 1, solved);
+		temp = get_value(i, 1, solved);
 		if (temp < min_value){
 			min_value = temp;
 			min_row = i;
