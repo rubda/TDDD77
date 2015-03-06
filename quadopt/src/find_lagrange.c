@@ -24,7 +24,7 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 
 	/* Finds the lowest lagrange value */
 	int min_row = 1;
-	value min_value = get_value(1, 1);
+	value min_value = get_value(1, 1, solved);
 
 	for (i = 2; i <= w->count; i++){
 		value temp = get_value(i, 1, solved);
