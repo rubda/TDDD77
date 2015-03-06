@@ -6,7 +6,7 @@
 */
 
 /* This is the only include that is allowed in this file */
-#include "matLib.h"
+#include <matLib.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -490,4 +490,12 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 				(void *) (a->start + start + step * i), number_of_bytes);
 	}
 	return true;
+}
+
+/* Copy and return new matrix. */
+matrix * matrix_copy(matrix* source) {
+  //TODO check
+  matrix* m = create_matrix(source->rows,source->columns);
+  memcpy(m->start,source->start,source->size);
+  return m;
 }

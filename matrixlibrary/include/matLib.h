@@ -1,3 +1,6 @@
+#ifndef MATLIB_H
+#define MATLIB_H
+
 /*
   Author: Martin Söderén
   Email: martin.soderen@gmail.com
@@ -148,6 +151,7 @@ bool insert_column_vector(int column, matrix *a, matrix* b);
 /* Get a sub matrix from a */
 bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* a, matrix* b);
 
+/* Copy and return new matrix. */
+matrix* matrix_copy(matrix* source);
 
-
-
+#endif /* MATLIB_H */

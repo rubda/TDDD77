@@ -16,7 +16,7 @@ typedef struct work_set work_set;
 
 
 /* creates a new work set */
-bool work_set_create(work_set* ws, int ws_max);
+work_set* work_set_create(int ws_max);
 
 /* removes and deallocates the set */
 bool work_set_free(work_set* ws);
