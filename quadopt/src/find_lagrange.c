@@ -11,8 +11,9 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 	add_matrices(g, d, g);
 
 	/* Puts all the related conditions to w_mat depending on the work_set */
-	tmp_mat = create_matrix(A->rows, w->count);
+	matrix* tmp_mat = create_matrix(A->rows, w->count);
 	matrix* w_mat = create_matrix(A->rows, w->count); 
+	int i;
 	for (i = 1; i <= w->count; i++){
 		get_row_vector(w->data[i], A, tmp_mat);
 	}
