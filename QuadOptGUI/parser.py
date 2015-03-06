@@ -41,4 +41,4 @@ def read_file():
                 outFile.write(out)
         
 
-read_file()
+#read_file()

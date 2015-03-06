@@ -2,12 +2,13 @@ from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
 from CustomText import *
+from parser import *
 
 filename = None
 clipboard = None
 
 
-def new_file():
+def new_file(event=None):
     global filename
     text.delete(0.0, END)
     text.insert(0.0, "parameters\nend\n\nvariables\nend\n\n"
@@ -18,10 +19,10 @@ def new_file():
 def save_file(event=None):
     global filename
     try:
-        t = text.get(0.0, END)
-        f = open(filename, 'w')
-        f.write(t.rstrip())
-        f.close()
+    	t = text.get(0.0, END)
+    	f = open(filename, 'w')
+    	f.write(t.rstrip())
+    	f.close()
     except:
         save_as()
 
@@ -38,6 +39,7 @@ def save_as(event=None):
 def open_file(event=None):
     f = askopenfile(mode='r')
     t = f.read()
+
     text.delete(0.0, END)
     text.insert(0.0, t)
     root.title(filename)
@@ -63,16 +65,24 @@ def cut(event=None):
 
 def paste(event=None):
     global clipboard
-    text.insert(INSERT, clipboard)
+    try:	
+    	text.insert(INSERT, clipboard)
+    except:
+    	pass
+    highlight()
 
 
-def select_all():
+def select_all(event=None):
     text.tag_add(SEL, "1.0", END)
     text.mark_set(0.0, END)
     text.see(INSERT)
+    return 'break'
+
+def deselect_all(event=None):
+	text.tag_remove(SEL, "1.0", END)
 
 
-def highlight():
+def highlight(event=None):
     # make a tag for change the color.
     text.tag_configure("blue", foreground="#48d")
 
@@ -83,22 +93,29 @@ def highlight():
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")
 
+
 root = Tk()
 
 # main label
-mainLabel = Label(root, text="QuadOpt ALPHA", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
-mainLabel.pack(expand=True, fill="x")
+logo = PhotoImage(file="logga1.png")
+mainLabel = Label(root, image=logo, font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+mainLabel.pack(expand=False, fill="x")
 
 # sidebar
 sideBar = Frame(root, width=150, bg="#f6f6f6", height=400, relief="sunken", borderwidth=2)
-sideBar.pack(expand=True, fill="both", side="left", anchor="nw")
+sideBar.pack(expand=False, fill="both", side="left", anchor="nw")
 
-# main content area
+# main content area and scrollbar
+scrollbar = Scrollbar()
+scrollbar.pack(side=RIGHT, fill=Y)
+
 mainArea = Frame(root, bg="white", width=600, height=400, relief="sunken", borderwidth=2)
 mainArea.pack(expand=True, fill="both", side="right")
 
-text = CustomText(mainArea)
+text = CustomText(mainArea, yscrollcommand=scrollbar.set, undo=True)
 text.pack(expand=True, fill="both")
+
+scrollbar.config(command=text.yview)
 
 # buttons
 problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
@@ -113,11 +130,10 @@ blankLabel.pack()
 
 codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 codegenLabel.pack()
-cButton = Button(sideBar, text="C code", width=15)
+cButton = Button(sideBar, text="C code", width=15, command=read_file)
 cButton.pack()
 matlabButton = Button(sideBar, text="Matlab code", width=15)
 matlabButton.pack()
-
 
 # menu
 menuBar = Menu(root)
@@ -146,12 +162,16 @@ rightClick.add_command(label="Select All", command=select_all)
 
 # Keybindings
 text.bind("<Button-3>", popup)
+text.bind("<Button-1>", deselect_all)
 text.bind("<Control-c>", copy)
 text.bind("<Control-v>", paste)
 text.bind("<Control-x>", cut)
 text.bind("<Control-s>", save_file)
 text.bind("<Control-S>", save_as)
-text.bind("<Control-o>", open_file)
+text.bind("<Control-o>", open_file)	
+text.bind("<Control-n>", new_file)
+text.bind("<Control-a>", select_all)
+root.bind("<KeyPress>", highlight)
 
 root.config(menu=menuBar)
 new_file()
