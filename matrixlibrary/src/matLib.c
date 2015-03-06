@@ -491,3 +491,11 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 	}
 	return true;
 }
+
+/* Copy and return new matrix. */
+matrix * matrix_copy(matrix* source) {
+  //TODO check
+  matrix* m = create_matrix(source->rows,source->columns);
+  memcpy(m->start,source->start,source->size);
+  return m;
+}
