@@ -97,8 +97,7 @@ def highlight(event=None):
 root = Tk()
 
 # main label
-logo = PhotoImage(file="logga1.png")
-mainLabel = Label(root, image=logo, font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+mainLabel = Label(root, text="QuadOpt Alpha", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 mainLabel.pack(expand=False, fill="x")
 
 # sidebar
