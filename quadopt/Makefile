@@ -22,7 +22,7 @@ clean:
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(SRC_DIR)/*.h) $(LIBMATRIX)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ -L $(LIBMATRIX_DIR) -l matrix -I $(LIBMATRIX_INCLUDE) -Isrc
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBMATRIX_INCLUDE) -Isrc
 
 
 # Matrixlibrary
