@@ -1,6 +1,8 @@
-#include "matLib.h"
+#include <matLib.h>
+#include <work_set.h>
+#include <find_lagrange.h>
 #include <assert.h>
-#include<time.h>
+#include <time.h>
 /*make sure typedef float value*/
 
 

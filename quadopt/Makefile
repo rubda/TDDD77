@@ -22,7 +22,7 @@ clean:
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(SRC_DIR)/*.h) $(LIBMATRIX)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ -L $(LIBMATRIX_DIR) -l $(LIBMATRIX) -I $(LIBMATRIX_INCLUDE)
+	$(CC) $(CFLAGS) -c $< -o $@ -L $(LIBMATRIX_DIR) -l $(LIBMATRIX) -I $(LIBMATRIX_INCLUDE) -Isrc
 
 
 # Matrixlibrary
@@ -37,7 +37,7 @@ $(LIBMATRIX):
 .PHONY: tests
 tests: $(addprefix $(BUILD_DIR)/tests/, $(TESTS))
 
-$(BUILD_DIR)/tests/%: $(BUILD_DIR)/tests/%.o $(BUILD_DIR)/libmatrix.a 
+$(BUILD_DIR)/tests/%: $(BUILD_DIR)/tests/%.o $(LIBMATRIX)
 	$(CC) $(CFLAGS) $< -o $@ -L $(LIBMATRIX_DIR) -l $(LIBMATRIX)
 	chmod 755 $@
 
