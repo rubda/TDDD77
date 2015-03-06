@@ -6,7 +6,7 @@
 */
 
 /* This is the only include that is allowed in this file */
-#include "matLib.h"
+#include <matLib.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
