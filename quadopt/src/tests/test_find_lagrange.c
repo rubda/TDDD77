@@ -28,7 +28,7 @@ int main(void) {
 
  	/* Creates Q matrix */
 	matrix* Q = create_matrix(2, 2);
-	value temp_q[7] = {2, 0, 2, 0};
+	value temp_q[7] = {2, 0, 0, 2};
 	insert_array(temp_q, Q);
 
  	/* Creates d matrix */
@@ -40,10 +40,13 @@ int main(void) {
 	matrix* z = create_matrix(2, 1);
 
 	/* Creates work set */
- 	work_set* w;
- 	work_set_create(w, A->rows);
+ 	work_set* w =  work_set_create(A->rows);
  	work_set_append(w, 3);
  	work_set_append(w, 5);
+
+	printf("w= \n");
+	work_set_print(w);
+	printf("\n\n");
 
  	find_lagrange(Q, A, d, z, w);
 
@@ -58,6 +61,10 @@ int main(void) {
 
 	printf("z= \n");
 	print_matrix(z);
+
+	printf("w= \n");
+	work_set_print(w);
+	printf("\n\n");
 
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
