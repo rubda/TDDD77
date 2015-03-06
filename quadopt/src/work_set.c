@@ -1,15 +1,16 @@
-
+#include "work_set.h"
 
 /* creates a new work set */
 bool work_set_create(work_set* ws, int ws_max) {
     //TODO validate indata
+    ws = malloc(sizeof(work_set));
     ws->data = malloc(ws_max*sizeof(int));
     ws->count = 0;
     return true;
 }
 
 /* adds an element to the set */
-bool work_set_append(,work_set* ws, int val) {
+bool work_set_append(work_set* ws, int val) {
     //TODO validate indata
     ws->data[ws->count] = val;
     ws->count++;
@@ -22,13 +23,13 @@ bool work_set_remove(work_set* ws, int val) {
     //maybe want to keep order of conditions, but for now: mess up order on remove!
     for (int i = 0; i < ws->count; i++) {
         if (ws->data[i] == val) {
-            if (i == count-1)
+            if (i == ws->count-1)
             {
                 ws->count--;
                 return true;
             }
             else {
-                ws->data[i] = ws->data[count-1];
+                ws->data[i] = ws->data[ws->count-1];
                 ws->count--;
                 return true;
             }
@@ -47,7 +48,7 @@ bool work_set_free(work_set* ws) {
 }
 
 bool work_set_print(work_set* ws) {
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < ws->count; i++) {
         printf("%d ,",ws->data[i]);
     }
     return true;
