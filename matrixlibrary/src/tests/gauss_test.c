@@ -1,17 +1,5 @@
 #include "matLib.h"
 
-
-
-
-matrix * matrix_copy(matrix* source) {
-        //TODO check
-        matrix* m = create_matrix(source->rows,source->columns);
-        memcpy(m->start,source->start,source->size);
-        return m;
-     }
-
-
-
 //TODO apply changes to B and solve system
 /* works only for symmetric, linear independant matrices (for now) */
 matrix * gauss_eliminate(matrix* Ain,matrix* Bin) {

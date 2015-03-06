@@ -5,10 +5,17 @@ SRC_DIR = src
 CC = gcc
 CFLAGS = -Wall -pedantic --std=c99
 
-TESTS = $(basename $(notdir $(wildcard $(SRC_DIR)/tests/*.c)))
+SRCS = $(wildcard $(SRC_DIR)/*.c)
+OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))
+LIB = $(BUILD_DIR)/libmatrix.a
+
+TEST_SRCS = $(wildcard $(SRC_DIR)/tests/*.c)
+TEST_OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(TEST_SRCS)))
+TEST_BINS = $(basename $(TEST_OBJS))
+
 
 .PHONY: all
-all: $(BUILD_DIR)/libmatrix.a $(addprefix $(BUILD_DIR)/tests/, $(TESTS))
+all: $(LIB) $(TEST_BINS)
 
 .PHONY: clean
 clean:
@@ -25,18 +32,18 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 # Rule for making the library
 
 .PHONY: libmatrix
-libmatrix: $(BUILD_DIR)/libmatrix.a
+libmatrix: $(LIB)
 
-$(BUILD_DIR)/libmatrix.a: $(BUILD_DIR)/matLib.o
-	ar rcs $@ $<
+$(LIB): $(OBJS)
+	ar rcs $@ $^
 	chmod 644 $@
 
 
 # Tests
 
 .PHONY: tests
-tests: $(addprefix $(BUILD_DIR)/tests/, $(TESTS))
+tests: $(TEST_BINS)
 
-$(BUILD_DIR)/tests/%: $(BUILD_DIR)/tests/%.o $(BUILD_DIR)/libmatrix.a 
+$(TEST_BINS): $(TEST_OBJS) $(LIB)
 	$(CC) $(CFLAGS) $< -o $@ -L $(BUILD_DIR) -lmatrix
 	chmod 755 $@
