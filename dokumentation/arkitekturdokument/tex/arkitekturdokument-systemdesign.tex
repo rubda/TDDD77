@@ -20,25 +20,28 @@ Syftet med arkitekturen är att skapa en översikt av hela systemet för att man
 Det är av yttersta vikt att programmet löser QP-problemet väldigt snabbt, i samma skala som Gurobi. Detta är dels för att flygplanet ska hinna utföra prediktionsregleringen i tid.
 
 \subsection{// Stabilitet}
-Programmet måste kunna klara av
+Då tanken med programmet är att lösa kvadratiska problem för preditionsreglering åt stridsflygplan så är det väldigt viktigt att det inte blir några fel i programmet. Som då löses med validering av indata m.m.
 
 \subsection{GUI}
 GUI:t är gjort i Python och används för att mata in de matriser som behövs för att lösa problemet. GUI:t kommer att anropa parser.py med de inmatade matriserna.
 
 \subsection{parser.py}
-Gör om den indatan som kommer från GUI:t till en c-fil innehållande all data som solvern kommer behöva för att lösa problemet.
+Gör om den indatan som kommer från GUI:t till en C-filen \textit{problem.c} innehållande alla matriser med specificerade dimensioner som solvern kommer behöva för att lösa problemet.
 
 \subsection{problem.c}
-Är den genererade datafilen som innehåller alla de matriser som solvern behöver för att lösa problemet skriven med samma datatyper som solvern kommer att använda.
+Är den genererade datafilen från \textit{parser.py} som innehåller alla de matriser som solvern behöver för att lösa problemet skriven med samma datatyper som solvern kommer att behöva använda. Dessa matriser är bivillkorsmatriserna A, B, F och G.  
 
 \subsection{solver.c}
 Innehåller metoderna för att lösa QP problemet. Där metoden är uppdelad i flera olika steg där varje steg motsvaras av en funktion.
 
 \subsection{solver.mex}
-Är ett gränssnitt mellan MATLAB och själva solvern. solver.mex innehåller funktioner som direkt kan anropas via matlab som vanliga matlabfunktioner. Den kommer att användas för att kunna skicka in matriser och köra solvern direkt via matlab.
+Är ett gränssnitt mellan MATLAB och själva lösaren. \textit{solver.mex} innehåller funktionen \textit{solve} som direkt kan anropas via matlab som vanliga matlabfunktioner. Den kommer att användas för att kunna skicka in matriser och köra solvern direkt via matlab.
 
-\subsection{Arkitekturens delar}
+\subsection{// Arkitekturens delar}
 Arkitekturen är uppdelad i tre större delar där GUI:t och parsern är en del ...
 Lösningsalgoritmen solvern är en del ... active-set-metoden
 Integrationen mot matlab är en del ... funktioner...
+
+\subsection{Matrisbibliotek}
+Arkitekturen innehåller även ett eget matrisbibliotek, innehållande alla nödvändiga matrisoperationer för lösaren.
 
