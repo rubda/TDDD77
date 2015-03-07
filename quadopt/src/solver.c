@@ -1,9 +1,9 @@
 
 
-#include<stdio.h>
-#include<matLib.h>
+#include <stdio.h>
+#include <matLib.h>
 
-     value multiply_row_with_vector(matrix* r, matrix* v) {
+     value multiply_row_with_vector(matrix* r, matrix* v) { //TODO move to matLib and optimize
         //TODO check
         value ans = 0;
         for (int i = 0; i < r->rows) {
@@ -15,50 +15,6 @@
      }
 
 
-     /* just a simple structure for storing different sets */
-     struct work_set {
-        int count;
-        int* data;
-     };
-
-    typedef struct work_set work_set;
-
-    bool work_set_create(work_set* ws, int ws_max) {
-        //TODO validate indata
-        ws->data = malloc(ws_max*sizeof(int));
-        ws->count = 0;
-        return true;
-    }
-
-    bool work_set_append(,work_set* ws, int val) {
-        //TODO validate indata
-        ws->data[ws->count] = val;
-        ws->count++;
-        return true;
-    }
-
-    bool work_set_remove(work_set* ws, int val) {
-        //TODO validate indata
-        //maybe want to keep order of conditions, but for now: mess up order on remove!
-        for (int i = 0; i < ws->count; i++) {
-            if (ws->data[i] == val) {
-                if (i == count-1)
-                {
-                    ws->count--;
-                    return true;
-                }
-                else {
-                    ws->data[i] = ws->data[count-1];
-                    ws->count--;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-
 
      /* calculates step for active set-method */
      value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
@@ -67,7 +23,7 @@
 
         //TODO check
         for (int i = 0; i < ws->count; i++) {
-            get_row_vector(ws->data[i],ati);
+            get_row_vector(ws->data[i],ati); //TODO free this later
             nom = multiply_row_with_vector(ati,p);
             if (nom < 0) {
                 bi = get_value(ws->data[i],1,B);
@@ -81,7 +37,7 @@
      }
 
      /* copy and return new matrix */
-     matrix * matrix_copy(matrix* source) {
+     matrix * matrix_copy(matrix* source) { //TODO move to matLib
         //TODO check
         matrix* m = create_matrix(source->rows,source->columns);
         memcpy(m->start,source->start,source->size);
@@ -101,10 +57,7 @@
         matrix* gm = matrix_copy(g);
         multiply_matrix_with_scalar(-1,gm);
 
-        //TODO
-        /* solves linear system Ax = b
-         * linear_solve(A,b,x) 
-         * puts answer into p */
+        /* find p from solving linear system of the derivative */
         linear_solve(Gt,gm,p);
 
 
@@ -113,18 +66,18 @@
      }
 
      /* solves quadratic convex problem in the form min(z) (1/2) * z^T*G*z + d*z 
-      * s.t. Az >= b,  or  Az >= b + s
+      * s.t. Az >= b
     
 
      */
      //TODO define where matrices comes from
-     matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d) {
+    //      s.t. Az >= b + s
+     matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, value accuracy) {
 
         /* create variables */
-        matrix* A;
-        matrix* b;
         matrix* langrange; //osv
-        work_set* active_set, sub_set;
+
+        work_set* active_set;
 
 
 
@@ -149,24 +102,20 @@
         
 
         work_set_create(active_set, A->rows);
-        
 
-        if (active_set->count == 0)
-        {}
-
-        bool done = false;
-        matrix * z = z0;
+        matrix * z = matrix_copy(z0);
         matrix* temp;
 
 
-
-        while (!is_positive_matrix(lagrange) && !is_zero_matrix(p)) {
+        //******************** solve the problem ********************/
+        while (!is_positive_lagrange(lagrange, active_set) && !is_zero_matrix(p)) { //TODO  add condition: if step <= accuracy then stop
+                                                                                    //      implement is_positive_langrange and is_zero_matrix
 
             /* set active set */
             for (int i = 1; i <= A->rows; i++) {
                 int ans = 0;
                 for (int j = 1; j <= A->columns; j++) {
-                    ans += get_value(i,j,A)*get_value(j,1,z);
+                    ans += get_value(i,j,A)*get_value(j,1,z); //TODO add check and get_value_without_check
                 }
 
                 if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
@@ -182,8 +131,7 @@
             multiply_matrix_with_scalar(-1,neg_gk);
 
 
-            /* solve sub-problem */
-
+            /******************** solve sub-problem ********************/
 
             /* calculate lagrange multipliers */
             calculate_lagrange(A, lagrange, active_set, gk); //TODO implement this function
@@ -221,7 +169,7 @@
 
         }
 
-
+        return z;
 
 
      }
