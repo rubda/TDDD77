@@ -39,6 +39,25 @@ void free_matrix(matrix* mat) {
 	free(mat);
 }
 
+/* copy and return new matrix */
+matrix * matrix_copy(matrix* source) {
+   	//TODO check
+   	matrix* m = create_matrix(source->rows,source->columns);
+   	m->start = (value*)memcpy(m->start,source->start,source->size*sizeof(value));
+    return m;
+}
+
+/* calculate the vector product */
+value vector_product(matrix* r, matrix* v) {
+    //TODO check
+    value ans = 0;
+    for (int i = 0; i < r->rows) {
+        //TODO access the memory directly might be faster
+        ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
+    }
+    return ans;
+}
+
 /*prints the matrix*/
 void print_matrix(matrix* mat) {
 	int col = 1;

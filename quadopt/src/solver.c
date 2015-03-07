@@ -2,18 +2,7 @@
 
 #include <stdio.h>
 #include <matLib.h>
-
-     value multiply_row_with_vector(matrix* r, matrix* v) { //TODO move to matLib and optimize
-        //TODO check
-        value ans = 0;
-        for (int i = 0; i < r->rows) {
-
-            //TODO access the memory directly might be faster
-            ans += get_value(i,1,r) * get_value(i,1,v);
-        }
-        return ans;
-     }
-
+#include <solver.h>
 
 
      /* calculates step for active set-method */
@@ -27,7 +16,7 @@
             nom = multiply_row_with_vector(ati,p);
             if (nom < 0) {
                 bi = get_value(ws->data[i],1,B);
-                temp_step = (bi - multiply_row_with_vector(ati,x))/nom;
+                temp_step = (bi - vector_product(ati,x))/nom;
                 if (temp_step < step) {
                     step = temp_step;
                 }
@@ -36,34 +25,8 @@
         return step;
      }
 
-     /* copy and return new matrix */
-     matrix * matrix_copy(matrix* source) { //TODO move to matLib
-        //TODO check
-        matrix* m = create_matrix(source->rows,source->columns);
-        memcpy(m->start,source->start,source->size);
-        return m;
-     }
+     
 
-     /* calculate the derivative for subproblem, and solve for = 0 */
-     bool derive_and_solve(matrix* G, matrix* g, matrix* p) {
-        matrix* Qd = create_matrix(G->rows,G->columns);
-        matrix* Gt = create_matrix(G->rows,G->columns);
-        
-
-        //transpose_matrix(G,Gt);
-        //add_matrices(G, Gt, Qd);
-        multiply_matrix_with_scalar(2,);
-
-        matrix* gm = matrix_copy(g);
-        multiply_matrix_with_scalar(-1,gm);
-
-        /* find p from solving linear system of the derivative */
-        linear_solve(Gt,gm,p);
-
-
-        return true;
-
-     }
 
      /* solves quadratic convex problem in the form min(z) (1/2) * z^T*G*z + d*z 
       * s.t. Az >= b
@@ -152,7 +115,7 @@
             linear_solve(G_derivate, p, neg_gk); 
 
 
-            /* check if minimum */
+            /* check second derivative if minimum */
             is_positive_diagonal_matrix(G_derivate);
             //TODO if not minimum?
 
