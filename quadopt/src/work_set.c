@@ -48,8 +48,11 @@ bool work_set_free(work_set* ws) {
 }
 
 bool work_set_print(work_set* ws) {
-  for (int i = 0; i < ws->count; i++) {
-    printf("%d ,",ws->data[i]);
+  printf("work_set: ");
+  int i;
+  for (i = 0; i < ws->count-1; i++) {
+    printf("%d, ", ws->data[i]);
   }
+  printf("%d\n\n", ws->data[i]);
   return true;
 }

@@ -13,26 +13,20 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
 
   /* Puts all the related conditions to w_mat depending on the work_set */
   matrix* tmp_row = create_matrix(1, w->count);
+  matrix* w_tmp = create_matrix(w->count, A->columns);
   matrix* w_mat = create_matrix(w->count, A->columns); 
   
   for (int i = 0; i < w->count; i++){
     assert(get_row_vector(w->data[i], A, tmp_row));
-    //print_matrix(tmp_row);
-    //assert(insert_row_vector(i, tmp_row, w_mat));
+    assert(insert_row_vector(i+1, tmp_row, w_tmp));
   }
-
-  //Hårdkod just nu, då insert_row_vector verkar knasa för mig
-  value temp_w[4] = {-1, 2, 0, 1};
-  matrix* w_mat_step = create_matrix(w->count, A->columns); 
-  insert_array(temp_w, w_mat_step);
+  transpose_matrix(w_tmp, w_mat);
  
-  transpose_matrix(w_mat_step, w_mat);
-  
   /* Solves the system W_mat * x = g */
   matrix* solved = create_matrix(w_mat->rows, 1);
   solve_linear(w_mat, solved, g);
 
-  /* Finds the lowest lagrange value */
+  /* Finds the smallest lagrange value */
   int min_row = 1;
   value min_value = get_value(1, 1, solved);
 
@@ -44,8 +38,8 @@ bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
     }
   }
 
-  /* Removes the lowest lagrange value from the work set */
-  work_set_remove(w, w->data[min_row]);
+  /* Removes the smallest lagrange value from the work set */
+  work_set_remove(w, w->data[min_row-1]);
 
   /* Success */
   return true;

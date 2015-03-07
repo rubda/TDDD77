@@ -7,8 +7,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-/*make sure typedef float value*/
-
 
 int main(void) {
   clock_t begin, end;
@@ -46,12 +44,11 @@ int main(void) {
   work_set_append(w, 3);
   work_set_append(w, 5);
 
-  //work_set_print(w);
-  //printf("%d\n", w->count);
+  work_set_print(w);
 
   find_lagrange(Q, A, d, z, w);
 
-  /* printf("A= \n");
+  printf("A= \n");
   print_matrix(A);
 
   printf("Q= \n");
@@ -61,11 +58,9 @@ int main(void) {
   print_matrix(d);
 
   printf("z= \n");
-  print_matrix(z);*/
+  print_matrix(z);
 
-  printf("w= \n");
   work_set_print(w);
-  printf("\n\n");
 
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
