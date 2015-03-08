@@ -1,9 +1,9 @@
-#include <matLib.h>
-#include <work_set.h>
+#include "matLib.h"
+#include "work_set.h"
 
 
 
-calculate_lagrange();
+//calculate_lagrange();
 
 value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws);
 

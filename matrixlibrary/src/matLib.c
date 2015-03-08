@@ -6,7 +6,7 @@
 */
 
 /* This is the only include that is allowed in this file */
-#include <matLib.h>
+#include "matLib.h"
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -39,19 +39,11 @@ void free_matrix(matrix* mat) {
 	free(mat);
 }
 
-/* copy and return new matrix */
-matrix * matrix_copy(matrix* source) {
-   	//TODO check
-   	matrix* m = create_matrix(source->rows,source->columns);
-   	m->start = (value*)memcpy(m->start,source->start,source->size*sizeof(value));
-    return m;
-}
-
 /* calculate the vector product */
 value vector_product(matrix* r, matrix* v) {
     //TODO check
     value ans = 0;
-    for (int i = 0; i < r->rows) {
+    for (int i = 0; i < r->rows; i++) {
         //TODO access the memory directly might be faster
         ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
     }

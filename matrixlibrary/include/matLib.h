@@ -55,11 +55,8 @@ typedef struct matrix matrix;
 /* Create a matrix */
 matrix* create_matrix(int row, int col);
 
-/* copy and return new matrix */
-matrix * matrix_copy(matrix* source)
-
 /* calculate the vector product */
-value vector_product(matrix* r, matrix* v) {
+value vector_product(matrix* r, matrix* v);
 
 /* Destroy a matrix */
 void free_matrix(matrix* mat);

@@ -1,19 +1,19 @@
 
 
 #include <stdio.h>
-#include <matLib.h>
-#include <solver.h>
+#include "matLib.h"
+#include "solver.h"
 
 
      /* calculates step for active set-method */
      value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
-        matrix* ai, ati;
+        matrix* ai, *ati;
         value bi, nom, temp_step, step = 1;
 
         //TODO check
         for (int i = 0; i < ws->count; i++) {
-            get_row_vector(ws->data[i],ati); //TODO free this later
-            nom = multiply_row_with_vector(ati,p);
+            get_row_vector(ws->data[i], A, ati); //TODO free this later
+            nom = vector_product(ati,p);
             if (nom < 0) {
                 bi = get_value(ws->data[i],1,B);
                 temp_step = (bi - vector_product(ati,x))/nom;
@@ -38,20 +38,26 @@
      matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, value accuracy) {
 
         /* create variables */
-        matrix* langrange; //osv
+        matrix* p = matrix_copy(z0); //unessecary init of values, only has to be the same dims
+        matrix* gk = matrix_copy(d);
+        //matrix* z = matrix_copy(z0);
+        matrix* z_last = matrix_copy(z0);
+        matrix* lagrange; //osv
 
         work_set* active_set;
+
+        value step;
 
 
 
         /* load matrixes from file(s) */
-        A = load_matrix("matrices.qopt");
+        //A = load_matrix("matrices.qopt");
 
 
         /* calculate matrix transposes, derivatives. set variables */
-        At = transpose_matrix(A);
+        //At = transpose_matrix(A);
 
-        G_derivate = matrix_copy(G);
+        matrix* G_derivate = matrix_copy(G);
         multiply_matrix_with_scalar(2,G_derivate);
 
 
@@ -64,7 +70,7 @@
 
         
 
-        work_set_create(active_set, A->rows);
+        active_set = work_set_create(A->rows);
 
         matrix * z = matrix_copy(z0);
         matrix* temp;
