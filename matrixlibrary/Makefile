@@ -15,7 +15,7 @@ TEST_BINS = $(basename $(TEST_OBJS))
 
 
 .PHONY: all
-all: $(LIB) $(TEST_BINS)
+all: $(LIB) test
 
 .PHONY: clean
 clean:
@@ -41,9 +41,11 @@ $(LIB): $(OBJS)
 
 # Tests
 
-.PHONY: tests
-tests: $(TEST_BINS)
+.PHONY: test
+test: $(TEST_BINS)
+	@echo Running tests...
+	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(LIB)
-	$(CC) $(CFLAGS) $< -o $@ -L $(BUILD_DIR) -lmatrix
+	$(CC) $(CFLAGS) $@.o -o $@ -L $(BUILD_DIR) -lmatrix
 	chmod 755 $@

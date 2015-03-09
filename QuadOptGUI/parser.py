@@ -3,7 +3,7 @@ import re
 filename = None
 
 start_text = """/* Någon text som bör säga något jävligt vettigt men som inte gör det just nu */
-#include episktPaket.h
+#include matLib.h
 #include inteLikaEpiskPaket.h
 #include jahapp.h\n
 """
@@ -16,16 +16,21 @@ def format_declarations(line):
     dimensions = re.findall(r'\d+', dimensions)
     dimensions = list(map(int, dimensions))
 
+    string = "matrix* " + name + "; \n"
     if len(dimensions) == 2:
-        string = name + " = create_matrix(" + str(dimensions[0]) + ", " + str(dimensions[1]) + ");\n"
+        string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + str(dimensions[1]) + ");\n"
     else:
-        string = name + " = create_matrix(" + str(dimensions[0]) + ", " + "1" + ");\n"
+        string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + "1" + ");\n"
     return string
 
 
 def read_file():
     global filename
-    with open("test.qopt") as inFile, open("result.c", 'w') as outFile:
+    problemFile = "test.qopt"
+    dataFile = "exempel.qopt"
+    outputFile = "result.c"
+
+    with open(problemFile) as inFile, open(dataFile) as dataFile,open(outputFile, 'w') as outFile:
         copy = False
         copy_problem = False
         copy_constraints = False
@@ -39,14 +44,16 @@ def read_file():
                 outFile.write(out)
                 copy = True
             elif line == "minimize":
-                out = "/* " + line + " */\n"
-                outFile.write(out)
-                copy_problem = True
+                pass
+                #out = "/* " + line + " */\n"
+                #outFile.write(out)
+                #copy_problem = True
             elif line == "subject to":  
-                out = "/* " + line + " */\n"
-                outFile.write(out)
-                copy_constraints = True
-                copy_problem = False
+                pass
+                #out = "/* " + line + " */\n"
+                #outFile.write(out)
+                #copy_constraints = True
+                #copy_problem = False
             elif line == "end":
                 out = "\n"
                 outFile.write(out)
@@ -64,6 +71,28 @@ def read_file():
                 #outFile.write(out)
                 pass
 
+        # Parse the dataFile and insert into matrices using insert_array(array, matrix)
+        data = "["
+        dataName = ""
+        outFile.write("/* Insert values into matrices */\n")
+        finding_data = False
+        for line in dataFile:
+            line = line.strip()
+
+            if line[:1].isalpha():
+                if finding_data == True:
+                    data = re.sub(r'\s+', ' ', data)
+                    data = re.sub(r'\s+', ',', data)
+                    outFile.write(dataName + "= insert_array(" + data[:-1] + "], " + dataName + ");\n")
+                    data = "["
+                    finding_data = not finding_data
+
+                dataName = line[:1] + " "
+                finding_data = not finding_data
+            else:
+                data = data + line + " "  
+
+
 def parse_problem(line):
     line = line.replace(' ', '')
     problem  = ""
@@ -78,7 +107,7 @@ def parse_problem(line):
     problem = "goal = " + problem + ";\n" + "\n"
     return problem
 
-def parse_constraints(line):
+def parse_constraints(line):    
     line = line.replace(' ', '')
     line = line.replace("==", "=")
     constraint  = ""
