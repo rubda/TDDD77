@@ -2,6 +2,7 @@
 #include <work_set.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "find_lagrange.h"
 
 /* Finds the lagrange multipliers and removes constraints */
 bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matrix* lagrange){

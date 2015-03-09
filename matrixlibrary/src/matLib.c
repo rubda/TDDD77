@@ -504,10 +504,10 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 }
 
 /* Copy and return new matrix. */
-matrix * matrix_copy(matrix* source) {
+matrix* matrix_copy(matrix* source) {
   //TODO check
   matrix* m = create_matrix(source->rows,source->columns);
-  memcpy(m->start,source->start,source->size);
+  memcpy(m->start,source->start,source->size * sizeof(value));
   return m;
 }
 

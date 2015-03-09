@@ -57,8 +57,6 @@
 
         value step;
 
-
-
         /* load matrixes from file(s) */
         //A = load_matrix("matrices.qopt");
 
@@ -99,18 +97,19 @@
                 }
             }
 
+
             /* calculate gk */
             multiply_matrices(G,z,gk);
             add_matrices(gk,d,gk);
 
-            matrix * neg_gk = matrix_copy(gk);
+            matrix* neg_gk = matrix_copy(gk);
             multiply_matrix_with_scalar(-1,neg_gk);
-
 
             /******************** solve sub-problem ********************/
 
             /* calculate lagrange multipliers */
-            find_lagrange(gk, A, d, z, active_set);
+            find_lagrange(neg_gk, A, d, z, active_set, lagrange);
+
 
             /*calculate_lagrange(A, lagrange, active_set, gk); //TODO implement this function
 
