@@ -163,5 +163,14 @@ int main(){
   test_is_non_negative_matrix();
   test_is_non_negative_diagonal_matrix();
 
+  /* Make tests for:
+     get_row_vector
+     get_column_vector
+     insert_row_vector
+     insert_column_vector
+     switch_rows
+     get_sub_matrix
+  */
+
   return 0;
 }
