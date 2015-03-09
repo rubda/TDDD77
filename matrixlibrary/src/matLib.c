@@ -504,19 +504,52 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 }
 
 /* Copy and return new matrix. */
-matrix * matrix_copy(matrix* source) {
+matrix* matrix_copy(matrix* source) {
   //TODO check
   matrix* m = create_matrix(source->rows,source->columns);
-  memcpy(m->start,source->start,source->size);
+  memcpy(m->start,source->start,source->size * sizeof(value));
   return m;
 }
 
 /* Cpoies all the data from matrix A into matrix B */
-matrix_copy_data(matrix* A, matrix* B) {
+void matrix_copy_data(matrix* A, matrix* B) {
 	//TODO check
 	for (int i = 1; i <= A->rows; i++) {
 		for (int j = 1; j <= A->columns; j++) {
 			insert_value_without_check(get_value_without_check(i,j,A),i,j,B);
 		}
 	}
+}
+
+/* checks if all elements in a vector is equal to zero */
+bool is_zero_vector(matrix* v) {
+	//TODO check
+	for (int i = 1; i <= v->rows; i++) {
+		if (get_value_without_check(i,1,v) != 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/* checks if all elements in a vector is positive */
+bool is_positive_vector(matrix* v) {
+	//TODO check
+	for (int i = 1; i <= v->rows; i++) {
+		if (get_value_without_check(i,1,v) < 0) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/* checks if all elements along the diagonal in a symmetric matrix is positiv */
+bool is_positive_diagonal_matrix(matrix* A) {
+	//TODO check
+	for (int i = 1; i <= A->rows; i++) {
+		if (get_value_without_check(i,i,A) < 0) {
+			return false;
+		}
+	}
+	return true;
 }

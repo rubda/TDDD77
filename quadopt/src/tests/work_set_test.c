@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "work_set.h"
+#include <work_set.h>
 #include <assert.h>
 
 int main() {

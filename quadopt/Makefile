@@ -3,6 +3,7 @@ SRC_DIR = src
 INCLUDE_DIR = $(SRC_DIR)
 
 LIBMATRIX_DIR = ../matrixlibrary/obj
+LIBMATRIX_SRC = ../matrixlibrary/src
 LIBMATRIX_INCLUDE = ../matrixlibrary/include
 LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
 
@@ -35,8 +36,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 
 # Matrixlibrary
 
-$(LIBMATRIX):
-	cd ../matrixlibrary ; make libmatrix
+$(LIBMATRIX): $(wildcard $(LIBMATRIX_SRC)/*.c) $(wildcard $(LIBMATRIX_INCLUDE)/*.h)
+	cd ../matrixlibrary ; $(MAKE) libmatrix
 
 
 # Tests
@@ -48,3 +49,6 @@ $(TEST_BINS): $(TEST_OBJS) $(OBJS) $(LIBMATRIX)
 	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -l matrix
 	chmod 755 $@
 
+.PHONY: check
+check: $(TEST_BINS)
+	$(foreach test_bin, $(TEST_BINS), $(test_bin) && ) true
