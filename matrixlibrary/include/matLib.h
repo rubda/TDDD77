@@ -158,6 +158,15 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 matrix* matrix_copy(matrix* source);
 
 /* Cpoies all the data from matrix A into matrix B */
-matrix_copy_data(matrix* A, matrix* B);
+void matrix_copy_data(matrix* A, matrix* B);
+
+/* checks if all elements in a vector is equal to zero */
+bool is_zero_vector(matrix* v);
+
+/* checks if all elements in a vector is positive */
+bool is_positive_vector(matrix* v);
+
+/* checks if all elements along the diagonal in a symmetric matrix is positiv */
+bool is_positive_diagonal_matrix(matrix* A);
 
 #endif /* MATLIB_H */

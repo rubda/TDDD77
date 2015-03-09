@@ -1,5 +1,5 @@
-#include "solver.h"
-#include "matLib.h"
+#include <solver.h>
+#include <matLib.h>
 
 
 /* example 16.3 from the book */

@@ -36,7 +36,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 # Matrixlibrary
 
 $(LIBMATRIX):
-	cd ../matrixlibrary ; make libmatrix
+	cd ../matrixlibrary ; $(MAKE) libmatrix
 
 
 # Tests

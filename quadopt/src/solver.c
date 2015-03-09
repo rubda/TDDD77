@@ -1,7 +1,7 @@
 
 
 #include <stdio.h>
-#include "matLib.h"
+#include <matLib.h>
 #include "solver.h"
 
 
@@ -77,7 +77,7 @@
 
 
         //******************** solve the problem ********************/
-        while (!is_positive_lagrange(lagrange, active_set) && !is_zero_matrix(p)) { //TODO  add condition: if step <= accuracy then stop
+        while (!is_positive_vector(lagrange, active_set) && !is_zero_vector(p)) { //TODO  add condition: if step <= accuracy then stop
                                                                                     //      implement is_positive_langrange and is_zero_matrix
 
             /* set active set */
@@ -118,11 +118,11 @@
 
 
             /* solve linear system for 1st derivative*/
-            solve_linear(G_derivate, p, neg_gk); 
+            solve_linear(G_derivate, p, neg_gk);
 
 
             /* check second derivative if minimum */
-            is_positive_diagonal_matrix(G_derivate);
+            //is_positive_diagonal_matrix(G_derivate);
             //TODO if not minimum?
 
 
