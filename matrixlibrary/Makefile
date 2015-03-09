@@ -45,5 +45,5 @@ $(LIB): $(OBJS)
 tests: $(TEST_BINS)
 
 $(TEST_BINS): $(TEST_OBJS) $(LIB)
-	$(CC) $(CFLAGS) $< -o $@ -L $(BUILD_DIR) -lmatrix
+	$(CC) $(CFLAGS) $@.o -o $@ -L $(BUILD_DIR) -lmatrix
 	chmod 755 $@
