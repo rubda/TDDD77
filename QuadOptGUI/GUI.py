@@ -85,7 +85,7 @@ def deselect_all(event=None):
 def highlight(event=None):
     # make a tag for change the color.
     text.tag_configure("blue", foreground="#48d")
-
+    
     # apply the tag.
     text.highlight_pattern("parameters", "blue")
     text.highlight_pattern("variables", "blue")
@@ -93,15 +93,34 @@ def highlight(event=None):
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")
 
+
 def generate_c(event=None):
     print("Generate C code")
     read_file()
+    view_problem()
 
 def generate_mat(event=None):
     print("Generate Matlab code")
 
 def view_problem(event=None):
     print("View problem")
+    f = open("result.c")
+    t = f.read()
+
+    text.delete(0.0, END)
+    text.insert(0.0, t)
+    root.title(filename)
+    highlight()
+
+def edit_problem(event=None):
+    print("Edit problem")
+    f = open("test.qopt")
+    t = f.read()
+
+    text.delete(0.0, END)
+    text.insert(0.0, t)
+    root.title(filename)
+    highlight()
 
 root = Tk()
 
@@ -128,9 +147,9 @@ scrollbar.config(command=text.yview)
 # buttons
 problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 problemLabel.pack()
-editButton = Button(sideBar, text="Edit", width=15)
+editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
 editButton.pack()
-viewButton = Button(sideBar, text="View", width=15, command=view_problem)
+viewButton = Button(sideBar, text="View", width=15)
 viewButton.pack()
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")

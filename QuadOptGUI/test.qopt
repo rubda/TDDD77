@@ -12,8 +12,8 @@ variables
 end
 
 minimize
-  z'*Q*z + q'*z
+  z' * Q * z + q' * z
 subject to
   A*x == b
   0 <= x <= 1
-end
+end.
