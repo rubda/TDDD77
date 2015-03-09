@@ -11,7 +11,7 @@ clipboard = None
 def new_file(event=None):
     global filename
     text.delete(0.0, END)
-    text.insert(0.0, "parameters\nend\n\nvariables\nend\n\n"
+    text.insert(0.0, "parameters\n\nend\n\nvariables\n\nend\n\n"
                      "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  0 <= x <= 1\nend\n")
     highlight()
 
@@ -93,6 +93,15 @@ def highlight(event=None):
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")
 
+def generate_c(event=None):
+    print("Generate C code")
+    read_file()
+
+def generate_mat(event=None):
+    print("Generate Matlab code")
+
+def view_problem(event=None):
+    print("View problem")
 
 root = Tk()
 
@@ -121,7 +130,7 @@ problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold", fg="#30508
 problemLabel.pack()
 editButton = Button(sideBar, text="Edit", width=15)
 editButton.pack()
-viewButton = Button(sideBar, text="View", width=15)
+viewButton = Button(sideBar, text="View", width=15, command=view_problem)
 viewButton.pack()
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
@@ -129,9 +138,9 @@ blankLabel.pack()
 
 codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 codegenLabel.pack()
-cButton = Button(sideBar, text="C code", width=15, command=read_file)
+cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
-matlabButton = Button(sideBar, text="Matlab code", width=15)
+matlabButton = Button(sideBar, text="Matlab code", width=15, command=generate_mat)
 matlabButton.pack()
 
 # menu
@@ -173,5 +182,6 @@ text.bind("<Control-a>", select_all)
 root.bind("<KeyPress>", highlight)
 
 root.config(menu=menuBar)
+root.wm_title("QuadOpt Solver")
 new_file()
 root.mainloop()
