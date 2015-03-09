@@ -536,7 +536,7 @@ bool is_zero_vector(matrix* v) {
 bool is_positive_vector(matrix* v) {
 	//TODO check
 	for (int i = 1; i <= v->rows; i++) {
-		if (get_value_without_check(i,1,v) >= 0) {
+		if (get_value_without_check(i,1,v) < 0) {
 			return false;
 		}
 	}
@@ -547,7 +547,7 @@ bool is_positive_vector(matrix* v) {
 bool is_positive_diagonal_matrix(matrix* A) {
 	//TODO check
 	for (int i = 1; i <= A->rows; i++) {
-		if (get_value_without_check(i,i,A) >= 0) {
+		if (get_value_without_check(i,i,A) < 0) {
 			return false;
 		}
 	}

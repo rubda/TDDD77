@@ -25,6 +25,15 @@
         return step;
      }
 
+     is_positive_lagrange(matrix* l, work_set* ws) {
+        for (int i = 0; i < ws-count; i++) {
+            if (get_value_without_check(ws-data[i],1,l) < 0) {
+                return false;
+            }
+        }
+        return true;
+     }
+
      
 
 
@@ -77,7 +86,7 @@
 
 
         //******************** solve the problem ********************/
-        while (!is_positive_vector(lagrange, active_set) && !is_zero_vector(p)) { //TODO  add condition: if step <= accuracy then stop
+        while (!is_positive_lagrange(lagrange, active_set) && !is_zero_vector(p)) { //TODO  add condition: if step <= accuracy then stop
                                                                                     //      implement is_positive_langrange and is_zero_matrix
 
             /* set active set */
