@@ -43,7 +43,7 @@ void free_matrix(matrix* mat) {
 value vector_product(matrix* r, matrix* v) {
     //TODO check
     value ans = 0;
-    for (int i = 0; i < r->rows; i++) {
+    for (int i = 1; i <= r->rows; i++) {
         //TODO access the memory directly might be faster
         ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
     }
