@@ -8,12 +8,15 @@
      /* calculates step for active set-method */
      value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
         matrix* ai, *ati;
+	ati = create_matrix(A->columns, 1);
+	ai = create_matrix(1, A->columns);
         value bi, nom, temp_step, step = 1;
 
         //TODO check
         for (int i = 0; i < ws->count; i++) {
-            get_row_vector(ws->data[i], A, ati); //TODO free this later
-            nom = vector_product(ati,p);
+            get_row_vector(ws->data[i], A, ai); //TODO free this later
+	    transpose_matrix(ai, ati);
+	    nom = vector_product(ati,p);
             if (nom < 0) {
                 bi = get_value(ws->data[i],1,B);
                 temp_step = (bi - vector_product(ati,x))/nom;
@@ -67,7 +70,7 @@
         matrix* G_derivate = matrix_copy(G);
         multiply_matrix_with_scalar(2,G_derivate);
 
-
+	
         //TODO check if all matrix dimensions are correct
 
 
@@ -89,7 +92,8 @@
             for (int i = 1; i <= A->rows; i++) {
                 int ans = 0;
                 for (int j = 1; j <= A->columns; j++) {
-                    ans += get_value(i,j,A)*get_value(j,1,z); //TODO add check and get_value_without_check
+                    ans += get_value(i,j,A)*get_value(j,1,z); 
+		    //TODO add check and get_value_without_check
                 }
 
                 if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
@@ -102,13 +106,13 @@
             multiply_matrices(G,z,gk);
             add_matrices(gk,d,gk);
 
-            matrix* neg_gk = matrix_copy(gk);
+	    matrix* neg_gk = matrix_copy(gk);
             multiply_matrix_with_scalar(-1,neg_gk);
 
             /******************** solve sub-problem ********************/
 
             /* calculate lagrange multipliers */
-            find_lagrange(neg_gk, A, d, z, active_set, lagrange);
+            find_lagrange(gk, A, d, z, active_set, lagrange);
 
 
             /*calculate_lagrange(A, lagrange, active_set, gk); //TODO implement this function
@@ -126,8 +130,8 @@
 
 
             /* solve linear system for 1st derivative*/
-            solve_linear(G_derivate, p, neg_gk);
 
+            solve_linear(G_derivate, p, neg_gk);
 
             /* check second derivative if minimum */
             //is_positive_diagonal_matrix(G_derivate);
