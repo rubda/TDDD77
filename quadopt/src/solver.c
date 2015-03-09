@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <matLib.h>
 #include "solver.h"
-
+#include "find_lagrange.h"
 
      /* calculates step for active set-method */
      value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
