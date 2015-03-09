@@ -6,7 +6,7 @@
 */
 
 /* This is the only include that is allowed in this file */
-#include "matLib.h"
+#include <matLib.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -509,4 +509,14 @@ matrix * matrix_copy(matrix* source) {
   matrix* m = create_matrix(source->rows,source->columns);
   memcpy(m->start,source->start,source->size);
   return m;
+}
+
+/* Cpoies all the data from matrix A into matrix B */
+matrix_copy_data(matrix* A, matrix* B) {
+	//TODO check
+	for (int i = 1; i <= A->rows; i++) {
+		for (int j = 1; j <= A->columns; j++) {
+			insert_value_without_check(get_value_without_check(i,j,A),i,j,B);
+		}
+	}
 }

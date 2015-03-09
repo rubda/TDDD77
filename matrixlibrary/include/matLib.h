@@ -157,4 +157,7 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 /* Copy and return new matrix. */
 matrix* matrix_copy(matrix* source);
 
+/* Cpoies all the data from matrix A into matrix B */
+matrix_copy_data(matrix* A, matrix* B);
+
 #endif /* MATLIB_H */
