@@ -9,8 +9,7 @@ LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
 CC = gcc
 CFLAGS = -Wall -pedantic --std=c99
 
-COCK_SRCS = $(wildcard $(SRC_DIR)/*.c)
-SRCS = $(patsubst %solver.c, , $(COCK_SRCS)) # REMOVE THIS WHEN SOLVER.C COMPILES
+SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))
 
 TEST_SRCS = $(wildcard $(SRC_DIR)/tests/*.c)

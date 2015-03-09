@@ -118,7 +118,7 @@
 
 
             /* solve linear system for 1st derivative*/
-            linear_solve(G_derivate, p, neg_gk); 
+            solve_linear(G_derivate, p, neg_gk); 
 
 
             /* check second derivative if minimum */
