@@ -26,8 +26,8 @@
      }
 
      is_positive_lagrange(matrix* l, work_set* ws) {
-        for (int i = 0; i < ws-count; i++) {
-            if (get_value_without_check(ws-data[i],1,l) < 0) {
+        for (int i = 0; i < ws->count; i++) {
+            if (get_value_without_check(ws->data[i],1,l) < 0) {
                 return false;
             }
         }
@@ -112,18 +112,20 @@
             /******************** solve sub-problem ********************/
 
             /* calculate lagrange multipliers */
-            calculate_lagrange(A, lagrange, active_set, gk); //TODO implement this function
+            find_lagrange(gk, A, d, z, active_set);
+
+            /*calculate_lagrange(A, lagrange, active_set, gk); //TODO implement this function
 
 
             /* remove the condition that has the most negative lagrange multiplicator */
-            int temp = get_value_without_check(1, 1, lagrange);
+            /*int temp = get_value_without_check(1, 1, lagrange);
             int smallest = 1;
             for (int i = 0; i <= active_set->count; i++) {
                 if (get_value_without_check(active_set->data[i], 1, lagrange) < temp) {
                     smallest = active_set->data[i];
                 }
             }
-            work_set_remove(active_set, smallest);
+            work_set_remove(active_set, smallest);*/
 
 
             /* solve linear system for 1st derivative*/

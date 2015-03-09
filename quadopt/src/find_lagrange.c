@@ -4,12 +4,12 @@
 #include <assert.h>
 
 /* Finds the lagrange multipliers and removes constraints */
-bool find_lagrange(matrix* Q, matrix* A, matrix* d, matrix* z, work_set* w){
+bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matrix* lagrange){
 	
   /* Calculates g = Gz + d */
-  matrix* g = create_matrix(Q->rows, 1); 
+  /*matrix* g = create_matrix(Q->rows, 1); 
   multiply_matrices(Q, z, g);
-  add_matrices(g, d, g);
+  add_matrices(g, d, g);*/
 
   /* Puts all the related conditions to w_mat depending on the work_set */
   matrix* tmp_row = create_matrix(1, w->count);
