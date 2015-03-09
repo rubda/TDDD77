@@ -25,7 +25,7 @@
         return step;
      }
 
-     is_positive_lagrange(matrix* l, work_set* ws) {
+     bool is_positive_lagrange(matrix* l, work_set* ws) {
         for (int i = 0; i < ws->count; i++) {
             if (get_value_without_check(ws->data[i],1,l) < 0) {
                 return false;
@@ -51,7 +51,7 @@
         matrix* gk = matrix_copy(d);
         //matrix* z = matrix_copy(z0);
         matrix* z_last = matrix_copy(z0);
-        matrix* lagrange; //osv
+        matrix* lagrange = create_matrix(A->rows,1); //osv
 
         work_set* active_set;
 
@@ -86,9 +86,7 @@
 
 
         //******************** solve the problem ********************/
-        while (!is_positive_lagrange(lagrange, active_set) && !is_zero_vector(p)) { //TODO  add condition: if step <= accuracy then stop
-                                                                                    //      implement is_positive_langrange and is_zero_matrix
-
+        do {
             /* set active set */
             for (int i = 1; i <= A->rows; i++) {
                 int ans = 0;
@@ -147,7 +145,8 @@
 
             /* */
 
-        }
+        } while (!is_positive_lagrange(lagrange, active_set) && !is_zero_vector(p));  //TODO  add condition: if step <= accuracy then stop
+                                                                        //implement is_positive_langrange and is_zero_matrix
 
         return z;
 
