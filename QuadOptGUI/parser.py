@@ -3,9 +3,8 @@ import re
 filename = None
 
 start_text = """/* Någon text som bör säga något jävligt vettigt men som inte gör det just nu */
-#include matLib.h
-#include inteLikaEpiskPaket.h
-#include jahapp.h\n
+#include "matLib.h"
+\n
 """
 
 
@@ -72,25 +71,31 @@ def read_file():
                 pass
 
         # Parse the dataFile and insert into matrices using insert_array(array, matrix)
-        data = "["
+        # TODO lägg til hur stor arrayerna ska va!
+        data = "{"
         dataName = ""
+        matrixName = ""
         outFile.write("/* Insert values into matrices */\n")
         finding_data = False
         for line in dataFile:
             line = line.strip()
 
-            if line[:1].isalpha():
+            if line[:1].isalpha():   
                 if finding_data == True:
                     data = re.sub(r'\s+', ' ', data)
                     data = re.sub(r'\s+', ',', data)
-                    outFile.write(dataName + "= insert_array(" + data[:-1] + "], " + dataName + ");\n")
-                    data = "["
+                    outFile.write("value " + dataName + "[" + str(data[:-1].count(',')+1) + "];\n")
+                    outFile.write(dataName + " = " + data[:-1] + "};\n")
+                    outFile.write("insert_array(" + dataName + ", " + matrixName[:-1] + ");\n")
+                    data = "{"
                     finding_data = not finding_data
 
-                dataName = line[:1] + " "
+                matrixName = line[:-1]
+                dataName = matrixName[:-1] + "_data"
                 finding_data = not finding_data
             else:
-                data = data + line + " "  
+                data = data + line + " "
+
 
 
 def parse_problem(line):
