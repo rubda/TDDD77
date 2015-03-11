@@ -19,7 +19,7 @@ TEST_BINS = $(basename $(TEST_OBJS))
 
 
 .PHONY: all
-all: $(TEST_BINS)
+all: $(OBJS) test
 
 
 .PHONY: clean
@@ -42,13 +42,11 @@ $(LIBMATRIX): $(wildcard $(LIBMATRIX_SRC)/*.c) $(wildcard $(LIBMATRIX_INCLUDE)/*
 
 # Tests
 
-.PHONY: tests
-tests: $(TEST_BINS)
+.PHONY: test
+test: $(TEST_BINS)
+	@echo Running tests...
+	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(OBJS) $(LIBMATRIX)
 	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -l matrix
 	chmod 755 $@
-
-.PHONY: check
-check: $(TEST_BINS)
-	$(foreach test_bin, $(TEST_BINS), $(test_bin) && ) true
