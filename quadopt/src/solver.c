@@ -59,7 +59,7 @@
         free_matrix(A);
         free_matrix(b);
 
-        //TODO check if linear dependancy
+        //TODO check if linear system is solveable or x = 0 afterwards
         bool dependancy = false;
         if (!dependancy) {
             return true;
@@ -129,16 +129,13 @@
             matrix* temp_b = matrix_copy(b);
 
 
-            /* solve system until we reach a linear dependancy */
+            /* solve system until we reach a linear dependancy or not zero vector */
             while (solve_active_conditions(temp_A, p)) {
                 if (is_zero_vector(p)) {
                     /* calculate lagrange multipliers and remove possible condition from active set */
                     find_lagrange(gk, A, d, z, active_set, lagrange);
                 }
             }
-            
-            solve_linear(G_derivate, p, neg_gk);
-
             
             /* solve linear system for 1st derivative*/
 
