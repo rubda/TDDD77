@@ -38,6 +38,38 @@
         return true;
      }
 
+     bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
+
+        matrix* A = create_matrix(set->count, Ain->columns);
+        matrix* row = create_matrix(1, Ain->columns);
+
+        matrix* b = create_matrix(set->count, 1);
+
+        /* build matrices */
+        for (int i = 0; i < set->count; i++) {
+            get_row_vector(set->data[i], Ain, row);
+            insert_row_vector(i+1, row, A);
+            insert_value_without_check(0, i+1, 1, b);
+        }
+
+        solve_linear(A, x, b);
+
+
+        /* free used matrices */
+        free_matrix(A);
+        free_matrix(b);
+
+        //TODO check if linear dependancy
+        bool dependancy = false;
+        if (!dependancy) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+     }
+
      
 
 
@@ -66,12 +98,6 @@
         multiply_matrix_with_scalar(2,G_derivate);
 
 
-        
-        
-
-        
-
-
         //******************** solve the problem ********************/
         do {
             /* set active set */
@@ -92,25 +118,28 @@
             multiply_matrices(G,z,gk);
             add_matrices(gk,d,gk);
 
-	       matrix* neg_gk = matrix_copy(gk);
+	        matrix* neg_gk = matrix_copy(gk);
             multiply_matrix_with_scalar(-1,neg_gk);
+
+
 
             /******************** solve sub-problem ********************/
 
-            /* iterate until all variables in P is set */ /*
-            while(!solve_linear(G_derivate, p, neg_gk)) {
-                find_lagrange(gk, A, d, z, active_set, lagrange);
+            matrix* temp_A = matrix_copy(A);
+            matrix* temp_b = matrix_copy(b);
 
+
+            /* solve system until we reach a linear dependancy */
+            while (solve_active_conditions(temp_A, p)) {
+                if (is_zero_vector(p)) {
+                    /* calculate lagrange multipliers and remove possible condition from active set */
+                    find_lagrange(gk, A, d, z, active_set, lagrange);
+                }
             }
-            */
+            
+            solve_linear(G_derivate, p, neg_gk);
 
-
-            /* calculate lagrange multipliers */
-            find_lagrange(gk, A, d, z, active_set, lagrange);
-
-
-           
-
+            
             /* solve linear system for 1st derivative*/
 
             solve_linear(G_derivate, p, neg_gk);
