@@ -24,14 +24,14 @@ bool work_set_remove(work_set* ws, int val) {
   for (int i = 0; i < ws->count; i++) {
     if (ws->data[i] == val) {
       if (i == ws->count-1)
-	{
-	  ws->count--;
-	  return true;
-	}
+    	{
+    	  ws->count--;
+    	  return true;
+    	}
       else {
-	ws->data[i] = ws->data[ws->count-1];
-	ws->count--;
-	return true;
+    	 ws->data[i] = ws->data[ws->count-1];
+    	 ws->count--;
+    	return true;
       }
     }
   }
@@ -54,7 +54,9 @@ bool work_set_print(work_set* ws) {
   for (i = 0; i < ws->count-1; i++) {
     printf("%d, ", ws->data[i]);
   }
-  printf("%d\n\n", ws->data[i]);
+  if (i > 0) {
+    printf("%d\n\n", ws->data[i]);
+  }
   return true;
 }
 

@@ -501,17 +501,15 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
   start_col -= 1;
   end_col -= 1;
 
-  size_t a_row_size = a->columns * sizeof(value);
-  size_t b_row_size = b->columns * sizeof(value);
-  size_t col_size = sizeof(value);
-  size_t offset = a_row_size * start_row + 
-    col_size * start_col;
+  size_t a_row_size = a->columns;
+  size_t b_row_size = b->columns;
+  size_t offset = a_row_size * start_row + start_col;
   size_t num_rows = end_row - start_row + 1;
   size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
   for(int i = 0; i < num_rows; i++){
-    void* to = (void*)(b->start) + b_row_size * i;
-    void* from = (void*)(a->start) + offset + a_row_size * i;
+    void* to = b->start + b_row_size * i;
+    void* from = a->start + offset + a_row_size * i;
     memcpy(to, from, bytes_per_row);
   }
 
