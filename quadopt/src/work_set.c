@@ -56,3 +56,13 @@ bool work_set_print(work_set* ws) {
   printf("%d\n\n", ws->data[i]);
   return true;
 }
+
+/* checks if the set is containing the item */
+bool work_set_contains(work_set* ws, int item) {
+  for (int i = 0; i < ws->count) {
+    if (item == ws->data[i]) {
+      return true;
+    }
+  }
+  return false;
+}
