@@ -47,6 +47,7 @@ bool work_set_free(work_set* ws) {
   return true;
 }
 
+/* print all current elements included in the set */
 bool work_set_print(work_set* ws) {
   printf("work_set: ");
   int i;
@@ -59,7 +60,7 @@ bool work_set_print(work_set* ws) {
 
 /* checks if the set is containing the item */
 bool work_set_contains(work_set* ws, int item) {
-  for (int i = 0; i < ws->count) {
+  for (int i = 0; i < ws->count; i++) {
     if (item == ws->data[i]) {
       return true;
     }

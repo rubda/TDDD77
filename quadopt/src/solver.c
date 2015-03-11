@@ -106,68 +106,76 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
   //At = transpose_matrix(A);
   matrix* G_derivate = matrix_copy(G);
   multiply_matrix_with_scalar(2,G_derivate);
-
+  int counter = 0;
 
   //******************** solve the problem ********************/
   do {
-	/* set active set */
-	for (int i = 1; i <= A->rows; i++) {
-	  int ans = 0;
-	  for (int j = 1; j <= A->columns; j++) {
-	ans += get_value(i,j,A)*get_value(j,1,z); 
-	//TODO add check and get_value_without_check
-	  }
+  	printf("\n\n\n------------------------------------------------------\n");
+  	printf("Iteration: %d\n",counter);
 
-	  if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
-	work_set_append(active_set,i);
-	  }
-	}
+		/* set active set */
+		for (int i = 1; i <= A->rows; i++) {
+		  int ans = 0;
+		  for (int j = 1; j <= A->columns; j++) {
+		ans += get_value(i,j,A)*get_value(j,1,z); 
+		//TODO add check and get_value_without_check
+		  }
 
+		  if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
+		work_set_append(active_set,i);
+		  }
+		}
 
-	/* calculate gk */
-	multiply_matrices(G,z,gk);
-	add_matrices(gk,d,gk);
-
-	matrix* neg_gk = matrix_copy(gk);
-	multiply_matrix_with_scalar(-1,neg_gk);
+		printf("Before sub-problem: ");
+		work_set_print(active_set);
 
 
+		/* calculate gk */
+		multiply_matrices(G,z,gk);
+		add_matrices(gk,d,gk);
 
-	/******************** solve sub-problem ********************/
-
-	matrix* temp_A = matrix_copy(A);
-	matrix* temp_b = matrix_copy(b);
-
-	printf("\nactive_set before\n");
-	work_set_print(active_set);
-
-	/* solve system until we reach a linear dependancy or not zero vector */
-	while (solve_active_conditions(temp_A, p, active_set)) {
-  	/* calculate lagrange multipliers and remove possible condition from active set */
-  	find_lagrange(gk, A, d, z, active_set, lagrange);
-	}
-
-	printf("\nactive_set after\n");
-	work_set_print(active_set);
-	/* solve linear system for 1st derivative*/
-
-	solve_linear(G_derivate, p, neg_gk);
-
-	/* check second derivative if minimum */
-	//is_positive_diagonal_matrix(G_derivate);
-	//TODO if not minimum?
+		matrix* neg_gk = matrix_copy(gk);
+		multiply_matrix_with_scalar(-1,neg_gk);
 
 
-	/* calculate step */
-	step = calculate_step(b, A, z, p, active_set);
 
-	/* take step */
-	matrix_copy_data(z,z_last); //TODO implement this function
-	multiply_matrix_with_scalar(step,p);
-	add_matrices(z_last,p,z);
+		/******************** solve sub-problem ********************/
 
-	/* */
+		matrix* temp_A = matrix_copy(A);
+		matrix* temp_b = matrix_copy(b);
 
+		
+
+		/* solve system until we reach a linear dependancy or not zero vector */
+		while (solve_active_conditions(temp_A, p, active_set)) {
+	  	/* calculate lagrange multipliers and remove possible condition from active set */
+	  	find_lagrange(gk, A, d, z, active_set, lagrange);
+		}
+
+		printf("After sub-problem: ");
+		work_set_print(active_set);
+		/* solve linear system for 1st derivative*/
+
+		solve_linear(G, p, neg_gk);
+
+		printf("vector p = \n");
+		print_matrix(p);
+		/* check second derivative if minimum */
+		//is_positive_diagonal_matrix(G_derivate);
+		//TODO if not minimum?
+
+
+		/* calculate step */
+		step = calculate_step(b, A, z, p, active_set);
+
+		/* take step */
+		matrix_copy_data(z,z_last); //TODO implement this function
+		multiply_matrix_with_scalar(step,p);
+		add_matrices(z_last,p,z);
+
+		/* */
+
+		counter++;
   } while (!is_positive_lagrange(lagrange, active_set) && !is_zero_matrix(p));  //TODO  add condition: if step <= accuracy then stop
   //implement is_positive_langrange and is_zero_matrix
 
