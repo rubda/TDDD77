@@ -200,17 +200,20 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 }
 
 /* Solves Ax=B */
-void solve_linear(matrix* a,matrix* x, matrix* b){
+bool solve_linear(matrix* a,matrix* x, matrix* b){
 	matrix* u=create_matrix(a->rows,a->columns);
 	matrix* l=create_matrix(a->rows,a->columns);
-	crout(a,l,u);
+	if (!crout(a,l,u)){
+		return false;
+	}
 	forward_backward(l,u,x,b);
 	free_matrix(u);
 	free_matrix(l);
+	return true;
 }
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
-void crout(matrix* a, matrix* l, matrix* u) {
+bool crout(matrix* a, matrix* l, matrix* u) {
 	if (a->rows != a->columns) {
 		return;
 	}
@@ -241,13 +244,15 @@ void crout(matrix* a, matrix* l, matrix* u) {
 			for (k = 1; k < j; k++) {
 				sum = sum + get_value(j, k, l) * get_value(k, i, u);
 			}
+
 			if (get_value(j, j, l) == 0) {
-				return;
+				return false;
 			}
 			insert_value((get_value(j, i, a) - sum) / get_value(j, j, l), j, i,
 					u);
 		}
 	}
+	return true;
 }
 
 /* Solves lux=b using backward and forward substitution */
