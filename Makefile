@@ -18,3 +18,8 @@ libmatrix:
 .PHONY: quadopt
 quadopt:
 	cd quadopt ; make all
+
+.PHONY: test
+test:
+	cd matrixlibrary ; make test
+	cd quadopt ; make test

@@ -200,17 +200,20 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 }
 
 /* Solves Ax=B */
-void solve_linear(matrix* a,matrix* x, matrix* b){
+bool solve_linear(matrix* a,matrix* x, matrix* b){
 	matrix* u=create_matrix(a->rows,a->columns);
 	matrix* l=create_matrix(a->rows,a->columns);
-	crout(a,l,u);
+	if (!crout(a,l,u)){
+		return false;
+	}
 	forward_backward(l,u,x,b);
 	free_matrix(u);
 	free_matrix(l);
+	return true;
 }
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
-void crout(matrix* a, matrix* l, matrix* u) {
+bool crout(matrix* a, matrix* l, matrix* u) {
 	if (a->rows != a->columns) {
 		return;
 	}
@@ -241,13 +244,15 @@ void crout(matrix* a, matrix* l, matrix* u) {
 			for (k = 1; k < j; k++) {
 				sum = sum + get_value(j, k, l) * get_value(k, i, u);
 			}
+
 			if (get_value(j, j, l) == 0) {
-				return;
+				return false;
 			}
 			insert_value((get_value(j, i, a) - sum) / get_value(j, j, l), j, i,
 					u);
 		}
 	}
+	return true;
 }
 
 /* Solves lux=b using backward and forward substitution */
@@ -482,25 +487,33 @@ bool insert_column_vector(int column, matrix *a, matrix* b) {
 
 /* Takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
 bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* a, matrix* b) {
-	if (!check_boundaries(start_row, start_col, a)
-			|| !check_boundaries(end_row, end_col, a)) {
-		return false;
-	}
-	if ((b->rows != (end_row - start_row + 1))
-			|| (b->columns != (end_col - start_col + 1))) {
-		return false;
-	}
-	size_t size = end_row - start_row + 1;
-	size_t start = ((start_row - 1) * a->columns + start_col - 1);
-	size_t step = (a->columns);
-	size_t row_length = (end_row - start_row + 1);
-	size_t number_of_bytes = (end_row - start_row + 1) * sizeof(value);
-	size_t i = 0;
-	for (; i < size; i++) {
-		memcpy((void *) (b->start + row_length * i),
-				(void *) (a->start + start + step * i), number_of_bytes);
-	}
-	return true;
+  if (!check_boundaries(start_row, start_col, a)
+      || !check_boundaries(end_row, end_col, a)) {
+    return false;
+  }
+  if ((b->rows != (end_row - start_row + 1))
+      || (b->columns != (end_col - start_col + 1))) {
+    return false;
+  }
+
+  start_row -= 1;
+  end_row -= 1;
+  start_col -= 1;
+  end_col -= 1;
+
+  size_t a_row_size = a->columns;
+  size_t b_row_size = b->columns;
+  size_t offset = a_row_size * start_row + start_col;
+  size_t num_rows = end_row - start_row + 1;
+  size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
+
+  for(int i = 0; i < num_rows; i++){
+    void* to = b->start + b_row_size * i;
+    void* from = a->start + offset + a_row_size * i;
+    memcpy(to, from, bytes_per_row);
+  }
+
+  return true;
 }
 
 /* Copy and return new matrix. */
