@@ -42,24 +42,22 @@ int main(void) {
   /* create lagrange vector */
   matrix* lagrange = create_matrix(A->rows, 1);
 
+  printf("----------------Iteration 1:------------------- \n");
   work_set_print(w);
 
   printf("Lagrange before: \n");
   print_matrix(lagrange);
   find_lagrange(g, A, d, z, w, lagrange);
 
+  work_set_print(w);
 
-  printf("A= \n");
-  print_matrix(A);
+  printf("Lagrange after: \n");
+  print_matrix(lagrange);
 
-  printf("g= \n");
-  print_matrix(g);
-	
-  printf("d= \n");
-  print_matrix(d);
-
-  printf("z= \n");
-  print_matrix(z);
+  printf("----------------Iteration 2:------------------- \n");
+  printf("Lagrange before: \n");
+  print_matrix(lagrange);
+  find_lagrange(g, A, d, z, w, lagrange);
 
   work_set_print(w);
 
