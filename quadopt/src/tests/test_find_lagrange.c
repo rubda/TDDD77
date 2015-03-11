@@ -4,9 +4,6 @@
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 
 int main(void) {
   clock_t begin, end;
@@ -15,13 +12,11 @@ int main(void) {
 
   /* Creates A matrix */
   matrix* A = create_matrix(5, 2);
-  value temp_a[10] = {
-    1, -2,
-   -1, -2,
-   -1,  2,
-    1,  0,
-    0,  1,
-  };
+  value temp_a[10] = {1, -2,
+		      -1, -2,
+		      -1,  2,
+		      1,  0,
+		      0,  1};
   insert_array(temp_a, A);
 
   /* Creates g matrix */
@@ -75,5 +70,7 @@ int main(void) {
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("time taken was: %f \n", time_spent);
+
+  return 0;
 }
 
