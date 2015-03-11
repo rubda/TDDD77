@@ -154,6 +154,184 @@ void test_is_non_negative_diagonal_matrix(){
   free_matrix(m3);
 }
 
+void test_get_row_vector(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* row = create_matrix(1, 3);
+
+  matrix* ref = create_matrix(1, 3);
+  value ref_values[3] = {4, 5, 6};
+  assert(insert_array(ref_values, ref));
+
+  assert(get_row_vector(2, mat, row));
+  assert(compare_matrices(row, ref));
+  
+  free_matrix(mat);
+  free_matrix(row);
+  free_matrix(ref);
+}
+
+void test_get_column_vector(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* col = create_matrix(3, 1);
+
+  matrix* ref = create_matrix(3, 1);
+  value ref_values[3] = {2, 5, 8};
+  assert(insert_array(ref_values, ref));
+
+  assert(get_column_vector(2, mat, col));
+  assert(compare_matrices(col, ref));
+  
+  free_matrix(mat);
+  free_matrix(col);
+  free_matrix(ref);
+}
+
+void test_insert_row_vector(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* row = create_matrix(1, 3);
+  value row_values[3] = {22, 55, 88};
+  assert(insert_array(row_values, row));
+
+  matrix* ref = create_matrix(3, 3);
+  value ref_values[9] = {1, 2, 3,
+			 22, 55, 88,
+			 7, 8, 9};
+  assert(insert_array(ref_values, ref));
+
+  assert(insert_row_vector(2, row, mat));
+  assert(compare_matrices(mat, ref));
+  
+  free_matrix(mat);
+  free_matrix(row);
+  free_matrix(ref);
+}
+
+void test_insert_column_vector(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* col = create_matrix(3, 1);
+  value col_values[3] = {22, 55, 88};
+  assert(insert_array(col_values, col));
+
+  matrix* ref = create_matrix(3, 3);
+  value ref_values[9] = {1, 22, 3,
+			 4, 55, 6,
+			 7, 88, 9};
+  assert(insert_array(ref_values, ref));
+
+  assert(insert_column_vector(2, col, mat));
+  assert(compare_matrices(mat, ref));
+  
+  free_matrix(mat);
+  free_matrix(col);
+  free_matrix(ref);
+}
+
+void test_switch_rows(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* ref = create_matrix(3, 3);
+  value ref_values[9] = {4, 5, 6,
+			 1, 2, 3,
+			 7, 8, 9};
+  assert(insert_array(ref_values, ref));
+
+  assert(switch_rows(1, 2, mat));
+  assert(compare_matrices(mat, ref));
+  
+  free_matrix(mat);
+  free_matrix(ref);
+}
+
+void test_get_sub_matrix(){
+  matrix* mat = create_matrix(3, 3);
+  value mat_values[9] = {1, 2, 3,
+			 4, 5, 6, 
+			 7, 8, 9};
+  assert(insert_array(mat_values, mat));
+
+  matrix* sub1 = create_matrix(2, 3);
+
+  matrix* ref1 = create_matrix(2, 3);
+  value ref1_values[6] = {4, 5, 6,
+			  7, 8, 9};
+  assert(insert_array(ref1_values, ref1));
+
+  assert(get_sub_matrix(2, 3, 1, 3, mat, sub1));
+  assert(compare_matrices(sub1, ref1));
+
+  free_matrix(sub1);
+  free_matrix(ref1);
+
+
+  matrix* sub2 = create_matrix(2, 2);
+
+  matrix* ref2 = create_matrix(2, 2);
+  value ref2_values[6] = {4, 5,
+			  7, 8};
+  assert(insert_array(ref2_values, ref2));
+
+  assert(get_sub_matrix(2, 3, 1, 2, mat, sub2));
+  assert(compare_matrices(sub2, ref2));
+
+  free_matrix(sub2);
+  free_matrix(ref2);
+
+
+  matrix* sub3 = create_matrix(2, 2);
+
+  matrix* ref3 = create_matrix(2, 2);
+  value ref3_values[6] = {5, 6,
+			  8, 9};
+  assert(insert_array(ref3_values, ref3));
+
+  assert(get_sub_matrix(2, 3, 2, 3, mat, sub3));
+  assert(compare_matrices(sub3, ref3));
+
+  free_matrix(sub3);
+  free_matrix(ref3);
+
+
+  matrix* sub4 = create_matrix(2, 2);
+
+  matrix* ref4 = create_matrix(2, 2);
+  value ref4_values[6] = {1, 2,
+			  4, 5};
+  assert(insert_array(ref4_values, ref4));
+
+  assert(get_sub_matrix(1, 2, 1, 2, mat, sub4));
+  assert(compare_matrices(sub4, ref4));
+
+  free_matrix(sub4);
+  free_matrix(ref4);
+
+  
+  free_matrix(mat);
+}
+
 int main(){
   test_get_value();
   test_get_value_without_check();
@@ -162,15 +340,12 @@ int main(){
   test_is_zero_matrix();
   test_is_non_negative_matrix();
   test_is_non_negative_diagonal_matrix();
-
-  /* Make tests for:
-     get_row_vector
-     get_column_vector
-     insert_row_vector
-     insert_column_vector
-     switch_rows
-     get_sub_matrix
-  */
+  test_get_row_vector();
+  test_get_column_vector();
+  test_insert_row_vector();
+  test_insert_column_vector();
+  test_switch_rows();
+  test_get_sub_matrix();
 
   return 0;
 }
