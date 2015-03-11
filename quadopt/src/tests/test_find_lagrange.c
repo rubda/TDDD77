@@ -24,7 +24,7 @@ int main(void) {
   };
   insert_array(temp_a, A);
 
-  /* Creates Q matrix */
+  /* Creates g matrix */
   matrix* g = create_matrix(2, 1);
   value temp_q[2] = {2, -5};
   insert_array(temp_q, g);

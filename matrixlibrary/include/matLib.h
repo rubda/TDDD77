@@ -16,9 +16,9 @@
 
 /* Uncomment which mode you want the library to run in */
 //#define INT
-//#define FLOAT
+#define FLOAT
 //#define DOUBLE
-#define QUAD
+//#define QUAD
 
 /* Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -160,13 +160,13 @@ matrix* matrix_copy(matrix* source);
 /* Cpoies all the data from matrix A into matrix B */
 void matrix_copy_data(matrix* A, matrix* B);
 
-/* checks if all elements in a vector is equal to zero */
-bool is_zero_vector(matrix* v);
+/* checks if all elements in a matrix is equal to zero */
+bool is_zero_matrix(matrix* v);
 
-/* checks if all elements in a vector is positive */
-bool is_positive_vector(matrix* v);
+/* checks if all elements in a matrix is positive */
+bool is_non_negative_matrix(matrix* v);
 
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
-bool is_positive_diagonal_matrix(matrix* A);
+bool is_non_negative_diagonal_matrix(matrix* A);
 
 #endif /* MATLIB_H */

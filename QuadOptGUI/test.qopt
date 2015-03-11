@@ -1,0 +1,19 @@
+parameters
+  A (4,3)
+  b (3)
+  Q (4,4)
+  q (4)
+  F (20, 4)
+  g (20)
+end
+
+variables
+  z(10)
+end
+
+minimize
+  z' * Q * z + q' * z
+subject to
+  A*x == b
+  F*x <= g
+end

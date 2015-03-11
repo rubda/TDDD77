@@ -3,6 +3,10 @@ from tkinter.filedialog import *
 from tkinter.messagebox import *
 from CustomText import *
 from parser import *
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+import numpy as nmpy
+from numpy import *
 
 filename = None
 clipboard = None
@@ -11,8 +15,8 @@ clipboard = None
 def new_file(event=None):
     global filename
     text.delete(0.0, END)
-    text.insert(0.0, "parameters\nend\n\nvariables\nend\n\n"
-                     "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  0 <= x <= 1\nend\n")
+    text.insert(0.0, "parameters\n\nend\n\nvariables\n\nend\n\n"
+                     "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  F*x <= g\nend\n")
     highlight()
 
 
@@ -25,7 +29,7 @@ def save_file(event=None):
     	f.close()
     except:
         save_as()
-
+    
 
 def save_as(event=None):
     f = asksaveasfile(mode='w', defaultextension='.qopt')
@@ -85,13 +89,75 @@ def deselect_all(event=None):
 def highlight(event=None):
     # make a tag for change the color.
     text.tag_configure("blue", foreground="#48d")
-
+    
     # apply the tag.
     text.highlight_pattern("parameters", "blue")
     text.highlight_pattern("variables", "blue")
     text.highlight_pattern("minimize", "blue")
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")
+
+
+def generate_c(event=None):
+    read_file()
+    f = open("result.c")
+    t = f.read()
+
+    text.delete(0.0, END)
+    text.insert(0.0, t)
+    root.title(filename)
+    text.config(state=DISABLED)
+
+
+def generate_mat(event=None):
+    print("Generate Matlab code")
+
+
+def view_problem(event=None):
+
+    ylim = 10
+    xlim = 10
+    
+    fig = plt.figure(facecolor='white')
+    
+    plt.axis([0,xlim,0,ylim])
+    plt.axis('off')
+
+    # Problem text
+    indent = " "*14
+    minimize = "$minimize \ "
+    problem = "z^TQz \ + \ q^Tz$\n"
+    subject = "$subject \ to$\n"
+    constraints = indent + "$Az \ = \ b$\n" + indent + "$Fz \ \leq \ g$\n"
+    partOf = indent + "$ x  $"
+    problemText = minimize + problem + subject + constraints + partOf
+
+    plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
+    fig.savefig("problem.png")
+
+    img = PhotoImage(file="problem.png")
+    os.remove("problem.png")
+    
+    text.delete(0.0, END)
+    text.insert(END,'\n')
+    text.image_create(END, image=img)
+    text.pack()
+
+
+def edit_problem(event=None):
+    text.config(state=NORMAL)
+    f = open("test.qopt")
+    t = f.read()
+
+    text.delete(0.0, END)
+    text.insert(0.0, t)
+    root.title(filename)
+    highlight()
+
+
+def quit(event=None):
+    root.quit()
+    root.destroy()
 
 
 root = Tk()
@@ -119,9 +185,10 @@ scrollbar.config(command=text.yview)
 # buttons
 problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 problemLabel.pack()
-editButton = Button(sideBar, text="Edit", width=15)
+
+editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
 editButton.pack()
-viewButton = Button(sideBar, text="View", width=15)
+viewButton = Button(sideBar, text="View", width=15, command=view_problem)
 viewButton.pack()
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
@@ -129,10 +196,13 @@ blankLabel.pack()
 
 codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
 codegenLabel.pack()
-cButton = Button(sideBar, text="C code", width=15, command=read_file)
+cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
-matlabButton = Button(sideBar, text="Matlab code", width=15)
+matlabButton = Button(sideBar, text="Matlab code", width=15, command=generate_mat)
 matlabButton.pack()
+
+exitButton = Button(sideBar, text="Exit", width=15, command=quit)
+exitButton.pack(side=BOTTOM)
 
 # menu
 menuBar = Menu(root)
@@ -172,6 +242,10 @@ text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
 root.bind("<KeyPress>", highlight)
 
+# Hide the matplotlib toolbar
+plt.rcParams['toolbar'] = 'None'
+
 root.config(menu=menuBar)
+root.wm_title("QuadOpt Solver")
 new_file()
 root.mainloop()
