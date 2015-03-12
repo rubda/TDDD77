@@ -98,10 +98,10 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c);
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
 /* Solves Ax=B */
-void solve_linear(matrix* a,matrix* x, matrix *b);
+bool solve_linear(matrix* a,matrix* x, matrix *b);
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
-void crout(matrix* a, matrix* l, matrix* u);
+bool crout(matrix* a, matrix* l, matrix* u);
 
 /* Solves lux=b using backward and forward substitution */
 void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);

@@ -143,7 +143,7 @@ void test_is_non_negative_diagonal_matrix(){
   value m3_values[9] = {0, -1, 0,
 			0, 1, 0, 
 			1, 0, 0};
-  assert(insert_array(m1_values, m1));
+  assert(insert_array(m3_values, m3));
 
   assert(is_non_negative_diagonal_matrix(m1));
   assert(!is_non_negative_diagonal_matrix(m2));

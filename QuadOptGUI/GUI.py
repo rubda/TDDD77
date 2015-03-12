@@ -11,12 +11,14 @@ from numpy import *
 filename = None
 clipboard = None
 
-
 def new_file(event=None):
     global filename
+    global editData
+
     text.delete(0.0, END)
     text.insert(0.0, "parameters\n\nend\n\nvariables\n\nend\n\n"
                      "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  F*x <= g\nend\n")
+    editData = text.get(0.0, END)
     highlight()
 
 
@@ -99,7 +101,7 @@ def highlight(event=None):
 
 
 def generate_c(event=None):
-    read_file()
+    parse_qp()
     f = open("result.c")
     t = f.read()
 
@@ -129,19 +131,17 @@ def view_problem(event=None):
     problem = "z^TQz \ + \ q^Tz$\n"
     subject = "$subject \ to$\n"
     constraints = indent + "$Az \ = \ b$\n" + indent + "$Fz \ \leq \ g$\n"
-    partOf = indent + "$ x  $"
-    problemText = minimize + problem + subject + constraints + partOf
+    partOf = indent + "$ z \in \ \Re^N $ \n" + indent + "$ A \in \ \Re^m*N $\n" + indent + "$ F \in \ \Re^s*N $"
+    problemText = "\n"*4 + minimize + problem + subject + constraints + partOf
 
     plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
     fig.savefig("problem.png")
 
     img = PhotoImage(file="problem.png")
     os.remove("problem.png")
-    
+
     text.delete(0.0, END)
-    text.insert(END,'\n')
-    text.image_create(END, image=img)
-    text.pack()
+    text.image_create(0.0, image=img)
 
 
 def edit_problem(event=None):
@@ -247,5 +247,7 @@ plt.rcParams['toolbar'] = 'None'
 
 root.config(menu=menuBar)
 root.wm_title("QuadOpt Solver")
+root.protocol("WM_DELETE_WINDOW", quit)
+
 new_file()
 root.mainloop()

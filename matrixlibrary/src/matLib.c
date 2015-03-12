@@ -200,17 +200,20 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 }
 
 /* Solves Ax=B */
-void solve_linear(matrix* a,matrix* x, matrix* b){
+bool solve_linear(matrix* a,matrix* x, matrix* b){
 	matrix* u=create_matrix(a->rows,a->columns);
 	matrix* l=create_matrix(a->rows,a->columns);
-	crout(a,l,u);
+	if (!crout(a,l,u)){
+		return false;
+	}
 	forward_backward(l,u,x,b);
 	free_matrix(u);
 	free_matrix(l);
+	return true;
 }
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
-void crout(matrix* a, matrix* l, matrix* u) {
+bool crout(matrix* a, matrix* l, matrix* u) {
 	if (a->rows != a->columns) {
 		return;
 	}
@@ -241,13 +244,15 @@ void crout(matrix* a, matrix* l, matrix* u) {
 			for (k = 1; k < j; k++) {
 				sum = sum + get_value(j, k, l) * get_value(k, i, u);
 			}
+
 			if (get_value(j, j, l) == 0) {
-				return;
+				return false;
 			}
 			insert_value((get_value(j, i, a) - sum) / get_value(j, j, l), j, i,
 					u);
 		}
 	}
+	return true;
 }
 
 /* Solves lux=b using backward and forward substitution */
@@ -496,17 +501,15 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
   start_col -= 1;
   end_col -= 1;
 
-  size_t a_row_size = a->columns * sizeof(value);
-  size_t b_row_size = b->columns * sizeof(value);
-  size_t col_size = sizeof(value);
-  size_t offset = a_row_size * start_row + 
-    col_size * start_col;
+  size_t a_row_size = a->columns;
+  size_t b_row_size = b->columns;
+  size_t offset = a_row_size * start_row + start_col;
   size_t num_rows = end_row - start_row + 1;
   size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
   for(int i = 0; i < num_rows; i++){
-    void* to = (void*)(b->start) + b_row_size * i;
-    void* from = (void*)(a->start) + offset + a_row_size * i;
+    void* to = b->start + b_row_size * i;
+    void* from = a->start + offset + a_row_size * i;
     memcpy(to, from, bytes_per_row);
   }
 

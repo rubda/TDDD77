@@ -4,9 +4,6 @@
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
 
 int main(void) {
   clock_t begin, end;
@@ -15,13 +12,11 @@ int main(void) {
 
   /* Creates A matrix */
   matrix* A = create_matrix(5, 2);
-  value temp_a[10] = {
-    1, -2,
-   -1, -2,
-   -1,  2,
-    1,  0,
-    0,  1,
-  };
+  value temp_a[10] = {1, -2,
+		      -1, -2,
+		      -1,  2,
+		      1,  0,
+		      0,  1};
   insert_array(temp_a, A);
 
   /* Creates g matrix */
@@ -47,24 +42,22 @@ int main(void) {
   /* create lagrange vector */
   matrix* lagrange = create_matrix(A->rows, 1);
 
+  printf("----------------Iteration 1:------------------- \n");
   work_set_print(w);
 
   printf("Lagrange before: \n");
   print_matrix(lagrange);
   find_lagrange(g, A, d, z, w, lagrange);
 
+  work_set_print(w);
 
-  printf("A= \n");
-  print_matrix(A);
+  printf("Lagrange after: \n");
+  print_matrix(lagrange);
 
-  printf("g= \n");
-  print_matrix(g);
-	
-  printf("d= \n");
-  print_matrix(d);
-
-  printf("z= \n");
-  print_matrix(z);
+  printf("----------------Iteration 2:------------------- \n");
+  printf("Lagrange before: \n");
+  print_matrix(lagrange);
+  find_lagrange(g, A, d, z, w, lagrange);
 
   work_set_print(w);
 
@@ -75,5 +68,7 @@ int main(void) {
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("time taken was: %f \n", time_spent);
+
+  return 0;
 }
 
