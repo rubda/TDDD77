@@ -1,7 +1,26 @@
 #include "matLib.h"
 #include "work_set.h"
 
+struct qp_problem
+{
+	/* min(z) z^T*G*z + d*z
+	 * s.t.
+	 * A*z >= b 
+	 */
 
+	/* parameters */
+	matrix* G;
+	matrix* d;
+	matrix* A;
+	matrix* b;
+
+	/* variables */
+	matrix* z;
+	matrix* p;
+	matrix* lagrange;
+};
+
+typedef struct qp_problem qp_problem;
 
 //calculate_lagrange();
 
