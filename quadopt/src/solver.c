@@ -45,6 +45,8 @@ bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
 
 	/* check if the system is solveable */
 	if (set->count < Ain->columns) {
+		//TODO calculate what variables are solvable, add them to set of solved_variables
+
 		return false;
 	}
 
@@ -80,7 +82,96 @@ bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
 
 }
 
-	 
+bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
+	work_set* unsolved_vars = work_set_create(p->rows);
+	matrix* A = create_matrix(ws->count, Ain->columns);
+  matrix* row = create_matrix(1, Ain->columns);
+
+  matrix* b = create_matrix(ws->count, 1);
+
+  /* build matrices */
+  for (int i = 0; i < ws->count; i++) {
+	get_row_vector(ws->data[i], Ain, row);
+	insert_row_vector(i+1, row, A);
+	insert_value_without_check(0, i+1, 1, b);
+  }
+
+  /* iterate until we dont get a zero vector (=until system is not solveable) */
+  //TODO must set those variables that cannot be solved to something != 0
+	while(solve_linear(A, p, b)) {
+		find_lagrange(gk, Ain, d, z, ws, lagrange);
+
+		/* redefine the matrices */
+		free_matrix(A);
+		free_matrix(b);
+
+		A = create_matrix(ws->count, Ain->columns);
+	  b = create_matrix(ws->count, 1);
+
+	  /* build matrices */
+	  for (int i = 0; i < ws->count; i++) {
+			get_row_vector(ws->data[i], Ain, row);
+			insert_row_vector(i+1, row, A);
+			insert_value_without_check(0, i+1, 1, b);
+	  }
+	}
+
+	/* saved unsolved variables */
+	for (int i = 1; i <= p->rows; i++) {
+		if (get_value_without_check(i,1,p) != 0) {
+			work_set_append(unsolved_vars, i);
+		}
+	}
+
+	/* create new G and gks for unsolved variables and derivation */
+	matrix* Gs = create_matrix(G->rows,unsolved_vars->count);
+	matrix* gis = create_matrix(G->rows,1);
+
+	matrix* gks = matrix_copy(d);
+	matrix* ps = create_matrix(unsolved_vars->count, 1);
+	multiply_matrix_with_scalar(-1,gks);
+
+	/* build matrices */
+	int counter = 1;
+	for (int i = 0; i <= G->columns; i++) {
+		if (work_set_contains(unsolved_vars, i)) {
+			get_column_vector(i,G,gis);
+			insert_column_vector(counter,gis,Gs);
+			counter++;
+		}
+	}
+
+	/* solve system derivate to get the last variables */
+	solve_linear(Gs,ps,gks);
+
+	/* fill in missing values in p */
+	for (int i = 0; i < unsolved_vars->count; i++) {
+		insert_value_without_check(get_value_without_check(i+1, 1, ps), unsolved_vars->data[i], 1, p);
+	}
+
+	return true;
+
+}
+
+bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {
+	/* clear */
+	work_set_clear(ws);
+
+	/* fill */
+	for (int i = 1; i <= A->rows; i++) {
+	  int ans = 0;
+	  for (int j = 1; j <= A->columns; j++) {
+			ans += get_value(i,j,A)*get_value(j,1,z); 
+			//TODO add check and get_value_without_check
+	  }
+
+	  if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
+			work_set_append(ws,i);
+	  }
+	}
+}
+
+
 
 
 /* solves quadratic convex problem in the form min(z) (1/2) * z^T*G*z + d*z 
@@ -93,17 +184,14 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
   matrix* gk = matrix_copy(d);
   matrix* z_last = matrix_copy(z0);
   matrix * z = matrix_copy(z0);
-  matrix* temp;
   matrix* lagrange = create_matrix(A->rows,1); //osv
 
-  work_set* active_set = work_set_create(A->rows);;
+  work_set* active_set = work_set_create(A->rows);
 
   value step;
 
 
   /* calculate matrix transposes, derivatives. set variables */
-
-  //At = transpose_matrix(A);
   matrix* G_derivate = matrix_copy(G);
   multiply_matrix_with_scalar(2,G_derivate);
   int counter = 0;
@@ -114,17 +202,7 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
   	printf("Iteration: %d\n",counter);
 
 		/* set active set */
-		for (int i = 1; i <= A->rows; i++) {
-		  int ans = 0;
-		  for (int j = 1; j <= A->columns; j++) {
-		ans += get_value(i,j,A)*get_value(j,1,z); 
-		//TODO add check and get_value_without_check
-		  }
-
-		  if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
-		work_set_append(active_set,i);
-		  }
-		}
+		fill_active_set(z,  A, b, active_set);
 
 		printf("Before sub-problem: ");
 		work_set_print(active_set);
@@ -142,24 +220,18 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
 		/******************** solve sub-problem ********************/
 
 		matrix* temp_A = matrix_copy(A);
-		matrix* temp_b = matrix_copy(b);
 
-		
+		/* get solution for sub problem */		
+		get_p(temp_A, G, gk, d, z, p, lagrange, active_set);
 
-		/* solve system until we reach a linear dependancy or not zero vector */
-		while (solve_active_conditions(temp_A, p, active_set)) {
-	  	/* calculate lagrange multipliers and remove possible condition from active set */
-	  	find_lagrange(gk, A, d, z, active_set, lagrange);
-		}
 
 		printf("After sub-problem: ");
 		work_set_print(active_set);
-		/* solve linear system for 1st derivative*/
-
-		solve_linear(G, p, neg_gk);
 
 		printf("vector p = \n");
 		print_matrix(p);
+
+
 		/* check second derivative if minimum */
 		//is_positive_diagonal_matrix(G_derivate);
 		//TODO if not minimum?

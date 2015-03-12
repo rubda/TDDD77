@@ -54,8 +54,8 @@ bool work_set_print(work_set* ws) {
   for (i = 0; i < ws->count-1; i++) {
     printf("%d, ", ws->data[i]);
   }
-  if (i > 0) {
-    printf("%d\n\n", ws->data[i]);
+  if (ws->count > 0) {
+    printf("%d\n\n", ws->data[ws->count-1]);
   }
   return true;
 }
@@ -68,4 +68,9 @@ bool work_set_contains(work_set* ws, int item) {
     }
   }
   return false;
+}
+
+/* clears the set */
+void work_set_clear(work_set* ws) {
+  ws->count = 0;
 }

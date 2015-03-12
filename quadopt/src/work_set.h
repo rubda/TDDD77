@@ -33,4 +33,7 @@ bool work_set_print(work_set* ws);
 /* checks if the set is containing the item */
 bool work_set_contains(work_set* ws, int item);
 
+/* clears the set */
+void work_set_clear(work_set* ws);
+
 #endif /* WORK_SET_H */
