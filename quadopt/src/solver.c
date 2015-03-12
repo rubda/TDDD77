@@ -79,7 +79,6 @@ bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
   else {
 	return false;
   }
-
 }
 
 bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
@@ -150,7 +149,6 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 	}
 
 	return true;
-
 }
 
 bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {

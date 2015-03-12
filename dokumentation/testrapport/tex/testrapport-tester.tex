@@ -1,0 +1,63 @@
+\section{Tester}
+Av följande objekt och funktioner har tester skapats och utförts i iteration 1:
+
+\subsection{Status}
+Här visas teststatus för de olika delarna.
+\begin{itemize}
+\item{Matrisbibliotek - 70\%}
+\item{Lösare av linjära system - 10\%}
+\item{Lagrangemultiplikatorberäknare - 20\%}
+\item{Stegberäknare - 50\%}
+\item{Strukturen work\underline{\space}set - 80\%}
+\item{Byggsystem - 60 \%}
+\item{GUI och parser - 10\%}
+\item{Lösare - 5\%}
+\end{itemize}
+\raggedright Procentsatsen kan ses som ett mått på hur tillförlitlig koden är just nu. Detta eftersom mycket kod tros fungera men ej testats tillräckligt. 
+
+\newpage
+\subsection{Slutfört}
+Den testning som slutförts hittills involverar mestadels småfunktioner. Dessa test har kunnat utföras direkt efter att koden skrivits vilket har lett till effektiva test som fokuserar på kodens specifika funktionalitet.
+\paragraph{Matrisbibliotek}
+Följande funktioner i matrisbiblioteket anses var klara.
+\begin{itemize}
+\item{create\underline{\space}matrix - skapar en matris av vald storlek}
+\item{free\underline{\space}matrix - radera matris och frigör minne}
+\item{print\underline{\space}matrix - skriver ut matris innehållet i terminalen}
+\item{check\underline{\space}boundaries - kollar ifall positionen är i matrisen är tillåten}
+\item{insert\underline{\space}array - sätter in en array av element i matrisen}
+\item{compare\underline{\space}matrices - kollar ifall innehållen i två matriser är identiska}
+\item{is\underline{\space}matrix - kollar ifall två matris är samma matris}
+\item{insert\underline{\space}value - sätter in ett värde på vald position}
+\item{insert\underline{\space}value\underline{\space}without\underline{\space}check - samma som insert\underline{\space}value fast kollar inte om positionen är tillåten}
+\item{get\underline{\space}value - returnerar elementet på vald position}
+\item{get\underline{\space}value\underline{\space}without\underline{\space}check- samma som get\underline{\space}value fast kollar inte om positionen är tillåten}
+\item{add\underline{\space}matrices - adderar två matriser}
+\item{subtract\underline{\space}matrices - subtraherar två matriser}
+\item{multiply\underline{\space}matrices - multiplicerar två matriser}
+\item{transpose\underline{\space}matrix - beräknar transponatet till en matris}
+\item{multiply\underline{\space}matrix\underline{\space}with\underline{\space}scalar - multiplicerar en matris med en skalär}
+\item{divide\underline{\space}matrix\underline{\space}with\underline{\space}scalar - dividerar en matris med en skalär}
+\end{itemize}
+
+\paragraph{Work\underline{\space}set}
+Work\underline{\space}set är strukturen vi använder för att spara aktiva bivillkor i lösaren. Dessa funktioner och metoder är klara.
+\begin{itemize}
+\item{work\underline{\space}set\underline{\space}create - skapar ett work set}
+\item{work\underline{\space}set\underline{\space}free - tar bort och deallokerar mängden}
+\item{work\underline{\space}set\underline{\space}append - lägger till ett element i mängden}
+\item{work\underline{\space}set\underline{\space}remove - tar bort ett specifikt element i mängden}
+\item{work\underline{\space}set\underline{\space}print - skriver ut alla element i terminalen}
+\item{work\underline{\space}set\underline{\space}contains - kollar ifall ett specifikt element finns i mängden}
+\item{work\underline{\space}set\underline{\space}clear - rensar mängden}
+\end{itemize}
+
+\raggedright Eftersom första milstolpen angående kod var att programmet skulle kunna lösa ett problem har tester av funktioner blivit försenade och gruppen har tvingats att använda kod som kanske endast varit halvtestad (t.ex. att koden klarat av ett specifikt test). 
+
+
+\newpage
+\subsection{Pågående}
+Just nu testas huvudsakligen funktioner som rör algoritmen, det vill säga lösaren för linjära system, beräkning lagrangemultiplikatorer och stegberäkning. Även hjälpfunktioner till lösaren av linjära system som ligger i matrisbiblioteket, till exempel plocka ut rad eller kolumnvektor i en matris. 
+
+\subsection{Kommande}
+Det som ska testas i framtiden är de resterande funktionerna i varje del. Men mestadels funktioner till optimeringslösaren för att garantera dens pålitlighet. Just nu är de färdiga funktionerna testade med ganska små datamängder. Detta då vi vet vad produkten ska användas till. Men skalbarheten hos olika funktioner måste testas då problemet eventuellt byggs ut och programmet måste kunna hantera stora matriser. Under iteration 2 ska GUI:t och parsern börja implementeras och då kommer test av dessa krävas i större utsträckning.
