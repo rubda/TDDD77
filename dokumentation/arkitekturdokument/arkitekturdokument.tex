@@ -1,6 +1,5 @@
 \documentclass[titlepage, a4paper]{article}
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
-
 % Information nödvändig för generella layout-strukturer
 \newcommand{\LIPSredaktor}{Sebastian Fast}
 \newcommand{\LIPSversion}{0.1}
@@ -27,6 +26,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes, arrows}
 \usepackage{graphicx}
+\usepackage{float}
 
 \pagenumbering{roman}
 
@@ -61,17 +61,16 @@
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
 
-% Inledning, översikt osv
+
+\input{tex/arkitekturdokument-inledning.tex}
 
 \input{tex/arkitekturdokument-systemdesign.tex}
 
-%\input{tex/arkitekturdokument-granssnitt.tex}
+\input{tex/arkitekturdokument-systemkrav.tex}
 
-%\input{tex/arkitekturdokument-plattform.tex}
+\input{tex/arkitekturdokument-programdelar.tex}
 
-%\input{tex/arkitekturdokument-standarder.tex}
-
-%\input{tex/arkitekturdokument-mjukvarugranskning.tex}
+\input{tex/arkitekturdokument-losningsalgoritmer.tex}
 
 %\input{tex/arkitekturdokument-test.tex}
 

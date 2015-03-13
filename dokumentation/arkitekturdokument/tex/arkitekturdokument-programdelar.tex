@@ -1,0 +1,17 @@
+\section{Programdelar}
+Systemet är uppdelat i flera olika delar. Programmets egna gränssnitt som användaren kan använda istället för Matlab för att lösa problemet. Själva solvern som det egna gränssnittet kommer använda. Samt mex solvern som kommer kunna anropas direkt via Matlab.
+
+\subsection{GUI}
+GUI:t används för att mata in de matriser som behövs för att lösa problemet. GUI:t kommer att anropa \textit{parser.py} med de inmatade matriserna.
+
+\subsection{parser.py}
+Gör om den indatan som kommer från GUI:t till filen \textit{problem.c} innehållande alla matriser med specificerade dimensioner som solvern kommer behöva för att lösa problemet.
+
+\subsection{problem.c}
+Är den genererade datafilen från \textit{parser.py} som innehåller alla de matriser som solvern behöver för att lösa problemet skriven med samma datatyper som solvern kommer att behöva använda. Dessa matriser är bivillkorsmatriserna A, B, F och G.  
+
+\subsection{solver.c}
+Innehåller metoderna för att lösa QP-problemet, där algoritmen är uppdelad i flera olika steg.
+
+\subsection{solver.mex}
+Kommer att fungera som \textit{solver.c} fast den kommer att kunna anropas via Matlab istället för vårt GUI. Programmet kommer att köras genom att anropa en funktion i Matlab med matriserna i parametrarna som indata.

@@ -1,24 +1,9 @@
 \section{Systemdesign}
 
-% TODO: Flytta rubrikerna till rätt filer.
+% TODO: Flytta rubrikerna till rätt filer. 
 
-\subsection{Språk}
-Programmet som skall lösa optimeringsproblemmet skrivs i programmeringsspråket C. 
-
-\subsection{Standarder}
-Källkoden följer de standarder som är beskrivna i kvalitetsplanen.
-
-\subsection{Systemskiss}
-Programmet kommer i huvudsak köras via matlab, där kommer programmet anropas som en funktion med all indata i parametrarna. Indatan kommer sedan kompileras till en header fil som sedan skickas till mex solvern. QP-solvern kommer sedan lösa problemet utifrån kompilerade datan och sedan returnera resultatet till matlab. Programmet kommer även att kunna köras från vårt eget GUI, där man i GUI:t kan mata in sitt QP problem och de matriser man vill använda, generera en C problem fil som kan lösas av C solvern. Resultatet skickas sedan tillbaka och visas i GUI:t.
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.5]{bilder/overgripande.png}
-	\end{center}
-\end{figure}
-
-\subsection{Enkel problembeskrivning}
-Detta är en enkel beskrivning på vårt koncept om hur programmet ska fungera. Man har ett konvext kvadratiskt minimeringsproblem som man vill lösa. Problemet skickas till vårt program som med av oss utvalda effektiva algoritmer räknar ut den optimala lösningen \textit{z*}.
+\subsection{Problembeskrivning}
+Detta är en enkel beskrivning på vårt koncept om hur programmet ska fungera. Man har ett konvext kvadratiskt minimeringsproblem som man vill lösa. Problemet skickas till vårt program som med effektiva algoritmer utvalda av oss räknar ut den optimala lösningen \textit{z*}.
 
 \begin{figure}[h]
 	\begin{center}
@@ -26,31 +11,20 @@ Detta är en enkel beskrivning på vårt koncept om hur programmet ska fungera. 
 	\end{center}
 \end{figure}
 
+\subsection{Standarder}
+Källkoden följer de standarder som är beskrivna i kvalitetsplanen.
+
+\subsection{Systemskiss}
+Programmet kommer i huvudsak köras via Matlab, där kommer programmet anropas som en funktion med all indata i parametrarna. Indatan kommer sedan kompileras till en header fil som sedan skickas till mex solvern. QP-solvern kommer sedan lösa problemet utifrån kompilerade datan och sedan returnera resultatet till matlab. Programmet kommer även att kunna köras från vårt eget GUI, där man i GUI:t kan mata in sitt QP problem och de matriser man vill använda, generera en C problem fil som kan lösas av C solvern. Resultatet skickas sedan tillbaka och visas i GUI:t.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.5]{bilder/overgripande.png}
+	\end{center}
+\end{figure}
+
 %\input{tex/systemskiss.tex}
 
-\subsection{Syfte}
-Syftet med arkitekturen är att skapa en översikt av hela systemet för att man på ett enkelt sätt ska få en överblick av hur alla moduler hänger ihop och hur de fungerar. Den är även ett underlag för att kunna skapa den slutgiltliga tekniska dokumentationen.
-
-\subsection{Prestanda}
-Det är av yttersta vikt att programmet löser QP-problemet väldigt snabbt, i samma skala som Gurobi. Detta är dels för att flygplanet ska hinna utföra prediktionsregleringen i tid.
-
-\subsection{Stabilitet}
-Eftersom tanken med programmet är att lösa kvadratiska problem för preditionsreglering åt stridsflygplan så är det väldigt viktigt att det inte blir några fel i programmet, detta löses med validering av indata.
-
-\subsection{GUI}
-GUI:t används för att mata in de matriser som behövs för att lösa problemet. GUI:t kommer att anropa \textit{parser.py} med de inmatade matriserna.
-
-\subsection{parser.py}
-Gör om den indatan som kommer från GUI:t till filen \textit{problem.c} innehållande alla matriser med specificerade dimensioner som solvern kommer behöva för att lösa problemet.
-
-\subsection{problem.c}
-Är den genererade datafilen från \textit{parser.py} som innehåller alla de matriser som solvern behöver för att lösa problemet skriven med samma datatyper som solvern kommer att behöva använda. Dessa matriser är bivillkorsmatriserna A, B, F och G.  
-
-\subsection{solver.c}
-Innehåller metoderna för att lösa QP-problemet, där algoritmen är uppdelad i flera olika steg.
-
-\subsection{solver.mex}
-Kommer att fungera som \textit{solver.c} fast den kommer att kunna anropas via Matlab istället för vårt GUI. Programmet kommer att köras genom att anropa en funktion i Matlab med matriserna i parametrarna som indata.
 
 %\subsection{Arkitekturens delar}
 %Arkitekturen är uppdelad i tre större delar där GUI:t och parsern är en del
@@ -58,5 +32,5 @@ Kommer att fungera som \textit{solver.c} fast den kommer att kunna anropas via M
 %Integrationen mot matlab är en del ... funktioner...
 
 \subsection{Matrisbibliotek}
-Arkitekturen innehåller även ett eget matrisbibliotek, innehållande alla nödvändiga matrisoperationer för lösaren.
+Arkitekturen innehåller ett eget matrisbibliotek, innehållande alla nödvändiga matrisoperationer för lösaren.
 
