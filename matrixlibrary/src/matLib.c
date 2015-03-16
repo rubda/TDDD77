@@ -173,7 +173,8 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
 	return true;
 }
 
-/* Multiply a and b into c. c=a*b */
+/* Multiply a and b into c. c=a*b 
+TODO this can be faster by switching k and j for loops. see locality of reference*/
 bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 	if ((a->columns != b->rows) || (a->rows != c->rows)
 			|| (b->columns != c->columns)) {
