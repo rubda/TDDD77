@@ -1,6 +1,4 @@
-/* Någon text som bör säga något jävligt vettigt men som inte gör det just nu */
 #include <matLib.h>
-
 
 int
 main()

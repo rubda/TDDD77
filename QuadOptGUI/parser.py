@@ -2,10 +2,7 @@ import re
 
 filename = None
 
-start_text = """/* Någon text som bör säga något jävligt vettigt men som inte gör det just nu */
-#include <matLib.h>
-\n
-"""
+start_text = "#include <matLib.h>\n\n"
 
 
 def format_declarations(line):
@@ -81,6 +78,8 @@ def parse_qp():
 
         outFile.write("}")
 
+
+# Get the problem from the .qopt file and convert it to Latex format
 def get_problem():
     problemFile = "test.qopt"
     next_line = False
@@ -97,14 +96,33 @@ def get_problem():
 
 def convert_problem():
     problem = get_problem()
-    result = ""
-    for char in problem:
-        if char == "'":
-            result += "^T"
-        elif char == "+":
-            result += " \ + \ "
-        elif char == "*":
-            pass
-        else:
-            result += char
+    result = re.sub("'", "^T", problem)
+    result = result.replace("+", " \ + \ ")
+    result = result.replace("*", "")
     return result + "$\n"
+
+
+# Get the constraints from the .qopt fil and convert them to Latex format
+def get_constraints():
+    problemFile = "test.qopt"
+    next_line = False
+    result = ""
+    indent = " "*14
+    with open(problemFile) as inFile:
+        for line in inFile:
+            line = line.strip()
+            if line == "" or line == " ":
+                pass
+            elif line == "subject to":
+                next_line = True
+            elif next_line == True and line != "end":
+                result += indent + "$" + line + "$\n"
+            elif line == "end" and next_line == True:
+                return result 
+
+def convert_constraints():
+    constraints = get_constraints()
+    result = re.sub("<=", " \ \leq \ ", constraints)
+    result = re.sub("==", " \ = \ ", result)
+    result = result.replace("*", "")
+    return result 
