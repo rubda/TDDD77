@@ -80,12 +80,46 @@ bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
   }
 }
 
+
+void get_unsolved(matrix* Ain, work_set* unsolved) {
+
+
+  matrix* A = matrix_copy(Ain);
+
+  work_set* solved = work_set_create(A->columns);
+
+  /* find solved variables */
+  int count, c, i, j;
+  for (i = 1; i <= A->rows; i++) {
+    count = 0;
+    for (j = 1; j <= A->columns; j++) {
+      if (get_value_without_check(i,j,A) != 0) {
+        c = j;
+        count++;
+      }
+    }
+    if (count == 1) {
+      work_set_append(solved, c);
+    }
+  }
+
+  for (i = 1; i <= A->columns; i++) {
+    if (!work_set_contains(solved, i)) {
+      work_set_append(unsolved, i);
+    }
+  }
+}
+
 bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
+  
+  printf("--------------------- 0");
   work_set* unsolved_vars = work_set_create(p->rows);
   matrix* A = create_matrix(ws->count, Ain->columns);
   matrix* row = create_matrix(1, Ain->columns);
 
   matrix* b = create_matrix(ws->count, 1);
+
+  printf("--------------------- 1");
 
   /* build matrices */
   for (int i = 0; i < ws->count; i++) {
@@ -93,6 +127,8 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     insert_row_vector(i+1, row, A);
     insert_value_without_check(0, i+1, 1, b);
   }
+
+  printf("--------------------- 2");
 
   /* iterate until we dont get a zero vector (=until system is not solveable) */
   //TODO must set those variables that cannot be solved to something != 0
@@ -114,12 +150,18 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     }
   }
 
+  printf("--------------------- 3");
+
   /* saved unsolved variables */
+  get_unsolved(A,unsolved_vars);
+
+  /*
   for (int i = 1; i <= p->rows; i++) {
     if (get_value_without_check(i,1,p) != 0) {
       work_set_append(unsolved_vars, i);
     }
-  }
+  }*/
+  printf("--------------------- 4");
 
   /* create new G and gks for unsolved variables and derivation */
   matrix* Gs = create_matrix(G->rows,unsolved_vars->count);
@@ -159,13 +201,15 @@ bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {
     int ans = 0;
     for (int j = 1; j <= A->columns; j++) {
       ans += get_value(i,j,A)*get_value(j,1,z); 
-      //TODO add check and get_value_without_check
+      //TODO add check and get_value_without_check and return false
     }
 
     if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
       work_set_append(ws,i);
     }
   }
+
+  return true;
 }
 
 
@@ -198,6 +242,9 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     printf("\n\n\n------------------------------------------------------\n");
     printf("Iteration: %d\n",counter);
 
+
+    printf("\n\n\n------------------------------------------------------\n");
+    printf("\n\n\n------------------------------------------------------\n");
     /* set active set */
     fill_active_set(z,  A, b, active_set);
 
@@ -211,7 +258,6 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
 
     matrix* neg_gk = matrix_copy(gk);
     multiply_matrix_with_scalar(-1,neg_gk);
-
 
 
     /******************** solve sub-problem ********************/
