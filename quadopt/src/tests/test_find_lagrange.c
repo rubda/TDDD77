@@ -12,17 +12,17 @@ int main(void) {
 
   /* Creates A matrix */
   matrix* A = create_matrix(5, 2);
-  value temp_a[10] = {1, -2,
+  value temp_a[10] = { 1, -2,
 		      -1, -2,
 		      -1,  2,
-		      1,  0,
-		      0,  1};
+		       1,  0,
+		       0,  1};
   insert_array(temp_a, A);
 
   /* Creates g matrix */
   matrix* g = create_matrix(2, 1);
-  value temp_q[2] = {2, -5};
-  insert_array(temp_q, g);
+  value temp_g[2] = {2, -5};
+  insert_array(temp_g, g);
 
   /* Creates d matrix */
   matrix* d = create_matrix(2, 1);
@@ -43,18 +43,21 @@ int main(void) {
   matrix* lagrange = create_matrix(A->rows, 1);
 
   printf("----------------Iteration 1:------------------- \n");
-  work_set_print(w);
+  //work_set_print(w);
 
-  printf("Lagrange before: \n");
-  print_matrix(lagrange);
+  //printf("Lagrange before: \n");
+  //print_matrix(lagrange);
   find_lagrange(g, A, d, z, w, lagrange);
 
-  work_set_print(w);
+  //work_set_print(w);
 
-  printf("Lagrange after: \n");
-  print_matrix(lagrange);
+  //printf("Lagrange after: \n");
+  //print_matrix(lagrange);
 
   printf("----------------Iteration 2:------------------- \n");
+  value temp_g_again[2] = {0, -5};
+  insert_array(temp_g_again, g);
+
   printf("Lagrange before: \n");
   print_matrix(lagrange);
   find_lagrange(g, A, d, z, w, lagrange);

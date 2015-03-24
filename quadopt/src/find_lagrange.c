@@ -13,14 +13,23 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   matrix* w_mat = create_matrix(A->columns, w->count); 
 
   for (int i = 0; i < w->count; i++){
-    assert(get_row_vector(w->data[i], A, tmp_row));
-    assert(insert_row_vector(i+1, tmp_row, w_tmp));
+    get_row_vector(w->data[i], A, tmp_row);
+    insert_row_vector(i+1, tmp_row, w_tmp);
   }
   transpose_matrix(w_tmp, w_mat);
  
   /* Solves the system W_mat * x = g */
   matrix* solved = create_matrix(w_mat->rows, 1);
   solve_linear(w_mat, solved, g);
+
+  printf("Wmat\n");
+  print_matrix(w_mat);
+
+  printf("g\n");
+  print_matrix(g);
+
+  printf("solved\n");
+  print_matrix(solved);
 
   /* Finds the smallest lagrange value */
   int min_row = 1;

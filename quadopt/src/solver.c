@@ -240,9 +240,6 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     printf("\n\n\n------------------------------------------------------\n");
     printf("Iteration: %d\n",counter);
 
-
-    printf("\n\n\n------------------------------------------------------\n");
-    printf("\n\n\n------------------------------------------------------\n");
     /* set active set */
     fill_active_set(z,  A, b, active_set);
 
