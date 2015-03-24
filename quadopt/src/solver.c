@@ -99,12 +99,12 @@ void get_unsolved(matrix* Ain, work_set* unsolved) {
       }
     }
     if (count == 1) {
-      work_set_append(solved, j);
+      work_set_append(solved, c);
     }
   }
 
   for (i = 1; i <= A->columns; i++) {
-    if (!work_set_contains(i,solved)) {
+    if (!work_set_contains(solved, i)) {
       work_set_append(unsolved, i);
     }
   }
@@ -201,13 +201,15 @@ bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {
     int ans = 0;
     for (int j = 1; j <= A->columns; j++) {
       ans += get_value(i,j,A)*get_value(j,1,z); 
-      //TODO add check and get_value_without_check
+      //TODO add check and get_value_without_check and return false
     }
 
     if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
       work_set_append(ws,i);
     }
   }
+
+  return true;
 }
 
 
@@ -256,7 +258,6 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
 
     matrix* neg_gk = matrix_copy(gk);
     multiply_matrix_with_scalar(-1,neg_gk);
-
 
 
     /******************** solve sub-problem ********************/
