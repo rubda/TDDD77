@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import numpy as nmpy
 from numpy import *
+import re
+import os
+
 
 filename = None
 clipboard = None
@@ -14,7 +17,7 @@ clipboard = None
 def new_file(event=None):
     global filename
     global editData
-
+    
     text.delete(0.0, END)
     text.insert(0.0, "parameters\n\nend\n\nvariables\n\nend\n\n"
                      "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  F*x <= g\nend\n")
@@ -45,7 +48,7 @@ def save_as(event=None):
 def open_file(event=None):
     f = askopenfile(mode='r')
     t = f.read()
-
+    
     text.delete(0.0, END)
     text.insert(0.0, t)
     root.title(filename)
@@ -125,15 +128,16 @@ def view_problem(event=None):
     plt.axis([0,xlim,0,ylim])
     plt.axis('off')
 
-    # Problem text
     indent = " "*14
     minimize = "$minimize \ "
-    problem = "z^TQz \ + \ q^Tz$\n"
+    #problem = "z^TQz \ + \ q^Tz$\n"
     subject = "$subject \ to$\n"
     constraints = indent + "$Az \ = \ b$\n" + indent + "$Fz \ \leq \ g$\n"
-    partOf = indent + "$ z \in \ \Re^N $ \n" + indent + "$ A \in \ \Re^m*N $\n" + indent + "$ F \in \ \Re^s*N $"
-    problemText = "\n"*4 + minimize + problem + subject + constraints + partOf
+    #partOf = indent + "$ z \in \ \Re^N $ \n" + indent + "$ A \in \ \Re^m*N $\n" + indent + "$ F \in \ \Re^s*N $"
+    problem = convert_problem()
 
+    problemText = "\n"*4 + minimize + problem + subject + constraints #+ partOf
+    
     plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
     fig.savefig("problem.png")
 

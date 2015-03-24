@@ -80,3 +80,31 @@ def parse_qp():
                 data = data + line + " "
 
         outFile.write("}")
+
+def get_problem():
+    problemFile = "test.qopt"
+    next_line = False
+    with open(problemFile) as inFile:
+        for line in inFile:
+            line = line.strip()
+            if line == "" or line == " ":
+                pass
+            elif line == "minimize":
+                next_line = True
+            elif next_line == True and line != "" and line != " ":
+                return line
+    return "Error!"
+
+def convert_problem():
+    problem = get_problem()
+    result = ""
+    for char in problem:
+        if char == "'":
+            result += "^T"
+        elif char == "+":
+            result += " \ + \ "
+        elif char == "*":
+            pass
+        else:
+            result += char
+    return result + "$\n"
