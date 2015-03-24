@@ -1,15 +1,14 @@
 from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
+from tkinter import messagebox
 from CustomText import *
 from parser import *
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
-import numpy as nmpy
 from numpy import *
 import re
 import os
-
 
 filename = None
 clipboard = None
@@ -94,7 +93,7 @@ def deselect_all(event=None):
 def highlight(event=None):
     # make a tag for change the color.
     text.tag_configure("blue", foreground="#48d")
-    
+        
     # apply the tag.
     text.highlight_pattern("parameters", "blue")
     text.highlight_pattern("variables", "blue")
@@ -112,10 +111,11 @@ def generate_c(event=None):
     text.insert(0.0, t)
     root.title(filename)
     text.config(state=DISABLED)
+    showinfo(title="C code generation", message="The generated C code wrote to result.c")
 
 
 def generate_mat(event=None):
-    print("Generate Matlab code")
+    showinfo(title="Matlab", message="Matlab code generated")
 
 
 def view_problem(event=None):
@@ -128,15 +128,12 @@ def view_problem(event=None):
     plt.axis([0,xlim,0,ylim])
     plt.axis('off')
 
-    indent = " "*14
     minimize = "$minimize \ "
-    #problem = "z^TQz \ + \ q^Tz$\n"
     subject = "$subject \ to$\n"
-    constraints = indent + "$Az \ = \ b$\n" + indent + "$Fz \ \leq \ g$\n"
-    #partOf = indent + "$ z \in \ \Re^N $ \n" + indent + "$ A \in \ \Re^m*N $\n" + indent + "$ F \in \ \Re^s*N $"
     problem = convert_problem()
+    constraints = convert_constraints()
 
-    problemText = "\n"*4 + minimize + problem + subject + constraints #+ partOf
+    problemText = "\n"*4 + minimize + problem + subject + constraints
     
     plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
     fig.savefig("problem.png")
