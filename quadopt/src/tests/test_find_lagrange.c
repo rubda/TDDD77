@@ -1,3 +1,10 @@
+/*
+  Author: Ruben Das
+  Email: rubendas.rd@@gmail.com
+  Date: 2015-03-12
+  Description: This file tests the find_lagrange-function which is used in the solver.
+*/
+
 #include <matLib.h>
 #include <work_set.h>
 #include <find_lagrange.h>
@@ -5,24 +12,24 @@
 #include <time.h>
 #include <stdio.h>
 
-int main(void) {
+int main(void){
   clock_t begin, end;
   double time_spent;
   begin = clock();
 
   /* Creates A matrix */
   matrix* A = create_matrix(5, 2);
-  value temp_a[10] = {1, -2,
+  value temp_a[10] = { 1, -2,
 		      -1, -2,
 		      -1,  2,
-		      1,  0,
-		      0,  1};
+		       1,  0,
+		       0,  1};
   insert_array(temp_a, A);
 
   /* Creates g matrix */
   matrix* g = create_matrix(2, 1);
-  value temp_q[2] = {2, -5};
-  insert_array(temp_q, g);
+  value temp_g[2] = {2, -5};
+  insert_array(temp_g, g);
 
   /* Creates d matrix */
   matrix* d = create_matrix(2, 1);
@@ -39,31 +46,62 @@ int main(void) {
   work_set_append(w, 3);
   work_set_append(w, 5);
 
-  /* create lagrange vector */
+  /* Create lagrange vector */
   matrix* lagrange = create_matrix(A->rows, 1);
+  value temp_lagrange[5] = {0, 0, 0, 0, 0};
+  insert_array(temp_lagrange, lagrange);
 
-  printf("----------------Iteration 1:------------------- \n");
-  work_set_print(w);
+  /* Test without prints... */
 
-  printf("Lagrange before: \n");
-  print_matrix(lagrange);
+  for (int i = 1; i <= A->rows; i++){
+    assert(get_value_without_check(i, 1, lagrange) == 0);
+  }
+
+  /* Iteration 1 */
+  assert(w->count == 2);
+  assert(w->data[0] == 3);
+  assert(w->data[1] == 5);
+
   find_lagrange(g, A, d, z, w, lagrange);
 
-  work_set_print(w);
+  assert(w->count == 1);
+  assert(w->data[0] == 5);
 
-  printf("Lagrange after: \n");
-  print_matrix(lagrange);
+  assert(get_value_without_check(3, 1, lagrange) == -2);
+  assert(get_value_without_check(5, 1, lagrange) == -1);
 
-  printf("----------------Iteration 2:------------------- \n");
-  printf("Lagrange before: \n");
-  print_matrix(lagrange);
+  /* Iteration 2 */
+  value iter2_g[2] = {0, -5}; 
+  insert_array(iter2_g, g);
+
+  assert(w->count == 1);
+  assert(w->data[0] == 5);
+ 
   find_lagrange(g, A, d, z, w, lagrange);
 
-  work_set_print(w);
+  assert(w->count == 0);
 
-  printf("Lagrange after: \n");
-  print_matrix(lagrange);
+  assert(get_value_without_check(3, 1, lagrange) == -2);
+  //assert(get_value_without_check(5, 1, lagrange) == -5);
 
+  /*
+  matrix* cock_A = create_matrix(2, 1);
+  value tmp_cock_a[4] = {0, 1};
+  insert_array(tmp_cock_a, cock_A);
+  print_matrix(cock_A);
+
+  matrix* cock_B = create_matrix(2, 1);
+  value tmp_cock_b[2] = {0, -5};
+  insert_array(tmp_cock_b, cock_B);
+  print_matrix(cock_B);
+
+  matrix* cock_solved = create_matrix(1, 1);
+  solve_linear(cock_A, cock_solved, cock_B);
+  print_matrix(cock_solved);
+  */
+
+  /* Iteration 3 */
+  //TODO Maybe
 
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
