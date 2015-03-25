@@ -5,7 +5,7 @@
 #include <time.h>
 #include <stdio.h>
 
-int main(void) {
+int main(void){
   clock_t begin, end;
   double time_spent;
   begin = clock();
@@ -39,34 +39,45 @@ int main(void) {
   work_set_append(w, 3);
   work_set_append(w, 5);
 
-  /* create lagrange vector */
+  /* Create lagrange vector */
   matrix* lagrange = create_matrix(A->rows, 1);
+  value temp_lagrange[5] = {0, 0, 0, 0, 0};
+  insert_array(temp_lagrange, lagrange);
 
-  printf("----------------Iteration 1:------------------- \n");
-  //work_set_print(w);
+  /* Test without prints... */
 
-  //printf("Lagrange before: \n");
-  //print_matrix(lagrange);
+  for (int i = 1; i <= A->rows; i++){
+    assert(get_value_without_check(i, 1, lagrange) == 0);
+  }
+
+  /* Iteration 1 */
+  assert(w->count == 2);
+  assert(w->data[0] == 3);
+  assert(w->data[1] == 5);
+
   find_lagrange(g, A, d, z, w, lagrange);
 
-  //work_set_print(w);
+  assert(w->count == 1);
+  assert(w->data[0] == 5);
 
-  //printf("Lagrange after: \n");
-  //print_matrix(lagrange);
+  assert(get_value_without_check(3, 1, lagrange) == -2);
+  assert(get_value_without_check(5, 1, lagrange) == -1);
 
-  printf("----------------Iteration 2:------------------- \n");
-  value temp_g_again[2] = {0, -5};
-  insert_array(temp_g_again, g);
+  /* Iteration 2 */
+  value iter2_g[2] = {0, -5}; 
+  insert_array(iter2_g, g);
 
-  printf("Lagrange before: \n");
-  print_matrix(lagrange);
+  assert(w->count == 1);
+  assert(w->data[0] == 5);
+ 
   find_lagrange(g, A, d, z, w, lagrange);
 
-  work_set_print(w);
+  assert(w->count == 0);
 
-  printf("Lagrange after: \n");
-  print_matrix(lagrange);
+  assert(get_value_without_check(3, 1, lagrange) == -2);
+  //assert(get_value_without_check(5, 1, lagrange) == -5);
 
+  /* Iteration 3 */
 
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

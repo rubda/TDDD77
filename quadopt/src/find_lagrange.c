@@ -1,13 +1,19 @@
+/*
+  Author: Ruben Das
+  Email: rubendas.rd@@gmail.com
+  Date: 2015-03-10
+  Description: This file contains the find_lagrange-function which is used in the solver.
+*/
+
 #include <matLib.h>
 #include <work_set.h>
 #include <stdbool.h>
-#include <assert.h>
 #include "find_lagrange.h"
 
 /* Finds the lagrange multipliers and removes constraints */
 bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matrix* lagrange){
 
-  /* Puts all the related conditions to w_mat depending on the work_set */
+  /* Puts all the active conditions to w_mat depending on the work_set */
   matrix* tmp_row = create_matrix(1, A->columns);
   matrix* w_tmp = create_matrix(w->count, A->columns);
   matrix* w_mat = create_matrix(A->columns, w->count); 
@@ -21,15 +27,6 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   /* Solves the system W_mat * x = g */
   matrix* solved = create_matrix(w_mat->rows, 1);
   solve_linear(w_mat, solved, g);
-
-  printf("Wmat\n");
-  print_matrix(w_mat);
-
-  printf("g\n");
-  print_matrix(g);
-
-  printf("solved\n");
-  print_matrix(solved);
 
   /* Finds the smallest lagrange value */
   int min_row = 1;
