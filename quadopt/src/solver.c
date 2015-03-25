@@ -10,7 +10,6 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
   ai = create_matrix(1, A->columns);
   value bi, nom, temp_step, step = 1;
 
-
   //TODO check
   for (int i = 1; i <= A->rows; i++) {
     if (work_set_contains(ws,i)) {
@@ -41,49 +40,8 @@ bool is_positive_lagrange(matrix* l, work_set* ws) {
   return true;
 }
 
-bool solve_active_conditions(matrix* Ain, matrix* x, work_set* set) {
-
-  /* check if the system is solveable */
-  if (set->count < Ain->columns) {
-    //TODO calculate what variables are solvable, add them to set of solved_variables
-
-    return false;
-  }
-
-  matrix* A = create_matrix(set->count, Ain->columns);
-  matrix* row = create_matrix(1, Ain->columns);
-
-  matrix* b = create_matrix(set->count, 1);
-
-  /* build matrices */
-  for (int i = 0; i < set->count; i++) {
-    get_row_vector(set->data[i], Ain, row);
-    insert_row_vector(i+1, row, A);
-    insert_value_without_check(0, i+1, 1, b);
-  }
-
-
-
-  solve_linear(A, x, b);
-
-
-  /* free used matrices */
-  free_matrix(A);
-  free_matrix(b);
-
-  //TODO check if linear system is solveable or x = 0 afterwards
-  bool dependancy = false;
-  if (!dependancy) {
-    return true;
-  }
-  else {
-    return false;
-  }
-}
-
-
+//TODO: make it work with more than 2 vars
 void get_unsolved(matrix* Ain, work_set* unsolved) {
-
 
   matrix* A = matrix_copy(Ain);
 
@@ -111,9 +69,52 @@ void get_unsolved(matrix* Ain, work_set* unsolved) {
   }
 }
 
+void get_p_au(matrix* G, matrix* p, matrix* gk) {
+  matrix* G_derivate = matrix_copy(G);
+  multiply_matrix_with_scalar(-1,gk);
+  solve_linear(G_derivate,p,gk);
+}
+
+//TODO free matrices and clean up
 bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
-  
+
   work_set* unsolved_vars = work_set_create(p->rows);
+
+  if (ws->count == 0) {
+    //0. all vars unknown, no relation between them
+    //just derive and solve
+    get_p_au(G,p,gk);
+    return true;
+  }
+  else {
+    //TODO list:
+    //1. find out which variables that are solved or not
+    //2. if all vars are solved, remove a condition and return to 1. If no more conditions, goto 0 (this wont happen, probably)
+    
+    //3. build up new G of unsolved variables
+    //4. choose one unsolved variable and try to find a relationship between it and all other unsolved variabels
+    //5. if not successful, choose another unsolved variable and try to find a relationship between it and the remaining variables, keep going until all 
+    //6. build up new matrix and solve system to retrive value of the chosen variable
+    //7. loop through all relations to get value of remaining unsolved variables
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if (ws->count > 0) {
     matrix* A = create_matrix(ws->count, Ain->columns);
