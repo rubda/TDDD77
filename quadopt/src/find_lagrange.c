@@ -2,7 +2,7 @@
   Author: Ruben Das
   Email: rubendas.rd@@gmail.com
   Date: 2015-03-10
-  Description: This file contains the find_lagrange-function which is used in the solver.
+  Description: This is the find_lagrange-function which is used in the solver.
 */
 
 #include <matLib.h>
@@ -25,7 +25,8 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   transpose_matrix(w_tmp, w_mat);
  
   /* Solves the system W_mat * x = g */
-  matrix* solved = create_matrix(w_mat->rows, 1);
+  //matrix* solved = create_matrix(w_mat->rows, 1);
+  matrix* solved = create_matrix(w->count, 1);
   solve_linear(w_mat, solved, g);
 
   /* Finds the smallest lagrange value */

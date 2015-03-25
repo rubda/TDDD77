@@ -1,3 +1,10 @@
+/*
+  Author: Ruben Das
+  Email: rubendas.rd@@gmail.com
+  Date: 2015-03-12
+  Description: This file tests the find_lagrange-function which is used in the solver.
+*/
+
 #include <matLib.h>
 #include <work_set.h>
 #include <find_lagrange.h>
@@ -77,7 +84,24 @@ int main(void){
   assert(get_value_without_check(3, 1, lagrange) == -2);
   //assert(get_value_without_check(5, 1, lagrange) == -5);
 
+  /*
+  matrix* cock_A = create_matrix(2, 1);
+  value tmp_cock_a[4] = {0, 1};
+  insert_array(tmp_cock_a, cock_A);
+  print_matrix(cock_A);
+
+  matrix* cock_B = create_matrix(2, 1);
+  value tmp_cock_b[2] = {0, -5};
+  insert_array(tmp_cock_b, cock_B);
+  print_matrix(cock_B);
+
+  matrix* cock_solved = create_matrix(1, 1);
+  solve_linear(cock_A, cock_solved, cock_B);
+  print_matrix(cock_solved);
+  */
+
   /* Iteration 3 */
+  //TODO Maybe
 
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
