@@ -43,7 +43,7 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
     }
   }
 
-  /* Modify langrange vector */
+  /* Modify lagrange vector */
   for (int i = 0; i < w->count; i++){
     insert_value(get_value(i+1, 1, solved), w->data[i], 1, lagrange);
   }
