@@ -86,7 +86,7 @@ int main(void){
 
   /* Iteration 3 */
   work_set_append(w, 1);
-  value iter3_g[2] = {0, -2};
+  value iter3_g[2] = {0.8, -1.6};
   insert_array(iter3_g, g);
 
   assert(w->count == 1);
@@ -94,7 +94,7 @@ int main(void){
 
   find_lagrange(g, A, d, z, w, lagrange);
 
-  assert(w->count == 0);
+  assert(w->count == 10);
 
   assert(abs(get_value_without_check(1, 1, lagrange) - 0.8) < 0.001);
   assert(get_value_without_check(3, 1, lagrange) == -2);
