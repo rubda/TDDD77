@@ -204,7 +204,7 @@ bool solve_linear(matrix* a, matrix* x, matrix* b){
   if (!crout(a,l,u)){
     free_matrix(u);
     free_matrix(l);
-    least_square(a, x, b);
+    //least_square(a, x, b);
     return false;
   }
   forward_backward(l,u,x,b);
