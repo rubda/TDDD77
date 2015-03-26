@@ -201,10 +201,13 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 }
 
 /* Solves Ax=B */
-bool solve_linear(matrix* a,matrix* x, matrix* b){
+bool solve_linear(matrix* a, matrix* x, matrix* b){
   matrix* u=create_matrix(a->rows,a->columns);
   matrix* l=create_matrix(a->rows,a->columns);
   if (!crout(a,l,u)){
+    free_matrix(u);
+    free_matrix(l);
+    least_square(a, x, b);
     return false;
   }
   forward_backward(l,u,x,b);
@@ -216,15 +219,15 @@ bool solve_linear(matrix* a,matrix* x, matrix* b){
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 bool crout(matrix* a, matrix* l, matrix* u) {
   if (a->rows != a->columns) {
-    return;
+    return false;
   }
   int check = a->rows;
   if (check != l->rows || check != u->rows) {
-    return;
+    return false;
   }
   check = a->columns;
   if (check != l->columns || check != u->columns) {
-    return;
+    return false;
   }
   int i, j, k;
   double sum = 0;
@@ -293,6 +296,24 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
     insert_value(temp, i, 1, x);
   }
   free_matrix(y);
+}
+
+/* If no solution is found with solve_linear, this functions find the closest one */
+void least_square(matrix* a, matrix* x, matrix* b) {
+  matrix* trans_a = create_matrix(a->columns,a->rows);
+  transpose_matrix(a, trans_a); 
+
+  matrix* lhs = create_matrix(trans_a->rows, a->columns);
+  matrix* rhs = create_matrix(trans_a->rows, b->columns);
+  
+  multiply_matrices(trans_a, a, lhs);
+  multiply_matrices(trans_a, b, rhs);
+
+  solve_linear(lhs, x, rhs);
+
+  free_matrix(trans_a);
+  free_matrix(lhs);
+  free_matrix(rhs);
 }
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
