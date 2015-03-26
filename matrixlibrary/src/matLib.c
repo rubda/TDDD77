@@ -190,7 +190,6 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 	sum += get_value_without_check(i, j, a)
 	  * get_value_without_check(j, k, b);
       }
-
       insert_value_without_check(sum, i, k, c);
     }
   }
@@ -204,7 +203,6 @@ bool solve_linear(matrix* a, matrix* x, matrix* b){
   if (!crout(a,l,u)){
     free_matrix(u);
     free_matrix(l);
-    //least_square(a, x, b);
     return false;
   }
   forward_backward(l,u,x,b);
