@@ -39,12 +39,10 @@ void free_matrix(matrix* mat) {
   free(mat);
 }
 
-/* calculate the vector product */
-value vector_product(matrix* r, matrix* v) {
-  //TODO check
+/* calculate the dot product */
+value dot_product(matrix* r, matrix* v) {
   value ans = 0;
   for (int i = 1; i <= r->rows; i++) {
-    //TODO access the memory directly might be faster
     ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
   }
   return ans;
@@ -173,8 +171,7 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
-/* Multiply a and b into c. c=a*b 
-   TODO this can be faster by switching k and j for loops. see locality of reference*/
+/* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
@@ -363,11 +360,16 @@ void multiply_matrix_with_scalar(value scal, matrix* mat) {
 }
 
 /* Divides matrix mat with scalar */
-void divide_matrix_with_scalar(value scal, matrix* mat) {
+void divide_matrix_with_scalar(value scal, matrix* mat)
+{
+  if (scal==0){
+    return;
+  }
   size_t size = mat->size;
   size_t i = 0;
-  for (; i < size; i++) {
-    *(mat->start + i ) /= scal;
+  for (; i < size; i++)
+  {
+    *(mat->start + i) /= scal;
   }
 }
 
@@ -382,6 +384,9 @@ void multiply_row_with_scalar(value scal, int row, matrix* mat) {
 
 /* Divides a row with a scalar */
 void divide_row_with_scalar(value scal, int row, matrix* mat) {
+  if (scal==0){
+    return;
+  }
   value* start = mat->start + (row - 1) * mat->columns;
   size_t i = 0;
   for (; i < mat->columns; i++) {
@@ -401,6 +406,9 @@ void multiply_column_with_scalar(value scal, int col, matrix* mat) {
 
 /* Divides a column with a scalar */
 void divide_column_with_scalar(value scal, int col, matrix* mat) {
+  if (scal==0){
+    return;
+  }
   value* start = mat->start + (col - 1);
   size_t i = 0;
   size_t step = mat->rows ;
@@ -519,25 +527,22 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 
 /* Copy and return new matrix. */
 matrix* matrix_copy(matrix* source) {
-  //TODO check
   matrix* m = create_matrix(source->rows,source->columns);
   memcpy(m->start,source->start,source->size * sizeof(value));
   return m;
 }
 
-/* Cpoies all the data from matrix A into matrix B */
-void matrix_copy_data(matrix* A, matrix* B) {
-  //TODO check
-  for (int i = 1; i <= A->rows; i++) {
-    for (int j = 1; j <= A->columns; j++) {
-      insert_value_without_check(get_value_without_check(i,j,A),i,j,B);
-    }
+/* Copies all the data from matrix A into matrix B */
+void matrix_copy_data(matrix* a, matrix* b) {
+  if ((a->columns!=b->columns ||a->rows!=a->rows)){
+    return;
   }
+  size_t number_of_bytes=a->size*sizeof(value);
+  memcpy((void *) (b->start), (void *) (a->start), number_of_bytes);
 }
 
 /* checks if all elements in a matrix is equal to zero */
 bool is_zero_matrix(matrix* v) {
-  //TODO check
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
       if (get_value_without_check(i,j,v) != 0) {
@@ -550,7 +555,6 @@ bool is_zero_matrix(matrix* v) {
 
 /* checks if all elements in a matrix is positive */
 bool is_non_negative_matrix(matrix* v) {
-  //TODO check
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
       if (get_value_without_check(i,j,v) < 0) {
@@ -563,7 +567,6 @@ bool is_non_negative_matrix(matrix* v) {
 
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
 bool is_non_negative_diagonal_matrix(matrix* A) {
-  //TODO check
   for (int i = 1; i <= A->rows; i++) {
     if (get_value_without_check(i,i,A) < 0) {
       return false;

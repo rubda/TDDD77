@@ -79,7 +79,7 @@ void test_vector_product(){
   value b_values[2] = {-1, 3};
   assert(insert_array(b_values, b));
 
-  value val = vector_product(a, b);
+  value val = dot_product(a, b);
   value ref = 13;
   assert(val == ref);
 
