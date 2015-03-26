@@ -93,11 +93,39 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     
     //3. build up new G of unsolved variables
     //4. choose one unsolved variable and try to find a relationship between it and all other unsolved variabels
-    //5. if not successful, choose another unsolved variable and try to find a relationship between it and the remaining variables, keep going until all 
-    //6. build up new matrix and solve system to retrive value of the chosen variable
+    //5. if not successful, choose another unsolved variable and try to find a relation between it and the remaining variables, keep going until all vars have a relationship
+    //6. build up new matrices and solve systems to retrive value of the chosen variables
     //7. loop through all relations to get value of remaining unsolved variables
 
+    //Example:
 
+
+    /* subproblem (1/2)*p^T*G*p + gk*p,   
+
+          (2 0 0 0 0 0 0)           (1)
+          (0 2 0 0 0 0 0)           (0)
+          (0 0 2 0 0 0 0)           (1)
+      G = (0 0 0 2 0 0 0) ,   gk =  (1)
+          (0 0 0 0 2 0 0)           (1)
+          (0 0 0 0 0 2 0)           (0)
+          (0 0 0 0 0 0 2)           (1)
+
+        bivillkor
+        ( 1 0 0 0 0 1 0 | 0 )       p6 = -p1
+        ( 1 0 0 0 1 0 0 | 0 )       p5 = -p1
+        ( 1 0 1 0 0 0 0 | 0 )  =>   p3 = -p1  => lös ut p1 och p2 via derivering
+        ( 0 1 0 1 0 0 0 | 0 )       p4 = -p2
+        ( 0 0 0 0 0 0 1 | 0 )       p7 = 0
+
+        Skapa nytt x, G och gk
+        p1:
+             (p1)   ( 1)          (2 0 0 0)                             ( 1)
+        p' = (p3) = (-1) ,  G' =  (0 2 0 0) ,   gk' = (gk1 gk3 gk5 gk6)*(-1)  =>  lös p'^T*G'*p' = C   =>   lös solve_linear(C,p1,-gk') för att få ut värdet på p1
+             (p5)   (-1)          (0 0 2 0)                             (-1)                                  räkna ut p3, p5 och p6 m.h.a värdet på p1 or relationerna
+             (p6)   (-1)          (0 0 0 2)                             (-1)                                  p1 = 1/8, p3 = p5 = p6 = -1/8
+
+        lös p2 p.s.s.
+        
   }
 
 
