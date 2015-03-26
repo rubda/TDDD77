@@ -125,6 +125,9 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
              (p6)   (-1)          (0 0 0 2)                             (-1)                                  p1 = 1/8, p3 = p5 = p6 = -1/8
 
         lös p2 p.s.s.
+
+
+        */
         
   }
 
