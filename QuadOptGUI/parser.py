@@ -6,13 +6,14 @@ start_text = "#include <matLib.h>\n\n"
 
 
 def format_declarations(line):
+    indent = " "*2
     line = line.replace(' ', '')
     name = line.split('(')[0]
     dimensions = line.split('(')[1]
     dimensions = re.findall(r'\d+', dimensions)
     dimensions = list(map(int, dimensions))
 
-    string = "matrix* " + name + "; \n"
+    string = indent + "matrix* " + name + "; \n" + indent
     if len(dimensions) == 2:
         string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + str(dimensions[1]) + ");\n"
     else:
@@ -25,19 +26,20 @@ def parse_qp():
     problemFile = "test.qopt"
     dataFile = "exempel.qopt"
     outputFile = "result.c"
+    indent = " "*2
 
     with open(problemFile) as inFile, open(dataFile) as dataFile,open(outputFile, 'w') as outFile:
         copy = False
 
         out = start_text
         outFile.write(out)
-        out = "int\nmain()\n{\n"
+        out = "int\nmain()\n{\n" + indent + "/* Solveranropp! */ \n\n"
         outFile.write(out)
 
         for line in inFile:
             line = line.strip()
             if line == "parameters" or line == "variables":
-                out = "/* " + line + " */\n"
+                out = indent + "/* " + line + " */\n"
                 outFile.write(out)
                 copy = True
             elif line == "minimize":
@@ -56,7 +58,7 @@ def parse_qp():
         data = "{"
         dataName = ""
         matrixName = ""
-        outFile.write("/* Insert values into matrices */\n")
+        outFile.write(indent + "/* Insert values into matrices */\n")
         finding_data = False
         for line in dataFile:
             line = line.strip()
@@ -65,8 +67,8 @@ def parse_qp():
                 if finding_data == True:
                     data = re.sub(r'\s+', ' ', data)
                     data = re.sub(r'\s+', ',', data)
-                    outFile.write("value " + dataName + "[" + str(data[:-1].count(',')+1) + "]" + " = " + data[:-1] + "};\n")
-                    outFile.write("insert_array(" + dataName + ", " + matrixName[:-1] + ");\n")
+                    outFile.write(indent + "value " + dataName + "[" + str(data[:-1].count(',')+1) + "]" + " = " + data[:-1] + "};\n")
+                    outFile.write(indent + "insert_array(" + dataName + ", " + matrixName[:-1] + ");\n")
                     data = "{"
                     finding_data = not finding_data
 
@@ -94,6 +96,7 @@ def get_problem():
                 return line
     return "Error!"
 
+
 def convert_problem():
     problem = get_problem()
     result = re.sub("'", "^T", problem)
@@ -119,6 +122,7 @@ def get_constraints():
                 result += indent + "$" + line + "$\n"
             elif line == "end" and next_line == True:
                 return result 
+
 
 def convert_constraints():
     constraints = get_constraints()

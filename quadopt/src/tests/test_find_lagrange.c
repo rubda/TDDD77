@@ -82,27 +82,24 @@ int main(void){
   assert(w->count == 0);
 
   assert(get_value_without_check(3, 1, lagrange) == -2);
-  //assert(get_value_without_check(5, 1, lagrange) == -5);
-
-  /*
-  matrix* cock_A = create_matrix(2, 1);
-  value tmp_cock_a[4] = {0, 1};
-  insert_array(tmp_cock_a, cock_A);
-  print_matrix(cock_A);
-
-  matrix* cock_B = create_matrix(2, 1);
-  value tmp_cock_b[2] = {0, -5};
-  insert_array(tmp_cock_b, cock_B);
-  print_matrix(cock_B);
-
-  matrix* cock_solved = create_matrix(1, 1);
-  solve_linear(cock_A, cock_solved, cock_B);
-  print_matrix(cock_solved);
-  */
+  assert(get_value_without_check(5, 1, lagrange) == -5);
 
   /* Iteration 3 */
-  //TODO Maybe
+  work_set_append(w, 1);
+  value iter3_g[2] = {0, -2};
+  insert_array(iter3_g, g);
 
+  assert(w->count == 1);
+  assert(w->data[0] == 1);
+
+  find_lagrange(g, A, d, z, w, lagrange);
+
+  assert(w->count == 0);
+
+  assert(abs(get_value_without_check(1, 1, lagrange) - 0.8) < 0.001);
+  assert(get_value_without_check(3, 1, lagrange) == -2);
+  assert(get_value_without_check(5, 1, lagrange) == -5);
+  
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("time taken was: %f \n", time_spent);

@@ -13,6 +13,7 @@ import os
 filename = None
 clipboard = None
 
+
 def new_file(event=None):
     global filename
     global editData
@@ -86,6 +87,7 @@ def select_all(event=None):
     text.see(INSERT)
     return 'break'
 
+
 def deselect_all(event=None):
 	text.tag_remove(SEL, "1.0", END)
 
@@ -119,7 +121,6 @@ def generate_mat(event=None):
 
 
 def view_problem(event=None):
-
     ylim = 10
     xlim = 10
     

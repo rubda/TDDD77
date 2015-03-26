@@ -25,9 +25,11 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   transpose_matrix(w_tmp, w_mat);
  
   /* Solves the system W_mat * x = g */
-  //matrix* solved = create_matrix(w_mat->rows, 1);
   matrix* solved = create_matrix(w->count, 1);
-  solve_linear(w_mat, solved, g);
+
+  if (!solve_linear(w_mat, solved, g)){
+    least_square(w_mat, solved, g);
+  }
 
   /* Finds the smallest lagrange value */
   int min_row = 1;

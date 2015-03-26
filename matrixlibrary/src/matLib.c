@@ -39,12 +39,10 @@ void free_matrix(matrix* mat) {
   free(mat);
 }
 
-/* calculate the vector product */
-value vector_product(matrix* r, matrix* v) {
-  //TODO check
+/* calculate the dot product */
+value dot_product(matrix* r, matrix* v) {
   value ans = 0;
   for (int i = 1; i <= r->rows; i++) {
-    //TODO access the memory directly might be faster
     ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
   }
   return ans;
@@ -173,8 +171,7 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
-/* Multiply a and b into c. c=a*b 
-   TODO this can be faster by switching k and j for loops. see locality of reference*/
+/* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
@@ -193,7 +190,6 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 	sum += get_value_without_check(i, j, a)
 	  * get_value_without_check(j, k, b);
       }
-
       insert_value_without_check(sum, i, k, c);
     }
   }
@@ -201,10 +197,12 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
 }
 
 /* Solves Ax=B */
-bool solve_linear(matrix* a,matrix* x, matrix* b){
+bool solve_linear(matrix* a, matrix* x, matrix* b){
   matrix* u=create_matrix(a->rows,a->columns);
   matrix* l=create_matrix(a->rows,a->columns);
   if (!crout(a,l,u)){
+    free_matrix(u);
+    free_matrix(l);
     return false;
   }
   forward_backward(l,u,x,b);
@@ -216,15 +214,15 @@ bool solve_linear(matrix* a,matrix* x, matrix* b){
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 bool crout(matrix* a, matrix* l, matrix* u) {
   if (a->rows != a->columns) {
-    return;
+    return false;
   }
   int check = a->rows;
   if (check != l->rows || check != u->rows) {
-    return;
+    return false;
   }
   check = a->columns;
   if (check != l->columns || check != u->columns) {
-    return;
+    return false;
   }
   int i, j, k;
   double sum = 0;
@@ -295,6 +293,24 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
   free_matrix(y);
 }
 
+/* If no solution is found with solve_linear, this functions find the closest one */
+void least_square(matrix* a, matrix* x, matrix* b) {
+  matrix* trans_a = create_matrix(a->columns,a->rows);
+  transpose_matrix(a, trans_a); 
+
+  matrix* lhs = create_matrix(trans_a->rows, a->columns);
+  matrix* rhs = create_matrix(trans_a->rows, b->columns);
+  
+  multiply_matrices(trans_a, a, lhs);
+  multiply_matrices(trans_a, b, rhs);
+
+  solve_linear(lhs, x, rhs);
+
+  free_matrix(trans_a);
+  free_matrix(lhs);
+  free_matrix(rhs);
+}
+
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a) {
   value* start1 = a->start + a->columns * (row1 - 1);
@@ -363,11 +379,16 @@ void multiply_matrix_with_scalar(value scal, matrix* mat) {
 }
 
 /* Divides matrix mat with scalar */
-void divide_matrix_with_scalar(value scal, matrix* mat) {
+void divide_matrix_with_scalar(value scal, matrix* mat)
+{
+  if (scal==0){
+    return;
+  }
   size_t size = mat->size;
   size_t i = 0;
-  for (; i < size; i++) {
-    *(mat->start + i ) /= scal;
+  for (; i < size; i++)
+  {
+    *(mat->start + i) /= scal;
   }
 }
 
@@ -382,6 +403,9 @@ void multiply_row_with_scalar(value scal, int row, matrix* mat) {
 
 /* Divides a row with a scalar */
 void divide_row_with_scalar(value scal, int row, matrix* mat) {
+  if (scal==0){
+    return;
+  }
   value* start = mat->start + (row - 1) * mat->columns;
   size_t i = 0;
   for (; i < mat->columns; i++) {
@@ -401,6 +425,9 @@ void multiply_column_with_scalar(value scal, int col, matrix* mat) {
 
 /* Divides a column with a scalar */
 void divide_column_with_scalar(value scal, int col, matrix* mat) {
+  if (scal==0){
+    return;
+  }
   value* start = mat->start + (col - 1);
   size_t i = 0;
   size_t step = mat->rows ;
@@ -519,25 +546,22 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 
 /* Copy and return new matrix. */
 matrix* matrix_copy(matrix* source) {
-  //TODO check
   matrix* m = create_matrix(source->rows,source->columns);
   memcpy(m->start,source->start,source->size * sizeof(value));
   return m;
 }
 
-/* Cpoies all the data from matrix A into matrix B */
-void matrix_copy_data(matrix* A, matrix* B) {
-  //TODO check
-  for (int i = 1; i <= A->rows; i++) {
-    for (int j = 1; j <= A->columns; j++) {
-      insert_value_without_check(get_value_without_check(i,j,A),i,j,B);
-    }
+/* Copies all the data from matrix A into matrix B */
+void matrix_copy_data(matrix* a, matrix* b) {
+  if ((a->columns!=b->columns ||a->rows!=a->rows)){
+    return;
   }
+  size_t number_of_bytes=a->size*sizeof(value);
+  memcpy((void *) (b->start), (void *) (a->start), number_of_bytes);
 }
 
 /* checks if all elements in a matrix is equal to zero */
 bool is_zero_matrix(matrix* v) {
-  //TODO check
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
       if (get_value_without_check(i,j,v) != 0) {
@@ -550,7 +574,6 @@ bool is_zero_matrix(matrix* v) {
 
 /* checks if all elements in a matrix is positive */
 bool is_non_negative_matrix(matrix* v) {
-  //TODO check
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
       if (get_value_without_check(i,j,v) < 0) {
@@ -563,7 +586,6 @@ bool is_non_negative_matrix(matrix* v) {
 
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
 bool is_non_negative_diagonal_matrix(matrix* A) {
-  //TODO check
   for (int i = 1; i <= A->rows; i++) {
     if (get_value_without_check(i,i,A) < 0) {
       return false;

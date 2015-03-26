@@ -55,8 +55,8 @@ typedef struct matrix matrix;
 /* Create a matrix */
 matrix* create_matrix(int row, int col);
 
-/* calculate the vector product */
-value vector_product(matrix* r, matrix* v);
+/* calculate the dot product */
+value dot_product(matrix* r, matrix* v);
 
 /* Destroy a matrix */
 void free_matrix(matrix* mat);
@@ -105,6 +105,9 @@ bool crout(matrix* a, matrix* l, matrix* u);
 
 /* Solves lux=b using backward and forward substitution */
 void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);
+
+/* If no solution is found with solve_linear, this functions find the closest one */
+void least_square(matrix* a, matrix* x, matrix* b);
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a);

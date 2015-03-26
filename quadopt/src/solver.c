@@ -17,11 +17,11 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
     }
     get_row_vector(i, A, ai); //TODO free this later
     transpose_matrix(ai, ati);
-    nom = vector_product(ati,p);
+    nom = dot_product(ati,p);
 
     if (nom < 0) {
       bi = get_value(i,1,B);
-      temp_step = (bi - vector_product(ati,x))/nom;
+      temp_step = (bi - dot_product(ati,x))/nom;
       if (temp_step < step) {
         step = temp_step;
       }
