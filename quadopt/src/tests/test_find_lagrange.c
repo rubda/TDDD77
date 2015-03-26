@@ -94,7 +94,7 @@ int main(void){
 
   find_lagrange(g, A, d, z, w, lagrange);
 
-  assert(w->count == 10);
+  assert(w->count == 0);
 
   assert(abs(get_value_without_check(1, 1, lagrange) - 0.8) < 0.001);
   assert(get_value_without_check(3, 1, lagrange) == -2);
