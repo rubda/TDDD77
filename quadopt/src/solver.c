@@ -44,10 +44,11 @@ bool is_positive_lagrange(matrix* l, work_set* ws) {
 void get_unsolved(matrix* Ain, work_set* unsolved) {
 
   matrix* A = matrix_copy(Ain);
-
   work_set* solved = work_set_create(A->columns);
 
   /* find solved variables */
+  transform_to_reduced_row_echelon_form(A);
+
   int count, c, i, j;
   for (i = 1; i <= A->rows; i++) {
     count = 0;
@@ -85,8 +86,26 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     //just derive and solve
     get_p_au(G,p,gk);
     return true;
-  }
+  }/*
   else {
+
+    get_unsolved(unsolved_vars);
+    
+    /* find and store relations between variables */
+    /*work_set* relations[p->rows];
+    for (int i = 1; i <= p->rows; i++) {
+      relations[i-1] = work_set_create(p->rows);
+
+
+    }
+
+    for (int i = 1; i <= p->rows; i++) {
+
+
+    }*/
+
+
+
     //TODO list:
     //1. find out which variables that are solved or not
     //2. if all vars are solved, remove a condition and return to 1. If no more conditions, goto 0 (this wont happen, probably)
@@ -139,7 +158,7 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
         */
         
-  }
+  //}
 
 
 
