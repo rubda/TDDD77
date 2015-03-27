@@ -6,22 +6,22 @@ main()
   /* Solveranropp! */ 
 
   /* parameters */
-  matrix* A; 
-  A = create_matrix(4, 3);
-  matrix* b; 
-  b = create_matrix(3, 1);
   matrix* Q; 
   Q = create_matrix(4, 4);
   matrix* q; 
-  q = create_matrix(4, 1);
+  q = create_matrix(1, 4);
+  matrix* A; 
+  A = create_matrix(4, 3);
+  matrix* b; 
+  b = create_matrix(1, 3);
   matrix* F; 
-  F = create_matrix(20, 4);
+  F = create_matrix(4, 20);
   matrix* g; 
-  g = create_matrix(20, 1);
+  g = create_matrix(1, 20);
 
   /* variables */
   matrix* z; 
-  z = create_matrix(10, 1);
+  z = create_matrix(4, 1);
 
 
   /* Insert values into matrices */
