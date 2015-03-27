@@ -293,9 +293,9 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
   free_matrix(y);
 }
 
-/* If no solution is found with solve_linear, this functions find the closest one */
+/* If no solution can be found with solve_linear, this function finds the closest one */
 void least_square(matrix* a, matrix* x, matrix* b) {
-  matrix* trans_a = create_matrix(a->columns,a->rows);
+  matrix* trans_a = create_matrix(a->columns, a->rows);
   transpose_matrix(a, trans_a); 
 
   matrix* lhs = create_matrix(trans_a->rows, a->columns);

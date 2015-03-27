@@ -106,7 +106,7 @@ bool crout(matrix* a, matrix* l, matrix* u);
 /* Solves lux=b using backward and forward substitution */
 void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);
 
-/* If no solution is found with solve_linear, this functions find the closest one */
+/* If no solution can be found with solve_linear, this function finds the closest one */
 void least_square(matrix* a, matrix* x, matrix* b);
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */

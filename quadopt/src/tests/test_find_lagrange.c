@@ -99,6 +99,15 @@ int main(void){
   assert(abs(get_value_without_check(1, 1, lagrange) - 0.8) < 0.001);
   assert(get_value_without_check(3, 1, lagrange) == -2);
   assert(get_value_without_check(5, 1, lagrange) == -5);
+
+  /* Success, free everything */
+
+  free_matrix(A);
+  free_matrix(g);
+  free_matrix(d);
+  free_matrix(z);
+  free_matrix(lagrange);
+  work_set_free(w);
   
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
