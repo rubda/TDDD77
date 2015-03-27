@@ -1,6 +1,6 @@
 /*
   Author: Ruben Das
-  Email: rubendas.rd@@gmail.com
+  Email: rubendas.rd@gmail.com
   Date: 2015-03-12
   Description: This file tests the find_lagrange-function which is used in the solver.
 */
@@ -52,7 +52,6 @@ int main(void){
   insert_array(temp_lagrange, lagrange);
 
   /* Test without prints... */
-
   for (int i = 1; i <= A->rows; i++){
     assert(get_value_without_check(i, 1, lagrange) == 0);
   }
@@ -101,7 +100,6 @@ int main(void){
   assert(get_value_without_check(5, 1, lagrange) == -5);
 
   /* Success, free everything */
-
   free_matrix(A);
   free_matrix(g);
   free_matrix(d);
