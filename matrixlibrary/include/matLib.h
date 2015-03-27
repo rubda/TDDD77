@@ -172,4 +172,8 @@ bool is_non_negative_matrix(matrix* v);
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
 bool is_non_negative_diagonal_matrix(matrix* A);
 
+
+void transform_to_reduced_row_echelon_form(matrix* M);
+
+
 #endif /* MATLIB_H */
