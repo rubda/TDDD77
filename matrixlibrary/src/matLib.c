@@ -593,3 +593,62 @@ bool is_non_negative_diagonal_matrix(matrix* A) {
   }
   return true;
 }
+
+/* Transforms a matrix into reduced row echelon form
+ * ex: 
+ *              (1 5 3)               (1 0 0)
+ *      M in =  (1 6 3),    M out =   (0 1 0)
+ *              (1 5 4)               (0 0 1)
+ *
+ *  M doesn't need to be a square matrix
+ */
+void transform_to_reduced_row_echelon_form(matrix* M) {
+  int lead = 1;
+  int i = 1;
+
+  //TODO  doesn't need all theese
+  //      fix indentation
+  matrix* row1 = create_matrix(1,M->columns);
+  matrix* row2 = create_matrix(1,M->columns);
+  matrix* row3 = create_matrix(1,M->columns);
+
+  for (int r = 1; r <= M->rows; r++) {
+    if (M->columns <= lead) {
+      free_matrix(row1);
+      free_matrix(row2);
+      free_matrix(row3);
+      return;
+    }
+    i = r;
+    while (get_value_without_check(i,lead,M) == 0) {
+      i = i + 1;
+      if (M->rows == i) {
+        i = r;
+        lead = lead + 1;
+        if (M->columns == lead) {
+          free_matrix(row1);
+          free_matrix(row2);
+          free_matrix(row3);
+          return;
+        }
+      }
+    }
+    switch_rows(i,r,M);
+    if (get_value_without_check(r,lead,M) != 0) {
+      divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
+    }
+    for (i = 1; i <= M->rows; i++) {
+      if (i != r) {
+        get_row_vector(r,M,row1);
+        get_row_vector(i,M,row2);
+        multiply_matrix_with_scalar(-get_value_without_check(i,lead,M),row1);
+        add_matrices(row1,row2,row3);
+        insert_row_vector(i,row3,M);
+      }
+    }
+    lead++;
+  }
+  free_matrix(row1);
+  free_matrix(row2);
+  free_matrix(row3);
+}
