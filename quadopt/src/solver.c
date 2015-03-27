@@ -117,15 +117,25 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
         ( 0 1 0 1 0 0 0 | 0 )       p4 = -p2
         ( 0 0 0 0 0 0 1 | 0 )       p7 = 0
 
-        Skapa nytt x, G och gk
+        lös variablerna via derivering
         p1:
-             (p1)   ( 1)          (2 0 0 0)                             ( 1)
-        p' = (p3) = (-1) ,  G' =  (0 2 0 0) ,   gk' = (gk1 gk3 gk5 gk6)*(-1)  =>  lös p'^T*G'*p' = C   =>   lös solve_linear(C,p1,-gk') för att få ut värdet på p1
-             (p5)   (-1)          (0 0 2 0)                             (-1)                                  räkna ut p3, p5 och p6 m.h.a värdet på p1 or relationerna
-             (p6)   (-1)          (0 0 0 2)                             (-1)                                  p1 = 1/8, p3 = p5 = p6 = -1/8
+             (p1)   ( 1)                                      
+             (p2)   ( 0)          
+        p' = (p3) = (-1)  =>  gk' = gk*p' = D , p'^T*G'*p' = C   =>   lös solve_linear(C,p1,-D')  för att få ut värdet på p1
+             (p4)   ( 0)                                                                          räkna ut p3, p5 och p6 m.h.a värdet på p1 or relationerna
+             (p5)   (-1)                                                                          p1 = 1/8, p3 = p5 = p6 = -1/8
+             (p6)   (-1)                                                                        
 
         lös p2 p.s.s.
+             (p1)   ( 0)                                      
+             (p2)   ( 1)          
+        p' = (p3) = ( 0)  =>  gk' = gk*p' = D , p'^T*G'*p' = C   =>   lös solve_linear(C,p2,-D')  för att få ut värdet på p2
+             (p4)   (-1)  
+             (p5)   ( 0)                                                                        räkna ut p4 m.h.a relationen med p2
+             (p6)   ( 0) 
 
+
+      OBS: fungerar endast då vi har samband mellan 2 variabler => ex: p1 + p2 + p3 = 0 skulle ej gå att lösa
 
         */
         
