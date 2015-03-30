@@ -145,8 +145,6 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
       }
     }
 
-    printf("COCKED2\n");
-
     matrix* pt = create_matrix(1,p->rows);
     matrix* tmp = create_matrix(1,p->rows);
     matrix* ai = create_matrix(1,1);
