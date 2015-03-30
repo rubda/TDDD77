@@ -56,5 +56,6 @@ void mexFunction( int nlhs, mxArray* plhs[],
       out_matrix++;
     }
   }
+  free_matrix(martins_matrix);
  
 }
