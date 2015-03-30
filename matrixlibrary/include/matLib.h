@@ -92,11 +92,20 @@ value get_value_without_check(int row, int col, matrix* mat);
 /* Adds a and b into c */
 bool add_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Adds a and b by returning a pointer a matrix with a+b */
+matrix* add_matrices_with_return(matrix* a, matrix* b);
+
 /* Subtract a and b into c. c=a-b */
 bool subtract_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Subtracts a and b by returning a pointer a matrix with a-b */
+matrix* subtract_matrices_with_return(matrix* a, matrix* b);
+
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Multiply a and b by returning a pointer to a new matrix with a*b*/
+matrix* multiply_matrices_with_return(matrix* a, matrix* b);
 
 /* Returns the determinant of matrix a */
 value get_determinant(matrix* a);
@@ -118,6 +127,9 @@ void add_rows(int row1, int row2, matrix* a);
 
 /*transposes matrix a into b */
 bool transpose_matrix(matrix* a, matrix*b);
+
+/* Transposes matrix a by returning a pointer to a:s transpose */
+matrix* transpose_matrix_with_return(matrix* a);
 
 /* Return the sum of a row in matrix mat */
 value sum_of_row(int row, matrix* mat);
@@ -151,6 +163,9 @@ void divide_column_with_scalar(value scal, int col, matrix* mat);
 
 /* Takes row vector from matrix a and puts it into b */
 bool get_row_vector(int row, matrix* a, matrix* b);
+
+/* Returns row vector row from matrix a with a pointer to a matrix */
+matrix* get_row_vector_with_return(int row,matrix* a);
 
 /* Inserts row vector a into b:s row */
 bool insert_row_vector(int row, matrix* a, matrix* b);

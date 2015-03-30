@@ -152,6 +152,19 @@ bool add_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/* Adds a and b by returning a pointer a matrix with a+b */
+matrix* add_matrices_with_return(matrix* a, matrix* b) {
+  matrix* c=create_matrix(a->rows,a->columns);
+  if (add_matrices(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
+}
+
+
 /* Subtract a and b into c. c=a-b */
 bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   size_t size;
@@ -169,6 +182,18 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
     *(c->start + i) = *(a->start + i) - *(b->start + i);
   }
   return true;
+}
+
+/* Subtracts a and b by returning a pointer a matrix with a-b */
+matrix* subtract_matrices_with_return(matrix* a, matrix* b) {
+  matrix* c=create_matrix(a->rows,a->columns);
+  if (subtract_matrices(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
 }
 
 
@@ -195,6 +220,16 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
     }
   }
   return true;
+}
+
+/* Multiply a and b by returning a pointer to a new matrix with a*b*/
+matrix* multiply_matrices_with_return(matrix* a, matrix* b) {
+  if ((a->columns != b->rows)) {
+    return NULL;
+  }
+  matrix* c = create_matrix(a->rows, b->columns);
+  multiply_matrices(a, b, c);
+  return c;
 }
 
 /* Returns the determinant of matrix a */
@@ -398,6 +433,13 @@ bool transpose_matrix(matrix* a, matrix*b) {
   return true;
 }
 
+/* Transposes matrix a by returning a pointer to a:s transpose */
+matrix* transpose_matrix_with_return(matrix* a){
+  matrix* b=create_matrix(a->columns,a->rows);
+  transpose_matrix(a,b);
+  return b;
+}
+
 /* Return the sum of a row in matrix mat */
 value sum_of_row(int row, matrix* mat) {
   if (!check_boundaries(row, 1, mat)) {
@@ -539,6 +581,19 @@ bool get_row_vector(int row, matrix* a, matrix* b) {
   }
   return true;
 }
+
+/* Returns row vector row from matrix a with a pointer to a matrix */
+matrix* get_row_vector_with_return(int row,matrix* a){
+  matrix* b=create_matrix(1,a->columns);
+  if(get_row_vector(row,a,b)){
+    return b;
+  }
+  else{
+    free_matrix(b);
+    return NULL;
+  }
+}
+
 
 /* Inserts row vector a into b:s row */
 bool insert_row_vector(int row, matrix* a, matrix* b) {
