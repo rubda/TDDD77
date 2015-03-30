@@ -54,7 +54,15 @@ int main(void){
   }
 
   print_matrix(solved);
+
+  free_matrix(C);
+  free_matrix(D);
+  free_matrix(solved);
+
   */
 
+  free_matrix(A);
+  free_matrix(B);
+  free_matrix(X);
   return 0;
 }
