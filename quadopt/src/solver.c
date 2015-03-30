@@ -77,7 +77,7 @@ void get_p_au(matrix* G, matrix* p, matrix* gk) {
 }
 
 //TODO free matrices and clean up
-bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
+void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
 
   work_set* unsolved_vars = work_set_create(p->rows);
 
@@ -86,26 +86,101 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     //just derive and solve
     get_p_au(G,p,gk);
     return true;
-  }/*
+  }
   else {
 
-    get_unsolved(unsolved_vars);
-    
-    /* find and store relations between variables */
-    /*work_set* relations[p->rows];
-    for (int i = 1; i <= p->rows; i++) {
-      relations[i-1] = work_set_create(p->rows);
+    get_unsolved(Ain,unsolved_vars);
+
+    matrix* A = matrix_copy(Ain);
+    matrix* pp[p->rows];// = create_matrix(p->rows,1);
+    value val;
+    work_set* in_relation = work_set_create(p->rows);
+
+    //Still only works for 2 vars (for sure)
+
+    for (int i = p->rows; i >= 1; i--) {
+      if (!work_set_contains(unsolved_vars,i) || work_set_contains(in_relation,i)) {
+        pp[i-1] = 0;
+        continue;
+      }
+      
+      /* find variables related to pi */
+      pp[i] = create_matrix(p->rows,1);
+      for (int j = 1; j <= p->rows; j++) {
+        if (j == i) {
+          insert_value_without_check(1,i,1,pp[i-1]); 
+	  work_set_append(in_relation,i);
+        }
+        else {
+          insert_value_without_check(0,i,1,pp[i-1]);
+        }      
+      }
 
 
+      for (int r = A->rows; r >= 1; r--) {
+        if (get_value_without_check(r,i,A) == 0) {
+          continue;
+        }
+        for (int c = 1; c <= A->columns; c++) {
+          if (c == i) {
+            continue;
+          }
+
+          if (get_value_without_check(r,c,A) == 0) {
+
+          }
+          else {
+            /* add variable to relation */
+            if (get_value_without_check(c,1,pp[i-1]) == 0) {
+              if (!work_set_contains(in_relation,c)) {
+                work_set_append(in_relation,c);
+              }
+              
+              val = -get_value_without_check(r,i,A);
+              val /= get_value_without_check(r,c,A);
+              insert_value_without_check(val,c,1,pp[i-1]);
+            }
+          }
+        }
+      }
     }
 
-    for (int i = 1; i <= p->rows; i++) {
+    matrix* pt = create_matrix(1,p->rows);
+    matrix* tmp = create_matrix(1,p->rows);
+    matrix* ai = create_matrix(1,1);
+    matrix* bi = create_matrix(1,1);
+    matrix* pi = create_matrix(1,1);
 
+    for (int i = 0; i < p->rows; i++) {
+      if (pp[i] == 0) {
+        continue;
+      }
+      transpose_matrix(pp[i],pt);
+      multiply_matrices(pt,G,tmp);
+      multiply_matrices(tmp,pp[i],ai);
 
-    }*/
+      transpose_matrix(gk,pt);
+      multiply_matrices(pt,pp[i],bi);
+      multiply_matrix_with_scalar(-1,bi);
 
+      //solve_linear(ai,pi,bi);
+      val = get_value_without_check(1,1,bi)/get_value_without_check(1,1,ai);
 
+      insert_value_without_check(val,i+1,1,p);
 
+      /* solve other variables through relations with current variables */
+      for (int j = 1; j <= p->rows; j++) {
+        if (j == i+1) {
+          continue;
+        }
+        else {
+          if (get_value_without_check(j,1,pp[i]) != 0) {
+            insert_value_without_check(val*get_value_without_check(j,1,pp[i]),j,1,p);
+          }
+        }
+      }
+    }
+  } 
     //TODO list:
     //1. find out which variables that are solved or not
     //2. if all vars are solved, remove a condition and return to 1. If no more conditions, goto 0 (this wont happen, probably)
@@ -155,12 +230,13 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
 
       OBS: fungerar endast då vi har samband mellan 2 variabler => ex: p1 + p2 + p3 = 0 skulle ej gå att lösa
-
+            
         */
         
   //}
 
 
+}
 
 
 
@@ -172,9 +248,9 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
 
 
+bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
 
-
-
+  work_set* unsolved_vars = work_set_create(p->rows);
 
   if (ws->count > 0) {
     matrix* A = create_matrix(ws->count, Ain->columns);
@@ -270,30 +346,6 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     insert_value_without_check(get_value_without_check(1,1,ai)*get_value_without_check(1,1,p)/(-get_value_without_check(1,2,ai)),2,1,p);
 
     return true;
-    
-/*
-    insert_value_without_check((2/get_value_without_check(1,1,ai))*
-      (get_value_without_check(1,1,G)*get_value_without_check(1,2,ai)*get_value_without_check(1,2,ai)/get_value_without_check(1,1,ai) -
-      get_value_without_check(2,1,G)*get_value_without_check(1,2,ai) - 
-      get_value_without_check(1,2,G)*get_value_without_check(1,2,ai) +
-      get_value_without_check(2,2,G)*get_value_without_check(1,1,ai)),1,1,a1);
-
-    insert_value_without_check(get_value_without_check(1,1,gk)*get_value_without_check(1,2,ai)/get_value_without_check(1,1,ai) - 
-      get_value_without_check(2,1,gk),1,1,b1);
-
-    
-
-
-    insert_value_without_check(get_value_without_check(1,1,p2),1,1,p);
-    
-
-
-    
-
-    print_matrix(ai);
-
-    insert_value_without_check((get_value_without_check(1,1,ai)*get_value_without_check(1,1,p2))/(-get_value_without_check(1,2,ai)),2,1,p);
-    return true;*/
   }
 
 
@@ -406,8 +458,8 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     matrix* temp_A = matrix_copy(A);
 
     /* get solution for sub problem */		
-    get_p(temp_A, G, gk, d, z, p, lagrange, active_set);
-
+    //get_p(temp_A, G, gk, d, z, p, lagrange, active_set);
+    solve_subproblem(temp_A, G, gk, d, z, p, lagrange, active_set);
 
     printf("After sub-problem: ");
     work_set_print(active_set);
@@ -436,15 +488,16 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
         find_lagrange(gk, A, d, z, active_set, lagrange);
       }
       else {
-        if (is_positive_lagrange(lagrange,active_set)) {
-          break;
-        }
+        break;
       }
     }
     else {
+      if (active_set->count > 0) {
+        if (is_positive_lagrange(lagrange,active_set)) {
+            break;
+        }
+      }
       /* set active set */
-
-
       fill_active_set(z,  A, b, active_set);
     }
 

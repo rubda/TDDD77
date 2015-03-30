@@ -5,8 +5,6 @@
   Description: This is the find_lagrange-function which is used in the solver.
 */
 
-#include <matLib.h>
-#include <work_set.h>
 #include <stdbool.h>
 #include "find_lagrange.h"
 
@@ -18,7 +16,8 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   matrix* w_tmp = create_matrix(w->count, A->columns);
   matrix* w_mat = create_matrix(A->columns, w->count); 
 
-  for (int i = 0; i < w->count; i++){
+  int i;
+  for (i = 0; i < w->count; i++){
     get_row_vector(w->data[i], A, tmp_row);
     insert_row_vector(i+1, tmp_row, w_tmp);
   }
@@ -35,22 +34,28 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   int min_row = 1;
   value min_value = get_value(1, 1, solved);
 
-  for (int i = 2; i <= w->count; i++){
-    value temp = get_value(i, 1, solved);
+  int j;
+  for (j = 2; j <= w->count; j++){
+    value temp = get_value(j, 1, solved);
     if (temp < min_value){
       min_value = temp;
-      min_row = i;
+      min_row = j;
     }
   }
 
   /* Modify lagrange vector */
-  for (int i = 0; i < w->count; i++){
-    insert_value(get_value(i+1, 1, solved), w->data[i], 1, lagrange);
+  int k;
+  for (k = 0; k < w->count; k++){
+    insert_value(get_value(k+1, 1, solved), w->data[k], 1, lagrange);
   }
 
   /* Removes the smallest lagrange value from the work set */
   work_set_remove(w, w->data[min_row-1]);
 
   /* Success */
+  free_matrix(tmp_row);
+  free_matrix(w_tmp);
+  free_matrix(w_mat);
+  free_matrix(solved);
   return true;
 }

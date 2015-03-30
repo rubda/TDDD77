@@ -15,10 +15,10 @@
 #include <string.h>
 
 /* Uncomment which mode you want the library to run in */
-//#define INT
+/*#define INT*/
 #define FLOAT
-//#define DOUBLE
-//#define QUAD
+/*#define DOUBLE*/
+/*#define QUAD*/
 
 /* Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -47,6 +47,7 @@ struct matrix {
 	int rows;
 	size_t size;
 	value *start;
+	bool diagonals;
 };
 
 /* matrix instead of struct matrix */
@@ -97,6 +98,9 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c);
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Returns the determinant of matrix a */
+value get_determinant(matrix* a);
+
 /* Solves Ax=B */
 bool solve_linear(matrix* a,matrix* x, matrix *b);
 
@@ -120,6 +124,12 @@ value sum_of_row(int row, matrix* mat);
 
 /* Return the sum of a column in matrix mat */
 value sum_of_column(int column, matrix* mat);
+
+/* Return the product of a row in matrix mat */
+value product_of_row(int row, matrix* mat);
+
+/* Return the product of a column in matrix mat */
+value product_of_column(int column, matrix* mat);
 
 /* Multiplies matrix mat with scalar */
 void multiply_matrix_with_scalar(value scal, matrix* mat);
@@ -160,19 +170,22 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 /* Copy and return new matrix. */
 matrix* matrix_copy(matrix* source);
 
-/* Cpoies all the data from matrix A into matrix B */
+/* Copies all the data from matrix A into matrix B */
 void matrix_copy_data(matrix* A, matrix* B);
 
-/* checks if all elements in a matrix is equal to zero */
+/* Checks if all elements in a matrix is equal to zero */
 bool is_zero_matrix(matrix* v);
 
-/* checks if all elements in a matrix is positive */
+/* Checks if all elements in a matrix is positive */
 bool is_non_negative_matrix(matrix* v);
 
-/* checks if all elements along the diagonal in a symmetric matrix is positiv */
+/* Checks if all elements along the diagonal in a symmetric matrix is positive */
 bool is_non_negative_diagonal_matrix(matrix* A);
 
+/* Takes the diagonal in a and puts it into b */
+bool get_diagonal(matrix* a,matrix* b);
 
+/* Fucks shit up */
 void transform_to_reduced_row_echelon_form(matrix* M);
 
 
