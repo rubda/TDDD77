@@ -28,7 +28,7 @@ int main(void){
   assert(abs(get_value_without_check(2, 1, X) - 1) < 0.0001);
   assert(abs(get_value_without_check(3, 1, X) - 1) < 0.0001);
 
-
+  /*
   matrix* C = create_matrix(3, 2);
   value temp_c[6] = { 0,  1,
 		      2,  0,
@@ -54,6 +54,7 @@ int main(void){
   }
 
   print_matrix(solved);
+  */
 
   return 0;
 }
