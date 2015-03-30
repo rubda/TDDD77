@@ -106,7 +106,7 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
       /* find variables related to pi */
       pp[i] = create_matrix(p->rows,1);
       for (int j = 1; j <= p->rows; j++) {
-        if (j = i) {
+        if (j == i) {
           insert_value_without_check(1,i,1,pp[i-1]);
           work_set_append(in_relation,i);
         }
