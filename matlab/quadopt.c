@@ -1,29 +1,32 @@
 #include "mex.h"
 #include "solver.h"
 
-void mexFunction( int nlhs, mxArray *plhs[],
-		  int nrhs, const mxArray *prhs[])
+void mexFunction( int nlhs, mxArray* plhs[],
+		  int nrhs, const mxArray* prhs[])
 {  
 
-  //declare variables  
-  mxArray *mat_matrix;
-  matrix *martins_matrix; 
-  matrix[nrhs-1] martins_matrices; 
+  /*declare variables*/  
+  mxArray* mat_matrix;
+  matrix* martins_matrix; 
+  matrix* martins_matrices[nrhs-1]; 
   
 
-  //convert matlab matrises to martin matrises
-  for(int i = 0; i < nrhs - 1; i++){
+  /*convert matlab matrises to martin matrises*/
+  int i;
+  for(i = 0; i < nrhs - 1; i++){
 
     mat_matrix = prhs[i];
     int rows = (int)mxGetM(mat_matrix);
     int columns = (int)mxGetN(mat_matrix);
     martins_matrix = create_matrix(rows,columns);
-    double *element_ptr = mxGetPr(mat_matrix);
+    value* element_ptr = (value*)mxGetPr(mat_matrix);
+    
+    int y;
+    for(y = 0; y < columns; y++){
+      int x;
+      for(x = 0; x < rows; x++){
 
-    for(int y = 0; y < columns; y++){
-      for(int x = 0; x < rows; x++){
-
-	insert_value(&element_ptr,x+1, y+1,martins_matrix);
+	insert_value(*element_ptr,x+1, y+1,martins_matrix);
 	element_ptr++; 
 
     }
@@ -38,4 +41,5 @@ void mexFunction( int nlhs, mxArray *plhs[],
   
   /*set outMatrix to the result matrix*/
   
+}
 }

@@ -22,7 +22,7 @@ struct qp_problem
 
 typedef struct qp_problem qp_problem;
 
-//calculate_lagrange();
+/*calculate_lagrange();*/
 
 value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws);
 
