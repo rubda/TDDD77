@@ -24,12 +24,36 @@ int main(void){
     least_square(A, X, B);
   }
 
-  assert(get_value_without_check(1, 1, X) == -1);
-  assert(get_value_without_check(2, 1, X) == 1);
+  assert(abs(get_value_without_check(1, 1, X) + 1) < 0.0001);
+  assert(abs(get_value_without_check(2, 1, X) - 1) < 0.0001);
   assert(abs(get_value_without_check(3, 1, X) - 1) < 0.0001);
- 
-  //Denna assert borde också funka istället för den övre med abs...
-  //assert(get_value_without_check(3, 1, X) == 1);
+
+
+  matrix* C = create_matrix(3, 2);
+  value temp_c[6] = { 0,  1,
+		      2,  0,
+		      0,  2};
+  insert_array(temp_c, C);
+
+
+  matrix* D = create_matrix(3, 1);
+  value temp_d[3] = { 0,
+		     -2,
+		      5};
+  insert_array(temp_d, D);
+
+  matrix* solved = create_matrix(2, 1);
+
+  print_matrix(C);
+
+  print_matrix(D);
+  
+  if (!solve_linear(C, solved, D)){
+    printf("Can't be solved, using least_square.\n");
+    least_square(C, solved, D);
+  }
+
+  print_matrix(solved);
 
   return 0;
 }
