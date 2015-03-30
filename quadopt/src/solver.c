@@ -79,8 +79,6 @@ void get_p_au(matrix* G, matrix* p, matrix* gk) {
 //TODO free matrices and clean up
 void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
 
-  printf("COCKED1\n");
-
   work_set* unsolved_vars = work_set_create(p->rows);
 
   if (ws->count == 0) {
@@ -110,9 +108,7 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
       pp[i] = create_matrix(p->rows,1);
       for (int j = 1; j <= p->rows; j++) {
         if (j == i) {
-	  printf("COCKED4\n");
-          insert_value_without_check(1,i,1,pp[i-1]); /* Segmentation fault found */
-	  printf("COCKED5\n");
+          insert_value_without_check(1,i,1,pp[i-1]); 
 	  work_set_append(in_relation,i);
         }
         else {
@@ -120,7 +116,6 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
         }      
       }
 
-      printf("COCKED3\n");
 
       for (int r = A->rows; r >= 1; r--) {
         if (get_value_without_check(r,i,A) == 0) {

@@ -71,11 +71,5 @@ bool work_set_contains(work_set* ws, int item) {
 
 /* Clears the set */
 void work_set_clear(work_set* ws) {
-<<<<<<< HEAD
-=======
-  /* Need to remove all data elements?*/
-  /* dvs free(ws->data);*/
-  /* ws-data = NULL;*/
->>>>>>> bf98a8e18a3d81a46fa8e6d46f23a4f487c2d005
   ws->count = 0;
 }
