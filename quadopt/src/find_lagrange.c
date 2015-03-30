@@ -53,5 +53,9 @@ bool find_lagrange(matrix* g, matrix* A, matrix* d, matrix* z, work_set* w, matr
   work_set_remove(w, w->data[min_row-1]);
 
   /* Success */
+  free_matrix(tmp_row);
+  free_matrix(w_tmp);
+  free_matrix(w_mat);
+  free_matrix(solved);
   return true;
 }

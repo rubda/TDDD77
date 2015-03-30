@@ -10,13 +10,12 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
   ai = create_matrix(1, A->columns);
   value bi, nom, temp_step, step = 1;
 
-  /*TODO check*/
-  int i;
-  for (i = 1; i <= A->rows; i++) {
+  //TODO check
+  for (int i = 1; i <= A->rows; i++) {
     if (work_set_contains(ws,i)) {
       continue;
     }
-    get_row_vector(i, A, ai); /*TODO free this later*/
+    get_row_vector(i, A, ai); //TODO free this later
     transpose_matrix(ai, ati);
     nom = dot_product(ati,p);
 
@@ -33,8 +32,7 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
 
 /* checks if the lagrange multipliers in the active set is positive */
 bool is_positive_lagrange(matrix* l, work_set* ws) {
-  int i;
-  for (i = 0; i < ws->count; i++) {
+  for (int i = 0; i < ws->count; i++) {
     if (get_value_without_check(ws->data[i],1,l) < 0) {
       return false;
     }
@@ -42,7 +40,7 @@ bool is_positive_lagrange(matrix* l, work_set* ws) {
   return true;
 }
 
-/*TODO: make it work with more than 2 vars*/
+//TODO: make it work with more than 2 vars
 void get_unsolved(matrix* Ain, work_set* unsolved) {
 
   matrix* A = matrix_copy(Ain);
@@ -78,54 +76,52 @@ void get_p_au(matrix* G, matrix* p, matrix* gk) {
   solve_linear(G_derivate,p,gk);
 }
 
-/*TODO free matrices and clean up*/
+//TODO free matrices and clean up
 void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
 
   work_set* unsolved_vars = work_set_create(p->rows);
 
   if (ws->count == 0) {
-    /*0. all vars unknown, no relation between them*/
-    /*just derive and solve*/
+    //0. all vars unknown, no relation between them
+    //just derive and solve
     get_p_au(G,p,gk);
-    return;
+    return true;
   }
   else {
 
     get_unsolved(Ain,unsolved_vars);
 
     matrix* A = matrix_copy(Ain);
-    matrix* pp[p->rows];/* = create_matrix(p->rows,1);*/
+    matrix* pp[p->rows];// = create_matrix(p->rows,1);
     value val;
     work_set* in_relation = work_set_create(p->rows);
 
-    /*Still only works for 2 vars (for sure)*/
+    //Still only works for 2 vars (for sure)
 
-    int i;
-    for (i = p->rows; i >= 1; i--) {
+    for (int i = p->rows; i >= 1; i--) {
       if (!work_set_contains(unsolved_vars,i) || work_set_contains(in_relation,i)) {
         pp[i-1] = 0;
         continue;
       }
+      
       /* find variables related to pi */
       pp[i] = create_matrix(p->rows,1);
-      int j;
-      for (j = 1; j <= p->rows; j++) {
+      for (int j = 1; j <= p->rows; j++) {
         if (j == i) {
-          insert_value_without_check(1,i,1,pp[i-1]);
-          work_set_append(in_relation,i);
+          insert_value_without_check(1,i,1,pp[i-1]); 
+	  work_set_append(in_relation,i);
         }
         else {
           insert_value_without_check(0,i,1,pp[i-1]);
         }      
       }
 
-      int r;
-      for (r = A->rows; r >= 1; r--) {
+
+      for (int r = A->rows; r >= 1; r--) {
         if (get_value_without_check(r,i,A) == 0) {
           continue;
         }
-	int c;
-        for (c = 1; c <= A->columns; c++) {
+        for (int c = 1; c <= A->columns; c++) {
           if (c == i) {
             continue;
           }
@@ -155,49 +151,47 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
     matrix* bi = create_matrix(1,1);
     matrix* pi = create_matrix(1,1);
 
-    int k;
-    for (k = 0; k < p->rows; k++) {
-      if (pp[k] == 0) {
+    for (int i = 0; i < p->rows; i++) {
+      if (pp[i] == 0) {
         continue;
       }
-      transpose_matrix(pp[k],pt);
+      transpose_matrix(pp[i],pt);
       multiply_matrices(pt,G,tmp);
-      multiply_matrices(tmp,pp[k],ai);
+      multiply_matrices(tmp,pp[i],ai);
 
       transpose_matrix(gk,pt);
-      multiply_matrices(pt,pp[k],bi);
+      multiply_matrices(pt,pp[i],bi);
       multiply_matrix_with_scalar(-1,bi);
 
-      /*solve_linear(ai,pi,bi);*/
+      //solve_linear(ai,pi,bi);
       val = get_value_without_check(1,1,bi)/get_value_without_check(1,1,ai);
 
-      insert_value_without_check(val,k+1,1,p);
+      insert_value_without_check(val,i+1,1,p);
 
       /* solve other variables through relations with current variables */
-      int j;
-      for (j = 1; j <= p->rows; j++) {
-        if (j == k+1) {
+      for (int j = 1; j <= p->rows; j++) {
+        if (j == i+1) {
           continue;
         }
         else {
-          if (get_value_without_check(j,1,pp[k]) != 0) {
-            insert_value_without_check(val*get_value_without_check(j,1,pp[k]),j,1,p);
+          if (get_value_without_check(j,1,pp[i]) != 0) {
+            insert_value_without_check(val*get_value_without_check(j,1,pp[i]),j,1,p);
           }
         }
       }
     }
   } 
-  /*TODO list:*/
-  /*1. find out which variables that are solved or not*/
-  /*2. if all vars are solved, remove a condition and return to 1. If no more conditions, goto 0 (this wont happen, probably)*/
+    //TODO list:
+    //1. find out which variables that are solved or not
+    //2. if all vars are solved, remove a condition and return to 1. If no more conditions, goto 0 (this wont happen, probably)
     
-  /*3. build up new G of unsolved variables*/
-  /*4. choose one unsolved variable and try to find a relationship between it and all other unsolved variabels*/
-  /*5. if not successful, choose another unsolved variable and try to find a relation between it and the remaining variables, keep going until all vars have a relationship*/
-  /*6. build up new matrices and solve systems to retrive value of the chosen variables*/
-  /*7. loop through all relations to get value of remaining unsolved variables*/
+    //3. build up new G of unsolved variables
+    //4. choose one unsolved variable and try to find a relationship between it and all other unsolved variabels
+    //5. if not successful, choose another unsolved variable and try to find a relation between it and the remaining variables, keep going until all vars have a relationship
+    //6. build up new matrices and solve systems to retrive value of the chosen variables
+    //7. loop through all relations to get value of remaining unsolved variables
 
-  /*Example:*/
+    //Example:
 
 
     /* subproblem (1/2)*p^T*G*p + gk*p,   
@@ -239,7 +233,7 @@ void solve_subproblem(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, 
             
         */
         
-  /*}*/
+  //}
 
 
 }
@@ -265,8 +259,7 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
     matrix* b = create_matrix(ws->count, 1);
 
     /* build matrices */
-    int i;
-    for (i = 0; i < ws->count; i++) {
+    for (int i = 0; i < ws->count; i++) {
       get_row_vector(ws->data[i], Ain, row);
       insert_row_vector(i+1, row, A);
       insert_value_without_check(0, i+1, 1, b);
@@ -284,8 +277,7 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
       b = create_matrix(ws->count, 1);
 
       /* build matrices */
-      int i;
-      for (i = 0; i < ws->count; i++) {
+      for (int i = 0; i < ws->count; i++) {
         get_row_vector(ws->data[i], Ain, row);
         insert_row_vector(i+1, row, A);
         insert_value_without_check(0, i+1, 1, b);
@@ -296,8 +288,7 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
   }
   else {
     /* save unsolved variables */
-    int i;
-    for(i = 1; i <= z->rows; i++) {
+    for(int i = 1; i <= z->rows; i++) {
         work_set_append(unsolved_vars, i);
     }
   }
@@ -313,10 +304,8 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
   /* create new G and gks for unsolved variables and derivation */
   matrix* Gs = create_matrix(unsolved_vars->count,unsolved_vars->count);
-  int i;
-  for (i = 1; i <= unsolved_vars->count; i++) {
-    int j;
-    for (j = 1; j <= unsolved_vars->count; j++) {
+  for (int i = 1; i <= unsolved_vars->count; i++) {
+    for (int j = 1; j <= unsolved_vars->count; j++) {
       insert_value_without_check(get_value_without_check(i,unsolved_vars->data[j-1],G),i,j,Gs);
     }
   }
@@ -341,7 +330,7 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
     multiply_matrices(cpt,G,temp);
     multiply_matrices(temp,cp,a1);
-    /*multiply_matrix_with_scalar(2,a1);*/
+    //multiply_matrix_with_scalar(2,a1);
 
 
     matrix* gkt = create_matrix(gk->columns, gk->rows);
@@ -362,10 +351,9 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
   matrix* gis = create_matrix(G->rows,1);
 
-  matrix* gks = create_matrix(unsolved_vars->count,1); /*matrix_copy(d);  */
-  int j;
-  for (j = 1; j <= unsolved_vars->count; j++) {
-    insert_value_without_check(get_value_without_check(unsolved_vars->data[j-1],1,gk),j,1,gks);
+  matrix* gks = create_matrix(unsolved_vars->count,1); //matrix_copy(d);  
+  for (int i = 1; i <= unsolved_vars->count; i++) {
+    insert_value_without_check(get_value_without_check(unsolved_vars->data[i-1],1,gk),i,1,gks);
   }
 
   matrix* ps = create_matrix(unsolved_vars->count, 1);
@@ -373,10 +361,9 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
   /* build matrices */
   int counter = 1;
-  int k;
-  for (k = 1; k <= G->columns; k++) {
-    if (work_set_contains(unsolved_vars, k)) {
-      get_column_vector(k,G,gis);
+  for (int i = 1; i <= G->columns; i++) {
+    if (work_set_contains(unsolved_vars, i)) {
+      get_column_vector(i,G,gis);
       insert_column_vector(counter,gis,Gs);
       counter++;
     }
@@ -385,14 +372,13 @@ bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, 
 
   /* solve system derivate to get the last variables */
 
-  /*multiply_matrix_with_scalar(-1,gks);*/
+  //multiply_matrix_with_scalar(-1,gks);
   solve_linear(Gs,ps,gks);
 
 
   /* fill in missing values in p */
-  int l;
-  for (l = 0; l < unsolved_vars->count; l++) {
-    insert_value_without_check(get_value_without_check(l+1, 1, ps), unsolved_vars->data[l], 1, p);
+  for (int i = 0; i < unsolved_vars->count; i++) {
+    insert_value_without_check(get_value_without_check(i+1, 1, ps), unsolved_vars->data[i], 1, p);
   }
 
   return true;
@@ -403,16 +389,14 @@ bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {
   work_set_clear(ws);
 
   /* fill */
-  int i;
-  for (i = 1; i <= A->rows; i++) {
+  for (int i = 1; i <= A->rows; i++) {
     int ans = 0;
-    int j;
-    for (j = 1; j <= A->columns; j++) {
+    for (int j = 1; j <= A->columns; j++) {
       ans += get_value(i,j,A)*get_value(j,1,z); 
-      /*TODO add check and get_value_without_check and return false*/
+      //TODO add check and get_value_without_check and return false
     }
 
-    if (ans == get_value(i,1,b)) { /*+get_value(i,0,s)*/
+    if (ans == get_value(i,1,b)) { //+get_value(i,0,s)
       work_set_append(ws,i);
     }
   }
@@ -429,11 +413,11 @@ bool fill_active_set(matrix* z, matrix* A, matrix* b, work_set* ws) {
 matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, value accuracy) {
 
   /* create variables */
-  matrix* p = matrix_copy(z0); /*unessecary init of values, only has to be the same dims*/
+  matrix* p = matrix_copy(z0); //unessecary init of values, only has to be the same dims
   matrix* gk = matrix_copy(d);
   matrix* z_last = matrix_copy(z0);
   matrix * z = matrix_copy(z0);
-  matrix* lagrange = create_matrix(A->rows,1); /*osv*/
+  matrix* lagrange = create_matrix(A->rows,1); //osv
 
   work_set* active_set = work_set_create(A->rows);
 
@@ -445,7 +429,7 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
   multiply_matrix_with_scalar(2,G_derivate);
   int counter = 0;
 
-  /********************* solve the problem ********************/
+  //******************** solve the problem ********************/
 
   /* set active set */
   fill_active_set(z,  A, b, active_set);
@@ -459,7 +443,7 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     print_matrix(b);
 
     /* set active set */
-    /*fill_active_set(z,  A, b, active_set);*/
+    //fill_active_set(z,  A, b, active_set);
 
     printf("Before sub-problem: ");
     work_set_print(active_set);
@@ -474,7 +458,7 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     matrix* temp_A = matrix_copy(A);
 
     /* get solution for sub problem */		
-    /*get_p(temp_A, G, gk, d, z, p, lagrange, active_set);*/
+    //get_p(temp_A, G, gk, d, z, p, lagrange, active_set);
     solve_subproblem(temp_A, G, gk, d, z, p, lagrange, active_set);
 
     printf("After sub-problem: ");
@@ -485,8 +469,8 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
 
 
     /* check second derivative if minimum */
-    /*is_positive_diagonal_matrix(G_derivate);*/
-    /*TODO if not minimum?*/
+    //is_positive_diagonal_matrix(G_derivate);
+    //TODO if not minimum?
 
 
     /* calculate step */
@@ -495,7 +479,7 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
     printf("step: %f\n",step);
 
     /* take step */
-    matrix_copy_data(z,z_last); /*TODO implement this function*/
+    matrix_copy_data(z,z_last); //TODO implement this function
     multiply_matrix_with_scalar(step,p);
     add_matrices(z_last,p,z);
 
@@ -522,8 +506,8 @@ matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, v
 
 
     counter++;
-  } while (true); /*!(is_positive_lagrange(lagrange, active_set) && is_zero_matrix(p)));  /*TODO  add condition: if step <= accuracy then stop*/
-  /*implement is_positive_langrange and is_zero_matrix*/
+  } while (true); //!(is_positive_lagrange(lagrange, active_set) && is_zero_matrix(p)));  //TODO  add condition: if step <= accuracy then stop
+  //implement is_positive_langrange and is_zero_matrix
 
   return z;
 
