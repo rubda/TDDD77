@@ -361,10 +361,6 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   
   multiply_matrices(trans_a, a, lhs);
   multiply_matrices(trans_a, b, rhs);
-  printf("start \n");
-  print_matrix(lhs);
-  print_matrix(rhs);
-  print_matrix(x);
   solve_linear(lhs, x, rhs);
 
   free_matrix(trans_a);
