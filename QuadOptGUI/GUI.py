@@ -11,16 +11,19 @@ import re
 import os
 
 filename = None
+
 clipboard = None
+start_file = "parameters\n\nend\n\nvariables\n\nend\n\nminimize\n\nsubject to\n\nend\n"
+
 
 def new_file(event=None):
     global filename
     global editData
     
     text.delete(0.0, END)
-    text.insert(0.0, "parameters\n\nend\n\nvariables\n\nend\n\n"
-                     "minimize\n  quadOpt()\nsubject to\n  A*x == b\n  F*x <= g\nend\n")
+    text.insert(0.0, start_file)
     editData = text.get(0.0, END)
+    root.title("New file")
     highlight()
 
 
@@ -33,25 +36,33 @@ def save_file(event=None):
     	f.close()
     except:
         save_as()
-    
+
 
 def save_as(event=None):
-    f = asksaveasfile(mode='w', defaultextension='.qopt')
-    t = text.get(0.0, END)
+    global filename
     try:
+        f = asksaveasfile(mode='w', defaultextension='.qopt')
+        t = text.get(0.0, END)
+        filename = f.name
         f.write(t.rstrip())
+        root.title(filename)
     except:
         showerror(title="Something went wrong", message="Unable to save file...")
 
 
 def open_file(event=None):
-    f = askopenfile(mode='r')
-    t = f.read()
-    
-    text.delete(0.0, END)
-    text.insert(0.0, t)
-    root.title(filename)
-    highlight()
+    global filename
+    try:
+        f = askopenfile(mode='r')
+        t = f.read()
+        filename = f.name
+
+        text.delete(0.0, END)
+        text.insert(0.0, t)
+        root.title(filename)
+        highlight()
+    except:
+        pass
 
 
 def popup(event):
@@ -86,6 +97,7 @@ def select_all(event=None):
     text.see(INSERT)
     return 'break'
 
+
 def deselect_all(event=None):
 	text.tag_remove(SEL, "1.0", END)
 
@@ -103,51 +115,69 @@ def highlight(event=None):
 
 
 def generate_c(event=None):
-    parse_qp()
-    f = open("result.c")
-    t = f.read()
+    global filename
+    
+    save_as()
 
-    text.delete(0.0, END)
-    text.insert(0.0, t)
-    root.title(filename)
-    text.config(state=DISABLED)
-    showinfo(title="C code generation", message="The generated C code wrote to result.c")
+    try:
+        f = askopenfile(mode='r', title='Select datafile')
+        datafilename = f.name
+        f = askopenfile(mode='r', title='Select output file')
+        outfilename = f.name
+
+        parse_qp(filename, outfilename, datafilename)
+
+        #f = open("result.c")
+        f = open(outfilename)
+        t = f.read()
+
+        text.delete(0.0, END)
+        text.insert(0.0, t)
+        root.title(filename)
+        text.config(state=DISABLED)
+        showinfo(title="C code generation", message="The generated C code was written to " + outfilename)
+    except:
+        showerror(title="Error", message="Something went wrong!")
 
 
 def generate_mat(event=None):
-    showinfo(title="Matlab", message="Matlab code generated")
+    showinfo(title="Matlab", message="If you want to use this function please run quadopt in Matlab")
 
 
 def view_problem(event=None):
+    global filename
+    try:
+        ylim = 10
+        xlim = 10
+        
+        fig = plt.figure(facecolor='white')
+        
+        plt.axis([0,xlim,0,ylim])
+        plt.axis('off')
 
-    ylim = 10
-    xlim = 10
-    
-    fig = plt.figure(facecolor='white')
-    
-    plt.axis([0,xlim,0,ylim])
-    plt.axis('off')
+        minimize = "$minimize \ "
+        subject = "$subject \ to$\n"
+        problem = convert_problem(filename)
+        constraints = convert_constraints(filename)
 
-    minimize = "$minimize \ "
-    subject = "$subject \ to$\n"
-    problem = convert_problem()
-    constraints = convert_constraints()
+        problemText = "\n"*4 + minimize + problem + subject + constraints
+        
+        plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
+        fig.savefig("problem.png")
 
-    problemText = "\n"*4 + minimize + problem + subject + constraints
-    
-    plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
-    fig.savefig("problem.png")
+        img = PhotoImage(file="problem.png")
+        os.remove("problem.png")
 
-    img = PhotoImage(file="problem.png")
-    os.remove("problem.png")
-
-    text.delete(0.0, END)
-    text.image_create(0.0, image=img)
+        text.delete(0.0, END)
+        text.image_create(0.0, image=img)
+    except:
+        showerror(title="Something went wrong",message="Unable to view the problem")
 
 
 def edit_problem(event=None):
+    global filename
     text.config(state=NORMAL)
-    f = open("test.qopt")
+    f = open(filename)
     t = f.read()
 
     text.delete(0.0, END)

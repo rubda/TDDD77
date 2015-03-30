@@ -1,18 +1,25 @@
+# TODO:
+# Fixa result.c som är hårdkodad
+# och gör det vettigt!
+# Krashar om man försöker generera kod från en ny osparad fil
+# Tvinga sparning innan kod generering?
+
 import re
 
-filename = None
+#filename = None
 
 start_text = "#include <matLib.h>\n\n"
 
 
 def format_declarations(line):
+    indent = " "*2
     line = line.replace(' ', '')
     name = line.split('(')[0]
     dimensions = line.split('(')[1]
     dimensions = re.findall(r'\d+', dimensions)
     dimensions = list(map(int, dimensions))
 
-    string = "matrix* " + name + "; \n"
+    string = indent + "matrix* " + name + "; \n" + indent
     if len(dimensions) == 2:
         string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + str(dimensions[1]) + ");\n"
     else:
@@ -20,24 +27,28 @@ def format_declarations(line):
     return string
 
 
-def parse_qp():
-    global filename
-    problemFile = "test.qopt"
-    dataFile = "exempel.qopt"
-    outputFile = "result.c"
+def parse_qp(filename, outfilename, datafilename): 
+    #global filename
+    problemFile = filename#"test.qopt"
+    dataFile = datafilename#"exempel.qopt"
+    outputFile = outfilename#"result.c"
+    indent = " "*2
+
+    print("Problem: " + problemFile)
+    print("Data: " + dataFile)
+    print("Out: " + outputFile)
 
     with open(problemFile) as inFile, open(dataFile) as dataFile,open(outputFile, 'w') as outFile:
         copy = False
-
         out = start_text
         outFile.write(out)
-        out = "int\nmain()\n{\n"
+        out = "int\nmain()\n{\n" + indent + "/* Solveranropp! */ \n\n"
         outFile.write(out)
 
         for line in inFile:
             line = line.strip()
             if line == "parameters" or line == "variables":
-                out = "/* " + line + " */\n"
+                out = indent + "/* " + line + " */\n"
                 outFile.write(out)
                 copy = True
             elif line == "minimize":
@@ -56,7 +67,7 @@ def parse_qp():
         data = "{"
         dataName = ""
         matrixName = ""
-        outFile.write("/* Insert values into matrices */\n")
+        outFile.write(indent + "/* Insert values into matrices */\n")
         finding_data = False
         for line in dataFile:
             line = line.strip()
@@ -65,8 +76,8 @@ def parse_qp():
                 if finding_data == True:
                     data = re.sub(r'\s+', ' ', data)
                     data = re.sub(r'\s+', ',', data)
-                    outFile.write("value " + dataName + "[" + str(data[:-1].count(',')+1) + "]" + " = " + data[:-1] + "};\n")
-                    outFile.write("insert_array(" + dataName + ", " + matrixName[:-1] + ");\n")
+                    outFile.write(indent + "value " + dataName + "[" + str(data[:-1].count(',')+1) + "]" + " = " + data[:-1] + "};\n")
+                    outFile.write(indent + "insert_array(" + dataName + ", " + matrixName[:-1] + ");\n")
                     data = "{"
                     finding_data = not finding_data
 
@@ -80,10 +91,9 @@ def parse_qp():
 
 
 # Get the problem from the .qopt file and convert it to Latex format
-def get_problem():
-    problemFile = "test.qopt"
+def get_problem(filename):
     next_line = False
-    with open(problemFile) as inFile:
+    with open(filename) as inFile:
         for line in inFile:
             line = line.strip()
             if line == "" or line == " ":
@@ -94,8 +104,9 @@ def get_problem():
                 return line
     return "Error!"
 
-def convert_problem():
-    problem = get_problem()
+
+def convert_problem(filename):
+    problem = get_problem(filename)
     result = re.sub("'", "^T", problem)
     result = result.replace("+", " \ + \ ")
     result = result.replace("*", "")
@@ -103,12 +114,11 @@ def convert_problem():
 
 
 # Get the constraints from the .qopt fil and convert them to Latex format
-def get_constraints():
-    problemFile = "test.qopt"
+def get_constraints(filename):
     next_line = False
     result = ""
     indent = " "*14
-    with open(problemFile) as inFile:
+    with open(filename) as inFile:
         for line in inFile:
             line = line.strip()
             if line == "" or line == " ":
@@ -120,8 +130,9 @@ def get_constraints():
             elif line == "end" and next_line == True:
                 return result 
 
-def convert_constraints():
-    constraints = get_constraints()
+
+def convert_constraints(filename):
+    constraints = get_constraints(filename)
     result = re.sub("<=", " \ \leq \ ", constraints)
     result = re.sub("==", " \ = \ ", result)
     result = result.replace("*", "")

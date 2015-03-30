@@ -107,7 +107,7 @@ bool crout(matrix* a, matrix* l, matrix* u);
 /* Solves lux=b using backward and forward substitution */
 void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);
 
-/* If no solution is found with solve_linear, this functions find the closest one */
+/* If no solution can be found with solve_linear, this function finds the closest one */
 void least_square(matrix* a, matrix* x, matrix* b);
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
@@ -172,5 +172,9 @@ bool is_non_negative_matrix(matrix* v);
 
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
 bool is_non_negative_diagonal_matrix(matrix* A);
+
+
+void transform_to_reduced_row_echelon_form(matrix* M);
+
 
 #endif /* MATLIB_H */
