@@ -216,7 +216,42 @@ value get_determinant(matrix* a){
   free_matrix(b);
   free_matrix(c);
   return temp;
+}
 
+/* Calculates the inverse of a and puts it into c */
+bool get_inverse(matrix* a, matrix* c) {
+  if (a->columns != c->columns || a->rows != c->rows) {
+    return false;
+  }
+  matrix* u = create_matrix(a->rows, a->columns);
+  matrix* l = create_matrix(a->rows, a->columns);
+  if (!crout(a, l, u)) {
+    free_matrix(u);
+    free_matrix(l);
+    return false;
+  }
+  matrix* x = create_matrix(a->rows, 1);
+  matrix* b = create_matrix(a->rows, 1);
+
+  /* Solve for each column */
+  for (int i = 1; i <= a->columns; i++) {
+    /* Fill the b vector */
+    for (int j = 1; j <= a->columns; j++) {
+      if (j == i) {
+        insert_value(1.0, j, 1, b);
+      }
+      else {
+        insert_value(0.0, j, 1, b);
+      }
+    }
+    forward_backward(l, u, x, b);
+    insert_column_vector(i, x, c);
+  }
+  free_matrix(u);
+  free_matrix(l);
+  free_matrix(x);
+  free_matrix(b);
+  return true;
 }
 
 /* Solves Ax=B */
