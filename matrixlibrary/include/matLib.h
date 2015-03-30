@@ -47,6 +47,7 @@ struct matrix {
 	int rows;
 	size_t size;
 	value *start;
+	bool diagonals;
 };
 
 /* matrix instead of struct matrix */

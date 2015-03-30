@@ -1,6 +1,12 @@
+# TODO:
+# Fixa result.c som är hårdkodad
+# och gör det vettigt!
+# Krashar om man försöker generera kod från en ny osparad fil
+# Tvinga sparning innan kod generering?
+
 import re
 
-filename = None
+#filename = None
 
 start_text = "#include <matLib.h>\n\n"
 
@@ -21,16 +27,19 @@ def format_declarations(line):
     return string
 
 
-def parse_qp():
-    global filename
-    problemFile = "test.qopt"
-    dataFile = "exempel.qopt"
-    outputFile = "result.c"
+def parse_qp(filename, outfilename, datafilename): 
+    #global filename
+    problemFile = filename#"test.qopt"
+    dataFile = datafilename#"exempel.qopt"
+    outputFile = outfilename#"result.c"
     indent = " "*2
+
+    print("Problem: " + problemFile)
+    print("Data: " + dataFile)
+    print("Out: " + outputFile)
 
     with open(problemFile) as inFile, open(dataFile) as dataFile,open(outputFile, 'w') as outFile:
         copy = False
-
         out = start_text
         outFile.write(out)
         out = "int\nmain()\n{\n" + indent + "/* Solveranropp! */ \n\n"
@@ -82,10 +91,9 @@ def parse_qp():
 
 
 # Get the problem from the .qopt file and convert it to Latex format
-def get_problem():
-    problemFile = "test.qopt"
+def get_problem(filename):
     next_line = False
-    with open(problemFile) as inFile:
+    with open(filename) as inFile:
         for line in inFile:
             line = line.strip()
             if line == "" or line == " ":
@@ -97,8 +105,8 @@ def get_problem():
     return "Error!"
 
 
-def convert_problem():
-    problem = get_problem()
+def convert_problem(filename):
+    problem = get_problem(filename)
     result = re.sub("'", "^T", problem)
     result = result.replace("+", " \ + \ ")
     result = result.replace("*", "")
@@ -106,12 +114,11 @@ def convert_problem():
 
 
 # Get the constraints from the .qopt fil and convert them to Latex format
-def get_constraints():
-    problemFile = "test.qopt"
+def get_constraints(filename):
     next_line = False
     result = ""
     indent = " "*14
-    with open(problemFile) as inFile:
+    with open(filename) as inFile:
         for line in inFile:
             line = line.strip()
             if line == "" or line == " ":
@@ -124,8 +131,8 @@ def get_constraints():
                 return result 
 
 
-def convert_constraints():
-    constraints = get_constraints()
+def convert_constraints(filename):
+    constraints = get_constraints(filename)
     result = re.sub("<=", " \ \leq \ ", constraints)
     result = re.sub("==", " \ = \ ", result)
     result = result.replace("*", "")

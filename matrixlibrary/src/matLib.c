@@ -171,6 +171,7 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   if ((a->columns != b->rows) || (a->rows != c->rows)
@@ -303,7 +304,10 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   
   multiply_matrices(trans_a, a, lhs);
   multiply_matrices(trans_a, b, rhs);
-
+  printf("start \n");
+  print_matrix(lhs);
+  print_matrix(rhs);
+  print_matrix(x);
   solve_linear(lhs, x, rhs);
 
   free_matrix(trans_a);
