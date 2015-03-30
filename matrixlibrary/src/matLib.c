@@ -197,6 +197,63 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/* Returns the determinant of matrix a */
+value get_determinant(matrix* a){
+  matrix* u=create_matrix(a->rows,a->columns);
+  matrix* l=create_matrix(a->rows,a->columns);
+  if (!crout(a,l,u)){
+    free_matrix(u);
+    free_matrix(l);
+    return 0;
+  }
+  matrix* b=create_matrix(1,a->columns);
+  matrix* c=create_matrix(1,a->columns);
+  get_diagonal(l,b);
+  get_diagonal(u,c);
+  value temp=product_of_row(1,b)*product_of_row(1,c);
+  free_matrix(l);
+  free_matrix(u);
+  free_matrix(b);
+  free_matrix(c);
+  return temp;
+}
+
+/* Calculates the inverse of a and puts it into c */
+bool get_inverse(matrix* a, matrix* c) {
+  if (a->columns != c->columns || a->rows != c->rows) {
+    return false;
+  }
+  matrix* u = create_matrix(a->rows, a->columns);
+  matrix* l = create_matrix(a->rows, a->columns);
+  if (!crout(a, l, u)) {
+    free_matrix(u);
+    free_matrix(l);
+    return false;
+  }
+  matrix* x = create_matrix(a->rows, 1);
+  matrix* b = create_matrix(a->rows, 1);
+
+  /* Solve for each column */
+  for (int i = 1; i <= a->columns; i++) {
+    /* Fill the b vector */
+    for (int j = 1; j <= a->columns; j++) {
+      if (j == i) {
+        insert_value(1.0, j, 1, b);
+      }
+      else {
+        insert_value(0.0, j, 1, b);
+      }
+    }
+    forward_backward(l, u, x, b);
+    insert_column_vector(i, x, c);
+  }
+  free_matrix(u);
+  free_matrix(l);
+  free_matrix(x);
+  free_matrix(b);
+  return true;
+}
+
 /* Solves Ax=B */
 bool solve_linear(matrix* a, matrix* x, matrix* b){
   matrix* u=create_matrix(a->rows,a->columns);
@@ -355,6 +412,8 @@ value sum_of_row(int row, matrix* mat) {
   return to_return;
 }
 
+
+
 /* Return the sum of a column in matrix mat */
 value sum_of_column(int column, matrix* mat) {
   if (!check_boundaries(1, column, mat)) {
@@ -365,6 +424,34 @@ value sum_of_column(int column, matrix* mat) {
   value to_return = 0;
   for (; i < mat->rows; i++) {
     to_return += *(start + i * mat->columns);
+  }
+  return to_return;
+}
+
+/* Return the product of a row in matrix mat */
+value product_of_row(int row, matrix* mat) {
+  if (!check_boundaries(row, 1, mat)) {
+    return false;
+  }
+  size_t i = 0;
+  value *start = mat->start + (row - 1) * mat->columns;
+  value to_return = 1;
+  for (; i < mat->columns; i++) {
+    to_return *= *(start + i);
+  }
+  return to_return;
+}
+
+/* Return the product of a column in matrix mat */
+value product_of_column(int column, matrix* mat) {
+  if (!check_boundaries(1, column, mat)) {
+    return false;
+  }
+  size_t i = 0;
+  value *start = mat->start + (column - 1);
+  value to_return = 1;
+  for (; i < mat->rows; i++) {
+    to_return *= *(start + i * mat->columns);
   }
   return to_return;
 }
@@ -594,6 +681,17 @@ bool is_non_negative_diagonal_matrix(matrix* A) {
   return true;
 }
 
+/* Takes the diagonal in a and puts it in b */
+bool get_diagonal(matrix* a,matrix* b) {
+  if (a->rows != a->columns || b->columns != a->columns) {
+    return false;
+  }
+  for (int i = 1; i <= a->columns; i++) {
+    insert_value_without_check(get_value_without_check(i, i, a), 1, i, b);
+  }
+  return true;
+}
+
 /* Transforms a matrix into reduced row echelon form
  * ex: 
  *              (1 5 3)               (1 0 0)
@@ -641,7 +739,7 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
       if (i != r) {
         get_row_vector(r,M,row1);
         get_row_vector(i,M,row2);
-        multiply_matrix_with_scalar(-get_value_without_check(i,lead,M),row1);
+        multiply_matrix_with_scalar(get_value_without_check(i,lead,M),row1);
         add_matrices(row1,row2,row3);
         insert_row_vector(i,row3,M);
       }
