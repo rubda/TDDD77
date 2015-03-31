@@ -56,6 +56,9 @@ typedef struct matrix matrix;
 /* Create a matrix */
 matrix* create_matrix(int row, int col);
 
+/* Is normally not needed for this implementation but might be needed on others */
+matrix* create_zero_matrix(int row,int col);
+
 /* calculate the dot product */
 value dot_product(matrix* r, matrix* v);
 
@@ -110,6 +113,9 @@ matrix* multiply_matrices_with_return(matrix* a, matrix* b);
 /* Returns the determinant of matrix a */
 value get_determinant(matrix* a);
 
+/* Calculates the inverse of a and puts it into c */
+bool get_inverse(matrix* a, matrix* c);
+
 /* Solves Ax=B */
 bool solve_linear(matrix* a,matrix* x, matrix *b);
 
@@ -124,6 +130,12 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);
 
 /* If no solution can be found with solve_linear, this function finds the closest one */
 void least_square(matrix* a, matrix* x, matrix* b);
+
+/* Gauss eliminates the matrix a */
+bool gauss_jordan(matrix* a);
+
+/* Returns a matrix with only pivots elements from a  */
+matrix* get_matrix_with_only_pivots(matrix* a);
 
 /* Returns the lowest of the two values */
 value min(value a,value b);

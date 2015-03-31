@@ -141,21 +141,56 @@ void create_subproblem(problem* prob){
 
 /* Solves the sub problem */
 void solve_subproblem(problem* prob){
-  problem* sub=prob->subproblem;
-  matrix* x=solve_linear_with_return(sub->A,sub->b);
-  if(x!=NULL){
-    if (sub->point_set){
+  problem* sub = prob->subproblem;
+
+  /* Handle to many conditions */
+  if (sub->number_of_conditions > sub->number_of_variables) {
+
+  }
+  /* Handle to few conditions */
+  if (sub->number_of_conditions < sub->number_of_variables) {
+
+  }
+
+  /* Handle the same amounts of variables as equations */
+  matrix* x = solve_linear_with_return(sub->A, sub->b);
+  if (x != NULL) {
+    if (sub->point_set) {
       free_matrix(sub->x);
     }
-  sub->x=x;
-  sub->point_set=true;
+    sub->x = x;
+    sub->point_set = true;
+    return;
   }
-  if (sub->number_of_conditions>sub->number_of_variables){
-    /* handle to many equations */
+  /* If solver fails  */
+  else {
+    free_matrix(x);
   }
-  if (sub->number_of_conditions<sub->number_of_variables){
-    /* handle to few equations */
+}
+
+void handle_to_many_conditions(problem* sub){
+  matrix* temp = matrix_copy(sub->A);
+  gauss_jordan(temp);
+  matrix* A = get_matrix_with_only_pivots(temp);
+  free_matrix(temp);
+  if (A->columns == A->rows) {
+    free_matrix(sub->b);
+    sub->b = create_zero_matrix(A->rows, 1);
+    free_matrix(sub->A);
+    sub->A = A;
+    if (sub->point_set) {
+      free_matrix(sub->x);
+    }
+    sub->x = solve_linear_with_return(sub->A, sub->b);
+    return;
   }
+  else {
+    free_matrix(A);
+    handle_to_few_conditions(sub);
+  }
+}
+
+void handle_to_few_conditions(problem* sub){
 
 }
 

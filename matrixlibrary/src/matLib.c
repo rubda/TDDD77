@@ -34,6 +34,20 @@ matrix* create_matrix(int row, int col) {
   return mal;
 }
 
+/* Is normally not needed for this implementation but might be needed on others */
+matrix* create_zero_matrix(int row,int col){
+  if (row < 1 || col < 1) {
+    return NULL;
+  }
+
+  matrix* mal = (matrix *) malloc(sizeof(matrix));
+  mal->columns = col;
+  mal->rows = row;
+  mal->size = row * col;
+  mal->start = (value *) calloc(1,col * row * sizeof(value));
+  return mal;
+}
+
 /* free the memory allocated by matrix mat */
 void free_matrix(matrix* mat) {
   free(mat->start);
@@ -436,6 +450,7 @@ bool gauss_jordan(matrix* a) {
       insert_value(0,i,k,a);
     }
   }
+  return true;
 }
 
 /* Returns a matrix with only pivots elements from a  */
