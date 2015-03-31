@@ -11,4 +11,5 @@ int main(){
   insert_matrix(2,2,temp,temp1);
   print_matrix_with_matrices(temp1);
 
+  return 0;
 }
