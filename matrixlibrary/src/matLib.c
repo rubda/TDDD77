@@ -25,6 +25,7 @@ matrix* create_matrix(int row, int col) {
   if (row < 1 || col < 1) {
     return NULL;
   }
+
   matrix* mal = (matrix *) malloc(sizeof(matrix));
   mal->columns = col;
   mal->rows = row;
@@ -304,6 +305,18 @@ bool solve_linear(matrix* a, matrix* x, matrix* b){
   return true;
 }
 
+/* Solves ax=b by returning a pointer to x */
+matrix* solve_linear_with_return(matrix* a,matrix *b){
+  matrix* x = create_matrix(b->rows,b->columns);
+  if (solve_linear(a,x,b)){
+  return x;
+  }
+  else{
+    free_matrix(x);
+    return NULL;
+  }
+}
+
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 bool crout(matrix* a, matrix* l, matrix* u) {
   if (a->rows != a->columns) {
@@ -338,7 +351,7 @@ bool crout(matrix* a, matrix* l, matrix* u) {
       }
 
       if (get_value(j, j, l) == 0) {
-	return false;
+        return false;
       }
       insert_value((get_value(j, i, a) - sum) / get_value(j, j, l), j, i,
 		   u);
@@ -401,6 +414,97 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   free_matrix(trans_a);
   free_matrix(lhs);
   free_matrix(rhs);
+}
+
+/* Gauss eliminates the matrix a */
+bool gauss_jordan(matrix* a) {
+  for (int k = 1; k <= min(a->rows, a->columns); k++) {
+    int pivot = largest_element_in_column_index(k,k, a);
+    if (get_value(pivot, k, a) == 0) {
+      pivot=smallest_element_in_column_index(k,k, a);
+      if (get_value(pivot, k, a) == 0){
+        return false;
+      }
+      multiply_row_with_scalar(-1,pivot,a);
+    }
+    switch_rows(k, pivot, a);
+    for (int i = k + 1; i <= a->rows; i++) {
+      for (int j = k + 1; j <= a->columns; j++) {
+        value temp1=get_value(i,j,a)-get_value(k,j,a)*(get_value(i,k,a)/get_value(k,k,a));
+        insert_value(temp1,i,j,a);
+      }
+      insert_value(0,i,k,a);
+    }
+  }
+}
+
+/* Returns a matrix with only pivots elements from a  */
+matrix* get_matrix_with_only_pivots(matrix* a){
+  matrix* temp=create_matrix(a->rows,a->columns);
+  matrix* temp_vector=create_matrix(1,a->columns);
+  int pivot=0;
+  for (int i=1;i<=a->rows;i++){
+    for (int j=1;j<=a->columns;j++){
+      if (get_value(i,j,a)!=0){
+        pivot++;
+        get_row_vector(i,a,temp_vector);
+        insert_row_vector(pivot,temp_vector,temp);
+        break;
+      }
+    }
+  }
+
+  matrix* to_return=create_matrix(pivot,a->columns);
+  get_sub_matrix(1,pivot,1,a->columns,temp,to_return);
+  free_matrix(temp);
+  free_matrix(temp_vector);
+  return to_return;
+}
+
+/* Returns the lowest of the two values */
+value min(value a,value b){
+  if (a<b){
+    return a;
+  }
+  else{
+    return b;
+  }
+}
+
+/* Returns on which row the largest element in the column is after start */
+int largest_element_in_column_index(int column,int start,matrix* a){
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  value max = get_value(start, column, a);
+  value temp = 0;
+  int index = start;
+  for (int i =start+1; i <= a->rows; i++) {
+    temp = get_value(i, column, a);
+    if (temp > max) {
+      max = temp;
+      index = i;
+    }
+  }
+  return index;
+}
+
+/* Returns on which row the smallest element in the column is after start */
+int smallest_element_in_column_index(int column,int start,matrix* a){
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  value min = get_value(start, column, a);
+  value temp = 0;
+  int index = start;
+  for (int i = start+1; i <= a->rows; i++) {
+    temp = get_value(i, column, a);
+    if (temp < min) {
+      min = temp;
+      index = i;
+    }
+  }
+  return index;
 }
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
@@ -745,6 +849,28 @@ bool get_diagonal(matrix* a,matrix* b) {
     insert_value_without_check(get_value_without_check(i, i, a), 1, i, b);
   }
   return true;
+}
+
+/* Returns a pointer to a matrix with the derivative of var if the a matrix second order coefficiants */
+matrix* derivate_matrix_with_return(int var,matrix* a){
+  if (a->rows!=a->columns ||var<0||var>a->columns){
+    return NULL;
+  }
+  matrix* to_return=create_matrix(a->rows,a->columns);
+  for (int i=1;i<=a->rows;i++){
+    for (int j=1;j<=a->columns;j++){
+      if(i==var &&j==var){
+        insert_value(2*get_value(i,j,a),i,j,to_return);
+      }
+      else if (i==var||j==var){
+        insert_value(get_value(i,j,a),i,j,to_return);
+      }
+      else{
+        insert_value(0,i,j,to_return);
+      }
+    }
+  }
+  return to_return;
 }
 
 /* Transforms a matrix into reduced row echelon form

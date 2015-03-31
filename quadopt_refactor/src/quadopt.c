@@ -16,6 +16,8 @@ problem* create_problem(matrix* G,matrix* d,matrix* A,matrix* b){
   prob->marginal=0;
   prob->active_conditions=create_matrix(1,1);
   insert_value(-1,1,1,prob->active_conditions);
+  prob->subproblem_set=false;
+  prob->point_set=false;
   return prob;
 }
 
@@ -26,6 +28,9 @@ void free_problem(problem* prob){
   free_matrix(prob->b);
   if (prob->point_set){
     free_matrix(prob->x);
+  }
+  if (prob->subproblem_set){
+    free_problem(prob->subproblem);
   }
 
 }
@@ -55,6 +60,7 @@ void get_active_conditions(problem* prob){
   }
   free_matrix(prob->active_conditions);
   prob->active_conditions=conditions;
+  prob->number_of_active_conditions=number_of_active_conditions;
 }
 
 /* Presents the problem */
@@ -73,10 +79,17 @@ void present_problem(problem* prob){
   printf("The current value of the target function is: ");
   printf(FORMAT_STRING,prob->current_value);
   printf("\n");
+  if(prob->point_set){
   printf("in the point: \n");
   print_matrix(prob->x);
+  }
   printf("the active condition(s) are: \n");
   print_matrix(prob->active_conditions);
+  if (prob->subproblem_set){
+    printf("\n ---------------------------------------------------------------------------\n");
+    printf("the current subproblem is: \n \n");
+    present_problem(prob->subproblem);
+  }
 }
 
 /* Solves the problem struct using active set method */
@@ -85,12 +98,65 @@ bool solve_problem(problem* prob){
     find_start_point(prob);
   }
   get_active_conditions(prob);
+  create_subproblem(prob);
+  solve_subproblem(prob);
 
 #ifdef DEBUG
   calculate_current_value(prob);
   present_problem(prob);
 #endif
   return true;
+}
+
+/* Creates a subproblem */
+void create_subproblem(problem* prob){
+  matrix* Gx=multiply_matrices_with_return(prob->G,prob->x);
+  assert(Gx!=NULL);
+  matrix* Gxplusd=add_matrices_with_return(Gx,prob->d);
+  assert(Gxplusd!=NULL);
+  free_matrix(Gx);
+  matrix* sub_A=create_matrix(prob->number_of_active_conditions,prob->number_of_variables);
+  matrix* temp;
+  /* Create matrix with all active conditions */
+  for (int i=1;i<=prob->number_of_active_conditions;i++){
+    temp=get_row_vector_with_return(get_value(1,i,prob->active_conditions),prob->A);
+    insert_row_vector(i,temp,sub_A);
+    free_matrix(temp);
+  }
+  gauss_jordan(prob->A);
+
+  matrix* sub_b=create_matrix(prob->number_of_active_conditions,1);
+  matrix* temp1;
+  /* Create matrix with right hand side of all active conditions */
+  for (int i=1;i<=prob->number_of_active_conditions;i++){
+    insert_value(0,i,1,sub_b);
+  }
+  if (prob->subproblem_set){
+    free_problem(prob->subproblem);
+  }
+  prob->subproblem=create_problem(prob->G,Gxplusd,sub_A,sub_b);
+  prob->subproblem_set=true;
+
+}
+
+/* Solves the sub problem */
+void solve_subproblem(problem* prob){
+  problem* sub=prob->subproblem;
+  matrix* x=solve_linear_with_return(sub->A,sub->b);
+  if(x!=NULL){
+    if (sub->point_set){
+      free_matrix(sub->x);
+    }
+  sub->x=x;
+  sub->point_set=true;
+  }
+  if (sub->number_of_conditions>sub->number_of_variables){
+    /* handle to many equations */
+  }
+  if (sub->number_of_conditions<sub->number_of_variables){
+    /* handle to few equations */
+  }
+
 }
 
 /* Calculates the functions current value */

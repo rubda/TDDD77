@@ -13,7 +13,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <matLib.h>
+#include <assert.h>
 
+
+/* matrix instead of struct matrix */
+typedef struct problem problem;
 /* This is the core-struct in this library. All QP-operations are based on this Struct. */
 struct problem {
   matrix* G;
@@ -29,10 +33,10 @@ struct problem {
   value marginal;
   bool point_set;
   value current_value;
+  problem* subproblem;
+  bool subproblem_set;
 };
 
-/* matrix instead of struct matrix */
-typedef struct problem problem;
 
 /* Uncomment to set to debugmode */
 #define DEBUG
@@ -48,6 +52,12 @@ void find_start_point(problem* prob);
 
 /* Solves the problem struct using active set method */
 bool solve_problem(problem* prob);
+
+/* Creates a subproblem */
+void create_subproblem(problem* prob);
+
+/* Solves the sub problem */
+void solve_subproblem(problem* prob);
 
 /* Calculates the functions current value */
 bool calculate_current_value(problem* prob);
