@@ -10,12 +10,11 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
   ai = create_matrix(1, A->columns);
   value bi, nom, temp_step, step = 1;
 
-  //TODO check
   for (int i = 1; i <= A->rows; i++) {
     if (work_set_contains(ws,i)) {
       continue;
     }
-    get_row_vector(i, A, ai); //TODO free this later
+    get_row_vector(i, A, ai);
     transpose_matrix(ai, ati);
     nom = dot_product(ati,p);
 
@@ -27,6 +26,8 @@ value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws) {
       }
     }
   }
+  free_matrix(ai);
+  free_matrix(ati);
   return step;
 }
 
@@ -74,6 +75,7 @@ void get_p_au(matrix* G, matrix* p, matrix* gk) {
   matrix* G_derivate = matrix_copy(G);
   multiply_matrix_with_scalar(-1,gk);
   solve_linear(G_derivate,p,gk);
+  free_matrix(G_derivate);
 }
 
 //TODO free matrices and clean up
