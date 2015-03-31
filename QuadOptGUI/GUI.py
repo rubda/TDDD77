@@ -11,18 +11,17 @@ import re
 import os
 
 filename = None
-
 clipboard = None
 start_file = "parameters\n\nend\n\nvariables\n\nend\n\nminimize\n\nsubject to\n\nend\n"
 
 
 def new_file(event=None):
     global filename
-    global editData
-    
+    global edit_ata
+
     text.delete(0.0, END)
     text.insert(0.0, start_file)
-    editData = text.get(0.0, END)
+    edit_data = text.get(0.0, END)
     root.title("New file")
     highlight()
 
@@ -30,10 +29,10 @@ def new_file(event=None):
 def save_file(event=None):
     global filename
     try:
-    	t = text.get(0.0, END)
-    	f = open(filename, 'w')
-    	f.write(t.rstrip())
-    	f.close()
+        t = text.get(0.0, END)
+        f = open(filename, 'w')
+        f.write(t.rstrip())
+        f.close()
     except:
         save_as()
 
@@ -47,7 +46,8 @@ def save_as(event=None):
         f.write(t.rstrip())
         root.title(filename)
     except:
-        showerror(title="Something went wrong", message="Unable to save file...")
+        showerror(title="Something went wrong",
+                        message="Unable to save file...")
 
 
 def open_file(event=None):
@@ -84,10 +84,10 @@ def cut(event=None):
 
 def paste(event=None):
     global clipboard
-    try:	
-    	text.insert(INSERT, clipboard)
+    try:
+        text.insert(INSERT, clipboard)
     except:
-    	pass
+        pass
     highlight()
 
 
@@ -99,13 +99,13 @@ def select_all(event=None):
 
 
 def deselect_all(event=None):
-	text.tag_remove(SEL, "1.0", END)
+    text.tag_remove(SEL, "1.0", END)
 
 
 def highlight(event=None):
     # make a tag for change the color.
     text.tag_configure("blue", foreground="#48d")
-        
+
     # apply the tag.
     text.highlight_pattern("parameters", "blue")
     text.highlight_pattern("variables", "blue")
@@ -116,32 +116,47 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
-    
-    save_as()
+
+    # Prompt user to save before proceeds
+    # save_as()
+
+    parse_qp(filename, "result.c", "exempel.qopt")
+
+    f = open("result.c")
+    t = f.read()
+
+    text.delete(0.0, END)
+    text.insert(0.0, t)
+    root.title(filename)
+    text.config(state=DISABLED)
+    showinfo(title="C code generation",
+             message="The generated C code was written to " + "result.c")
 
     try:
+        assert(1 == 2)
         f = askopenfile(mode='r', title='Select datafile')
-        datafilename = f.name
+        data_filename = f.name
         f = askopenfile(mode='r', title='Select output file')
-        outfilename = f.name
+        out_filename = f.name
 
-        parse_qp(filename, outfilename, datafilename)
+        parse_qp(filename, out_filename, data_filename)
 
-        #f = open("result.c")
-        f = open(outfilename)
+        f = open(out_filename)
         t = f.read()
 
         text.delete(0.0, END)
         text.insert(0.0, t)
         root.title(filename)
         text.config(state=DISABLED)
-        showinfo(title="C code generation", message="The generated C code was written to " + outfilename)
+        showinfo(title="C code generation",
+                 message="The generated C code was written to " + out_filename)
     except:
         showerror(title="Error", message="Something went wrong!")
 
 
 def generate_mat(event=None):
-    showinfo(title="Matlab", message="If you want to use this function please run quadopt in Matlab")
+    showinfo(title="Matlab",
+             message="Please run quadopt in Matlab")
 
 
 def view_problem(event=None):
@@ -149,10 +164,10 @@ def view_problem(event=None):
     try:
         ylim = 10
         xlim = 10
-        
+
         fig = plt.figure(facecolor='white')
-        
-        plt.axis([0,xlim,0,ylim])
+
+        plt.axis([0, xlim, 0, ylim])
         plt.axis('off')
 
         minimize = "$minimize \ "
@@ -160,9 +175,10 @@ def view_problem(event=None):
         problem = convert_problem(filename)
         constraints = convert_constraints(filename)
 
-        problemText = "\n"*4 + minimize + problem + subject + constraints
-        
-        plt.text(-1, ylim, problemText, fontsize=14, horizontalalignment='left', verticalalignment='center')
+        problem_text = "\n"*4 + minimize + problem + subject + constraints
+
+        plt.text(-1, ylim, problem_text, fontsize=14,
+                 horizontalalignment='left', verticalalignment='center')
         fig.savefig("problem.png")
 
         img = PhotoImage(file="problem.png")
@@ -171,19 +187,23 @@ def view_problem(event=None):
         text.delete(0.0, END)
         text.image_create(0.0, image=img)
     except:
-        showerror(title="Something went wrong",message="Unable to view the problem")
+        showerror(title="Something went wrong",
+                  message="Unable to view the problem")
 
 
 def edit_problem(event=None):
     global filename
-    text.config(state=NORMAL)
-    f = open(filename)
-    t = f.read()
+    try:
+        text.config(state=NORMAL)
+        f = open(filename)
+        t = f.read()
 
-    text.delete(0.0, END)
-    text.insert(0.0, t)
-    root.title(filename)
-    highlight()
+        text.delete(0.0, END)
+        text.insert(0.0, t)
+        root.title(filename)
+        highlight()
+    except:
+        pass
 
 
 def quit(event=None):
@@ -194,18 +214,21 @@ def quit(event=None):
 root = Tk()
 
 # main label
-mainLabel = Label(root, text="QuadOpt Alpha", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+mainLabel = Label(root, text="QuadOpt Alpha", font="Verdana 12 bold",
+                  fg="#305080", bg="#f6f6f6")
 mainLabel.pack(expand=False, fill="x")
 
 # sidebar
-sideBar = Frame(root, width=150, bg="#f6f6f6", height=400, relief="sunken", borderwidth=2)
+sideBar = Frame(root, width=150, bg="#f6f6f6", height=400, relief="sunken",
+                borderwidth=2)
 sideBar.pack(expand=False, fill="both", side="left", anchor="nw")
 
 # main content area and scrollbar
 scrollbar = Scrollbar()
 scrollbar.pack(side=RIGHT, fill=Y)
 
-mainArea = Frame(root, bg="white", width=600, height=400, relief="sunken", borderwidth=2)
+mainArea = Frame(root, bg="white", width=600, height=400, relief="sunken",
+                 borderwidth=2)
 mainArea.pack(expand=True, fill="both", side="right")
 
 text = CustomText(mainArea, yscrollcommand=scrollbar.set, undo=True)
@@ -214,7 +237,8 @@ text.pack(expand=True, fill="both")
 scrollbar.config(command=text.yview)
 
 # buttons
-problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold",
+                     fg="#305080", bg="#f6f6f6")
 problemLabel.pack()
 
 editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
@@ -222,14 +246,17 @@ editButton.pack()
 viewButton = Button(sideBar, text="View", width=15, command=view_problem)
 viewButton.pack()
 
-blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold",
+                   fg="#305080", bg="#f6f6f6")
 blankLabel.pack()
 
-codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold", fg="#305080", bg="#f6f6f6")
+codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold",
+                     fg="#305080", bg="#f6f6f6")
 codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
-matlabButton = Button(sideBar, text="Matlab code", width=15, command=generate_mat)
+matlabButton = Button(sideBar, text="Matlab code", width=15,
+                      command=generate_mat)
 matlabButton.pack()
 
 exitButton = Button(sideBar, text="Exit", width=15, command=quit)
@@ -268,7 +295,7 @@ text.bind("<Control-v>", paste)
 text.bind("<Control-x>", cut)
 text.bind("<Control-s>", save_file)
 text.bind("<Control-S>", save_as)
-text.bind("<Control-o>", open_file)	
+text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
 root.bind("<KeyPress>", highlight)
