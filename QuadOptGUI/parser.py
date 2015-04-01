@@ -29,7 +29,7 @@ def parse_qp(filename, out_filename, data_filename):
     with open(problem_file) as in_file, open(data_file) as data_file, open(output_file, 'w') as out_file:
 
         copy = False
-        out = start_tex
+        out = start_text
         out_file.write(out)
         out = "int\nmain()\n{\n"
         out_file.write(out)
@@ -38,7 +38,9 @@ def parse_qp(filename, out_filename, data_filename):
         problem = ""
 
         for line in in_file:
+            print(line)
             line = line.strip()
+            print(line)
             if line == "parameters" or line == "variables":
                 out = indent + "/* " + line + " */\n"
                 out_file.write(out)
