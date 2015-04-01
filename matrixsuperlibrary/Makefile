@@ -8,7 +8,7 @@ LIBMATRIX_INCLUDE = ../matrixlibrary/include
 LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
 
 CC = gcc
-CFLAGS = -g -Wall -pedantic --std=c99 -fPIC
+CFLAGS = -g -Wall -pedantic --std=c99
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))
@@ -32,6 +32,10 @@ clean:
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -I $(LIBMATRIX_INCLUDE) -c $< -o $@ 
+
+$(BUILD_DIR)/matSuperLib.o: $(SRC_DIR)/matSuperLib.c $(wildcard $(INCLUDE_DIR)/*.h)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -I $(LIBMATRIX_INCLUDE) -c $< -o $@ 
 
 
 # Rule for making the superlibrary
@@ -58,5 +62,5 @@ test: $(TEST_BINS)
 	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(LIB) $(LIBMATRIX)
-	$(CC) $(CFLAGS) $@.o -o $@ -L $(BUILD_DIR) -L $(LIBMATRIX_DIR) -lsupermatrix -lmatrix
+	$(CC) $@.o -o $@ -L $(BUILD_DIR) -L $(LIBMATRIX_DIR) -lsupermatrix -lmatrix
 	chmod 755 $@

@@ -3,7 +3,7 @@ INCLUDE_DIR = include
 SRC_DIR = src
 
 CC = gcc
-CFLAGS = -g -Wall -pedantic --std=c99 -fPIC
+CFLAGS = -g -Wall -pedantic --std=c99
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))
@@ -28,6 +28,10 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -c $< -o $@ 
 
+$(BUILD_DIR)/matLib.o: $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@ 
+
 
 # Rule for making the library
 
@@ -47,5 +51,5 @@ test: $(TEST_BINS)
 	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(LIB)
-	$(CC) $(CFLAGS) $@.o -o $@ -L $(BUILD_DIR) -lmatrix
+	$(CC) $@.o -o $@ -L $(BUILD_DIR) -lmatrix
 	chmod 755 $@
