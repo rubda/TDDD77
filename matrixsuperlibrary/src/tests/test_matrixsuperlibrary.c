@@ -16,5 +16,11 @@ int main(){
   print_matrix_m(temp3);
   matrix_m* temp4=multiply_matrices_m_with_return(temp1,temp1);
   print_matrix_m(temp4);
+
+  free_matrix_m(temp1);
+  free_matrix(temp);
+  free_matrix_m(temp2);
+  free_matrix_m(temp3);
+  free_matrix_m(temp4);
   return 0;
 }

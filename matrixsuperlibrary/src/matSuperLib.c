@@ -36,12 +36,16 @@ matrix_m* create_matrix_m(int row, int col) {
 
 /* Frees the matrix_m */
 void free_matrix_m(matrix_m* a){
-  for (int i=1;i<=a->rows;i++){
-    for (int j=1;i<=a->columns;j++){
-     free_matrix(get_matrix(i,j,a));
+  for(int i = 0; i < a->size; i++){
+    if((a->start)[i] != NULL){
+      printf("cock %i\n", i);
+      free_matrix((a->start)[i]);
+      (a->start)[i] = NULL;
     }
-    }
+  }
 
+  free(a->start);
+  free(a);
 }
 
 /*prints all the matrices*/
@@ -93,7 +97,10 @@ bool insert_matrix(int row, int col,matrix* insert, matrix_m* mat) {
   if (row<0||col<0||row>mat->columns||col>mat->rows){
     return false;
   }
-  *(mat->start+mat->columns * (row - 1)  + (col - 1))=insert;
+
+  matrix* copy = matrix_copy(insert);
+
+  *(mat->start+mat->columns * (row - 1)  + (col - 1))=copy;
   return true;
 }
 
@@ -113,11 +120,11 @@ bool add_matrices_m(matrix_m* a, matrix_m* b, matrix_m* c) {
   if (check != b->rows || check != c->rows) {
     return false;
   }
-  matrix* temp;
   for (int i=1;i<=a->rows;i++){
     for (int j=1;j<=a->columns;j++){
-      temp=add_matrices_with_return(get_matrix(i,j,a),get_matrix(i,j,b));
+      matrix* temp=add_matrices_with_return(get_matrix(i,j,a),get_matrix(i,j,b));
       insert_matrix(i,j,temp ,c);
+      free_matrix(temp);
     }
   }
   return true;
@@ -147,11 +154,12 @@ bool subtract_matrices_m(matrix_m* a, matrix_m* b, matrix_m* c) {
   if (check != b->rows || check != c->rows) {
     return false;
   }
-  matrix* temp;
+
   for (int i=1;i<=a->rows;i++){
     for (int j=1;j<=a->columns;j++){
-      temp=subtract_matrices_with_return(get_matrix(i,j,a),get_matrix(i,j,b));
+      matrix* temp = subtract_matrices_with_return(get_matrix(i,j,a),get_matrix(i,j,b));
       insert_matrix(i,j,temp ,c);
+      free_matrix(temp);
     }
   }
   return true;
@@ -194,6 +202,7 @@ bool multiply_matrices_m(matrix_m* a, matrix_m* b, matrix_m* c) {
       }
       insert_matrix(i,k,sum,c);
       print_matrix(sum);
+      free_matrix(sum);
     }
   }
   return true;
