@@ -1,14 +1,8 @@
 \section{Standarder}
 Denna del av dokumentet är till för att klargöra vilka standarder som bör följas för att uppnå en god kodkvalité.
 
-\subsection{Innehåll}
-\begin{itemize}
-\item Skrivning av kod
-\item Testning av kod
-\end{itemize}
-
 \subsubsection{Kod}
-Källkod för optimeringsalgoritmen skall vara skriven i språket C99 och följa standarden som tas upp i bilaga A. Även kommentering av kod ska följa standarden som tas upp i bilagan. 
+Källkod för optimeringsalgoritmen skall vara skriven i språket C99 och följa standarden som tas upp i bilaga A som är skriven av utvecklingsledaren Alexander Yngve. Kommentering av kod ska även följa standarden som tas upp i bilagan. 
 \newline
 \newline
 Koden ska kompileras med strängen som syns nedan. Filerna kommer kompileras med gcc 4.8. Flaggorna som har valts är för att få en väldigt sträng ``rättning`` av koden som skrivs. 
@@ -16,8 +10,7 @@ Koden ska kompileras med strängen som syns nedan. Filerna kommer kompileras med
 \begin{itemize}
 \item gcc -Wall -Werror -pedantic -std=c99 -o namn namn.c
 \end{itemize}
-\newline
-Källkod för GUI:t ska skrivas i Python efter PEP 8 och PEP 257 standarderna. 
+\noindent Källkod för GUI:t ska skrivas i Python efter PEP 8 och PEP 257 standarderna. 
 
 \subsubsection{Testning}
 Testning ska ske efter riktlinjerna som finns i testplanen.
