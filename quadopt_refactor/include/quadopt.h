@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <matLib.h>
+#include <matSuperLib.h>
 #include <assert.h>
 
 
@@ -42,7 +43,7 @@ struct problem {
 
 
 /* Uncomment to set to debugmode */
-#define DEBUG
+//#define DEBUG
 
 /* Create a problem */
 problem* create_problem(matrix* G,matrix* g,matrix* A,matrix* b);

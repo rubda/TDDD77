@@ -93,7 +93,7 @@ void print_matrix_m(matrix_m* mat) {
 
 /* Inserts matrix at pos row,col in matrix mat */
 bool insert_matrix(int row, int col,matrix* insert, matrix_m* mat) {
-  if (row<0||col<0||row>mat->columns||col>mat->rows){
+  if (row<0||col<0||col>mat->columns||row>mat->rows){
     return false;
   }
 
@@ -200,7 +200,6 @@ bool multiply_matrices_m(matrix_m* a, matrix_m* b, matrix_m* c) {
         free_matrix(temp);
       }
       insert_matrix(i,k,sum,c);
-      print_matrix(sum);
       free_matrix(sum);
     }
   }
@@ -239,5 +238,38 @@ matrix* sum_of_all_matrices(matrix_m* a){
   return to_return;
 }
 
+/* Transposes matrix a into b */
+bool transpose_matrix_m(matrix_m* a, matrix_m*b) {
+  if ((a->columns != b->rows) || (a->rows != b->columns)) {
+    return false;
+  }
+  for (int i=1;i<=a->rows;i++){
+    for (int j=1;j<=a->columns;j++){
+      insert_matrix(j,i,get_matrix(i,j,a),b);
+    }
+  }
+  return true;
+}
+/* Transposes matrix a into b */
+matrix_m* transpose_matrix_m_with_return(matrix_m* a){
+  matrix_m* b=create_matrix_m(a->columns,a->rows);
+  transpose_matrix_m(a,b);
+  return b;
+}
+
+/* creates a matrix_m with only 1x1 matrices with values from a*/
+matrix_m* create_matrix_m_from_matrix(matrix* a) {
+  matrix_m* b = create_matrix_m(a->rows, a->columns);
+  matrix* temp;
+  for (int i = 1; i <= a->rows; i++) {
+    for (int j = 1; j <= a->columns; j++) {
+      temp=create_matrix(1,1);
+      insert_value_without_check(get_value_without_check(i,j,a),1,1,temp);
+      insert_matrix(i,j,temp,b);
+      free_matrix(temp);
+    }
+  }
+  return b;
+}
 
 

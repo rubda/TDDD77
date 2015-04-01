@@ -65,66 +65,10 @@ void get_active_conditions(problem* prob){
   prob->number_of_active_conditions=number_of_active_conditions;
 }
 
-void generete_variable_dependencies_in_subproblem_old(problem* prob){
-  problem* sub = prob->subproblem;
-  matrix* temp=create_matrix(sub->number_of_variables,sub->number_of_variables);
-  matrix* sub_a=sub->A;
-  matrix* temp1 = create_matrix(sub->number_of_variables, sub->number_of_variables);
-  matrix* temp_vector;
-  /* Copy vectors from sub_a to  */
-  for(int i =1;i<=sub_a->rows;i++){
-    temp_vector=get_row_vector_with_return(i,sub_a);
-    insert_row_vector(i,temp_vector,temp);
-    free_matrix(temp_vector);
-  }
-  for(int i =sub_a->rows+1;i<=sub->number_of_variables;i++){
-    temp_vector=create_zero_matrix(1,sub->number_of_variables);
-    insert_row_vector(i,temp_vector,temp);
-    free_matrix(temp_vector);
-  }
-  gauss_jordan(temp);
-  print_matrix(temp);
-  int column;
-  for (int i = 1; i <= temp->rows; i++) {
-    column = first_nonezero_in_row_index(i, 1, temp);
-    /* A zero row indicates that the variable is unbound */
-    if (column == 0) {
-      insert_value(1, i, i, temp1);
-      printf("zero row\n");
-    }
-    else {
-      if (column + 1 > temp1->columns) {
-        insert_value(1, i, i, temp1);
-        printf("hej1\n");
-      }
-      else {
-        column = first_nonezero_in_row_index(i, column + 1, temp);
-        /* If a row only contains one variable it must be zero */
-        if (column == 0) {
-          insert_value(0, i, i, temp1);
-          printf("contains one var\n");
-        }
-        else {
-          /* This is the motherfucker,  */
-          for (int j = 1; j <= i; j++) {
-            insert_value(0, i, j, temp1);
-          }
-          for (int j = i + 1; j <= temp->columns; j++) {
-            insert_value(-get_value(i, j, temp), i, j, temp1);
-          }
 
-        }
-      }
-    }
-
-  }
-  free_matrix(temp);
-  sub->variable_dependencies=temp1;
-  sub->variable_dependencies_set=true;
-}
 void generete_variable_dependencies_in_subproblem(problem* prob){
   problem* sub = prob->subproblem;
-  /* we start ba assuming that each variable has no relation to another variable */
+  /* we start by assuming that each variable has no relation to another variable */
   matrix* dependencies = create_identity_matrix(sub->number_of_variables,sub->number_of_variables);
   matrix* zero_vector = create_zero_matrix(1, sub->number_of_variables);
   matrix* sub_a = sub->A;
@@ -242,7 +186,8 @@ void solve_subproblem(problem* prob){
   }
   /* Handle to few conditions */
   if (sub->number_of_conditions < sub->number_of_variables) {
-    generete_variable_dependencies_in_subproblem(prob);
+    handle_to_few_conditions(prob);
+
 
   }
 
@@ -262,7 +207,8 @@ void solve_subproblem(problem* prob){
   }
 }
 
-void handle_to_many_conditions(problem* sub){
+void handle_to_many_conditions(problem* prob){
+  problem* sub=prob->subproblem;
   matrix* temp = matrix_copy(sub->A);
   gauss_jordan(temp);
   matrix* A = get_matrix_with_only_pivots(temp);
@@ -279,12 +225,47 @@ void handle_to_many_conditions(problem* sub){
     return;
   }
   else {
-    free_matrix(A);
-    handle_to_few_conditions(sub);
+    free_matrix(sub->A);
+    sub->A=A;
+    handle_to_few_conditions(prob);
   }
 }
 
-void handle_to_few_conditions(problem* sub){
+void handle_to_few_conditions(problem* prob){
+  problem* sub=prob->subproblem;
+  generete_variable_dependencies_in_subproblem(prob);
+  matrix* dep=sub->variable_dependencies;
+  matrix* temp_vector;
+  matrix* temp_vector_trans;
+  matrix_m* p1=create_matrix_m(1,dep->rows);
+  matrix_m* p2=create_matrix_m(dep->rows,1);
+  matrix* temp;
+  for (int i=1;i<=dep->rows;i++){
+    temp_vector=get_row_vector_with_return(i,dep);
+    temp_vector_trans=transpose_matrix_with_return(temp_vector);
+    insert_matrix(1,i,temp_vector_trans,p1);
+    temp=multiply_matrices_with_return(temp_vector_trans,temp_vector);
+    free_matrix(temp_vector);
+    free_matrix(temp_vector_trans);
+  }
+  for (int i=1;i<=dep->rows;i++){
+    temp_vector=get_row_vector_with_return(i,dep);
+    insert_matrix(i,1,temp_vector,p2);
+    free_matrix(temp_vector);
+  }
+  matrix_m* sub_G_m=create_matrix_m_from_matrix(sub->G);
+
+  matrix_m* p1G=multiply_matrices_m_with_return(p1,sub_G_m);
+
+  matrix_m* p1Gp2=multiply_matrices_m_with_return(p1G,p2);
+
+  print_matrix_m(p1Gp2);
+
+  matrix* G_solv=get_matrix(1,1,p1Gp2);
+  for (int i=1;i<=dep->rows;i++){
+    print_matrix(derivate_matrix_with_return(i,G_solv));
+  }
+
 
 }
 

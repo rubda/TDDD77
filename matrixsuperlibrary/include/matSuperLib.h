@@ -62,6 +62,16 @@ bool multiply_matrices_m(matrix_m* a, matrix_m* b, matrix_m* c);
 /* Multiply a and b by returning a pointer to c. c=a*b */
 matrix_m* multiply_matrices_m_with_return(matrix_m* a, matrix_m* b);
 
+/* Transposes matrix a into b */
+bool transpose_matrix_m(matrix_m* a, matrix_m*b);
+
+/* Transposes matrix a into b */
+matrix_m* transpose_matrix_m_with_return(matrix_m* a);
+
+/* creates a matrix_m with only 1x1 matrices with values from a*/
+matrix_m* create_matrix_m_from_matrix(matrix* a);
+
+
 
 #endif /* MATSUPERLIB_H */
 
