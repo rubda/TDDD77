@@ -38,7 +38,6 @@ matrix_m* create_matrix_m(int row, int col) {
 void free_matrix_m(matrix_m* a){
   for(int i = 0; i < a->size; i++){
     if((a->start)[i] != NULL){
-      printf("cock %i\n", i);
       free_matrix((a->start)[i]);
       (a->start)[i] = NULL;
     }
