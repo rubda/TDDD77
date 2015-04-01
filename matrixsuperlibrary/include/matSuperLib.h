@@ -1,0 +1,46 @@
+#ifndef MATSUPERLIB_H
+#define MATSUPERLIB_H
+
+/*
+  Author: Martin Söderén
+  Email: martin.soderen@gmail.com
+  Date: 2015-03-05
+  Description: This is the headerfile for the matSuperLib-library which is used to handle matrices containing matrices.
+*/
+
+/* Only standardlibraries and matLib */
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <matLib.h>
+
+/* A struct that resembles matrix but contains matrices */
+struct matrix_with_matrices {
+  int columns;
+  int rows;
+  size_t size;
+  matrix** start;
+  bool diagonals;
+};
+
+typedef struct matrix_with_matrices matrix_with_matrices;
+
+/* Creates a matrix row x col. So create_matrix(2,2) will return
+ * a pointer to a matrix with 2 rows and 2 columns.
+ * Returns NULL if row or col are incorrect*/
+matrix_with_matrices* create_matrix_with_matrices(int row, int col);
+
+/*prints all the matrices*/
+void print_matrix_with_matrices(matrix_with_matrices* mat);
+
+/* Inserts matrix at pos row,col in matrix mat */
+bool insert_matrix(int row, int col,matrix* insert, matrix_with_matrices* mat);
+
+/* Returns value on location row,col in matrix mat.
+ * WARNING: Only returns 0 if outside of the matrix */
+matrix* get_matrix(int row, int col, matrix_with_matrices* mat);
+
+#endif /* MATSUPERLIB_H */
+
+

@@ -56,6 +56,9 @@ typedef struct matrix matrix;
 /* Create a matrix */
 matrix* create_matrix(int row, int col);
 
+/* Is normally not needed for this implementation but might be needed on others */
+matrix* create_zero_matrix(int row,int col);
+
 /* calculate the dot product */
 value dot_product(matrix* r, matrix* v);
 
@@ -92,17 +95,32 @@ value get_value_without_check(int row, int col, matrix* mat);
 /* Adds a and b into c */
 bool add_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Adds a and b by returning a pointer a matrix with a+b */
+matrix* add_matrices_with_return(matrix* a, matrix* b);
+
 /* Subtract a and b into c. c=a-b */
 bool subtract_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Subtracts a and b by returning a pointer a matrix with a-b */
+matrix* subtract_matrices_with_return(matrix* a, matrix* b);
 
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Multiply a and b by returning a pointer to a new matrix with a*b*/
+matrix* multiply_matrices_with_return(matrix* a, matrix* b);
+
 /* Returns the determinant of matrix a */
 value get_determinant(matrix* a);
 
+/* Calculates the inverse of a and puts it into c */
+bool get_inverse(matrix* a, matrix* c);
+
 /* Solves Ax=B */
 bool solve_linear(matrix* a,matrix* x, matrix *b);
+
+/* Solves ax=b by returning a pointer to x */
+matrix* solve_linear_with_return(matrix* a,matrix *b);
 
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 bool crout(matrix* a, matrix* l, matrix* u);
@@ -113,11 +131,29 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b);
 /* If no solution can be found with solve_linear, this function finds the closest one */
 void least_square(matrix* a, matrix* x, matrix* b);
 
+/* Gauss eliminates the matrix a */
+bool gauss_jordan(matrix* a);
+
+/* Returns a matrix with only pivots elements from a  */
+matrix* get_matrix_with_only_pivots(matrix* a);
+
+/* Returns the lowest of the two values */
+value min(value a,value b);
+
+/* Returns on which row the largest element in the column is after start */
+int largest_element_in_column_index(int column,int start,matrix* a);
+
+/* Returns on which row the smallest element in the column is after start */
+int smallest_element_in_column_index(int column,int start,matrix* a);
+
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a);
 
 /*transposes matrix a into b */
 bool transpose_matrix(matrix* a, matrix*b);
+
+/* Transposes matrix a by returning a pointer to a:s transpose */
+matrix* transpose_matrix_with_return(matrix* a);
 
 /* Return the sum of a row in matrix mat */
 value sum_of_row(int row, matrix* mat);
@@ -152,6 +188,9 @@ void divide_column_with_scalar(value scal, int col, matrix* mat);
 /* Takes row vector from matrix a and puts it into b */
 bool get_row_vector(int row, matrix* a, matrix* b);
 
+/* Returns row vector row from matrix a with a pointer to a matrix */
+matrix* get_row_vector_with_return(int row,matrix* a);
+
 /* Inserts row vector a into b:s row */
 bool insert_row_vector(int row, matrix* a, matrix* b);
 
@@ -184,6 +223,9 @@ bool is_non_negative_diagonal_matrix(matrix* A);
 
 /* Takes the diagonal in a and puts it into b */
 bool get_diagonal(matrix* a,matrix* b);
+
+/* Returns a pointer to a matrix with the derivative of var if the a matrix second order coefficiants */
+matrix* derivate_matrix_with_return(int var,matrix* a);
 
 /* Fucks shit up */
 void transform_to_reduced_row_echelon_form(matrix* M);

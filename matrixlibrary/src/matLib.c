@@ -25,11 +25,26 @@ matrix* create_matrix(int row, int col) {
   if (row < 1 || col < 1) {
     return NULL;
   }
+
   matrix* mal = (matrix *) malloc(sizeof(matrix));
   mal->columns = col;
   mal->rows = row;
   mal->size = row * col;
   mal->start = (value *) malloc(col * row * sizeof(value));
+  return mal;
+}
+
+/* Is normally not needed for this implementation but might be needed on others */
+matrix* create_zero_matrix(int row,int col){
+  if (row < 1 || col < 1) {
+    return NULL;
+  }
+
+  matrix* mal = (matrix *) malloc(sizeof(matrix));
+  mal->columns = col;
+  mal->rows = row;
+  mal->size = row * col;
+  mal->start = (value *) calloc(1,col * row * sizeof(value));
   return mal;
 }
 
@@ -152,6 +167,19 @@ bool add_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/* Adds a and b by returning a pointer a matrix with a+b */
+matrix* add_matrices_with_return(matrix* a, matrix* b) {
+  matrix* c=create_matrix(a->rows,a->columns);
+  if (add_matrices(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
+}
+
+
 /* Subtract a and b into c. c=a-b */
 bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   size_t size;
@@ -169,6 +197,18 @@ bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
     *(c->start + i) = *(a->start + i) - *(b->start + i);
   }
   return true;
+}
+
+/* Subtracts a and b by returning a pointer a matrix with a-b */
+matrix* subtract_matrices_with_return(matrix* a, matrix* b) {
+  matrix* c=create_matrix(a->rows,a->columns);
+  if (subtract_matrices(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
 }
 
 
@@ -195,6 +235,16 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
     }
   }
   return true;
+}
+
+/* Multiply a and b by returning a pointer to a new matrix with a*b*/
+matrix* multiply_matrices_with_return(matrix* a, matrix* b) {
+  if ((a->columns != b->rows)) {
+    return NULL;
+  }
+  matrix* c = create_matrix(a->rows, b->columns);
+  multiply_matrices(a, b, c);
+  return c;
 }
 
 /* Returns the determinant of matrix a */
@@ -269,6 +319,18 @@ bool solve_linear(matrix* a, matrix* x, matrix* b){
   return true;
 }
 
+/* Solves ax=b by returning a pointer to x */
+matrix* solve_linear_with_return(matrix* a,matrix *b){
+  matrix* x = create_matrix(b->rows,b->columns);
+  if (solve_linear(a,x,b)){
+  return x;
+  }
+  else{
+    free_matrix(x);
+    return NULL;
+  }
+}
+
 /* Crout algorithm to divide matrix a into l and u that holds a=lu */
 bool crout(matrix* a, matrix* l, matrix* u) {
   if (a->rows != a->columns) {
@@ -303,7 +365,7 @@ bool crout(matrix* a, matrix* l, matrix* u) {
       }
 
       if (get_value(j, j, l) == 0) {
-	return false;
+        return false;
       }
       insert_value((get_value(j, i, a) - sum) / get_value(j, j, l), j, i,
 		   u);
@@ -368,6 +430,98 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   free_matrix(rhs);
 }
 
+/* Gauss eliminates the matrix a */
+bool gauss_jordan(matrix* a) {
+  for (int k = 1; k <= min(a->rows, a->columns); k++) {
+    int pivot = largest_element_in_column_index(k,k, a);
+    if (get_value(pivot, k, a) == 0) {
+      pivot=smallest_element_in_column_index(k,k, a);
+      if (get_value(pivot, k, a) == 0){
+        return false;
+      }
+      multiply_row_with_scalar(-1,pivot,a);
+    }
+    switch_rows(k, pivot, a);
+    for (int i = k + 1; i <= a->rows; i++) {
+      for (int j = k + 1; j <= a->columns; j++) {
+        value temp1=get_value(i,j,a)-get_value(k,j,a)*(get_value(i,k,a)/get_value(k,k,a));
+        insert_value(temp1,i,j,a);
+      }
+      insert_value(0,i,k,a);
+    }
+  }
+  return true;
+}
+
+/* Returns a matrix with only pivots elements from a  */
+matrix* get_matrix_with_only_pivots(matrix* a){
+  matrix* temp=create_matrix(a->rows,a->columns);
+  matrix* temp_vector=create_matrix(1,a->columns);
+  int pivot=0;
+  for (int i=1;i<=a->rows;i++){
+    for (int j=1;j<=a->columns;j++){
+      if (get_value(i,j,a)!=0){
+        pivot++;
+        get_row_vector(i,a,temp_vector);
+        insert_row_vector(pivot,temp_vector,temp);
+        break;
+      }
+    }
+  }
+
+  matrix* to_return=create_matrix(pivot,a->columns);
+  get_sub_matrix(1,pivot,1,a->columns,temp,to_return);
+  free_matrix(temp);
+  free_matrix(temp_vector);
+  return to_return;
+}
+
+/* Returns the lowest of the two values */
+value min(value a,value b){
+  if (a<b){
+    return a;
+  }
+  else{
+    return b;
+  }
+}
+
+/* Returns on which row the largest element in the column is after start */
+int largest_element_in_column_index(int column,int start,matrix* a){
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  value max = get_value(start, column, a);
+  value temp = 0;
+  int index = start;
+  for (int i =start+1; i <= a->rows; i++) {
+    temp = get_value(i, column, a);
+    if (temp > max) {
+      max = temp;
+      index = i;
+    }
+  }
+  return index;
+}
+
+/* Returns on which row the smallest element in the column is after start */
+int smallest_element_in_column_index(int column,int start,matrix* a){
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  value min = get_value(start, column, a);
+  value temp = 0;
+  int index = start;
+  for (int i = start+1; i <= a->rows; i++) {
+    temp = get_value(i, column, a);
+    if (temp < min) {
+      min = temp;
+      index = i;
+    }
+  }
+  return index;
+}
+
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a) {
   value* start1 = a->start + a->columns * (row1 - 1);
@@ -396,6 +550,13 @@ bool transpose_matrix(matrix* a, matrix*b) {
     }
   }
   return true;
+}
+
+/* Transposes matrix a by returning a pointer to a:s transpose */
+matrix* transpose_matrix_with_return(matrix* a){
+  matrix* b=create_matrix(a->columns,a->rows);
+  transpose_matrix(a,b);
+  return b;
 }
 
 /* Return the sum of a row in matrix mat */
@@ -539,6 +700,19 @@ bool get_row_vector(int row, matrix* a, matrix* b) {
   }
   return true;
 }
+
+/* Returns row vector row from matrix a with a pointer to a matrix */
+matrix* get_row_vector_with_return(int row,matrix* a){
+  matrix* b=create_matrix(1,a->columns);
+  if(get_row_vector(row,a,b)){
+    return b;
+  }
+  else{
+    free_matrix(b);
+    return NULL;
+  }
+}
+
 
 /* Inserts row vector a into b:s row */
 bool insert_row_vector(int row, matrix* a, matrix* b) {
@@ -690,6 +864,28 @@ bool get_diagonal(matrix* a,matrix* b) {
     insert_value_without_check(get_value_without_check(i, i, a), 1, i, b);
   }
   return true;
+}
+
+/* Returns a pointer to a matrix with the derivative of var if the a matrix second order coefficiants */
+matrix* derivate_matrix_with_return(int var,matrix* a){
+  if (a->rows!=a->columns ||var<0||var>a->columns){
+    return NULL;
+  }
+  matrix* to_return=create_matrix(a->rows,a->columns);
+  for (int i=1;i<=a->rows;i++){
+    for (int j=1;j<=a->columns;j++){
+      if(i==var &&j==var){
+        insert_value(2*get_value(i,j,a),i,j,to_return);
+      }
+      else if (i==var||j==var){
+        insert_value(get_value(i,j,a),i,j,to_return);
+      }
+      else{
+        insert_value(0,i,j,to_return);
+      }
+    }
+  }
+  return to_return;
 }
 
 /* Transforms a matrix into reduced row echelon form
