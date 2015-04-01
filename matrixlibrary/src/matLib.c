@@ -48,6 +48,18 @@ matrix* create_zero_matrix(int row,int col){
   return mal;
 }
 
+/* Creates a identity matrix */
+matrix* create_identity_matrix(int row,int col){
+  if (row!=col){
+    return NULL;
+  }
+  matrix* to_return=create_zero_matrix(row,col);
+  for (int i=1;i<=row;i++){
+    insert_value_without_check(1,i,i,to_return);
+  }
+  return to_return;
+}
+
 /* free the memory allocated by matrix mat */
 void free_matrix(matrix* mat) {
   if (mat!=NULL){
@@ -521,6 +533,34 @@ int smallest_element_in_column_index(int column,int start,matrix* a){
     }
   }
   return index;
+}
+
+/* Returns on which row the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_column_index(int column, int start, matrix* a) {
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  for (int i = start; i <= a->rows; i++) {
+    if ( 0!=get_value(i, column, a)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/* Returns on which column the first nonezero element is in the column is after start returns 0
+ * if no nonezero element is found */
+int first_nonezero_in_row_index(int row,int start, matrix* a) {
+  if (row > a->rows || row < 1) {
+    return false;
+  }
+  for (int i = start; i <= a->columns; i++) {
+    if (0 != get_value(row, i, a)) {
+      return i;
+    }
+  }
+  return 0;
 }
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */

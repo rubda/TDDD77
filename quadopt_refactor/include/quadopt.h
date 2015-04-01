@@ -35,6 +35,9 @@ struct problem {
   value current_value;
   problem* subproblem;
   bool subproblem_set;
+  matrix* variable_dependencies;
+  bool variable_dependencies_set;
+  int iteration;
 };
 
 
@@ -58,6 +61,10 @@ void create_subproblem(problem* prob);
 
 /* Solves the sub problem */
 void solve_subproblem(problem* prob);
+
+void handle_to_many_conditions(problem* sub);
+
+void handle_to_few_conditions(problem* sub);
 
 /* Calculates the functions current value */
 bool calculate_current_value(problem* prob);

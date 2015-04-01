@@ -18,6 +18,8 @@ problem* create_problem(matrix* G,matrix* d,matrix* A,matrix* b){
   insert_value(-1,1,1,prob->active_conditions);
   prob->subproblem_set=false;
   prob->point_set=false;
+  prob->variable_dependencies_set=false;
+  prob->iteration=0;
   return prob;
 }
 
@@ -63,8 +65,97 @@ void get_active_conditions(problem* prob){
   prob->number_of_active_conditions=number_of_active_conditions;
 }
 
+void generete_variable_dependencies_in_subproblem_old(problem* prob){
+  problem* sub = prob->subproblem;
+  matrix* temp=create_matrix(sub->number_of_variables,sub->number_of_variables);
+  matrix* sub_a=sub->A;
+  matrix* temp1 = create_matrix(sub->number_of_variables, sub->number_of_variables);
+  matrix* temp_vector;
+  /* Copy vectors from sub_a to  */
+  for(int i =1;i<=sub_a->rows;i++){
+    temp_vector=get_row_vector_with_return(i,sub_a);
+    insert_row_vector(i,temp_vector,temp);
+    free_matrix(temp_vector);
+  }
+  for(int i =sub_a->rows+1;i<=sub->number_of_variables;i++){
+    temp_vector=create_zero_matrix(1,sub->number_of_variables);
+    insert_row_vector(i,temp_vector,temp);
+    free_matrix(temp_vector);
+  }
+  gauss_jordan(temp);
+  print_matrix(temp);
+  int column;
+  for (int i = 1; i <= temp->rows; i++) {
+    column = first_nonezero_in_row_index(i, 1, temp);
+    /* A zero row indicates that the variable is unbound */
+    if (column == 0) {
+      insert_value(1, i, i, temp1);
+      printf("zero row\n");
+    }
+    else {
+      if (column + 1 > temp1->columns) {
+        insert_value(1, i, i, temp1);
+        printf("hej1\n");
+      }
+      else {
+        column = first_nonezero_in_row_index(i, column + 1, temp);
+        /* If a row only contains one variable it must be zero */
+        if (column == 0) {
+          insert_value(0, i, i, temp1);
+          printf("contains one var\n");
+        }
+        else {
+          /* This is the motherfucker,  */
+          for (int j = 1; j <= i; j++) {
+            insert_value(0, i, j, temp1);
+          }
+          for (int j = i + 1; j <= temp->columns; j++) {
+            insert_value(-get_value(i, j, temp), i, j, temp1);
+          }
+
+        }
+      }
+    }
+
+  }
+  free_matrix(temp);
+  sub->variable_dependencies=temp1;
+  sub->variable_dependencies_set=true;
+}
+void generete_variable_dependencies_in_subproblem(problem* prob){
+  problem* sub = prob->subproblem;
+  /* we start ba assuming that each variable has no relation to another variable */
+  matrix* dependencies = create_identity_matrix(sub->number_of_variables,sub->number_of_variables);
+  matrix* zero_vector = create_zero_matrix(1, sub->number_of_variables);
+  matrix* sub_a = sub->A;
+  int column;
+  /* for each row in the subproblems A matrix*/
+  for (int i = 1; i <= sub_a->rows; i++) {
+
+    /* A row with only one variable, this means that it must be zero */
+    if (first_nonezero_in_row_index(i, 1, sub_a) != 0|| first_nonezero_in_row_index(i + 1, 1, sub_a) == 0) {
+      insert_row_vector(first_nonezero_in_row_index(i, 1, sub_a), zero_vector,dependencies);
+    }
+    /* A row with more than one variable, this means that they must be dependent */
+    if (first_nonezero_in_row_index(i, 1, sub_a) != 0|| first_nonezero_in_row_index(i + 1, 1, sub_a) != 0) {
+      column = first_nonezero_in_row_index(i, 1, sub_a);
+      /* We zero this variable so it does not depend on itself */
+      insert_value_without_check(0, column, column, dependencies);
+      /* Copy values from sub_a to dependencies */
+      for (int j = column + 1; j <= sub->number_of_variables; j++) {
+        insert_value(-get_value(column, j, sub_a), column, j, dependencies);
+      }
+    }
+  }
+  free_matrix(zero_vector);
+  sub->variable_dependencies=dependencies;
+  sub->variable_dependencies_set=true;
+}
+
 /* Presents the problem */
 void present_problem(problem* prob){
+  printf("\n------------------------------------------------------------------------------\n");
+  printf("the current iteration is: %i \n",prob->iteration);
   printf("The G matrix is:\n");
   print_matrix(prob->G);
 
@@ -85,6 +176,10 @@ void present_problem(problem* prob){
   }
   printf("the active condition(s) are: \n");
   print_matrix(prob->active_conditions);
+  if (prob->variable_dependencies_set){
+    printf("the variable dependencies matris is: \n");
+    print_matrix(prob->variable_dependencies);
+  }
   if (prob->subproblem_set){
     printf("\n ---------------------------------------------------------------------------\n");
     printf("the current subproblem is: \n \n");
@@ -123,10 +218,8 @@ void create_subproblem(problem* prob){
     insert_row_vector(i,temp,sub_A);
     free_matrix(temp);
   }
-  gauss_jordan(prob->A);
 
   matrix* sub_b=create_matrix(prob->number_of_active_conditions,1);
-  matrix* temp1;
   /* Create matrix with right hand side of all active conditions */
   for (int i=1;i<=prob->number_of_active_conditions;i++){
     insert_value(0,i,1,sub_b);
@@ -149,6 +242,7 @@ void solve_subproblem(problem* prob){
   }
   /* Handle to few conditions */
   if (sub->number_of_conditions < sub->number_of_variables) {
+    generete_variable_dependencies_in_subproblem(prob);
 
   }
 

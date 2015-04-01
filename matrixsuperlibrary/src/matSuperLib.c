@@ -212,5 +212,24 @@ matrix_m* multiply_matrices_m_with_return(matrix_m* a, matrix_m* b){
   }
 }
 
+matrix* sum_of_all_matrices(matrix_m* a){
+  matrix* temp = get_matrix(1, 1, a);
+  matrix* to_return = create_matrix(temp->rows, temp->columns);
+  matrix* temp1;
+  for (int i = 1; i <= temp->rows; i++) {
+    for (int j = 1; j <= temp->columns; j++) {
+      value sum = 0;
+      for (int k = 1; k <= a->rows; k++) {
+        for (int l = 1; l <= a->columns; l++) {
+          temp1 = get_matrix(k, l, a);
+          sum += get_value(i, j, temp1);
+        }
+      }
+      insert_value(sum, i, j, to_return);
+    }
+  }
+  return to_return;
+}
+
 
 

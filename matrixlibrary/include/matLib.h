@@ -59,6 +59,9 @@ matrix* create_matrix(int row, int col);
 /* Is normally not needed for this implementation but might be needed on others */
 matrix* create_zero_matrix(int row,int col);
 
+/* Creates a identity matrix */
+matrix* create_identity_matrix(int row,int col);
+
 /* calculate the dot product */
 value dot_product(matrix* r, matrix* v);
 
@@ -145,6 +148,14 @@ int largest_element_in_column_index(int column,int start,matrix* a);
 
 /* Returns on which row the smallest element in the column is after start */
 int smallest_element_in_column_index(int column,int start,matrix* a);
+
+/* Returns on which row the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_column_index(int column, int start, matrix* a);
+
+/* Returns on which column the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_row_index(int row,int start, matrix* a);
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a);
