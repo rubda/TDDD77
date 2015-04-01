@@ -63,8 +63,8 @@ matrix* create_identity_matrix(int row,int col){
 /* free the memory allocated by matrix mat */
 void free_matrix(matrix* mat) {
   if (mat!=NULL){
-  free(mat->start);
-  free(mat);
+    free(mat->start);
+    free(mat);
   }
 }
 
