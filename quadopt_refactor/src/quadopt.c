@@ -20,6 +20,8 @@ problem* create_problem(matrix* G,matrix* d,matrix* A,matrix* b){
   prob->point_set=false;
   prob->variable_dependencies_set=false;
   prob->iteration=0;
+  prob->step=0;
+  prob->lagrange_set=false;
   return prob;
 }
 
@@ -120,6 +122,9 @@ void present_problem(problem* prob){
   }
   printf("the active condition(s) are: \n");
   print_matrix(prob->active_conditions);
+  printf("the current calculated step is: \n");
+  printf(FORMAT_STRING,prob->step);
+  printf("\n");
   if (prob->variable_dependencies_set){
     printf("the variable dependencies matris is: \n");
     print_matrix(prob->variable_dependencies);
@@ -133,18 +138,60 @@ void present_problem(problem* prob){
 
 /* Solves the problem struct using active set method */
 bool solve_problem(problem* prob){
-  if (!prob->point_set){
+  if (!prob->point_set) {
     find_start_point(prob);
   }
   get_active_conditions(prob);
   create_subproblem(prob);
   solve_subproblem(prob);
+  if (check_subproblem_solution(prob)) {
+    calculate_step(prob);
+  }
+  else{
+    find_lagrange(prob);
+  }
 
 #ifdef DEBUG
   calculate_current_value(prob);
   present_problem(prob);
 #endif
   return true;
+}
+
+void calculate_step(problem* prob){
+  matrix* A = prob->A;
+  matrix* b = prob->b;
+  matrix* x = prob->x;
+  matrix* p = prob->subproblem->x;
+  matrix* a_row;
+  matrix* a_tx;
+  matrix* a_tp;
+  matrix* alphas = create_matrix(A->rows, 1);
+  for (int i = 1; i <= A->rows; i++) {
+    insert_value(1, i, 1, alphas);
+  }
+  value upper;
+  value lower;
+  for (int i = 1; i <= A->rows; i++) {
+    if (matrix_contains(i, prob->active_conditions)) {
+      continue;
+    }
+    a_row = get_row_vector_with_return(i, prob->A);
+    a_tx = multiply_matrices_with_return(a_row, x);
+    upper = get_value(i, 1, b) - get_value(1, 1, a_tx);
+    free_matrix(a_tx);
+    a_tp = multiply_matrices_with_return(a_row, p);
+    free_matrix(a_row);
+    lower = get_value(1, 1, a_tp);
+    free_matrix(a_tp);
+    if (lower < 0) {
+      insert_value(upper / lower, i, 1, alphas);
+    }
+  }
+  int smallest = smallest_element_in_column_index(1, 1, alphas);
+  prob->step = get_value(smallest, 1, alphas);
+  free_matrix(alphas);
+
 }
 
 /* Creates a subproblem */
@@ -173,24 +220,76 @@ void create_subproblem(problem* prob){
   }
   prob->subproblem=create_problem(prob->G,Gxplusd,sub_A,sub_b);
   prob->subproblem_set=true;
+}
 
+void find_lagrange(problem* prob){
+  problem* sub=prob->subproblem;
+  matrix* solver=create_zero_matrix(sub->G->rows+sub->A->rows,sub->G->rows+sub->A->rows);
+  matrix* G_derivate=create_zero_matrix(sub->G->rows,sub->G->columns);
+  matrix* temp;
+  /* Create G_derivate */
+  for (int i = 1; i <= sub->G->rows; i++) {
+    temp = derivate_matrix_with_return(i, sub->G);
+    add_matrices(G_derivate, temp, G_derivate);
+    free_matrix(temp);
+  }
+  /* Copy G_derivate to solver */
+  for (int i = 1; i <= sub->G->rows; i++) {
+    for (int j = 1; j <= sub->G->columns; j++) {
+      insert_value(get_value(i, j, G_derivate), i, j, solver);
+    }
+  }
+  free_matrix(G_derivate);
+  matrix* temp_vector;
+  /* Copy all the conditions to solver */
+  for (int i = 1 + sub->G->rows; i <= solver->rows; i++) {
+    temp_vector = get_row_vector_with_return(i - sub->G->rows, sub->A);
+    for (int j = 1; j <= sub->A->columns; j++) {
+      insert_value(get_value(1, j, temp_vector), j, i, solver);
+      insert_value(get_value(1, j, temp_vector), i, j, solver);
+    }
+    free_matrix(temp_vector);
+  }
+  matrix* b=create_matrix(solver->rows,1);
+  value temp_b;
+  value condition;
+  /*insert conditions righthandside into b matrix */
+  for (int i = 1 ; i <= sub->active_conditions->columns; i++) {
+    condition=(int)get_value(1,i,prob->active_conditions);
+    temp_b=get_value(condition,1,prob->b);
+    insert_value(temp_b,i+sub->G->rows,1,b);
+  }
+  matrix* x= solve_linear_with_return(solver,b);
+  free_matrix(solver);
+  free_matrix(b);
+  matrix* lagrange=create_matrix(1,prob->A->rows);
+  for (int i=1;i<=prob->A->rows;i++){
+    insert_value(get_value(prob->G->columns+i,1,x),1,i,lagrange);
+  }
+  free_matrix(x);
+  prob->lagrange=lagrange;
+  prob->lagrange_set=true;
+
+
+}
+
+/*return true if the solutionsvector is not a zerovector*/
+bool check_subproblem_solution(problem* prob){
+  problem* sub=prob->subproblem;
+  return !is_zero_matrix(sub->x);
 }
 
 /* Solves the sub problem */
 void solve_subproblem(problem* prob){
   problem* sub = prob->subproblem;
-
   /* Handle to many conditions */
   if (sub->number_of_conditions > sub->number_of_variables) {
-
+    handle_to_many_conditions(prob);
   }
   /* Handle to few conditions */
   if (sub->number_of_conditions < sub->number_of_variables) {
     handle_to_few_conditions(prob);
-
-
   }
-
   /* Handle the same amounts of variables as equations */
   matrix* x = solve_linear_with_return(sub->A, sub->b);
   if (x != NULL) {
@@ -276,7 +375,6 @@ void handle_to_few_conditions(problem* prob){
   /* Derivate p1Gp2 for each variable and create one equation for each derivative */
   for (int i=1;i<=dep->rows;i++){
     temp=derivate_matrix_with_return(i,G_solv);
-    print_matrix(temp);
     temp_vector=get_row_vector_with_return(i,temp);
     temp_vector_trans=get_column_vector_with_return(i,temp);
     temp_vector2=transpose_matrix_with_return(temp_vector_trans);

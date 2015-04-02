@@ -244,5 +244,8 @@ matrix* derivate_matrix_with_return(int var,matrix* a);
 /* Fucks shit up */
 void transform_to_reduced_row_echelon_form(matrix* M);
 
+/* return true if b contains value a */
+bool matrix_contains(value a,matrix* b);
+
 
 #endif /* MATLIB_H */

@@ -39,6 +39,9 @@ struct problem {
   matrix* variable_dependencies;
   bool variable_dependencies_set;
   int iteration;
+  value step;
+  matrix* lagrange;
+  bool lagrange_set;
 };
 
 
@@ -47,6 +50,8 @@ struct problem {
 
 /* Create a problem */
 problem* create_problem(matrix* G,matrix* g,matrix* A,matrix* b);
+
+void calculate_step(problem* prob);
 
 /* Present the problem struct */
 void present_problem(problem* prob);
@@ -59,6 +64,11 @@ bool solve_problem(problem* prob);
 
 /* Creates a subproblem */
 void create_subproblem(problem* prob);
+
+void find_lagrange(problem* prob);
+
+/*return true if the solutionsvector is not a zerovector*/
+bool check_subproblem_solution(problem* prob);
 
 /* Solves the sub problem */
 void solve_subproblem(problem* prob);

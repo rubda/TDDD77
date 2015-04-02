@@ -997,3 +997,15 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
   free_matrix(row2);
   free_matrix(row3);
 }
+
+/* return true if b contains value a */
+bool matrix_contains(value a,matrix* b){
+  for (int i=1;i<=b->rows;i++){
+    for (int j=1;j<=b->columns;j++){
+      if (get_value(i,j,b)==a){
+        return true;
+      }
+    }
+  }
+  return false;
+}
