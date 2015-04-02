@@ -800,6 +800,16 @@ bool get_column_vector(int column, matrix* a, matrix* b) {
   }
   return true;
 }
+/* Takes column vector from matrix a and puts it into b which also is a column vector
+ *however get_sub_matrix should be faster */
+matrix* get_column_vector_with_return(int column, matrix* a){
+  matrix* b=create_matrix(a->rows,1);
+  get_column_vector(column,a,b);
+  return b;
+
+}
+
+
 
 /* Inserts column vector a into matrix b at position column */
 bool insert_column_vector(int column, matrix *a, matrix* b) {

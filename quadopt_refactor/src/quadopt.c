@@ -77,11 +77,11 @@ void generete_variable_dependencies_in_subproblem(problem* prob){
   for (int i = 1; i <= sub_a->rows; i++) {
 
     /* A row with only one variable, this means that it must be zero */
-    if (first_nonezero_in_row_index(i, 1, sub_a) != 0|| first_nonezero_in_row_index(i + 1, 1, sub_a) == 0) {
-      insert_row_vector(first_nonezero_in_row_index(i, 1, sub_a), zero_vector,dependencies);
+    if (first_nonezero_in_row_index(i, 1, sub_a) != 0 && first_nonezero_in_row_index(i + 1, 1, sub_a) == 0) {
+      //insert_row_vector(first_nonezero_in_row_index(i, 1, sub_a), zero_vector,dependencies);
     }
     /* A row with more than one variable, this means that they must be dependent */
-    if (first_nonezero_in_row_index(i, 1, sub_a) != 0|| first_nonezero_in_row_index(i + 1, 1, sub_a) != 0) {
+    if (first_nonezero_in_row_index(i, 1, sub_a) != 0 && first_nonezero_in_row_index(i + 1, 1, sub_a) != 0) {
       column = first_nonezero_in_row_index(i, 1, sub_a);
       /* We zero this variable so it does not depend on itself */
       insert_value_without_check(0, column, column, dependencies);
@@ -222,6 +222,7 @@ void handle_to_many_conditions(problem* prob){
       free_matrix(sub->x);
     }
     sub->x = solve_linear_with_return(sub->A, sub->b);
+    sub->point_set = true;
     return;
   }
   else {
@@ -232,14 +233,20 @@ void handle_to_many_conditions(problem* prob){
 }
 
 void handle_to_few_conditions(problem* prob){
+  /* The current subproblem */
   problem* sub=prob->subproblem;
+  /* Generate all dependencies between variables from conditions, these are put in variable_dependencies */
   generete_variable_dependencies_in_subproblem(prob);
+  /* Matrix with all dependencies */
   matrix* dep=sub->variable_dependencies;
+  /* Some variables needed */
   matrix* temp_vector;
   matrix* temp_vector_trans;
+  matrix* temp;
+  /* Used for variable exchange */
   matrix_m* p1=create_matrix_m(1,dep->rows);
   matrix_m* p2=create_matrix_m(dep->rows,1);
-  matrix* temp;
+  /* Creates lefthandside matrix_m containing matrices with new variables */
   for (int i=1;i<=dep->rows;i++){
     temp_vector=get_row_vector_with_return(i,dep);
     temp_vector_trans=transpose_matrix_with_return(temp_vector);
@@ -247,24 +254,57 @@ void handle_to_few_conditions(problem* prob){
     temp=multiply_matrices_with_return(temp_vector_trans,temp_vector);
     free_matrix(temp_vector);
     free_matrix(temp_vector_trans);
+    free_matrix(temp);
   }
+  /* Creates righthandside matrix_m containing matrices with new variables */
   for (int i=1;i<=dep->rows;i++){
     temp_vector=get_row_vector_with_return(i,dep);
     insert_matrix(i,1,temp_vector,p2);
     free_matrix(temp_vector);
   }
+  /* Create new G matrix from variable exchange */
   matrix_m* sub_G_m=create_matrix_m_from_matrix(sub->G);
-
   matrix_m* p1G=multiply_matrices_m_with_return(p1,sub_G_m);
-
   matrix_m* p1Gp2=multiply_matrices_m_with_return(p1G,p2);
-
-  print_matrix_m(p1Gp2);
-
   matrix* G_solv=get_matrix(1,1,p1Gp2);
+  /* Matrix for equations system */
+  matrix * solver=create_zero_matrix(dep->rows,dep->rows);
+  /* Righthandside of equationsystem */
+  matrix* d=matrix_copy(sub->d);
+  multiply_matrix_with_scalar(-1,d);
+  matrix* temp_vector2;
+  /* Derivate p1Gp2 for each variable and create one equation for each derivative */
   for (int i=1;i<=dep->rows;i++){
-    print_matrix(derivate_matrix_with_return(i,G_solv));
+    temp=derivate_matrix_with_return(i,G_solv);
+    print_matrix(temp);
+    temp_vector=get_row_vector_with_return(i,temp);
+    temp_vector_trans=get_column_vector_with_return(i,temp);
+    temp_vector2=transpose_matrix_with_return(temp_vector_trans);
+    free_matrix(temp_vector_trans);
+    temp_vector_trans=temp_vector2;
+    free_matrix(temp);
+    temp=add_matrices_with_return(temp_vector,temp_vector_trans);
+    insert_value(get_value(1,i,temp)/2,1,i,temp);
+    insert_row_vector(i,temp,solver);
+    /* If the variable is zero we set it to 1 and righthandside to 0 */
+    if (get_value(i,i,solver)==0){
+      insert_value(1,i,i,solver);
+      insert_value(0,i,1,d);
+    }
+    free_matrix(temp_vector);
+    free_matrix(temp_vector_trans);
+    free_matrix(temp);
   }
+  free_matrix(G_solv);
+  matrix* solution=solve_linear_with_return(solver,d);
+  free_matrix(d);
+  free_matrix(solver);
+  free_matrix_m(sub_G_m);
+  free_matrix_m(p1);
+  free_matrix_m(p1G);
+  free_matrix_m(p2);
+  sub->x = solution;
+  sub->point_set = true;
 
 
 }

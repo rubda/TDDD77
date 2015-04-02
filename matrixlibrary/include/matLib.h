@@ -211,6 +211,9 @@ bool switch_rows(int row1, int row2, matrix* a);
 /* Takes column vector from matrix a and puts it into b */
 bool get_column_vector(int column, matrix* a, matrix* b);
 
+/* Takes column vector from matrix a and return a pointer to the row vector*/
+matrix* get_column_vector_with_return(int column, matrix* a);
+
 /* Inserts column vector a into matrix b at position column */
 bool insert_column_vector(int column, matrix *a, matrix* b);
 

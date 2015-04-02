@@ -2,7 +2,7 @@
 
 int main(){
 matrix* G=create_matrix(3,3);
-value temp_G[9]={1,0,0,0,1,0,0,0,1};
+value temp_G[9]={0,1,1,1,0,1,1,1,0};
 insert_array(temp_G,G);
 
 matrix* d=create_matrix(3,1);
@@ -20,7 +20,7 @@ problem* main_problem= create_problem(G,d,A,b);
 
 main_problem->x=create_matrix(3,1);
 insert_value(1,1,1,main_problem->x);
-insert_value(1,2,1,main_problem->x);
+insert_value(0,2,1,main_problem->x);
 insert_value(0,3,1,main_problem->x);
 main_problem->point_set=true;
 solve_problem(main_problem);
