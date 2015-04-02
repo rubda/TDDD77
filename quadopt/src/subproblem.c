@@ -14,19 +14,23 @@ void solve_supbroblem(matrix* Ain, matrix* G, matrix* gk, matrix* d,
     /* solve derivative and get vector pointing towards the global minimum */
     matrix* min = create_matrix(p->rows,p->columns);
     value sum, d_val;
+    int r, c;
 
+    print_matrix(G);
+    print_matrix(gk);
 
-    for (int c = 1; c <= G->columns; c++) {
-      for (int r = 1; r <= G->rows; r++) {
+    for (c = 1; c <= G->columns; c++) {
+      sum = 0;
+      for (r = 1; r <= G->rows; r++) {
         sum += get_value_without_check(r,c,G);
       }
-      d_val = get_value_without_check(c,1,d);
-      insert_value_without_check((-d_val)/sum,c,1,min);
+      d_val = get_value_without_check(c,1,gk);
+      insert_value_without_check((-d_val)/sum,c,1,p);
     }
-
+/*
     matrix* zn = matrix_copy(z);
     multiply_matrix_with_scalar(-1,zn);
-    add_matrices(min,zn,p);
+    add_matrices(min,zn,p);*/
     return;
   }
 
