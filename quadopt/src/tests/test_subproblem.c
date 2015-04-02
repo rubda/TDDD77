@@ -15,7 +15,7 @@ int main(){
 
   /* Create work set */
   work_set* ws = work_set_create(2);
-  work_set_append(ws, 3);
+  work_set_append(ws, 4);
   work_set_append(ws, 5);
 
   /* Creates p and lagrange matrix */
@@ -29,7 +29,7 @@ int main(){
   insert_array(G_arr, G);
 
   matrix* gk = create_matrix(2, 1);
-  value gk_arr[2] = {2,
+  value gk_arr[2] = {-2,
 		     -5};
   insert_array(gk_arr, gk);
 
@@ -39,11 +39,13 @@ int main(){
   insert_array(d_arr, d);
 
   matrix* z = create_matrix(2,1);
-  value z_arr[2] = {2, 
+  value z_arr[2] = {0, 
 		    0};
   insert_array(z_arr, z);
 
   /* Solve subproblem */
+
+
 
   solve_supbroblem(A, G, gk, d, z, p, lagrange, ws);
 

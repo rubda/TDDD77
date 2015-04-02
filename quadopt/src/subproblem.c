@@ -9,14 +9,42 @@ matrix* get_zero_matrix(int rows, int columns);
 
 void solve_supbroblem(matrix* Ain, matrix* G, matrix* gk, matrix* d,
 		      matrix* z, matrix* p, matrix* lagrange, work_set* ws) {
-  matrix* A = get_active_conditions(Ain, ws);
 
+  if (ws->count == 0) {
+    /* solve derivative and get vector pointing towards the global minimum */
+    matrix* min = create_matrix(p->rows,p->columns);
+    value sum, d_val;
+
+
+    for (int c = 1; c <= G->columns; c++) {
+      for (int r = 1; r <= G->rows; r++) {
+        sum += get_value_without_check(r,c,G);
+      }
+      d_val = get_value_without_check(c,1,d);
+      insert_value_without_check((-d_val)/sum,c,1,min);
+    }
+
+    matrix* zn = matrix_copy(z);
+    multiply_matrix_with_scalar(-1,zn);
+    add_matrices(min,zn,p);
+    return;
+  }
+
+
+  /* solve system as long as you get the the zero vector */
+  matrix* A = get_active_conditions(Ain, ws);
   matrix* zero = get_zero_matrix(p->rows, p->columns);
+
+  printf("\n----- A -----\n");
+  print_matrix(A);
+
+  printf("\n----- z -----\n");
+  print_matrix(z);
 
 
   bool success;
   do{
-    success = solve_linear(A, p, zero);
+    success = gauss_jordan(A);
 
     if(!success){
       printf("Could not solve conditions to subproblem!\n");
@@ -33,8 +61,75 @@ void solve_supbroblem(matrix* Ain, matrix* G, matrix* gk, matrix* d,
     }
   }while(success);
 
-  /* Please continue here */
+  /* use range space to get p */
+  matrix* G_inv = matrix_copy(G);
+  get_inverse(G,G_inv);
 
+  printf("\n----- G_inv -----\n");
+  print_matrix(G_inv);
+
+/* deebug - find lagrange doesnt work */
+  value A_arr[2] = {1,0};
+  insert_array(A_arr,A);
+
+  matrix* At = transpose_matrix_with_return(A);
+
+  printf("\n----- A -----\n");
+  print_matrix(A);
+
+  printf("\n----- At -----\n");
+  print_matrix(At);
+
+  matrix* AG = create_matrix(A->rows,G_inv->columns);
+  multiply_matrices(A,G_inv,AG);
+
+  printf("\n----- AG -----\n");
+  print_matrix(AG);
+
+  matrix* AGAt = create_matrix(AG->rows,At->columns);
+  multiply_matrices(AG,At,AGAt);
+
+  printf("\n----- AGAt -----\n");
+  print_matrix(AGAt);
+
+  matrix* AGg = create_matrix(AG->rows,gk->columns);
+  multiply_matrices(AG,gk,AGg);
+
+  printf("\n----- AGg -----\n");
+  print_matrix(AGg);
+
+  matrix* Az = create_matrix(A->rows,z->columns);
+  multiply_matrices(A,z,Az);
+
+  printf("\n----- Az -----\n");
+  print_matrix(Az);
+
+  matrix* h1 = matrix_copy(AGg);
+  subtract_matrices(AGg, Az, h1);
+
+  printf("\n----- h1 -----\n");
+  print_matrix(h1);
+
+  matrix* lambda = matrix_copy(h1);
+  solve_linear(AGAt,lambda,h1);
+
+  printf("\n----- lambda -----\n");
+  print_matrix(lambda);
+
+  matrix* ht = create_matrix(p->rows,lambda->columns);
+  matrix* h2 = matrix_copy(ht);
+  multiply_matrices(At,lambda,ht);
+  subtract_matrices(ht,gk,h2);
+
+  printf("\n----- h2 -----\n");
+  print_matrix(h2);
+
+
+  solve_linear(G,p,h2);
+
+  print_matrix(p);
+
+  /*TODO FREE everything*/
   free_matrix(zero);
   free_matrix(A);
 }
