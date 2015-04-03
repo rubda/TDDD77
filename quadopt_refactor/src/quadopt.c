@@ -22,6 +22,7 @@ problem* create_problem(matrix* G,matrix* d,matrix* A,matrix* b){
   prob->iteration=0;
   prob->step=0;
   prob->lagrange_set=false;
+  prob->max_iterations=1;
   return prob;
 }
 
@@ -141,11 +142,13 @@ bool solve_problem(problem* prob){
   if (!prob->point_set) {
     find_start_point(prob);
   }
+  while (check_conditions_to_quit(prob)){
   get_active_conditions(prob);
   create_subproblem(prob);
   solve_subproblem(prob);
   if (check_subproblem_solution(prob)) {
     calculate_step(prob);
+    step(prob);
   }
   else{
     find_lagrange(prob);
@@ -155,7 +158,23 @@ bool solve_problem(problem* prob){
   calculate_current_value(prob);
   present_problem(prob);
 #endif
+  }
   return true;
+}
+
+bool check_conditions_to_quit(problem* prob){
+  prob->iteration++;
+  if (prob->iteration>prob->max_iterations){
+    return false;
+  }
+  return true;
+}
+
+void step(problem* prob){
+  value step=prob->step;
+  matrix* direction= prob->subproblem->x;
+  multiply_matrix_with_scalar(step,direction);
+  add_matrices(direction,prob->x,prob->x);
 }
 
 void calculate_step(problem* prob){
@@ -218,7 +237,7 @@ void create_subproblem(problem* prob){
   if (prob->subproblem_set){
     free_problem(prob->subproblem);
   }
-  prob->subproblem=create_problem(prob->G,Gxplusd,sub_A,sub_b);
+  prob->subproblem=create_problem(matrix_copy(prob->G),Gxplusd,sub_A,sub_b);
   prob->subproblem_set=true;
 }
 
@@ -254,6 +273,7 @@ void find_lagrange(problem* prob){
   value temp_b;
   value condition;
   /*insert conditions righthandside into b matrix */
+  /*TODO insert d matrix also*/
   for (int i = 1 ; i <= sub->active_conditions->columns; i++) {
     condition=(int)get_value(1,i,prob->active_conditions);
     temp_b=get_value(condition,1,prob->b);
@@ -336,7 +356,7 @@ void handle_to_few_conditions(problem* prob){
   problem* sub=prob->subproblem;
   /* Generate all dependencies between variables from conditions, these are put in variable_dependencies */
   generete_variable_dependencies_in_subproblem(prob);
-  /* Matrix with all dependencies */
+  /* Matrix with allx dependencies */
   matrix* dep=sub->variable_dependencies;
   /* Some variables needed */
   matrix* temp_vector;

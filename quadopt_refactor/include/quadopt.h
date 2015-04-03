@@ -42,6 +42,7 @@ struct problem {
   value step;
   matrix* lagrange;
   bool lagrange_set;
+  int max_iterations;
 };
 
 
@@ -50,6 +51,8 @@ struct problem {
 
 /* Create a problem */
 problem* create_problem(matrix* G,matrix* g,matrix* A,matrix* b);
+
+void step(problem* prob);
 
 void calculate_step(problem* prob);
 
@@ -61,6 +64,8 @@ void find_start_point(problem* prob);
 
 /* Solves the problem struct using active set method */
 bool solve_problem(problem* prob);
+
+bool check_conditions_to_quit(problem* prob);
 
 /* Creates a subproblem */
 void create_subproblem(problem* prob);

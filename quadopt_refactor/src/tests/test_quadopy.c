@@ -23,6 +23,7 @@ insert_value(1,1,1,main_problem->x);
 insert_value(0,2,1,main_problem->x);
 insert_value(0,3,1,main_problem->x);
 main_problem->point_set=true;
+main_problem->max_iterations=2;
 solve_problem(main_problem);
 return 0;
 }
