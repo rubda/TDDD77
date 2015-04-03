@@ -49,8 +49,8 @@ int main() {
   printf("starting point: \n");
   print_matrix(z);
 
-  z_end = quadopt_solver(z, G, d, A, b, 0);
-
+  /*z_end = quadopt_solver(z, G, d, A, b, 0);
+*/
   printf("solution point: \n");
   print_matrix(z_end);
 
