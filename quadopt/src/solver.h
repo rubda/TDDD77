@@ -35,6 +35,7 @@ struct qp_problem
 	bool has_solution;
 
 	matrix* p;
+	matrix* gk;
 	value step;
 	matrix* lagrange;
 
@@ -46,9 +47,13 @@ struct qp_problem
 
 typedef struct qp_problem qp_problem;
 
-qp_problem* create_problem(matrix* Q, matrix* q, matrix* A, matrix* b, matrix* F, matrix* g, matrix* z0);
+qp_problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0);
 
 void print_qp_problem(qp_problem* prob);
+
+matrix* get_active_conditions(qp_problem* prob);
+
+void solve_subproblem(qp_problem* prob);
 
 /*calculate_lagrange();*/
 

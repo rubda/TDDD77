@@ -1,5 +1,5 @@
-#include <solver.h>
-#include <matLib.h>
+#include "solver.h"
+#include "matLib.h"
 
 
 /* example 16.3 from the book */
@@ -7,34 +7,34 @@
 int main() {
 
 
-  matrix* G = create_matrix(2,2);
-  value G_arr[4] = {	2, 0,
+  matrix* Q = create_matrix(2,2);
+  value Q_arr[4] = {	2, 0,
 			0, 2};
-  insert_array(G_arr, G);
+  insert_array(Q_arr, Q);
 
 
-  matrix* d = create_matrix(2, 1);
-  value d_arr[2] = {  -2, 
+  matrix* q = create_matrix(2, 1);
+  value q_arr[2] = {  -2, 
 		      -5};
-  insert_array(d_arr, d);
+  insert_array(q_arr, q);
 
 
-  matrix* A = create_matrix(5, 2);
-  value A_arr[10] = {  1, -2, 
+  matrix* F = create_matrix(5, 2);
+  value F_arr[10] = {  1, -2, 
 		       -1, -2,
 		       -1,  2, 
 		       1,  0,
 		       0,  1};
-  insert_array(A_arr, A);
+  insert_array(F_arr, F);
 
 
-  matrix* b = create_matrix(5, 1);
-  value b_arr[5] = { -2, 
+  matrix* g = create_matrix(5, 1);
+  value g_arr[5] = { -2, 
 		     -6, 
 		     -2, 
 		     0,
 		     0};
-  insert_array(b_arr, b);
+  insert_array(g_arr, g);
 
   /* starting point */
   matrix* z = create_matrix(2,1);
@@ -45,6 +45,10 @@ int main() {
   /* end point */
   matrix* z_end = create_matrix(2,1);
   insert_array(z_arr, z_end);
+
+  
+  create_problem(Q,q,NULL,NULL,F,g,z);
+
 
   printf("starting point: \n");
   print_matrix(z);
