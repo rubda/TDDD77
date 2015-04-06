@@ -1,6 +1,6 @@
-#include "solver.h"
-#include "matLib.h"
-
+#include <solver.h>
+#include <matLib.h>
+#include <assert.h>
 
 /* example 16.3 from the book */
 
@@ -38,29 +38,26 @@ int main() {
 
   /* starting point */
   matrix* z = create_matrix(2,1);
-  value z_arr[2] = {2, 
-		     0};
+  value z_arr[2] = {-5, 
+		    0};
   insert_array(z_arr, z);
 
-  /* end point */
-  matrix* z_end = create_matrix(2,1);
-  insert_array(z_arr, z_end);
+  qp_problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
+  quadopt_solver(problem);
 
-  
-  create_problem(Q,q,NULL,NULL,F,g,z);
+  matrix* expected = create_matrix(2, 1);
+  value e_arr[2] = {1.4,
+		    1.7};
+  insert_array(e_arr, expected);
 
+  assert(compare_matrices(problem->solution, expected));
 
-  printf("starting point: \n");
-  print_matrix(z);
-
-  /*z_end = quadopt_solver(z, G, d, A, b, 0);
-*/
-  printf("solution point: \n");
-  print_matrix(z_end);
-
-
+  /* TODO: Free problem struct */
+  free_matrix(Q);
+  free_matrix(q);
+  free_matrix(F);
+  free_matrix(g);
+  free_matrix(z);
 
   return 0;
-
-
 }

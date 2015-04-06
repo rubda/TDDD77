@@ -7,6 +7,7 @@
 
 /* This is the only include that is allowed in this file */
 #include <matLib.h>
+#include <math.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -122,8 +123,17 @@ bool compare_matrices(matrix* a, matrix* b) {
   if ((a->columns != b->columns) || (a->rows != b->rows)) {
     return false;
   }
-  size_t number_of_bytes = a->size * sizeof(value);
-  return 0 == memcmp((void *) (b->start), (void *) (a->start), number_of_bytes);
+  
+  for(int i = 1; i <= a->rows; i++){
+    for(int j = 1; j <= a->columns; j++){
+      value a_val = get_value_without_check(i, j, a);
+      value b_val = get_value_without_check(i, j, b);
+      if(!(fabs(a_val - b_val) < 0.001)){
+	return false;
+      }
+    }
+  }
+  return true;
 }
 
 /* Return true if the matrix are the same */
@@ -445,6 +455,8 @@ void least_square(matrix* a, matrix* x, matrix* b) {
 
 /* Gauss eliminates the matrix a */
 bool gauss_jordan(matrix* a) {
+  if(a->rows != a->columns) return false;
+
   for (int k = 1; k <= min(a->rows, a->columns); k++) {
     int pivot = largest_element_in_column_index(k,k, a);
     if (get_value(pivot, k, a) == 0) {
@@ -816,12 +828,12 @@ bool insert_column_vector(int column, matrix *a, matrix* b) {
   if (a->columns != 1 || b->rows != a->rows) {
     return false;
   }
-  value *start = b->start + (column - 1);
-  size_t size = b->columns;
-  size_t i = 0;
-  for (; i < size; i++) {
-    memcpy((start + i * size), a->start + i, sizeof(value));
+  
+  for(int i = 1; i <= b->rows; i++){
+    value val = get_value_without_check(i, 1, a);
+    insert_value_without_check(val, i, column, b);
   }
+
   return true;
 }
 
@@ -876,7 +888,7 @@ void matrix_copy_data(matrix* a, matrix* b) {
 bool is_zero_matrix(matrix* v) {
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
-      if (get_value_without_check(i,j,v) != 0) {
+      if (fabs(get_value_without_check(i,j,v)) > 0.0001) {
 	return false;
       }
     }
