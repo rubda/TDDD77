@@ -85,6 +85,60 @@ qp_problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F
 
 void print_qp_problem(qp_problem* prob) {
 
+  printf("\n********** Quadratic Problem **********\n\n");
+
+  printf("Objective function: \n");
+  printf("Q = \n");
+  print_matrix(prob->Q);
+  printf("q = \n");
+  print_matrix(prob->q);
+
+  printf("Equality constraints: \n");
+  if (prob->E != NULL) {
+    printf("E = \n");
+    print_matrix(prob->E);
+    printf("h = \n");
+    print_matrix(prob->h);
+  }
+  else {
+    printf("-\n\n");
+  }
+
+  printf("Inequality constraints: \n");
+  if (prob->F != NULL) {
+    printf("F = \n");
+    print_matrix(prob->F);
+    printf("g = \n");
+    print_matrix(prob->g);
+  }
+  else {
+    printf("-\n\n");
+  }
+
+  printf("Properties: \n");
+  printf("Number of variables = %d\n",prob->z->rows);
+  printf("Number of constraints = %d\n",prob->constraints_count);
+  printf("Accuracy = %f\n\n",1-prob->accuracy);
+
+  printf("Starting point: \n");
+  if (prob->has_start_point) {    
+    printf("z = \n");
+    print_matrix(prob->z0);
+  }
+  else {
+    printf("Not set or calculated yet.\n\n");
+  }
+
+  printf("Solution: \n");
+  if (prob->has_solution) {
+    printf("z = \n");
+    print_matrix(prob->solution);
+  }
+  else {
+    printf("Not calculated yet.\n\n");
+  }
+
+  printf("***************************************\n");
 
 }
 
