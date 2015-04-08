@@ -143,18 +143,44 @@ void print_qp_problem(qp_problem* prob) {
 }
 
 
-void solve_subproblem(qp_problem* prob) {
+void free_qp_problem(qp_problem* prob) {
+  free_matrix(prob->Q);
+  free_matrix(prob->Qn);
 
-  //work_set_copy(prob->active_set,prob->subset);
-  /* calculate variables necessary for sub problem */
+  free_matrix(prob->q);
+
+  free_matrix(prob->E);
+  free_matrix(prob->h);
+
+  free_matrix(prob->F);
+  free_matrix(prob->g);
+
+  free_matrix(prob->A);
+  free_matrix(prob->b);
+
+  free_matrix(prob->z0);
+
+  free_matrix(prob->z);
+
+  free_matrix(prob->solution);
+
+  free_matrix(prob->p);
+  free_matrix(prob->gk);
+  free_matrix(prob->lagrange);
+
+  work_set_free(prob->active_set);
+
+  free(prob);
+}
+
+
+void solve_subproblem(qp_problem* prob) {
 
  /* gk */
   matrix* tmp = create_matrix(prob->q->rows,1);
   multiply_matrices(prob->Q,prob->z,tmp);
   add_matrices(tmp,prob->q,prob->gk);
   free_matrix(tmp);
-
-
 
   if (prob->active_set->count == 0) {
     /* solve derivative and get vector pointing towards the global minimum */

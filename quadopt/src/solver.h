@@ -40,7 +40,6 @@ struct qp_problem
 	matrix* lagrange;
 
 	work_set* active_set;
-	work_set* sub_set;
 
 	value accuracy;
 };
@@ -50,6 +49,8 @@ typedef struct qp_problem qp_problem;
 qp_problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0);
 
 void print_qp_problem(qp_problem* prob);
+
+void free_qp_problem(qp_problem* prob);
 
 matrix* get_active_conditions(qp_problem* prob);
 

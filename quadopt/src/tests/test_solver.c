@@ -38,8 +38,8 @@ int main() {
 
   /* starting point */
   matrix* z = create_matrix(2,1);
-  value z_arr[2] = {2, 
-		    0};
+  value z_arr[2] = {1, 
+		    1};
   insert_array(z_arr, z);
 
   qp_problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
@@ -57,12 +57,12 @@ int main() {
 
   assert(compare_matrices(problem->solution, expected));
 
-  /* TODO: Free problem struct */
-  free_matrix(Q);
+  free_qp_problem(problem);
+  /*free_matrix(Q);
   free_matrix(q);
   free_matrix(F);
   free_matrix(g);
-  free_matrix(z);
+  free_matrix(z);*/
 
   return 0;
 }
