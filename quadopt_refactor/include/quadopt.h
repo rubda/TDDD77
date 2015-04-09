@@ -43,6 +43,8 @@ struct problem {
   matrix* lagrange;
   bool lagrange_set;
   int max_iterations;
+  /* used to detect division by zero */
+  value max_solution;
 };
 
 

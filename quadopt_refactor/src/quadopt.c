@@ -23,6 +23,7 @@ problem* create_problem(matrix* G,matrix* d,matrix* A,matrix* b){
   prob->step=0;
   prob->lagrange_set=false;
   prob->max_iterations=1;
+  prob->max_solution=10000000;
   return prob;
 }
 
@@ -146,6 +147,9 @@ bool solve_problem(problem* prob){
   get_active_conditions(prob);
   create_subproblem(prob);
   solve_subproblem(prob);
+  find_lagrange(prob);
+  printf("\n----------------------fsefe-------------------------- \n ");
+  print_matrix(prob->lagrange);
   if (check_subproblem_solution(prob)) {
     calculate_step(prob);
     step(prob);
@@ -273,13 +277,19 @@ void find_lagrange(problem* prob){
   value temp_b;
   value condition;
   /*insert conditions righthandside into b matrix */
-  /*TODO insert d matrix also*/
+  for (int i=1;i<=sub->d->rows;i++){
+    insert_value(-get_value(i,1,sub->d),i,1,b);
+  }
   for (int i = 1 ; i <= sub->active_conditions->columns; i++) {
     condition=(int)get_value(1,i,prob->active_conditions);
     temp_b=get_value(condition,1,prob->b);
     insert_value(temp_b,i+sub->G->rows,1,b);
   }
   matrix* x= solve_linear_with_return(solver,b);
+  printf("\n ddddddddddddddddddddddddddddddddddddddddddddddddddd \n");
+  print_matrix(solver);
+  print_matrix(x);
+  print_matrix(b);
   free_matrix(solver);
   free_matrix(b);
   matrix* lagrange=create_matrix(1,prob->A->rows);
@@ -296,6 +306,11 @@ void find_lagrange(problem* prob){
 /*return true if the solutionsvector is not a zerovector*/
 bool check_subproblem_solution(problem* prob){
   problem* sub=prob->subproblem;
+  for (int i=1;i<=sub->x->rows;i++){
+    if (get_value(i,1,sub->x)>sub->max_solution ||(get_value(i,1,sub->x))<(-(sub->max_solution))){
+      insert_value(0,i,1,sub->x);
+    }
+  }
   return !is_zero_matrix(sub->x);
 }
 
