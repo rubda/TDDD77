@@ -358,6 +358,9 @@ bool is_positive_lagrange(qp_problem* prob) {
     least_square(LA,lagrange,prob->gk);
   }
   for (int i = 1; i <= lagrange->rows; i++) {
+    if (prob->active_set->data[i-1] <= prob->equality_count) { //Is this correct?
+      continue;
+    }
     if (get_value_without_check(i,1,lagrange) < 0) {
       return false;
     }
