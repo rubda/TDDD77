@@ -91,11 +91,11 @@ int main() {
 
   qp_problem* problem = create_problem(Q,q,E,h,F,g,z);
 
-  print_qp_problem(problem);
+  //print_qp_problem(problem);
 
   quadopt_solver(problem);
 
-  print_qp_problem(problem);
+  //print_qp_problem(problem);
 
 
 

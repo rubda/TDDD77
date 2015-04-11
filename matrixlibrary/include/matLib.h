@@ -24,21 +24,25 @@
 #ifdef INT
 typedef int value;
 #define FORMAT_STRING "%i "
+#define PRECISION 0
 #endif
 
 #ifdef FLOAT
 typedef float value;
 #define FORMAT_STRING "%f "
+#define PRECISION 0.01
 #endif
 
 #ifdef DOUBLE
 typedef double value;
 #define FORMAT_STRING "%lf "
+#define PRECISION 0.0001
 #endif
 
 #ifdef QUAD
 typedef long double value;
 #define FORMAT_STRING "%Lf "
+#define PRECISION 0.000001
 #endif
 
 /* This is the core-struct in this library. All matrix-operations are based on this Struct. */
@@ -247,5 +251,7 @@ void transform_to_reduced_row_echelon_form(matrix* M);
 /* return true if b contains value a */
 bool matrix_contains(value a,matrix* b);
 
+/* compare two element values */
+bool compare_elements(value a, value b);
 
 #endif /* MATLIB_H */
