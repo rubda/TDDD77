@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <matLib.h>
 #include "solver.h"
-#include "find_lagrange.h"
 #include <math.h>
 
 bool remove_constraint(qp_problem* prob);
