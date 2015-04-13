@@ -42,7 +42,7 @@ int main() {
 		    1};
   insert_array(z_arr, z);
 
-  qp_problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
+  problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
 
   //print_qp_problem(problem);
 
@@ -57,12 +57,8 @@ int main() {
 
   assert(compare_matrices(problem->solution, expected));
 
-  free_qp_problem(problem);
-  /*free_matrix(Q);
-  free_matrix(q);
-  free_matrix(F);
-  free_matrix(g);
-  free_matrix(z);*/
+  free_matrix(expected);
+  free_problem(problem);
 
   return 0;
 }
