@@ -7,6 +7,11 @@ LIBMATRIX_SRC = ../matrixlibrary/src
 LIBMATRIX_INCLUDE = ../matrixlibrary/include
 LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
 
+LIBSUPMATRIX_DIR = ../matrixsuperlibrary/obj
+LIBSUPMATRIX_SRC = ../matrixsuperlibrary/src
+LIBSUPMATRIX_INCLUDE = ../matrixsuperlibrary/include
+LIBMSUPATRIX = $(LIBSUPMATRIX_DIR)/libsupermatrix.a
+
 CC = gcc
 CFLAGS = -g -Wall -pedantic --std=c99
 
@@ -31,13 +36,16 @@ clean:
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR) -I $(LIBSUPMATRIX_INCLUDE)
 
 
 # Matrixlibrary
 
 $(LIBMATRIX): $(wildcard $(LIBMATRIX_SRC)/*.c) $(wildcard $(LIBMATRIX_INCLUDE)/*.h)
 	cd ../matrixlibrary ; $(MAKE) libmatrix
+	
+$(LIBSUPMATRIX): $(wildcard $(LIBSUPMATRIX_SRC)/*.c) $(wildcard $(LIBSUPMATRIX_INCLUDE)/*.h)
+	cd ../matrixsuperlibrary ; $(MAKE) libsupermatrix
 
 
 # Tests
@@ -48,5 +56,5 @@ test: $(TEST_BINS)
 	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(OBJS) $(LIBMATRIX)
-	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -l matrix
+	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -l matrix -L $(LIBSUPMATRIX_DIR) -l supermatrix
 	chmod 755 $@

@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <matLib.h>
+#include <matSuperLib.h>
 #include <assert.h>
 
 
@@ -35,6 +36,15 @@ struct problem {
   value current_value;
   problem* subproblem;
   bool subproblem_set;
+  matrix* variable_dependencies;
+  bool variable_dependencies_set;
+  int iteration;
+  value step;
+  matrix* lagrange;
+  bool lagrange_set;
+  int max_iterations;
+  /* used to detect division by zero */
+  value max_solution;
 };
 
 
@@ -43,6 +53,10 @@ struct problem {
 
 /* Create a problem */
 problem* create_problem(matrix* G,matrix* g,matrix* A,matrix* b);
+
+void step(problem* prob);
+
+void calculate_step(problem* prob);
 
 /* Present the problem struct */
 void present_problem(problem* prob);
@@ -53,11 +67,22 @@ void find_start_point(problem* prob);
 /* Solves the problem struct using active set method */
 bool solve_problem(problem* prob);
 
+bool check_conditions_to_quit(problem* prob);
+
 /* Creates a subproblem */
 void create_subproblem(problem* prob);
 
+void find_lagrange(problem* prob);
+
+/*return true if the solutionsvector is not a zerovector*/
+bool check_subproblem_solution(problem* prob);
+
 /* Solves the sub problem */
 void solve_subproblem(problem* prob);
+
+void handle_to_many_conditions(problem* sub);
+
+void handle_to_few_conditions(problem* sub);
 
 /* Calculates the functions current value */
 bool calculate_current_value(problem* prob);

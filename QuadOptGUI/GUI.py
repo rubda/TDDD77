@@ -133,7 +133,7 @@ def generate_c(event=None):
              message="The generated C code was written to " + "result.c")
 
     try:
-        assert(1 == 2)
+        assert(1 == 2) # Temp dont ask to open any files
         f = askopenfile(mode='r', title='Select datafile')
         data_filename = f.name
         f = askopenfile(mode='r', title='Select output file')
@@ -184,6 +184,7 @@ def view_problem(event=None):
         img = PhotoImage(file="problem.png")
         os.remove("problem.png")
 
+        text.config(state=NORMAL)
         text.delete(0.0, END)
         text.image_create(0.0, image=img)
     except:

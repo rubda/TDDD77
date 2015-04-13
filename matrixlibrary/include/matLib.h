@@ -24,21 +24,25 @@
 #ifdef INT
 typedef int value;
 #define FORMAT_STRING "%i "
+#define PRECISION 0
 #endif
 
 #ifdef FLOAT
 typedef float value;
 #define FORMAT_STRING "%f "
+#define PRECISION 0.01
 #endif
 
 #ifdef DOUBLE
 typedef double value;
 #define FORMAT_STRING "%lf "
+#define PRECISION 0.0001
 #endif
 
 #ifdef QUAD
 typedef long double value;
 #define FORMAT_STRING "%Lf "
+#define PRECISION 0.000001
 #endif
 
 /* This is the core-struct in this library. All matrix-operations are based on this Struct. */
@@ -58,6 +62,9 @@ matrix* create_matrix(int row, int col);
 
 /* Is normally not needed for this implementation but might be needed on others */
 matrix* create_zero_matrix(int row,int col);
+
+/* Creates a identity matrix */
+matrix* create_identity_matrix(int row,int col);
 
 /* calculate the dot product */
 value dot_product(matrix* r, matrix* v);
@@ -146,6 +153,14 @@ int largest_element_in_column_index(int column,int start,matrix* a);
 /* Returns on which row the smallest element in the column is after start */
 int smallest_element_in_column_index(int column,int start,matrix* a);
 
+/* Returns on which row the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_column_index(int column, int start, matrix* a);
+
+/* Returns on which column the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_row_index(int row,int start, matrix* a);
+
 /* Adds each element in row1 and row 2 and puts the result on row2 */
 void add_rows(int row1, int row2, matrix* a);
 
@@ -200,6 +215,9 @@ bool switch_rows(int row1, int row2, matrix* a);
 /* Takes column vector from matrix a and puts it into b */
 bool get_column_vector(int column, matrix* a, matrix* b);
 
+/* Takes column vector from matrix a and return a pointer to the row vector*/
+matrix* get_column_vector_with_return(int column, matrix* a);
+
 /* Inserts column vector a into matrix b at position column */
 bool insert_column_vector(int column, matrix *a, matrix* b);
 
@@ -230,5 +248,10 @@ matrix* derivate_matrix_with_return(int var,matrix* a);
 /* Fucks shit up */
 void transform_to_reduced_row_echelon_form(matrix* M);
 
+/* return true if b contains value a */
+bool matrix_contains(value a,matrix* b);
+
+/* compare two element values */
+bool compare_elements(value a, value b);
 
 #endif /* MATLIB_H */

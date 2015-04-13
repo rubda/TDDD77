@@ -2,7 +2,6 @@
 #include <matLib.h>
 #include <assert.h>
 
-/* example 16.3 from the book */
 
 int main() {
 
@@ -14,25 +13,31 @@ int main() {
 
 
   matrix* q = create_matrix(2, 1);
-  value q_arr[2] = {  -2, 
-		      -5};
+  value q_arr[2] = {  -20, 
+		      -12};
   insert_array(q_arr, q);
 
 
-  matrix* F = create_matrix(5, 2);
-  value F_arr[10] = {  1, -2, 
-		       -1, -2,
-		       -1,  2, 
-		       1,  0,
+  matrix* E = create_matrix(1, 2);
+  value E_arr[2] = {1,   -1};
+  insert_array(E_arr, E);
+
+
+  matrix* h = create_matrix(1, 1);
+  value h_arr[1] = {0};
+  insert_array(h_arr, h);
+
+
+  matrix* F = create_matrix(3, 2);
+  value F_arr[6] = {  0.5, 1, 
+		       1, 0,
 		       0,  1};
   insert_array(F_arr, F);
 
 
-  matrix* g = create_matrix(5, 1);
-  value g_arr[5] = { -2, 
-		     -6, 
-		     -2, 
-		     0,
+  matrix* g = create_matrix(3, 1);
+  value g_arr[3] = { 8, 
+		     0, 
 		     0};
   insert_array(g_arr, g);
 
@@ -42,7 +47,7 @@ int main() {
 		    1};
   insert_array(z_arr, z);
 
-  qp_problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
+  qp_problem* problem = create_problem(Q,q,E,h,F,g,z);
 
   //print_qp_problem(problem);
 
@@ -51,18 +56,13 @@ int main() {
   //print_qp_problem(problem);
 
   matrix* expected = create_matrix(2, 1);
-  value e_arr[2] = {1.4,
-		    1.7};
+  value e_arr[2] = {5.33333,
+		    5.33333};
   insert_array(e_arr, expected);
 
   assert(compare_matrices(problem->solution, expected));
 
   free_qp_problem(problem);
-  /*free_matrix(Q);
-  free_matrix(q);
-  free_matrix(F);
-  free_matrix(g);
-  free_matrix(z);*/
 
   return 0;
 }

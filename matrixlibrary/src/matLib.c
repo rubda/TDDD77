@@ -7,6 +7,7 @@
 
 /* This is the only include that is allowed in this file */
 #include <matLib.h>
+#include <math.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -48,10 +49,24 @@ matrix* create_zero_matrix(int row,int col){
   return mal;
 }
 
+/* Creates a identity matrix */
+matrix* create_identity_matrix(int row,int col){
+  if (row!=col){
+    return NULL;
+  }
+  matrix* to_return=create_zero_matrix(row,col);
+  for (int i=1;i<=row;i++){
+    insert_value_without_check(1,i,i,to_return);
+  }
+  return to_return;
+}
+
 /* free the memory allocated by matrix mat */
 void free_matrix(matrix* mat) {
-  free(mat->start);
-  free(mat);
+  if (mat!=NULL){
+    free(mat->start);
+    free(mat);
+  }
 }
 
 /* calculate the dot product */
@@ -108,8 +123,17 @@ bool compare_matrices(matrix* a, matrix* b) {
   if ((a->columns != b->columns) || (a->rows != b->rows)) {
     return false;
   }
-  size_t number_of_bytes = a->size * sizeof(value);
-  return 0 == memcmp((void *) (b->start), (void *) (a->start), number_of_bytes);
+  
+  for(int i = 1; i <= a->rows; i++){
+    for(int j = 1; j <= a->columns; j++){
+      value a_val = get_value_without_check(i, j, a);
+      value b_val = get_value_without_check(i, j, b);
+      if(!(fabs(a_val - b_val) < 0.001)){
+	return false;
+      }
+    }
+  }
+  return true;
 }
 
 /* Return true if the matrix are the same */
@@ -228,8 +252,7 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
       sum = 0;
       j = 1;
       for (; j <= b->rows; j++) {
-	sum += get_value_without_check(i, j, a)
-	  * get_value_without_check(j, k, b);
+	sum += get_value_without_check(i, j, a)* get_value_without_check(j, k, b);
       }
       insert_value_without_check(sum, i, k, c);
     }
@@ -432,6 +455,8 @@ void least_square(matrix* a, matrix* x, matrix* b) {
 
 /* Gauss eliminates the matrix a */
 bool gauss_jordan(matrix* a) {
+  if(a->rows != a->columns) return false;
+
   for (int k = 1; k <= min(a->rows, a->columns); k++) {
     int pivot = largest_element_in_column_index(k,k, a);
     if (get_value(pivot, k, a) == 0) {
@@ -520,6 +545,34 @@ int smallest_element_in_column_index(int column,int start,matrix* a){
     }
   }
   return index;
+}
+
+/* Returns on which row the first nonezero element is in the column is after start returns -1
+ * if no nonezero element is found */
+int first_nonezero_in_column_index(int column, int start, matrix* a) {
+  if (column > a->columns || column < 1) {
+    return false;
+  }
+  for (int i = start; i <= a->rows; i++) {
+    if ( 0!=get_value(i, column, a)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/* Returns on which column the first nonezero element is in the column is after start returns 0
+ * if no nonezero element is found */
+int first_nonezero_in_row_index(int row,int start, matrix* a) {
+  if (row > a->rows || row < 1) {
+    return false;
+  }
+  for (int i = start; i <= a->columns; i++) {
+    if (0 != get_value(row, i, a)) {
+      return i;
+    }
+  }
+  return 0;
 }
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
@@ -759,18 +812,28 @@ bool get_column_vector(int column, matrix* a, matrix* b) {
   }
   return true;
 }
+/* Takes column vector from matrix a and puts it into b which also is a column vector
+ *however get_sub_matrix should be faster */
+matrix* get_column_vector_with_return(int column, matrix* a){
+  matrix* b=create_matrix(a->rows,1);
+  get_column_vector(column,a,b);
+  return b;
+
+}
+
+
 
 /* Inserts column vector a into matrix b at position column */
 bool insert_column_vector(int column, matrix *a, matrix* b) {
   if (a->columns != 1 || b->rows != a->rows) {
     return false;
   }
-  value *start = b->start + (column - 1);
-  size_t size = b->columns;
-  size_t i = 0;
-  for (; i < size; i++) {
-    memcpy((start + i * size), a->start + i, sizeof(value));
+  
+  for(int i = 1; i <= b->rows; i++){
+    value val = get_value_without_check(i, 1, a);
+    insert_value_without_check(val, i, column, b);
   }
+
   return true;
 }
 
@@ -825,7 +888,7 @@ void matrix_copy_data(matrix* a, matrix* b) {
 bool is_zero_matrix(matrix* v) {
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
-      if (get_value_without_check(i,j,v) != 0) {
+      if (fabs(get_value_without_check(i,j,v)) > 0.0001) {
 	return false;
       }
     }
@@ -945,4 +1008,24 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
   free_matrix(row1);
   free_matrix(row2);
   free_matrix(row3);
+}
+
+/* return true if b contains value a */
+bool matrix_contains(value a,matrix* b){
+  for (int i=1;i<=b->rows;i++){
+    for (int j=1;j<=b->columns;j++){
+      if (get_value(i,j,b)==a){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/* compare two element values */
+bool compare_elements(value a, value b) {
+  if (fabs(a - b) <= PRECISION) {
+    return true;
+  }
+  return false;
 }
