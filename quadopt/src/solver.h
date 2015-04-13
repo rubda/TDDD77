@@ -1,11 +1,11 @@
 #include "matLib.h"
 #include "work_set.h"
 
-struct qp_problem
+struct problem
 {
 	/* Optimization function */
 	matrix* Q;
-	matrix* Qn;
+	matrix* Q_inv;
 
 	matrix* q;
 
@@ -44,16 +44,16 @@ struct qp_problem
 	value accuracy;
 };
 
-typedef struct qp_problem qp_problem;
+typedef struct problem problem;
 
-qp_problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0);
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0);
 
-void print_qp_problem(qp_problem* prob);
+void print_problem(problem* prob);
 
-void free_qp_problem(qp_problem* prob);
+void free_problem(problem* prob);
 
-matrix* get_active_conditions(qp_problem* prob);
+matrix* get_active_conditions(problem* prob);
 
-void solve_subproblem(qp_problem* prob);
+void solve_subproblem(problem* prob);
 
-matrix* quadopt_solver(qp_problem* prob);
+matrix* quadopt_solver(problem* prob);
