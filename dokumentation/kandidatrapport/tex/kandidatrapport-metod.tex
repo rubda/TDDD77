@@ -12,11 +12,27 @@ När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns d
 För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner.     
 
 \subsubsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Nedanför visas pseudokod för algoritmen från \emph{Numerical Optimization}.
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. I figur 1 nedanför visas pseudokod för algoritmen.
 
-\begin{figure}[h]
-\center
-\includegraphics[scale=0.45]{grafik/algoritm.png}
-\caption{Pseudokod för Active set method}
-\endcenter
-\end{figure}
+\begin{algorithm}
+\caption{Active-Set method}
+\begin{algorithmic}
+\Procedure{Active-Set method}{$A$}
+\State Compute a feasible starting point $x_0$;
+\State Set $W_0$ to be a subset of the active constraints at $x_0$;
+\For{$k$ = 0, 1, 2, . . .}
+	\State Solve subproblem to find $p_k$;
+	\If{$p_k$ = 0}
+		\State Compute Lagrange multipliers $\hat{\lambda_i}$ that satisfy $\sum\limits_{i \in \hat{W}}$$a_i\hat{\lambda_i}=g$
+	\EndIf
+	
+\EndFor
+	
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
