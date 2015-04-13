@@ -34,11 +34,11 @@ void mexFunction( int nlhs, mxArray* plhs[],
       }
     }
 
-    martins_matrices[i] = martins_matrix
+    martins_matrices[i] = martins_matrix;
   }
 
   /*create problem from solver.h with martins matrices */
-  qp_problem* problem = create_problem(martins_matrices[0], martins_matrices[1], martins_matrices[2], martins_matrices[3], martins_matrices[4], martins_matrices[5], martins_matrices[6]);
+  problem* problem = create_problem(martins_matrices[0], martins_matrices[1], martins_matrices[2], martins_matrices[3], martins_matrices[4], martins_matrices[5], martins_matrices[6]);
 
   /*solve problem*/
   quadopt_solver(problem);
