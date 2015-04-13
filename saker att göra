@@ -1,34 +1,31 @@
-definiera def.h
-
-matrix bibl- vi gör eget
-	debugga
-	implemebntera invers
-	testa hastighet
-	implementera linjära system lösaer
+**Saker som bör göras - 150413**
+Alla dokument ska in 150420 till handledaren.
+- De som har egna dokument skriv och rätta dem. Dvs
+	Ruben - Kvalitetsplan
+	Sebastian - Arkitekturplan
+	Johan - Testplan, testrapport
+	Dennis - Skickar in alla dokument antar jag
 	
-implementera alg.
+Dokument generellt
+- Kandidatrapporten	(Vem skriver denna, gör alla det eller några?)
+- Individuell del 	(Överens om 50 timmar var på de individuella delarna.
+	
+Solver
+- Hitta en start punkt.
+- Refactor är på gång. Antagligen klart, men värt om flera går igenom koden.
+- Testa. Jämföra med Gurobi och möjligtvis MATLAB samt CVXGEN.
 
-halvtidsdokument'
+Parser
+- Möte med Daniel Simon om hur hans summa tecken ska fungera.
+- "Koppla" GUI delen med C-koden. Är i princip klart, bör testas dock.
+- Möjligtvis strukturera upp koden. Dvs lägga vissa funktioner i seperat fil.
 
-uppdatera dokument
+**150520**
+Genrep, dokumentopposition
+- Presentation	(Johan och Martin)
+- Opponering	(Ruben, Yngve och Adam)
 
-arkitektdokument
+**150527**
+Demonstration, kursavslut
+- Vi får se vilka som demonstrerar. 
 
-lösa problem för hand
-
-
-2015-03-04
-
-- Matrisbibliotek					(Martin, Yngfve)
-- Börja på lösaren					(Johan, Ruben)
-- Göra en systemskiss/arkitektplan			(Sebastian)
-- Påbörja rapporten					(Dennis, Adam)
-
-- Opponering						(Martin, Sebastian)
-- Presentation						(Adam, Dennis, Yngve)
-
-Johan chillar
-Ruben chillar
-
-- Sista Opponering 					(Ruben, Adam, Yngve)
-- Sista presentationen					(Martin, Johan)
