@@ -56,14 +56,4 @@ matrix* get_active_conditions(qp_problem* prob);
 
 void solve_subproblem(qp_problem* prob);
 
-/*calculate_lagrange();*/
-
-/*value calculate_step(matrix* B, matrix* A, matrix* x, matrix* p, work_set* ws);
-
-void get_unsolved(matrix* Ain, work_set* unsolved);
-bool get_p(matrix* Ain, matrix* G, matrix* gk, matrix* d, matrix* z, matrix* p, matrix* lagrange, work_set* ws);
-
-matrix* quadopt_solver(matrix* z0, matrix* G, matrix* d, matrix* A, matrix* b, value accuracy);
-*/
-
-matrix* quadopt_solver1(qp_problem* prob);
+matrix* quadopt_solver(qp_problem* prob);
