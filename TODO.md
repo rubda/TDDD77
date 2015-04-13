@@ -1,10 +1,12 @@
 **Saker som bör göras - 150413**
+
+
 Alla dokument ska in 150420 till handledaren.
 - De som har egna dokument skriv och rätta dem. Dvs
-	Ruben - Kvalitetsplan
-	Sebastian - Arkitekturplan
-	Johan - Testplan, testrapport
-	Dennis - Skickar in alla dokument antar jag
+	+ Ruben - Kvalitetsplan
+	+ Sebastian - Arkitekturplan
+	+ Johan - Testplan, testrapport
+	+ Dennis - Skickar in alla dokument antar jag
 	
 Dokument generellt
 - Kandidatrapporten	(Vem skriver denna, gör alla det eller några?)
@@ -21,11 +23,13 @@ Parser
 - Möjligtvis strukturera upp koden. Dvs lägga vissa funktioner i seperat fil.
 
 **150520**
+
 Genrep, dokumentopposition
 - Presentation	(Johan och Martin)
 - Opponering	(Ruben, Yngve och Adam)
 
 **150527**
+
 Demonstration, kursavslut
 - Vi får se vilka som demonstrerar. 
 
