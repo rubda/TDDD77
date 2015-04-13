@@ -304,6 +304,16 @@ void solve_subproblem(qp_problem* prob) {
   /*TODO FREE everything*/
   //free_matrix(zero);
   free_matrix(A);
+  free_matrix(At);
+  free_matrix(AQ);
+  free_matrix(AQAt);
+  free_matrix(AQg);
+  free_matrix(Az);
+  free_matrix(h1);
+  free_matrix(lambda);
+  free_matrix(ht);
+  free_matrix(h2);
+  free_matrix(Qp);
 }
 
 matrix* get_active_conditions(qp_problem* prob){
@@ -347,8 +357,8 @@ bool is_positive_lagrange(qp_problem* prob) {
     ai = get_row_vector_with_return(prob->active_set->data[i-1],prob->A);
     ait = transpose_matrix_with_return(ai);
     insert_column_vector(i, ait, LA);
-    free(ai);
-    free(ait);
+    free_matrix(ai);
+    free_matrix(ait);
   }
 
   if (solve_linear(LA,lagrange,prob->gk)) {    
@@ -362,9 +372,13 @@ bool is_positive_lagrange(qp_problem* prob) {
       continue;
     }
     if (get_value_without_check(i,1,lagrange) < 0) {
+      free_matrix(LA);
+      free_matrix(lagrange);
       return false;
     }
   }
+  free_matrix(LA);
+  free_matrix(lagrange);
   return true;
 }
 
@@ -379,8 +393,8 @@ bool remove_constraint(qp_problem* prob) {
     ai = get_row_vector_with_return(prob->active_set->data[i-1],prob->A);
     ait = transpose_matrix_with_return(ai);
     insert_column_vector(i, ait, LA);
-    free(ai);
-    free(ait);
+    free_matrix(ai);
+    free_matrix(ait);
   }
 
   if (solve_linear(LA,lagrange,prob->gk)) {    
@@ -407,12 +421,15 @@ bool remove_constraint(qp_problem* prob) {
   if (val < 0) {
     /* remove */
     work_set_remove(prob->active_set,small);
+    free_matrix(LA);
+    free_matrix(lagrange);
     return true;
   }
 
   /* could not remove any constraints */
+  free_matrix(LA);
+  free_matrix(lagrange);
   return false;
-
 }
 
 bool fill_active_set(qp_problem* prob) {

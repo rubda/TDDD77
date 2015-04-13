@@ -4,8 +4,6 @@
 
 
 int main() {
-
-
   matrix* Q = create_matrix(2,2);
   value Q_arr[4] = {	2, 0,
 			0, 2};
@@ -62,6 +60,7 @@ int main() {
 
   assert(compare_matrices(problem->solution, expected));
 
+  free_matrix(expected);
   free_qp_problem(problem);
 
   return 0;

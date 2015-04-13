@@ -57,12 +57,8 @@ int main() {
 
   assert(compare_matrices(problem->solution, expected));
 
+  free_matrix(expected);
   free_qp_problem(problem);
-  /*free_matrix(Q);
-  free_matrix(q);
-  free_matrix(F);
-  free_matrix(g);
-  free_matrix(z);*/
 
   return 0;
 }
