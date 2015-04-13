@@ -231,10 +231,10 @@ void solve_subproblem(qp_problem* prob) {
   matrix* Az = create_matrix(A->rows,prob->z->columns);
   multiply_matrices(A,prob->z,Az);  
 
-  matrix* h1 = create_matrix(AQg->rows,AQg->columns); //matrix_copy(AQg);
+  matrix* h1 = create_matrix(AQg->rows,AQg->columns); /*matrix_copy(AQg);*/
   subtract_matrices(AQg, Az, h1);  
 
-  matrix* lambda = create_matrix(AQg->rows,AQg->columns); //matrix_copy(h1);
+  matrix* lambda = create_matrix(AQg->rows,AQg->columns); /*matrix_copy(h1);*/
   solve_linear(AQAt,lambda,h1);  
 
   matrix* ht = create_matrix(prob->p->rows,lambda->columns);
@@ -292,16 +292,17 @@ void solve_subproblem(qp_problem* prob) {
 
   matrix* Qp = create_matrix(prob->gk->rows, prob->gk->columns);
   multiply_matrices(prob->Q, prob->p, Qp);
+  int i;
 
   if(compare_matrices(Qp, prob->gk)){
-    for(int i = 1; i <= prob->p->rows; i++){
+    for(i = 1; i <= prob->p->rows; i++){
       insert_value_without_check(0, i, 1, prob->p);
     }
   }
 
 
   /*TODO FREE everything*/
-  //free_matrix(zero);
+  /*free_matrix(zero);*/
   free_matrix(A);
 }
 
@@ -309,7 +310,8 @@ matrix* get_active_conditions(qp_problem* prob){
   matrix* A = create_matrix(prob->active_set->count, prob->A->columns);
   
   bool success = false;
-  for(int i = 0; i < prob->active_set->count; i++){
+  int i;
+  for(i = 0; i < prob->active_set->count; i++){
     matrix* temp_row = get_row_vector_with_return(prob->active_set->data[i], prob->A);
     success = insert_row_vector(i + 1, temp_row, A);
     free_matrix(temp_row);
@@ -342,7 +344,8 @@ bool is_positive_lagrange(qp_problem* prob) {
   matrix* LA = create_matrix(prob->p->rows,prob->active_set->count);
   matrix* lagrange = create_matrix(prob->active_set->count,1);
 
-  for (int i = 1; i <= prob->active_set->count; i++) {
+  int i;
+  for (i = 1; i <= prob->active_set->count; i++) {
     ai = get_row_vector_with_return(prob->active_set->data[i-1],prob->A);
     ait = transpose_matrix_with_return(ai);
     insert_column_vector(i, ait, LA);
@@ -356,11 +359,12 @@ bool is_positive_lagrange(qp_problem* prob) {
   else {
     least_square(LA,lagrange,prob->gk);
   }
-  for (int i = 1; i <= lagrange->rows; i++) {
-    if (prob->active_set->data[i-1] <= prob->equality_count) { //Is this correct?
+  int j;
+  for (j = 1; j <= lagrange->rows; j++) {
+    if (prob->active_set->data[j-1] <= prob->equality_count) { /*Is this correct?*/
       continue;
     }
-    if (get_value_without_check(i,1,lagrange) < 0) {
+    if (get_value_without_check(j, 1, lagrange) < 0) {
       return false;
     }
   }
@@ -374,7 +378,8 @@ bool remove_constraint(qp_problem* prob) {
   matrix* LA = create_matrix(prob->p->rows,prob->active_set->count);
   matrix* lagrange = create_matrix(prob->active_set->count,1);
 
-  for (int i = 1; i <= prob->active_set->count; i++) {
+  int i;
+  for (i = 1; i <= prob->active_set->count; i++) {
     ai = get_row_vector_with_return(prob->active_set->data[i-1],prob->A);
     ait = transpose_matrix_with_return(ai);
     insert_column_vector(i, ait, LA);
@@ -393,13 +398,14 @@ bool remove_constraint(qp_problem* prob) {
   int small;
   value tmp;
   value val = 0;
-  for (int i = 1; i <= lagrange->rows; i++) {
-    if (prob->active_set->data[i-1] <= prob->equality_count) {
+  int j;
+  for (j = 1; j <= lagrange->rows; j++) {
+    if (prob->active_set->data[j-1] <= prob->equality_count) {
       continue;
     }
-    tmp = get_value_without_check(i,1,lagrange);
+    tmp = get_value_without_check(j, 1, lagrange);
     if (tmp < val) {
-      small = prob->active_set->data[i-1];
+      small = prob->active_set->data[j-1];
       val = tmp;
     }
   }
@@ -419,18 +425,20 @@ bool fill_active_set(qp_problem* prob) {
   work_set_clear(prob->active_set);
 
   /* fill */
-  for (int i = 1; i <= prob->A->rows; i++) {
+  int i;
+  for (i = 1; i <= prob->A->rows; i++) {
     if (i <= prob->equality_count) {
-      work_set_append(prob->active_set,i);
+      work_set_append(prob->active_set, i);
       continue;
     }
     value ans = 0;
-    for (int j = 1; j <= prob->A->columns; j++) {
-      ans += get_value(i,j,prob->A)*get_value(j,1,prob->z); 
-      //TODO add check and get_value_without_check and return false
+    int j;
+    for (j = 1; j <= prob->A->columns; j++) {
+      ans += get_value(i, j, prob->A)*get_value(j, 1, prob->z); 
+      /*TODO add check and get_value_without_check and return false*/
     }
-    if (compare_elements(ans, get_value_without_check(i,1,prob->b))) { //+get_value(i,0,s)
-      work_set_append(prob->active_set,i);
+    if (compare_elements(ans, get_value_without_check(i, 1, prob->b))) { /*+get_value(i,0,s)*/
+      work_set_append(prob->active_set, i);
     }
   }
 
@@ -445,15 +453,16 @@ bool take_step(qp_problem* prob) {
   value bi, nom, temp_step, step = 1;
 
   /* only go through the inequality constraints */
-  for (int i = 1; i <= prob->A->rows; i++) { //prob->equality_count
+  int i;
+  for (i = 1; i <= prob->A->rows; i++) { /*prob->equality_count*/
     if (work_set_contains(prob->active_set,i)) {
       continue;
     }
     get_row_vector(i, prob->A, ai);
     transpose_matrix(ai, ati);
-    nom = dot_product(ati,prob->p);
+    nom = dot_product(ati, prob->p);
     if (!compare_elements(nom,0)) {
-      bi = get_value(i,1,prob->b);
+      bi = get_value(i, 1, prob->b);
       temp_step = (bi - dot_product(ati,prob->z))/nom;
       if (temp_step >= 0 && temp_step < step) {
         step = temp_step;
@@ -463,8 +472,8 @@ bool take_step(qp_problem* prob) {
 
   /* free matrices and return */
   if (!compare_elements(step,0)) {
-    multiply_matrix_with_scalar(step,prob->p);    
-    add_matrices(z_old,prob->p,prob->z);
+    multiply_matrix_with_scalar(step, prob->p);    
+    add_matrices(z_old, prob->p, prob->z);
 
     free_matrix(ai);
     free_matrix(ati);
