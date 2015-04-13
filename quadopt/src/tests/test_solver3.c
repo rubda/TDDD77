@@ -61,7 +61,7 @@ int main() {
   assert(compare_matrices(problem->solution, expected));
 
   free_matrix(expected);
-  free_qp_problem(problem);
+  free_problem(problem);
 
   return 0;
 }

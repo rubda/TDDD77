@@ -97,5 +97,5 @@ int main() {
 
   //print_qp_problem(problem);
 
-  free_qp_problem(problem);
+  free_problem(problem);
 }
