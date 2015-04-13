@@ -4,7 +4,7 @@ int
 main()
 {
 
-  /* parameters */
+  /* Parameters */
 
   matrix* Q; 
   Q = create_matrix(4, 4);
@@ -19,10 +19,10 @@ main()
   matrix* g; 
   g = create_matrix(1, 20);
 
-  /* variables */
+  /* Variables */
 
-  matrix* z; 
-  z = create_matrix(4, 1);
+  matrix* z[i]; 
+  z[i] = create_matrix(4, 1);
 
 
   /* Insert values into matrices */
