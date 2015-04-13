@@ -198,7 +198,6 @@ void solve_subproblem(problem* prob){
 
   /* Solve system as long as you get the the zero vector */
   matrix* A = get_active_conditions(prob);
-  /*matrix* zero = get_zero_matrix(prob->p->rows, prob->p->columns);*/
 
   bool success;
   do{
@@ -214,7 +213,7 @@ void solve_subproblem(problem* prob){
     }
   } while(success);
 
-  /* use range space to get p */
+  /* Use range-space to get p */
 
   matrix* At = transpose_matrix_with_return(A);  
 
@@ -230,10 +229,10 @@ void solve_subproblem(problem* prob){
   matrix* Az = create_matrix(A->rows ,prob->z->columns);
   multiply_matrices(A, prob->z, Az);  
 
-  matrix* h1 = create_matrix(AQg->rows, AQg->columns); /*matrix_copy(AQg);*/
+  matrix* h1 = create_matrix(AQg->rows, AQg->columns); 
   subtract_matrices(AQg, Az, h1);  
 
-  matrix* lambda = create_matrix(AQg->rows, AQg->columns); /*matrix_copy(h1);*/
+  matrix* lambda = create_matrix(AQg->rows, AQg->columns);
   solve_linear(AQAt, lambda, h1);  
 
   matrix* ht = create_matrix(prob->p->rows, lambda->columns);
@@ -297,8 +296,6 @@ void solve_subproblem(problem* prob){
     }
   }
 
-  /*TODO FREE everything*/
-  /*free_matrix(zero);*/
   free_matrix(A);
   free_matrix(At);
   free_matrix(AQ);
@@ -334,7 +331,7 @@ matrix* get_active_conditions(problem* prob){
 matrix* get_zero_matrix(int rows, int columns){
   matrix* zero = create_matrix(rows, columns);
   free(zero->start);
-  zero->start = calloc(rows * columns, sizeof(value));
+  zero->start = calloc(rows*columns, sizeof(value));
 
   if(zero->start == NULL){
     return NULL;
@@ -347,8 +344,8 @@ bool is_positive_lagrange(problem* prob) {
   
   matrix* ait;
   matrix* ai;
-  matrix* LA = create_matrix(prob->p->rows,prob->active_set->count);
-  matrix* lagrange = create_matrix(prob->active_set->count,1);
+  matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
+  matrix* lagrange = create_matrix(prob->active_set->count, 1);
 
   int i;
   for (i = 1; i <= prob->active_set->count; i++) {
@@ -360,7 +357,7 @@ bool is_positive_lagrange(problem* prob) {
   }
 
   if (!solve_linear(LA, lagrange, prob->gk)){
-  	least_square(LA, lagrange, prob->gk);
+    least_square(LA, lagrange, prob->gk);
   }
 
   int j;
@@ -368,7 +365,7 @@ bool is_positive_lagrange(problem* prob) {
     if (prob->active_set->data[j-1] <= prob->equality_count) { /*Is this correct?*/
       continue;
     }
-    if (get_value_without_check(i,1,lagrange) < 0) {
+    if (get_value_without_check(i, 1, lagrange) < 0) {
       free_matrix(LA);
       free_matrix(lagrange);
       return false;
@@ -393,9 +390,9 @@ bool remove_constraint(problem* prob){
     free_matrix(ai);
     free_matrix(ait);
   }
-
+  
   if (!solve_linear(LA, lagrange, prob->gk)){
-  	least_square(LA, lagrange, prob->gk);
+    least_square(LA, lagrange, prob->gk);
   }
   
   /* Find most negative and remove (if not equality constraint) */
@@ -462,10 +459,10 @@ bool take_step(problem* prob) {
   matrix* z_old = matrix_copy(prob->z);
   value bi, nom, temp_step, step = 1;
 
-  /* Go only through the inequality constraints */
+  /* Only go through the inequality constraints */
   int i;
   for (i = 1; i <= prob->A->rows; i++){ /*prob->equality_count*/
-    if (work_set_contains(prob->active_set,i)){
+    if (work_set_contains(prob->active_set, i)){
       continue;
     }
     get_row_vector(i, prob->A, ai);
