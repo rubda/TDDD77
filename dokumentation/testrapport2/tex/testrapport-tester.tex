@@ -1,0 +1,28 @@
+\section{Tester}
+Av följande objekt och funktioner har tester skapats och utförts i iteration 1:
+
+\subsection{Status}
+Här visas teststatus för de olika delarna.
+\begin{itemize}
+\item{Matrisbibliotek - 90\%}
+\item{Lösare av linjära system - 95\%}
+\item{Lagrangemultiplikatorberäknare - 100\%}
+\item{Stegberäknare - 100\%}
+\item{Strukturen work\underline{\space}set - 100\%}
+\item{Byggsystem - 95 \%}
+\item{GUI och parser - 55\%}
+\item{Lösare - 80\%}
+\end{itemize}
+\raggedright Procentsatsen kan ses som ett uppskattat mått på hur tillförlitlig koden är just nu. Detta eftersom mycket kod tros fungera men ej testats tillräckligt. 
+
+\newpage
+\subsection{Slutfört}
+Som man kan se ovan är testning utav tre delar klar, Lagrangemultiplikatorer, Stegberäknare och work\_set. Lagrange- och stegdelen var relativt små delar och deras uppgifter var otvetydliga. Däremot så var svårare att avgöra hur komplett work\_set var. Anledningen till att den är satt till 100\% är då lösaren inte behöver mer funktionalitet från work\_set än vad som finns just nu. Dock finns det än risk att ytterligare funktioner kan tillkomma i framtiden, men de är i så fall av låg prioritet. 
+
+\subsection{Pågående}
+Just nu testas lösaren för fullt, detta genom att jämföra lösarens svar från olika problem med svar från matlabs egna funktioner. \newline
+Test av Parsern har kommit igång, men den är långt ifrån komplett då definitionerna av parserns uppgifter fortfarande är ganska vaga. \newline 
+Olika delar av matrisbiblioteket håller fortfarande på att testas. 
+
+\subsection{Kommande}
+Det som ska testas i framtiden är de resterande funktionerna i varje del. Men mestadels funktioner till optimeringslösaren för att garantera dens pålitlighet. Just nu är de färdiga funktionerna testade med ganska små datamängder. Detta då vi vet vad produkten ska användas till. Men skalbarheten hos olika funktioner måste testas då problemet eventuellt byggs ut och programmet måste kunna hantera stora matriser. Under iteration 2 ska GUI:t och parsern börja implementeras och då kommer test av dessa krävas i större utsträckning.

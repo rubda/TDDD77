@@ -4,8 +4,8 @@
 % Information nödvändig för generella layout-strukturer
 \newcommand{\LIPSredaktor}{Johan Isaksson}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Testplan}
-\newcommand{\LIPSdokumenttyp}{Testplan}
+\newcommand{\LIPSdokument}{Testrapport 2}
+\newcommand{\LIPSdokumenttyp}{Testrapport}
 \newcommand{\LIPSgranskatdatum}{-}
 \newcommand{\LIPSgranskare}{Andreas Runfalk}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
@@ -25,6 +25,7 @@
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
+\usepackage{graphicx}
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
@@ -51,12 +52,11 @@
 %\listoffigures
 %\listoftables
 
-\newpage
+%\newpage
 
-\begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-02-09}{Första utkast}{Johan Isaksson}{}
-\LIPSversionsinfo{0.2}{2015-04-15}{Andra utkast}{Johan Isaksson}{}
-\end{LIPSdokumenthistorik}
+%\begin{LIPSdokumenthistorik}
+%\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Johan Isaksson}{}
+%\end{LIPSdokumenthistorik}
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
@@ -64,20 +64,9 @@
 % Inledning, översikt osv
 
 
-\input{tex/testplan-introduktion.tex}
+\input{tex/testrapport-inledning.tex}
 
-\input{tex/testplan-testochfunk.tex}
-
-\input{tex/testplan-intetest.tex}
-
-\input{tex/testplan-risker.tex}
-
-\input{tex/testplan-strategi.tex}
-
-\input{tex/testplan-kriterier.tex}
-
-\input{tex/testplan-leverans.tex}
-
+\input{tex/testrapport-tester.tex}
 
 
 \end{document}
