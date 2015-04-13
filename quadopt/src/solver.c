@@ -199,7 +199,7 @@ void solve_subproblem(qp_problem* prob) {
 
   /* solve system as long as you get the the zero vector */
   matrix* A = get_active_conditions(prob);
-  //matrix* zero = get_zero_matrix(prob->p->rows, prob->p->columns);
+  /*matrix* zero = get_zero_matrix(prob->p->rows, prob->p->columns);*/
 
   bool success;
   do{
