@@ -24,8 +24,11 @@ def parse_qp(filename, out_filename, data_filename):
 
         for line in in_file:
             line = line.strip()
-            if line == "parameters" or line == "variables":
-                out_file.write(indent + "/* " + line + " */\n\n")
+            if line == "parameters":
+                out_file.write(indent + "/* Parameters */\n\n")
+                copy = True
+            elif line == "variables":
+                out_file.write(indent + "/* Variables */\n\n")
                 copy = True
             elif line == "minimize":
                 found_min = True
@@ -39,6 +42,7 @@ def parse_qp(filename, out_filename, data_filename):
                 problem = line
                 found_min = False
             elif copy:
+                get_indices(line)
                 out = create_matrices(line)
                 out_file.write(out)
 
@@ -101,6 +105,7 @@ def fill_matrices(data_file, out_file):
 
 def create_solver_call(out_file, problem, matrix_variables):
         # Generate the call/calls to the solver
+        # Hur ska summa av problem se ut???
 
         indent = " "*2
         out_file.write("\n\n" + indent + "/* Solveranropp */ \n\n")
@@ -128,7 +133,7 @@ def create_solver_call(out_file, problem, matrix_variables):
 
 
 # Get the problem from the .qopt file and convert it to Latex format
-def get_problem(filename):
+def get_problem(filename):  
     next_line = False
     with open(filename) as inFile:
         for line in inFile:
@@ -160,7 +165,7 @@ def convert_problem(filename):
 def get_constraints(filename):
     next_line = False
     result = ""
-    indent = " "*14
+    indent = " "*14 
     with open(filename) as in_file:
         for line in in_file:
             line = line.strip()
@@ -180,3 +185,15 @@ def convert_constraints(filename):
     result = re.sub("==", " \ = \ ", result)
     result = result.replace("*", "")
     return result
+    
+
+def get_indices(filename):
+    # A(1,1), i=1..5
+    index = filename[::-1].split(',', 1)[0][::-1]
+    print("\nIndex: " + index)
+    dimensions = re.findall(r'\d+', index)
+    dimensions = list(map(int, dimensions))
+    start = dimensions[0]
+    end = dimensions[1]
+    print("Start; " + start + "\n END; " + end)
+
