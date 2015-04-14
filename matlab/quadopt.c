@@ -20,8 +20,8 @@ void mexFunction( int nlhs, mxArray* plhs[],
   matrix* lib_matrices[nrhs-1];
   
   /* check for proper number of arguments */
-  if(nrhs != 6){
-    mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Six inputs required.");
+  if(nrhs != 7){
+    mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Seven inputs required.");
   }
 
   /*convert matlab matrises to library matrises*/
