@@ -6,7 +6,7 @@
 
 int main() {
 
-
+  printf("------------\n");
   matrix* Q = create_matrix(2,2);
   value Q_arr[4] = {	2, 0,
 			0, 2};
@@ -42,11 +42,13 @@ int main() {
 		    1};
   insert_array(z_arr, z);
 
+  printf("------------\n");
   problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
 
   //print_qp_problem(problem);
-
+  printf("------------\n");
   quadopt_solver(problem);
+  printf("------------\n");
 
   //print_qp_problem(problem);
 
