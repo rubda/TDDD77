@@ -1029,3 +1029,16 @@ bool compare_elements(value a, value b) {
   }
   return false;
 }
+
+/* Creates new matrix with zero values */
+matrix* get_zero_matrix(int rows, int columns){
+  matrix* zero = create_matrix(rows, columns);
+  free(zero->start);
+  zero->start = calloc(rows*columns, sizeof(value));
+
+  if(zero->start == NULL){
+    return NULL;
+  }
+
+  return zero;
+}

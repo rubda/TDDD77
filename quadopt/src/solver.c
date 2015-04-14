@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <matLib.h>
 #include "solver.h"
 #include <math.h>
 
@@ -172,11 +171,6 @@ void free_problem(problem* prob){
   free(prob);
 }
 
-
-
-
-
-
 bool is_feasible_point(matrix* z, problem* prob) {
   value ans;
   int r, c;
@@ -239,7 +233,7 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
 bool find_starting_point(problem* prob) {
 
   /* variables */
-  matrix* z;// = get_zero_matrix(prob->z->rows, prob->z->columns);
+  matrix* z = get_zero_matrix(prob->z->rows, prob->z->columns);
   matrix* A = create_matrix(prob->z->columns-1, prob->z->columns);
   matrix* b = create_matrix(prob->z->columns-1,1);
   matrix* tmp_A;
@@ -447,18 +441,6 @@ matrix* get_active_conditions(problem* prob){
     free_matrix(A);
     return NULL;
   }
-}
-
-matrix* get_zero_matrix(int rows, int columns){
-  matrix* zero = create_matrix(rows, columns);
-  free(zero->start);
-  zero->start = calloc(rows*columns, sizeof(value));
-
-  if(zero->start == NULL){
-    return NULL;
-  }
-
-  return zero;
 }
 
 bool is_positive_lagrange(problem* prob) {
