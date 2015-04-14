@@ -1,9 +1,9 @@
 #include <solver.h>
-#include <matLib.h>
 #include <assert.h>
 
 int main() {
-matrix* Q = create_matrix(2,2);
+
+  matrix* Q = create_matrix(2,2);
   value Q_arr[4] = {	2, 0,
 			0, 2};
   insert_array(Q_arr, Q);
@@ -13,7 +13,7 @@ matrix* Q = create_matrix(2,2);
 		      -12};
   insert_array(q_arr, q);
 
-	matrix* E = create_matrix(1, 2);
+  matrix* E = create_matrix(1, 2);
   value E_arr[2] = {1,   -1};
   insert_array(E_arr, E);
 

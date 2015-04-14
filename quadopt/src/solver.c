@@ -174,23 +174,28 @@ void free_problem(problem* prob){
 bool is_feasible_point(matrix* z, problem* prob) {
   value ans;
   int r, c;
-  for (r = 1; r <= prob->A->rows; r++) {
-    if (r <= prob->equality_count) {
+
+  for (r = 1; r <= prob->A->rows; r++){
+    if (r <= prob->equality_count){
       ans = 0;
-      for (int c = 1; c <= prob->A->columns; c++) {
-        ans += get_value_without_check(r,c,prob->A)*get_value(c,1,z);
+      for (c = 1; c <= prob->A->columns; c++){
+        ans += get_value_without_check(r, c, prob->A)*get_value(c, 1, z);
       }
-      if (compare_elements(ans,get_value_without_check(r,1,prob->b))) {
+
+      if (compare_elements(ans, get_value_without_check(r, 1, prob->b))){
         return false;
       }
     }
+    
     ans = 0;
-      for (c = 1; c <= prob->A->columns; c++) {
-        ans += get_value_without_check(r,c,prob->A)*get_value(c,1,z);
-      }
-      if (ans < get_value_without_check(r,1,prob->b)) {
-        return false;
-      }
+    
+    for (c = 1; c <= prob->A->columns; c++){
+      ans += get_value_without_check(r, c, prob->A)*get_value(c, 1, z);
+    }
+    
+    if (ans < get_value_without_check(r, 1, prob->b)) {
+      return false;
+    }
   }
   return true;
 }
@@ -199,30 +204,33 @@ bool is_feasible_point(matrix* z, problem* prob) {
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done) {
   if (pool < need + at && *done) return; /* not enough bits left */
  
-  if (need == 0) {
-    //do stuff combination
-
+  if (need == 0){
     matrix* fi;
-    for (int i = 0; i < ri; i++) {
-      fi = get_row_vector_with_return(rows[i]+1,prob->F);
+    int i;
+    
+    for (i = 0; i < ri; i++){
+      fi = get_row_vector_with_return(rows[i]+1, prob->F);
       insert_row_vector(i+prob->equality_count+1, fi, A);
       free_matrix(fi);
       insert_value_without_check(get_value_without_check(i+1, 1, prob->g), i+1, 1, b);
     }
-    if (solve_linear(A, z, b)) {
-      if (is_feasible_point(z, prob)) {
+    
+    if (solve_linear(A, z, b)){
+      if (is_feasible_point(z, prob)){
         *done = true;
         prob->z0 = z;
       }
     }
     
-    for (int i = 0; i < ri; i++) {
+    /* Behövs väl inte */
+    for (i = 0; i < ri; i++){
       printf("%d ", rows[i]);
     }
     printf("\n");
 
     return;
   }
+
   /* if we choose the current item, "or" (|) the bit to mark it so. */
   rows[need-1] = at;
   comb(pool, need - 1, rows, at + 1, ri, prob, A, b, z, done);
@@ -236,13 +244,13 @@ bool find_starting_point(problem* prob) {
   /* variables */
   matrix* z = get_zero_matrix(prob->z->rows, prob->z->columns);
   matrix* A = create_matrix(prob->z->columns-1, prob->z->columns);
-  matrix* b = create_matrix(prob->z->columns-1,1);
+  matrix* b = create_matrix(prob->z->columns-1, 1);
   matrix* tmp_A;
   value tmp_b;
-  int r;
 
   /* fill A and b with equality constraints */
-  for (r = 1; r <= prob->E->rows; r++) {
+  int r;
+  for (r = 1; r <= prob->E->rows; r++){
     tmp_A = get_row_vector_with_return(r, prob->E);
     insert_row_vector(r, tmp_A, A);
     free_matrix(tmp_A);
@@ -258,36 +266,7 @@ bool find_starting_point(problem* prob) {
   comb(pool, need, rows, 0, need, prob, A, b, z, &done);
 
   return done;
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void solve_subproblem(problem* prob){
  /* gk */
