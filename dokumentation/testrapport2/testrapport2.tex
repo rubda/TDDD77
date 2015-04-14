@@ -2,12 +2,12 @@
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
 
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Dennis Ljung}
+\newcommand{\LIPSredaktor}{Johan Isaksson}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Kandidatrapport}
-\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
+\newcommand{\LIPSdokument}{Testrapport 2}
+\newcommand{\LIPSdokumenttyp}{Testrapport}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Dennis Ljung}
+\newcommand{\LIPSgranskare}{Andreas Runfalk}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
@@ -25,13 +25,11 @@
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
-\usepackage{float}
 \usepackage{graphicx}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
+
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
@@ -40,7 +38,7 @@
 \LIPSTitelsida
 
 \begin{LIPSprojektidentitet}
-	\LIPSgruppmedlem{Adam Sestorp}{Teamledare}{070 9987270}{adase035@student.liu.se}
+	\LIPSgruppmedlem{Adam Sestorp}{Team leader}{070 9987270}{adase035@student.liu.se}
 	\LIPSgruppmedlem{Dennis Ljung}{Dokumentansvarig}{070 8568148}{denlj069@student.liu.se}
 	\LIPSgruppmedlem{Alexander Yngve}{Utvecklingsansvarig}{076 2749762}{aleyn573@student.liu.se}
 	\LIPSgruppmedlem{Martin Söderén}{Analysansvarig}{070 8163241}{marso329@student.liu.se}
@@ -54,46 +52,21 @@
 %\listoffigures
 %\listoftables
 
-\newpage
+%\newpage
 
-\begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Dennis Ljung}{}
-\end{LIPSdokumenthistorik}
+%\begin{LIPSdokumenthistorik}
+%\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Johan Isaksson}{}
+%\end{LIPSdokumenthistorik}
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
 
-\input{tex/kandidatrapport-inledning}
-\input{tex/kandidatrapport-bakgrund}
-\input{tex/kandidatrapport-teori}
-\input{tex/kandidatrapport-metod}
-\input{tex/kandidatrapport-resultat}
-\input{tex/kandidatrapport-diskussion}
-\input{tex/kandidatrapport-slutsatser}
-\input{tex/kandidatrapport-fortsatt-arbete}
-\input{tex/kandidatrapport-referenser}
-
-\newpage
-\begin{appendices}
-	\input{tex/kandidatrapport-adam}
-	\newpage
-	\input{tex/kandidatrapport-dennis}
-	\newpage
-	\input{tex/kandidatrapport-yngve}
-	\newpage
-	\input{tex/kandidatrapport-martin}
-	\newpage
-	\input{tex/kandidatrapport-ruben}
-	\newpage
-	\input{tex/kandidatrapport-sebastian}
-	\newpage
-	\input{tex/kandidatrapport-johan}
-
-		
-\end{appendices}
+% Inledning, översikt osv
 
 
+\input{tex/testrapport-inledning.tex}
 
+\input{tex/testrapport-tester.tex}
 
 
 \end{document}

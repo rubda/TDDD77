@@ -1021,3 +1021,11 @@ bool matrix_contains(value a,matrix* b){
   }
   return false;
 }
+
+/* compare two element values */
+bool compare_elements(value a, value b) {
+  if (fabs(a - b) <= PRECISION) {
+    return true;
+  }
+  return false;
+}
