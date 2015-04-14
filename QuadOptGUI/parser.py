@@ -1,8 +1,3 @@
-# TODO:
-# Fixa så att man kan indexera variabler och matriser ?
-# Hur ska data filen se ut då ?
-# kommer ge fel på view_problem funktionerna 
-
 import re
 
 
@@ -42,7 +37,6 @@ def parse_qp(filename, out_filename, data_filename):
                 problem = line
                 found_min = False
             elif copy:
-                get_indices(line)
                 out = create_matrices(line)
                 out_file.write(out)
 
@@ -50,6 +44,22 @@ def parse_qp(filename, out_filename, data_filename):
         create_solver_call(out_file, problem, matrix_variables)
 
         out_file.write("}")
+
+
+def get_indices(line):
+    if "[" in line:
+        index = line[::-1].split(',', 1)[0][::-1]
+        dimensions = re.findall(r'\d+', index)
+        dimensions = list(map(int, dimensions))
+        return range(dimensions[0],dimensions[1])
+    else:
+        return range(0,1)
+
+
+def get_range_name(line):
+    range_name = line.split(']')[0]
+    range_name = range_name.split('[')[1]
+    return range_name
 
 
 def create_matrices(line):
@@ -146,7 +156,7 @@ def get_problem(filename):
                 return line
 
 
-def convert_problem(filename):
+def convert_problem(filename):  
     problem = get_problem(filename)
     result = re.sub("'", "^T", problem)
     result = result.replace("+", " \ + \ ")
@@ -185,15 +195,3 @@ def convert_constraints(filename):
     result = re.sub("==", " \ = \ ", result)
     result = result.replace("*", "")
     return result
-    
-
-def get_indices(filename):
-    # A(1,1), i=1..5
-    index = filename[::-1].split(',', 1)[0][::-1]
-    print("\nIndex: " + index)
-    dimensions = re.findall(r'\d+', index)
-    dimensions = list(map(int, dimensions))
-    start = dimensions[0]
-    end = dimensions[1]
-    print("Start; " + start + "\n END; " + end)
-
