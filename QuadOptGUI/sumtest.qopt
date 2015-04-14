@@ -8,11 +8,11 @@ parameters
 end
 
 variables
-    z(4,1)
+    z[i](4,1), i=1..5
 end
 
 minimize
-    sum[i=1..5](z'Qz + q'z)
+    sum[i=1..5](z[i]'Qz[i] + q'z[i])
 subject to
     Az == b 
     Fz <= g
