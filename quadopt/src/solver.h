@@ -1,4 +1,4 @@
-#include "matLib.h"
+#include <matLib.h>
 #include "work_set.h"
 
 struct problem
@@ -57,3 +57,9 @@ matrix* get_active_conditions(problem* prob);
 void solve_subproblem(problem* prob);
 
 matrix* quadopt_solver(problem* prob);
+
+bool is_feasible_point(matrix* z, problem* prob);
+
+void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done);
+
+bool find_starting_point(problem* prob);

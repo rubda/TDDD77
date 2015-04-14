@@ -1,3 +1,10 @@
+/*
+  Authors: Dennis Ljung, Sebastian Fast
+  Email: denlj069@student.liu.se, 
+  Date: 2015-03-26
+  Description: This is a gateway function for calling quadopt solver in matlab
+*/
+
 #include "mex.h"
 #include "../quadopt/src/solver.h"
 
@@ -8,19 +15,23 @@ void mexFunction( int nlhs, mxArray* plhs[],
   /*declare variables*/
   mxArray* mat_matrix;
   double* out_matrix;
-  matrix* martins_matrix;
+  matrix* lib_matrix;
   matrix* result_matrix; 
-  matrix* martins_matrices[nrhs-1];
+  matrix* lib_matrices[nrhs-1];
   
-  
-  /*convert matlab matrises to martin matrises*/
+  /* check for proper number of arguments */
+  if(nrhs != 7){
+    mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Seven inputs required.");
+  }
+
+  /*convert matlab matrises to library matrises*/
   int i;
   for(i = 0; i < nrhs; i++){
 
     mat_matrix = prhs[i];
     int rows = (int)mxGetM(mat_matrix);
     int columns = (int)mxGetN(mat_matrix);
-    martins_matrix = create_matrix(rows,columns);
+    lib_matrix = create_matrix(rows,columns);
     double* element_ptr = mxGetPr(mat_matrix);
     
     int x;
@@ -28,21 +39,22 @@ void mexFunction( int nlhs, mxArray* plhs[],
       int y;
       for(y = 0; y < rows; y++){
 
-  	insert_value(*element_ptr,y+1,x+1,martins_matrix);
+  	insert_value(*element_ptr,y+1,x+1,lib_matrix);
   	element_ptr++;
 
       }
     }
 
-    martins_matrices[i] = martins_matrix;
+    lib_matrices[i] = lib_matrix;
   }
 
-  /*create problem from solver.h with martins matrices */
-  problem* problem = create_problem(martins_matrices[0], martins_matrices[1], martins_matrices[2], martins_matrices[3], martins_matrices[4], martins_matrices[5], martins_matrices[6]);
+  /*create problem from solver.h with library matrices */
+  problem* problem = create_problem(lib_matrices[0], lib_matrices[1], lib_matrices[2], lib_matrices[3], lib_matrices[4], lib_matrices[5], lib_matrices[6]);
 
   /*solve problem*/
   quadopt_solver(problem);
 
+  /*get the solution from the problem struct*/
   result_matrix = problem->solution; 
 
   /*convert resulting matrix to matlab matrix and set output matrix*/
@@ -59,12 +71,12 @@ void mexFunction( int nlhs, mxArray* plhs[],
     }
   }
   
+  /*free memory*/
   for(i = 0; i < nrhs; i++){
     
-    free_matrix(martins_matrices[i]);
+    free_matrix(lib_matrices[i]);
 
   }
-  
   
   free_matrix(result_matrix);
  
