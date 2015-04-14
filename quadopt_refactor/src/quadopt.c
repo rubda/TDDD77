@@ -65,6 +65,10 @@ void get_active_conditions(problem* prob){
     insert_value(active_conditions[i-1],1,i,conditions);
   }
   free_matrix(prob->active_conditions);
+  if (conditions==NULL){
+    conditions=create_matrix(1,1);
+    insert_value(-1,1,1,conditions);
+  }
   prob->active_conditions=conditions;
   prob->number_of_active_conditions=number_of_active_conditions;
 }
@@ -131,6 +135,10 @@ void present_problem(problem* prob){
     printf("the variable dependencies matris is: \n");
     print_matrix(prob->variable_dependencies);
   }
+  if (prob->lagrange_set){
+    printf("the lagrange multiplicators are: \n");
+    print_matrix(prob->lagrange);
+  }
   if (prob->subproblem_set){
     printf("\n ---------------------------------------------------------------------------\n");
     printf("the current subproblem is: \n \n");
@@ -145,17 +153,23 @@ bool solve_problem(problem* prob){
   }
   while (check_conditions_to_quit(prob)){
   get_active_conditions(prob);
+  printf("active conditions \n");
+  printf("%i \n",prob->number_of_active_conditions);
+  print_matrix(prob->active_conditions);
   create_subproblem(prob);
   solve_subproblem(prob);
-  find_lagrange(prob);
-  printf("\n----------------------fsefe-------------------------- \n ");
-  print_matrix(prob->lagrange);
   if (check_subproblem_solution(prob)) {
     calculate_step(prob);
     step(prob);
   }
   else{
     find_lagrange(prob);
+    remove_condition(prob);
+    create_subproblem(prob);
+    solve_subproblem(prob);
+    calculate_step(prob);
+    step(prob);
+
   }
 
 #ifdef DEBUG
@@ -164,6 +178,23 @@ bool solve_problem(problem* prob){
 #endif
   }
   return true;
+}
+
+bool remove_condition(problem* prob){
+  int index=smallest_element_in_column_index(1,1,prob->lagrange);
+  matrix* temp_active=create_matrix(1,prob->active_conditions->columns-1);
+  int temp=0;
+  for (int i =1;i<=prob->active_conditions->columns;i++){
+    if (i==index){
+      temp=1;
+      continue;
+    }
+    insert_value(get_value(1,i,prob->active_conditions),1,i-temp,temp_active);
+  }
+  free_matrix(prob->active_conditions);
+  prob->active_conditions=temp_active;
+  prob->number_of_active_conditions--;
+return true;
 }
 
 bool check_conditions_to_quit(problem* prob){
@@ -256,6 +287,9 @@ void find_lagrange(problem* prob){
     add_matrices(G_derivate, temp, G_derivate);
     free_matrix(temp);
   }
+
+  multiply_matrix_with_scalar(-1,G_derivate);
+
   /* Copy G_derivate to solver */
   for (int i = 1; i <= sub->G->rows; i++) {
     for (int j = 1; j <= sub->G->columns; j++) {
@@ -276,25 +310,22 @@ void find_lagrange(problem* prob){
   matrix* b=create_matrix(solver->rows,1);
   value temp_b;
   value condition;
-  /*insert conditions righthandside into b matrix */
+  /* insert constants for G_derivate on righthandside */
   for (int i=1;i<=sub->d->rows;i++){
-    insert_value(-get_value(i,1,sub->d),i,1,b);
+    insert_value(get_value(i,1,sub->d),i,1,b);
   }
-  for (int i = 1 ; i <= sub->active_conditions->columns; i++) {
+  /*insert conditions righthandside into b matrix */
+  for (int i = 1 ; i <= prob->active_conditions->columns; i++) {
     condition=(int)get_value(1,i,prob->active_conditions);
     temp_b=get_value(condition,1,prob->b);
     insert_value(temp_b,i+sub->G->rows,1,b);
   }
   matrix* x= solve_linear_with_return(solver,b);
-  printf("\n ddddddddddddddddddddddddddddddddddddddddddddddddddd \n");
-  print_matrix(solver);
-  print_matrix(x);
-  print_matrix(b);
   free_matrix(solver);
   free_matrix(b);
-  matrix* lagrange=create_matrix(1,prob->A->rows);
+  matrix* lagrange=create_matrix(sub->A->rows,1);
   for (int i=1;i<=prob->A->rows;i++){
-    insert_value(get_value(prob->G->columns+i,1,x),1,i,lagrange);
+    insert_value(get_value(prob->G->columns+i,1,x),i,1,lagrange);
   }
   free_matrix(x);
   prob->lagrange=lagrange;

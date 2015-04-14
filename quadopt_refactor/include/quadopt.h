@@ -49,7 +49,7 @@ struct problem {
 
 
 /* Uncomment to set to debugmode */
-#define DEBUG
+//#define DEBUG
 
 /* Create a problem */
 problem* create_problem(matrix* G,matrix* g,matrix* A,matrix* b);
@@ -66,6 +66,8 @@ void find_start_point(problem* prob);
 
 /* Solves the problem struct using active set method */
 bool solve_problem(problem* prob);
+
+bool remove_condition(problem* prob);
 
 bool check_conditions_to_quit(problem* prob);
 
