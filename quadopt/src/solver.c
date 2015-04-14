@@ -192,6 +192,7 @@ bool is_feasible_point(matrix* z, problem* prob) {
         return false;
       }
   }
+  return true;
 }
 
 
@@ -204,7 +205,7 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
     matrix* fi;
     for (int i = 0; i < ri; i++) {
       fi = get_row_vector_with_return(rows[i]+1,prob->F);
-      insert_row_vector(fi, i+prob->equality_count+1, A);
+      insert_row_vector(i+prob->equality_count+1, fi, A);
       free_matrix(fi);
       insert_value_without_check(get_value_without_check(i+1, 1, prob->g), i+1, 1, b);
     }
@@ -238,7 +239,7 @@ bool find_starting_point(problem* prob) {
   matrix* b = create_matrix(prob->z->columns-1,1);
   matrix* tmp_A;
   value tmp_b;
-  int r, c, i;
+  int r;
 
   /* fill A and b with equality constraints */
   for (r = 1; r <= prob->E->rows; r++) {
