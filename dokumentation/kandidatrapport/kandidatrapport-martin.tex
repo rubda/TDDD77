@@ -1,0 +1,56 @@
+\documentclass[titlepage, a4paper]{article}
+
+\input{../mall/layout.tex}	% Importera generella layout-strukturer
+
+% Information nödvändig för generella layout-strukturer
+\newcommand{\LIPSredaktor}{Martin Söderén}
+\newcommand{\LIPSversion}{0.1}
+\newcommand{\LIPSdokument}{Implementation av ett effektivt matrisbibliotek i C}
+\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
+\newcommand{\LIPSgranskatdatum}{-}
+\newcommand{\LIPSgranskare}{Martin Söderén}
+\newcommand{\LIPSgodkannare}{Andreas Runfalk}
+\newcommand{\LIPSgodkantdatum}{-}
+\newcommand{\LIPSkursnamn}{TDDD77}
+\newcommand{\LIPSprojektnamn}{Prediktionsreglering}
+\newcommand{\LIPSprojektgrupp}{Grupp 2}
+%\newcommand{\LIPSgruppadress}{\todo{Ta bort}}
+\newcommand{\LIPSartaltermin}{VT, 2015}
+\newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
+\newcommand{\LIPSkund}{SAAB}
+\newcommand{\LIPSkundkontakt}{Daniel Simon}
+\newcommand{\LIPSkursansvarig}{Kristian Sandahl}
+\newcommand{\LIPShandledare}{Andreas Runfalk}
+
+% Dokument-specifika paket
+\usepackage{tabularx}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usetikzlibrary{shapes, arrows}
+
+\pagenumbering{roman}
+
+\DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
+
+\begin{document}
+
+\LIPSTitelsida
+
+
+\newpage
+\tableofcontents	%Innehållsförteckning
+\newpage
+\pagenumbering{arabic}
+\input{martin-tex/inledning}
+\input{martin-tex/bakgrund}
+\input{martin-tex/teori}
+\input{martin-tex/metod}
+\input{martin-tex/resultat}
+\input{martin-tex/diskussion}
+\input{martin-tex/slutsatser}
+\end{document}

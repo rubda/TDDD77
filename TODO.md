@@ -11,6 +11,7 @@ Alla dokument ska in 150420 till handledaren.
 Dokument generellt
 - Kandidatrapporten	(Vem skriver denna, gör alla det eller några?)
 - Individuell del 	(Överens om 50 timmar var på de individuella delarna.)
+- Teknisk dokumentation 
 	
 Solver
 - Hitta en startpunkt.

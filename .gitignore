@@ -34,6 +34,9 @@
 *.swp
 *.pdf
 
+#For bachelorrepor
+!dokumentation/kandidatrapport/pdf/*.pdf
+
 # Emacs backup files
 *~
 

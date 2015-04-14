@@ -254,4 +254,7 @@ bool matrix_contains(value a,matrix* b);
 /* compare two element values */
 bool compare_elements(value a, value b);
 
+/* Creates new matrix with zero values */
+matrix* get_zero_matrix(int rows, int columns);
+
 #endif /* MATLIB_H */

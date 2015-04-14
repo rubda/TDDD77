@@ -17,7 +17,7 @@ start_file = "parameters\n\nend\n\nvariables\n\nend\n\nminimize\n\nsubject to\n\
 
 def new_file(event=None):
     global filename
-    global edit_ata
+    global edit_data
 
     text.delete(0.0, END)
     text.insert(0.0, start_file)

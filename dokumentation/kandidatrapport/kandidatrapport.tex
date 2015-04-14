@@ -1,4 +1,5 @@
 \documentclass[titlepage, a4paper]{article}
+
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
 
 % Information nödvändig för generella layout-strukturer
@@ -29,6 +30,8 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{pdfpages}
+
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
@@ -81,7 +84,7 @@
 	\newpage
 	\input{tex/kandidatrapport-yngve}
 	\newpage
-	\input{tex/kandidatrapport-martin}
+	\includepdf[pages={-}]{pdf/kandidatrapport-martin.pdf}
 	\newpage
 	\input{tex/kandidatrapport-ruben}
 	\newpage
