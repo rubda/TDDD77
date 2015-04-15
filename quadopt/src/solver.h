@@ -63,3 +63,5 @@ bool is_feasible_point(matrix* z, problem* prob);
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done);
 
 bool find_starting_point(problem* prob);
+
+bool get_solution_value(problem* prob);

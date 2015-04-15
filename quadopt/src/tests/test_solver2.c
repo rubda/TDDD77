@@ -4,6 +4,7 @@
 
 int main() {
 
+  /* Quadratic terms. */
   matrix* Q = create_matrix(4,4);
   value Q_arr[16] = {10, 0, 0, 0,
 		     0,  2, 0, 0,
@@ -12,6 +13,7 @@ int main() {
   insert_array(Q_arr, Q);
 
 
+  /* Linear terms. */
   matrix* q = create_matrix(4,1);
   value q_arr[4] = {0.5751,
 		    0.7510,
@@ -20,6 +22,7 @@ int main() {
   insert_array(q_arr, q);
 
 
+  /* Equality constraints LHS. */
   matrix* E = create_matrix(3, 4);
   value E_arr[12] = {-0.9163,   -0.1967,   -0.0123,    0.6752,
 		     1.7876,   -0.8901,    0.0728,    0.7860,
@@ -27,13 +30,14 @@ int main() {
   insert_array(E_arr, E);
 
 
+  /* Equality constraints RHS. */
   matrix* h = create_matrix(3, 1);
   value h_arr[3] = {0.2199,
 		    0.9663,
 		    0.3500};
   insert_array(h_arr, h);
 
-
+  /* Inequality constraints LHS. */
   matrix* F = create_matrix(20, 4);
   value F_arr[80] = {0.9018,    0.0317,   -1.0579,   -0.6312,
 		     2.1212,    0.3413,   -0.6434,   -0.5003,
@@ -58,6 +62,7 @@ int main() {
   insert_array(F_arr, F);
 
 
+  /* Inequality constraints RHS. */
   matrix* g = create_matrix(20, 1);
   value g_arr[20] = {2.5608,
 		     0.1002,
@@ -82,7 +87,7 @@ int main() {
   insert_array(g_arr, g);
 
 
-  /* starting point */
+  /* Starting point */
   matrix* z = create_matrix(4,1);
   value z_arr[4] = {0,0,0,0};
   insert_array(z_arr, z);
@@ -91,11 +96,9 @@ int main() {
 
   problem* problem = create_problem(Q,q,E,h,F,g,z);
 
-  //print_qp_problem(problem);
-
   quadopt_solver(problem);
 
-  //print_qp_problem(problem);
+  print_problem(problem);
 
   free_problem(problem);
 }
