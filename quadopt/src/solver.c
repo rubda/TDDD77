@@ -240,7 +240,7 @@ bool find_starting_point(problem* prob) {
   if (prob->equality_count > 0 && prob->inequality_count > 0) {    
 
     /* variables */
-    matrix* A = create_matrix(prob->z->rows, prob->z->rows);   /* Segfault because A has wrong dimensions (0x2) => A = NULL*/
+    matrix* A = create_matrix(prob->z->rows, prob->z->rows);
     matrix* b = create_matrix(prob->z->rows, 1);
     matrix* tmp_A;
     value tmp_b;
@@ -270,6 +270,7 @@ bool find_starting_point(problem* prob) {
   else {
     /* problem is unconstrained, any point is feasible */
     prob->z0 = get_zero_matrix(prob->z->rows, prob->z->columns);
+    return true;
   }
 }
 
