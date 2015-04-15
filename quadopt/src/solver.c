@@ -276,6 +276,10 @@ bool find_starting_point(problem* prob) {
 
 /* solves the subproblem for active set */
 void solve_subproblem(problem* prob){
+
+  int i;
+
+
  /* gk */
   matrix* tmp = create_matrix(prob->q->rows, 1);
   multiply_matrices(prob->Q, prob->z, tmp);
@@ -307,7 +311,13 @@ void solve_subproblem(problem* prob){
 
     if(success){
       /* Remove condition */
-      remove_constraint(prob);
+      if (!remove_constraint(prob)) {
+        for(i = 1; i <= prob->p->rows; i++){
+          insert_value_without_check(0, i, 1, prob->p);
+        }
+        free_matrix(A);
+        return;
+      }
       
       /* Resize A matrix */
       free_matrix(A);
@@ -391,7 +401,7 @@ void solve_subproblem(problem* prob){
   matrix* Qp = create_matrix(prob->gk->rows, prob->gk->columns);
   multiply_matrices(prob->Q, prob->p, Qp);
   
-  int i;
+  
   if(compare_matrices(Qp, prob->gk)){
     for(i = 1; i <= prob->p->rows; i++){
       insert_value_without_check(0, i, 1, prob->p);
@@ -605,16 +615,13 @@ matrix* quadopt_solver(problem* prob){
   fill_active_set(prob);
 
   while (true){
-    print_matrix(prob->z);
     solve_subproblem(prob);
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
         break;
       }
-      if (is_positive_lagrange(prob)){
+      if (!remove_constraint(prob)) {
         break;
-      }else{
-        remove_constraint(prob);
       }
     }else{
       /* Could not move */
@@ -624,7 +631,6 @@ matrix* quadopt_solver(problem* prob){
       /* Set active set */
       fill_active_set(prob);
     }
-
   }
 
   matrix_copy_data(prob->z, prob->solution);
