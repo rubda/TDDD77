@@ -82,14 +82,7 @@ int main() {
   insert_array(g_arr, g);
 
 
-  /* starting point */
-  matrix* z = create_matrix(4,1);
-  value z_arr[4] = {0,0,0,0};
-  insert_array(z_arr, z);
-
-
-
-  problem* problem = create_problem(Q,q,E,h,F,g,z);
+  problem* problem = create_problem(Q,q,E,h,F,g,NULL);
 
   //print_qp_problem(problem);
 

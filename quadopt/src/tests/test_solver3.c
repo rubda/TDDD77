@@ -27,14 +27,14 @@ int main() {
 
 
   matrix* F = create_matrix(3, 2);
-  value F_arr[6] = {  0.5, 1, 
+  value F_arr[6] = { -0.5, -1, 
 		       1, 0,
 		       0,  1};
   insert_array(F_arr, F);
 
 
   matrix* g = create_matrix(3, 1);
-  value g_arr[3] = { 8, 
+  value g_arr[3] = { -8, 
 		     0, 
 		     0};
   insert_array(g_arr, g);
@@ -44,6 +44,7 @@ int main() {
   value z_arr[2] = {1, 
 		    1};
   insert_array(z_arr, z);
+
 
   problem* problem = create_problem(Q,q,E,h,F,g,z);
 

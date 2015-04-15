@@ -2,8 +2,9 @@
 #include "solver.h"
 #include <math.h>
 
-bool remove_constraint(problem* prob);
 
+
+/* allocates the problem and sets all necessary variables */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0){
 
   problem* prob = malloc(sizeof(problem));
@@ -87,6 +88,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   return prob;
 }
 
+/* prints the problem */
 void print_problem(problem* prob){
   printf("\n********** Quadratic Problem **********\n\n");
 
@@ -140,6 +142,7 @@ void print_problem(problem* prob){
   printf("***************************************\n");
 }
 
+/* deallocates all the problems resources */
 void free_problem(problem* prob){
   free_matrix(prob->Q);
   free_matrix(prob->Q_inv);
@@ -170,43 +173,45 @@ void free_problem(problem* prob){
   free(prob);
 }
 
-
+/* checks if a point is feasible subject to the constraints in a problem */
 bool is_feasible_point(matrix* z, problem* prob) {
   value ans;
   int r, c;
-
-  for (r = 1; r <= prob->A->rows; r++){
-    if (r <= prob->equality_count){
-      ans = 0;
-      for (c = 1; c <= prob->A->columns; c++){
-        ans += get_value_without_check(r, c, prob->A)*get_value(c, 1, z);
-      }
-
-      if (!compare_elements(ans, get_value_without_check(r, 1, prob->b))){
-        return false;
-      }
-    }
-    
+  
+  /* check all equality constraints */
+  for (r = 1; r <= prob->equality_count; r++){
     ans = 0;
-    
-    for (c = 1; c <= prob->A->columns; c++){
-      ans += get_value_without_check(r, c, prob->A)*get_value(c, 1, z);
+    for (c = 1; c <= prob->E->columns; c++){
+      ans += get_value_without_check(r, c, prob->E)*get_value(c, 1, z);
+    }
+    if (!compare_elements(ans, get_value_without_check(r, 1, prob->h))){
+      return false;
+    }    
+  }
+  /* check all inequality constraints */
+  for (r = 1; r <= prob->inequality_count; r++){
+    ans = 0;    
+    for (c = 1; c <= prob->F->columns; c++){
+      ans += get_value_without_check(r, c, prob->F)*get_value(c, 1, z);
     }
     
-    if (ans < get_value_without_check(r, 1, prob->b)) {
+    if (ans < get_value_without_check(r, 1, prob->g)) {
       return false;
     }
   }
+  
   return true;
 }
 
+/* iterate through all possible combinations of inequality constraints to add */
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done) {
-  if (pool < need + at || *done) return; /* not enough bits left */
+  if (pool < need + at || *done) return; /* no more slot */
  
   if (need == 0){
     matrix* fi;
     int i;
     
+    /* add constraints */
     for (i = 0; i < ri; i++){
       fi = get_row_vector_with_return(rows[i]+1, prob->F);
       insert_row_vector(i+prob->equality_count+1, fi, A);
@@ -214,10 +219,10 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
       insert_value_without_check(get_value_without_check(rows[i]+1, 1, prob->g), i+prob->equality_count+1, 1, b);
     }
     
+    /* if solution is feasible, return */
     if (solve_linear(A, z, b)){
       if (is_feasible_point(z, prob)){
         *done = true;
-        prob->z0 = z;
       }
     }
     return;
@@ -229,36 +234,46 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
   comb(pool, need, rows, at + 1, ri, prob, A, b, z, done);  /* or don't choose it, go to next */
 }
 
+/* calculates a feasible starting point for a problem */
 bool find_starting_point(problem* prob) {
 
-  /* variables */
-  matrix* z = get_zero_matrix(prob->z->rows, prob->z->columns);
-  matrix* A = create_matrix(prob->z->rows, prob->z->rows);   /* Segfault because A has wrong dimensions (0x2) => A = NULL*/
-  matrix* b = create_matrix(prob->z->rows, 1);
-  matrix* tmp_A;
-  value tmp_b;
+  if (prob->equality_count > 0 && prob->inequality_count > 0) {    
 
-  /* fill A and b with equality constraints */
-  int r;
-  for (r = 1; r <= prob->E->rows; r++){
-    tmp_A = get_row_vector_with_return(r, prob->E);
-    insert_row_vector(r, tmp_A, A);
-    free_matrix(tmp_A);
-    tmp_b = get_value_without_check(r, 1, prob->h);
-    insert_value_without_check(tmp_b, r, 1, b);
+    /* variables */
+    matrix* A = create_matrix(prob->z->rows, prob->z->rows);   /* Segfault because A has wrong dimensions (0x2) => A = NULL*/
+    matrix* b = create_matrix(prob->z->rows, 1);
+    matrix* tmp_A;
+    value tmp_b;
+
+    /* fill A and b with equality constraints */
+    int r;
+    for (r = 1; r <= prob->equality_count; r++){
+      tmp_A = get_row_vector_with_return(r, prob->E);
+      insert_row_vector(r, tmp_A, A);
+      free_matrix(tmp_A);
+      tmp_b = get_value_without_check(r, 1, prob->h);
+      insert_value_without_check(tmp_b, r, 1, b);
+    }
+
+    int pool = prob->inequality_count;
+    int need = A->rows-prob->equality_count;
+
+    int* rows = malloc(need*sizeof(int));
+    bool done = false;
+
+    comb(pool, need, rows, 0, need, prob, A, b, prob->z0, &done);
+
+    free(rows);
+
+    return done;
   }
-
-  int pool = prob->inequality_count;
-  int need = A->rows-prob->equality_count;
-
-  int* rows = malloc(need*sizeof(int));
-  bool done = false;
-
-  comb(pool, need, rows, 0, need, prob, A, b, z, &done);
-  return done;
+  else {
+    /* problem is unconstrained, any point is feasible */
+    prob->z0 = get_zero_matrix(prob->z->rows, prob->z->columns);
+  }
 }
 
-
+/* solves the subproblem for active set */
 void solve_subproblem(problem* prob){
  /* gk */
   matrix* tmp = create_matrix(prob->q->rows, 1);
@@ -395,6 +410,7 @@ void solve_subproblem(problem* prob){
   free_matrix(Qp);
 }
 
+/* returns a matrix with the currently active constraints */
 matrix* get_active_conditions(problem* prob){
   matrix* A = create_matrix(prob->active_set->count, prob->A->columns);
   
@@ -414,6 +430,7 @@ matrix* get_active_conditions(problem* prob){
   }
 }
 
+/* checks if the lagrange multipliers for all inequality constraints are positive */
 bool is_positive_lagrange(problem* prob) {
   
   matrix* ait;
@@ -450,6 +467,7 @@ bool is_positive_lagrange(problem* prob) {
   return true;
 }
 
+/* removes the active constraint with the most negative lagrange multiplier */
 bool remove_constraint(problem* prob){
   matrix* ait;
   matrix* ai;
@@ -500,6 +518,7 @@ bool remove_constraint(problem* prob){
   return false;
 }
 
+/* fills the active set according to the current position */
 bool fill_active_set(problem* prob){
   work_set_clear(prob->active_set);
 
@@ -526,6 +545,7 @@ bool fill_active_set(problem* prob){
   return true;
 }
 
+/* calculates and takes the step for active set method */
 bool take_step(problem* prob) {
   matrix* ai, *ati;
   ati = create_matrix(prob->A->columns, 1);
@@ -542,7 +562,7 @@ bool take_step(problem* prob) {
     get_row_vector(i, prob->A, ai);
     transpose_matrix(ai, ati);
     nom = dot_product(ati, prob->p);
-    if (!compare_elements(nom, 0)){
+    if (nom < 0) { //!compare_elements(nom, 0)){
       bi = get_value(i, 1, prob->b);
       temp_step = (bi - dot_product(ati, prob->z))/nom;
       if (temp_step >= 0 && temp_step < step){
@@ -568,17 +588,23 @@ bool take_step(problem* prob) {
   return false;
 }
 
+/* solves a quadratic problem using the active set method */
 matrix* quadopt_solver(problem* prob){
-  /* Calculate starting point if needed */
-  if (!prob->has_start_point) {
-    /* Calculate_starting_point(prob);*/
-  }else{
-    matrix_copy_data(prob->z0, prob->z);
+  /* Calculate starting point if no one is provide or the one provided is infeasible */
+  
+  if (!prob->has_start_point || !is_feasible_point(prob->z0, prob)) {
+
+    if (!find_starting_point(prob)) {
+      printf("No feasible point\n");
+      return NULL;
+    }
   }
 
+  matrix_copy_data(prob->z0, prob->z);
   fill_active_set(prob);
 
   while (true){
+    print_matrix(prob->z);
     solve_subproblem(prob);
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
@@ -597,6 +623,7 @@ matrix* quadopt_solver(problem* prob){
       /* Set active set */
       fill_active_set(prob);
     }
+
   }
 
   matrix_copy_data(prob->z, prob->solution);
