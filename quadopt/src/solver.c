@@ -140,7 +140,6 @@ void print_problem(problem* prob){
   printf("***************************************\n");
 }
 
-
 void free_problem(problem* prob){
   free_matrix(prob->Q);
   free_matrix(prob->Q_inv);
@@ -171,6 +170,7 @@ void free_problem(problem* prob){
   free(prob);
 }
 
+
 bool is_feasible_point(matrix* z, problem* prob) {
   value ans;
   int r, c;
@@ -182,7 +182,7 @@ bool is_feasible_point(matrix* z, problem* prob) {
         ans += get_value_without_check(r, c, prob->A)*get_value(c, 1, z);
       }
 
-      if (compare_elements(ans, get_value_without_check(r, 1, prob->b))){
+      if (!compare_elements(ans, get_value_without_check(r, 1, prob->b))){
         return false;
       }
     }
@@ -200,9 +200,8 @@ bool is_feasible_point(matrix* z, problem* prob) {
   return true;
 }
 
-
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done) {
-  if (pool < need + at && *done) return; /* not enough bits left */
+  if (pool < need + at || *done) return; /* not enough bits left */
  
   if (need == 0){
     matrix* fi;
@@ -212,7 +211,7 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
       fi = get_row_vector_with_return(rows[i]+1, prob->F);
       insert_row_vector(i+prob->equality_count+1, fi, A);
       free_matrix(fi);
-      insert_value_without_check(get_value_without_check(i+1, 1, prob->g), i+1, 1, b);
+      insert_value_without_check(get_value_without_check(rows[i]+1, 1, prob->g), i+prob->equality_count+1, 1, b);
     }
     
     if (solve_linear(A, z, b)){
@@ -221,13 +220,6 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
         prob->z0 = z;
       }
     }
-    
-    /* Behövs väl inte */
-    for (i = 0; i < ri; i++){
-      printf("%d ", rows[i]);
-    }
-    printf("\n");
-
     return;
   }
 
@@ -237,14 +229,12 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
   comb(pool, need, rows, at + 1, ri, prob, A, b, z, done);  /* or don't choose it, go to next */
 }
 
-
-
 bool find_starting_point(problem* prob) {
 
   /* variables */
   matrix* z = get_zero_matrix(prob->z->rows, prob->z->columns);
-  matrix* A = create_matrix(prob->z->columns-1, prob->z->columns);   /* Segfault because A has wrong dimensions (0x2) => A = NULL*/
-  matrix* b = create_matrix(prob->z->columns-1, 1);
+  matrix* A = create_matrix(prob->z->rows, prob->z->rows);
+  matrix* b = create_matrix(prob->z->rows, 1);
   matrix* tmp_A;
   value tmp_b;
 
@@ -259,14 +249,15 @@ bool find_starting_point(problem* prob) {
   }
 
   int pool = prob->inequality_count;
-  int need = A->rows-z->rows;
+  int need = A->rows-prob->equality_count;
+
   int* rows = malloc(need*sizeof(int));
   bool done = false;
 
   comb(pool, need, rows, 0, need, prob, A, b, z, &done);
-
   return done;
 }
+
 
 void solve_subproblem(problem* prob){
  /* gk */

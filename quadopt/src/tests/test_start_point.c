@@ -38,7 +38,7 @@ int main() {
 
   problem* problem = create_problem(Q,q,E,h,F,g,NULL);
 
-  find_starting_point(problem);
+  assert(find_starting_point(problem));
 
   assert(is_feasible_point(problem->z0, problem));
 
