@@ -237,6 +237,23 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
 /* calculates a feasible starting point for a problem */
 bool find_starting_point(problem* prob) {
 
+  /* TODO:
+    right now we creates a square matrix and fills it with all equality constraints, 
+    and afterwars tries to solve the system by filling the rest of the matrix with all different combinations of inequality constraints.
+    This is not enough!
+    we need also to test with only equality constraints,
+    and after that test all equality constraint + one inequality constraint,
+    and after that test all equality constraint + two inequality constraints, and so on untill we have a square matrix.
+    solve the system above with least_square
+
+    if we only have inequality constraints or only equality constraints, then it's probably possible to solve the complete system with least_square.
+
+
+    */
+
+
+
+
   if (prob->equality_count > 0 && prob->inequality_count > 0) {    
 
     /* variables */
