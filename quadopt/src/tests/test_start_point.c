@@ -36,7 +36,7 @@ int main() {
 		     0};
   insert_array(g_arr, g);
 
-  problem* problem = create_problem(Q,q,E,h,F,g,NULL);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL);
 
   assert(find_starting_point(problem));
 

@@ -2,8 +2,6 @@
 #include "solver.h"
 #include <math.h>
 
-
-
 /* allocates the problem and sets all necessary variables */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0){
 
@@ -135,6 +133,7 @@ void print_problem(problem* prob){
   if (prob->has_solution){
     printf("z = \n");
     print_matrix(prob->solution);
+    printf("value = %f\n", prob->solution_value);
   }else{
     printf("Not calculated yet.\n\n");
   }
@@ -652,6 +651,34 @@ matrix* quadopt_solver(problem* prob){
 
   matrix_copy_data(prob->z, prob->solution);
   prob->has_solution = true;
+  get_solution_value(prob);
   return prob->solution;
 }
 
+bool get_solution_value(problem* prob){
+  if(!prob->has_solution) return false;
+
+  matrix* z_trans = create_matrix(prob->z->columns, prob->z->rows);
+  transpose_matrix(prob->z, z_trans);
+
+  matrix* q_trans = create_matrix(prob->q->columns, prob->q->rows);
+  transpose_matrix(prob->q, q_trans);
+
+  matrix* zTQ = multiply_matrices_with_return(z_trans, prob->Q);
+  matrix* zTQz = multiply_matrices_with_return(zTQ, prob->z);
+
+  matrix* qTz = multiply_matrices_with_return(q_trans, prob->z);
+
+  matrix* solution = add_matrices_with_return(zTQz, qTz);
+
+  prob->solution_value = get_value_without_check(1, 1, solution);
+
+  free_matrix(z_trans);
+  free_matrix(q_trans);
+  free_matrix(zTQ);
+  free_matrix(zTQz);
+  free_matrix(qTz);
+  free_matrix(solution);
+
+  return true;
+}
