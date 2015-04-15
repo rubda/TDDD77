@@ -243,7 +243,7 @@ bool find_starting_point(problem* prob) {
 
   /* variables */
   matrix* z = get_zero_matrix(prob->z->rows, prob->z->columns);
-  matrix* A = create_matrix(prob->z->columns-1, prob->z->columns);
+  matrix* A = create_matrix(prob->z->columns-1, prob->z->columns);   /* Segfault because A has wrong dimensions (0x2) => A = NULL*/
   matrix* b = create_matrix(prob->z->columns-1, 1);
   matrix* tmp_A;
   value tmp_b;
