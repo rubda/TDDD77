@@ -215,7 +215,6 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
     }
     
     if (solve_linear(A, z, b)){
-      print_matrix(z);
       if (is_feasible_point(z, prob)){
         *done = true;
         prob->z0 = z;
@@ -256,10 +255,9 @@ bool find_starting_point(problem* prob) {
   bool done = false;
 
   comb(pool, need, rows, 0, need, prob, A, b, z, &done);
-  print_matrix(prob->z0);
-
   return done;
 }
+
 
 void solve_subproblem(problem* prob){
  /* gk */
