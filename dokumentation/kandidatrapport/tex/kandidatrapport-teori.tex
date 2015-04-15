@@ -1,5 +1,5 @@
 \section{Teori}
-Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det vi har gjort är att ha jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som vi har testat varierar i hastighet beroende på hur stora matriserna som ska lösas är samt hur de är strukturerade, även vilket programmringsspråk och plattform som algoritmen är implementerade på spelar roll.
+Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det vi har gjort är att ha jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som vi har testat varierar i hastighet beroende på hur stora matriserna som ska lösas är samt hur de är strukturerade, även vilket programmeringsspråk och plattform som algoritmen är implementerade på spelar roll.
 
 \subsection{Liknande problem}
 Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att vi gör ett nytt är för att de som redan finns antingen är breda och riktar in sig på många olika problem, vilket gör dem långsammare eftersom de är sämre optimerade för just vårt problem. Ett annat är att de oftast inte är öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett annat problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
@@ -7,4 +7,30 @@ Tanken med vårt program är att vi ska äga det, men Saab AB ska ha rätten att
 
 \subsection{Algoritmer och metoder}
 Vår huvudsakliga källa för de algoritmer och metoder vi använt kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
-TODO: Skriv vilken vi valde och varför, jämför den mot de andra algoritmerna som fanns att välja mellan... Ändra källhänvisningen enligt Harvardmodellen...
+
+\subsection{Forskningsmetod}
+När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde att vi tillslut valde att gå vidare med den metoden. 
+\\
+För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner.     
+
+\subsubsection{Active set method}   
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. I figur 1 nedanför visas pseudokod för algoritmen.
+
+\begin{algorithm}
+\caption{Active-Set method}
+\begin{algorithmic}
+\Procedure{Active-Set method}{$A$}
+\State Compute a feasible starting point $x_0$;
+\State Set $W_0$ to be a subset of the active constraints at $x_0$;
+\For{$k$ = 0, 1, 2, . . .}
+	\State Solve subproblem to find $p_k$;
+	\If{$p_k$ = 0}
+		\State Compute Lagrange multipliers $\hat{\lambda_i}$ that satisfy $\sum\limits_{i \in \hat{W}}$$a_i\hat{\lambda_i}=g$
+	\EndIf
+	
+\EndFor
+	
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

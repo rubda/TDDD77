@@ -23,13 +23,8 @@ quadopt:
 libmatrix:
 	cd matrixsuperlibrary ; make all
 
-.PHONY: quadopt_refactor
-quadopt:
-	cd quadopt_refactor ; make all
-
 .PHONY: test
 test:
 	cd matrixlibrary ; make test
 	cd quadopt ; make test
 	cd matrixsuperlibrary ; make test
-	cd quadopt_refactor ; make test
