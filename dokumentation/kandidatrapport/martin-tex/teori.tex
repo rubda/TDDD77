@@ -1,1 +1,13 @@
 \section{Teori}
+\subsection{Tidskomplexitet på nuvarande implementationer operationer}
+Alla tidskomplexiteter beräknas på nxn matriser.\\
+Addition: $\mathcal{O}(n^2)$\\
+Subtraktion: $\mathcal{O}(n^2)$\\
+Multiplikation: $\mathcal{O}(n^3)$\\
+Invers (crout och sedan lösa n ekvationssystem): $\mathcal{O}(n^3)$\\ 
+
+\subsection{Eventuella förbättringar}
+Multiplikation:\\
+Istället för den naive algoritmen kan strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^2.807)$ (källa). \\
+Inverse:\\
+Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^2.807)$.
