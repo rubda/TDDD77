@@ -65,3 +65,5 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
 bool find_starting_point(problem* prob);
 
 bool get_solution_value(problem* prob);
+
+bool remove_constraint(problem* prob);
