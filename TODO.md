@@ -2,11 +2,8 @@
 
 
 Alla dokument ska in 150420 till handledaren.
-- De som har egna dokument skriv och rätta dem. Dvs
-	+ Ruben - Kvalitetsplan
-	+ Sebastian - Arkitekturplan
-	+ Johan - Testplan, testrapport
-	+ Dennis - Rättelser för andra dokument och skicka in allt till handledaren.
+- Johan - Testplan, testrapport
+- Utvärdering av iteration 2
 	
 Dokument generellt
 - Kandidatrapporten	(Vem skriver denna, gör alla det eller några?)
