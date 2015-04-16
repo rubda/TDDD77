@@ -96,17 +96,31 @@ int main() {
  	       	     0, 
        		     0};
 
+
+  /* MATLABs first iteration optimum point with active set */
   value z0_active_set[4] = {-0.0019, 
 			    -0.8754, 
 			     1.4490, 
 			     0.0996};
 
+  /* MATLABs first iteration optimum point with interior point */
   value z0_interior_point[4] = { 0.2532, 
 			        -0.4397, 
 				 1.2955, 
 				 0.3019};
 
+
+  /* Current start point */
   insert_array(z0_arr, z0);
+
+  /* Optimum should be this, according to MATLAB */
+  matrix* optimum = create_matrix(4, 1);
+  value optimum_arr[4] = {-0.0113
+		       -0.9370,
+		       1.4143,
+		       0.0631};
+  insert_array(optimum_arr, optimum);
+
 
   problem* problem = create_problem(Q,q,E,h,F,g,z0);
 
