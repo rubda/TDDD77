@@ -237,31 +237,27 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
 bool find_starting_point(problem* prob) {
 
   /* TODO:
-    right now we creates a square matrix and fills it with all equality constraints, 
-    and afterwars tries to solve the system by filling the rest of the matrix with all different combinations of inequality constraints.
-    This is not enough!
-    we need also to test with only equality constraints,
-    and after that test all equality constraint + one inequality constraint,
-    and after that test all equality constraint + two inequality constraints, and so on untill we have a square matrix.
-    solve the system above with least_square
+     Right now we create a square matrix and fill it with all equality constraints.
+     And afterwards we try to solve the system by filling the rest of the matrix with all different combinations of inequality constraints.
+     This is not enough!
+     We also need to test with only the equality constraints,
+     and after that all equality constraints + one inequality constraint,
+     and after that test all quality constraint + two inequality constraints, and so on. Until we have a square matrix.
 
-    if we only have inequality constraints or only equality constraints, then it's probably possible to solve the complete system with least_square.
-
-
-    */
-
-
+     If we only have inequality constraints or only equality constraints, then it's probably possible to solve the complete system
+     with the least_square method.
+  */
 
 
   if (prob->equality_count > 0 && prob->inequality_count > 0) {    
 
-    /* variables */
+    /* Variables */
     matrix* A = create_matrix(prob->z->rows, prob->z->rows);
     matrix* b = create_matrix(prob->z->rows, 1);
     matrix* tmp_A;
     value tmp_b;
 
-    /* fill A and b with equality constraints */
+    /* Fill A and b with equality constraints */
     int r;
     for (r = 1; r <= prob->equality_count; r++){
       tmp_A = get_row_vector_with_return(r, prob->E);
@@ -282,13 +278,13 @@ bool find_starting_point(problem* prob) {
     free(rows);
 
     return done;
-  }
-  else {
+  }else{
     /* problem is unconstrained, any point is feasible */
     prob->z0 = get_zero_matrix(prob->z->rows, prob->z->columns);
     return true;
   }
 }
+
 
 /* solves the subproblem for active set */
 void solve_subproblem(problem* prob){
@@ -631,6 +627,7 @@ matrix* quadopt_solver(problem* prob){
   fill_active_set(prob);
 
   while (true){
+    work_set_print(prob->active_set);
     solve_subproblem(prob);
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
@@ -666,6 +663,8 @@ bool get_solution_value(problem* prob){
 
   matrix* zTQ = multiply_matrices_with_return(z_trans, prob->Q);
   matrix* zTQz = multiply_matrices_with_return(zTQ, prob->z);
+
+  multiply_matrix_with_scalar(0.5, zTQz);
 
   matrix* qTz = multiply_matrices_with_return(q_trans, prob->z);
 
