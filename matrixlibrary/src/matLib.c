@@ -260,6 +260,33 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/* Multiply a and b into c. Uses row-major optimization. c=a*b */
+bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c) {
+  if ((a->columns != b->rows) || (a->rows != c->rows)
+      || (b->columns != c->columns)) {
+    return false;
+  }
+  matrix* b_trans= transpose_matrix_with_return(b);
+  size_t j = 1;
+  size_t i = 1;
+  size_t k = 1;
+  value sum = 0;
+  for (; i <= a->rows; i++) {
+    k = 1;
+    for (; k <= b_trans->rows; k++) {
+      sum = 0;
+      j = 1;
+      for (; j <= b_trans->columns; j++) {
+  sum += get_value_without_check(i, j, a)* get_value_without_check(k,j, b_trans);
+      }
+      insert_value_without_check(sum, i, k, c);
+    }
+  }
+  free_matrix(b_trans);
+  return true;
+}
+
+
 /* Multiply a and b by returning a pointer to a new matrix with a*b*/
 matrix* multiply_matrices_with_return(matrix* a, matrix* b) {
   if ((a->columns != b->rows)) {
@@ -377,7 +404,7 @@ bool crout(matrix* a, matrix* l, matrix* u) {
     for (i = j; i <= n; i++) {
       sum = 0;
       for (k = 1; k < j; k++) {
-	sum = sum + get_value(i, k, l) * get_value(k, j, u);
+        sum = sum + get_value(i, k, l) * get_value(k, j, u);
       }
       insert_value(get_value(i, j, a) - sum, i, j, l);
     }
