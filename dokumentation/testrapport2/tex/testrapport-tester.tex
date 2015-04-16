@@ -1,5 +1,6 @@
+\newpage
 \section{Tester}
-Av följande objekt och funktioner har tester skapats och utförts i iteration 1:
+Av följande objekt och funktioner har tester skapats och utförts i iteration 2:
 
 \subsection{Status}
 Här visas teststatus för de olika delarna.
@@ -10,8 +11,11 @@ Här visas teststatus för de olika delarna.
 \item{Stegberäknare - 100\%}
 \item{Strukturen work\underline{\space}set - 100\%}
 \item{Byggsystem - 95 \%}
-\item{GUI och parser - 55\%}
+\item{GUI - 90\%}
+\item{Parser - 55\%}
 \item{Lösare - 80\%}
+\item{Subproblemslösare - 90\%}
+\item{Startpunktsberäknare - 50\%}
 \end{itemize}
 \raggedright Procentsatsen kan ses som ett uppskattat mått på hur tillförlitlig koden är just nu. Detta eftersom mycket kod tros fungera men ej testats tillräckligt. 
 
@@ -25,4 +29,5 @@ Test av Parsern har kommit igång, men den är långt ifrån komplett då defini
 Olika delar av matrisbiblioteket håller fortfarande på att testas. 
 
 \subsection{Kommande}
-Det som ska testas i framtiden är de resterande funktionerna i varje del. Men mestadels funktioner till optimeringslösaren för att garantera dens pålitlighet. Just nu är de färdiga funktionerna testade med ganska små datamängder. Detta då vi vet vad produkten ska användas till. Men skalbarheten hos olika funktioner måste testas då problemet eventuellt byggs ut och programmet måste kunna hantera stora matriser. Under iteration 2 ska GUI:t och parsern börja implementeras och då kommer test av dessa krävas i större utsträckning.
+Det som ska testas i framtiden är som förut de resterande funktionerna i varje del. Nu när optimeringslösaren tros fungera måste den fortsätta testas för att garantera funktionaliteten. Möjligheten finns att något krångligt specialfall har glömts bort och att hitta detta fall är av högsta prioritet. \newline
+Efter att parserns funktionalitet har tydliggjorts efter ett kundmöte kommer ytterligare test att skapas och utföras.

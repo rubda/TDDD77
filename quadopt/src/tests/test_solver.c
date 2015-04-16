@@ -48,7 +48,6 @@ int main() {
 
   quadopt_solver(problem);
 
-
   //print_qp_problem(problem);
 
   matrix* expected = create_matrix(2, 1);
