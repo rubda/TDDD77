@@ -1,47 +1,47 @@
 #include <matLib.h>
 #include "work_set.h"
 
-struct problem
-{
-	/* Optimization function */
-	matrix* Q;
-	matrix* Q_inv;
+struct problem{
+  /* Optimization function */
+  matrix* Q;
+  matrix* Q_inv;
 
-	matrix* q;
+  matrix* q;
 
-	/* Equality constraints */
-	int equality_count;
-	matrix* E;
-	matrix* h;
+  /* Equality constraints */
+  int equality_count;
+  matrix* E;
+  matrix* h;
 
-	/* larger-than constraints */
-	int inequality_count;
-	matrix* F;
-	matrix* g;
+  /* Larger-than constraints */
+  /* MAYBE smaller-than constraints */
+  int inequality_count;
+  matrix* F;
+  matrix* g;
 
-	/* All constraints */
-	matrix* A;
-	matrix* b;
-	int constraints_count;
+  /* All constraints */
+  matrix* A;
+  matrix* b;
+  int constraints_count;
 
-	/* variables */
-	bool has_start_point;
-	matrix* z0;
+  /* variables */
+  bool has_start_point;
+  matrix* z0;
 
-	matrix* z;
+  matrix* z;
 
-	matrix* solution;
-	value solution_value;
-	bool has_solution;
+  matrix* solution;
+  value solution_value;
+  bool has_solution;
 
-	matrix* p;
-	matrix* gk;
-	value step;
-	matrix* lagrange;
+  matrix* p;
+  matrix* gk;
+  value step;
+  matrix* lagrange;
 
-	work_set* active_set;
+  work_set* active_set;
 
-	value accuracy;
+  value accuracy;
 };
 
 typedef struct problem problem;
