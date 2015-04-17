@@ -1,8 +1,7 @@
 #include <matLib.h>
 #include "work_set.h"
 
-struct problem
-{
+struct problem{
   /* Optimization function */
   matrix* Q;
   matrix* Q_inv;
