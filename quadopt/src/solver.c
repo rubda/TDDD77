@@ -183,7 +183,8 @@ bool is_feasible_point(matrix* z, problem* prob) {
     for (c = 1; c <= prob->E->columns; c++){
       ans += get_value_without_check(r, c, prob->E)*get_value(c, 1, z);
     }
-    if (!compare_elements(ans, get_value_without_check(r, 1, prob->h))){
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->h)) != 0){
+      printf("fffffffffffffffffxs\n");
       return false;
     }    
   }
@@ -194,7 +195,8 @@ bool is_feasible_point(matrix* z, problem* prob) {
       ans += get_value_without_check(r, c, prob->F)*get_value(c, 1, z);
     }
     
-    if (ans < get_value_without_check(r, 1, prob->g)) {
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->g)) == -1){
+      printf("%.9f < %.9f\n", ans, get_value_without_check(r, 1, prob->g));
       return false;
     }
   }
@@ -351,8 +353,10 @@ void solve_subproblem(problem* prob){
   matrix* Az = create_matrix(A->rows ,prob->z->columns);
   multiply_matrices(A, prob->z, Az);  
 
-  matrix* h1 = create_matrix(AQg->rows, AQg->columns); 
-  subtract_matrices(AQg, Az, h1);  
+  matrix* b = get_active_conditions_rhs(prob);
+  matrix* c = subtract_matrices_with_return(Az, b);
+
+  matrix* h1 = subtract_matrices_with_return(AQg, c);  
 
   matrix* lambda = create_matrix(AQg->rows, AQg->columns);
   solve_linear(AQAt, lambda, h1);  
@@ -430,6 +434,8 @@ void solve_subproblem(problem* prob){
   free_matrix(ht);
   free_matrix(h2);
   free_matrix(Qp);
+  free_matrix(b);
+  free_matrix(c);
 }
 
 /* returns a matrix with the currently active constraints */
@@ -448,6 +454,25 @@ matrix* get_active_conditions(problem* prob){
     return A;
   }else{
     free_matrix(A);
+    return NULL;
+  }
+}
+
+matrix* get_active_conditions_rhs(problem* prob){
+  matrix* b = create_matrix(prob->active_set->count, prob->b->columns);
+  
+  bool success = false;
+  int i;
+  for(i = 0; i < prob->active_set->count; i++){
+    matrix* temp_row = get_row_vector_with_return(prob->active_set->data[i], prob->b);
+    success = insert_row_vector(i+1, temp_row, b);
+    free_matrix(temp_row);
+  }
+
+  if(success){
+    return b;
+  }else{
+    free_matrix(b);
     return NULL;
   }
 }
@@ -558,7 +583,7 @@ bool fill_active_set(problem* prob){
       /* TODO add check and get_value_without_check and return false */
     }
 
-    if (compare_elements(ans, get_value_without_check(i, 1, prob->b))) { /*+get_value(i,0,s)*/
+    if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0) { /*+get_value(i,0,s)*/
       work_set_append(prob->active_set, i);
     }
   }
@@ -586,14 +611,14 @@ bool take_step(problem* prob){
     if (nom < 0){
       bi = get_value(i, 1, prob->b);
       temp_step = (bi - dot_product(ati, prob->z))/nom;
-      if (temp_step >= 0 && temp_step < step){
+      if (temp_step < step){
         step = temp_step;
       }
     }
   }
 
   /* Free matrices and return */
-  if (!compare_elements(step, 0)){
+  if (compare_elements(step, 0) != 0){
     multiply_matrix_with_scalar(step, prob->p);    
     add_matrices(z_old, prob->p, prob->z);
 
@@ -624,7 +649,6 @@ matrix* quadopt_solver(problem* prob){
   fill_active_set(prob);
 
   while (true){
-    work_set_print(prob->active_set);
     solve_subproblem(prob);
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){

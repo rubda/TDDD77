@@ -54,6 +54,8 @@ void free_problem(problem* prob);
 
 matrix* get_active_conditions(problem* prob);
 
+matrix* get_active_conditions_rhs(problem* prob);
+
 void solve_subproblem(problem* prob);
 
 matrix* quadopt_solver(problem* prob);
