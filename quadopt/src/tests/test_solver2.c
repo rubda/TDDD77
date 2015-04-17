@@ -125,10 +125,9 @@ int main() {
 
   quadopt_solver(problem);
 
-  print_problem(problem);
-
   assert(compare_matrices(problem->solution, optimum));
   assert(is_feasible_point(problem->solution, problem));
 
+  free_matrix(optimum);
   free_problem(problem);
 }

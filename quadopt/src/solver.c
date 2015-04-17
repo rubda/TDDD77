@@ -184,7 +184,6 @@ bool is_feasible_point(matrix* z, problem* prob) {
       ans += get_value_without_check(r, c, prob->E)*get_value(c, 1, z);
     }
     if (compare_elements(ans, get_value_without_check(r, 1, prob->h)) != 0){
-      printf("fffffffffffffffffxs\n");
       return false;
     }    
   }
@@ -196,7 +195,6 @@ bool is_feasible_point(matrix* z, problem* prob) {
     }
     
     if (compare_elements(ans, get_value_without_check(r, 1, prob->g)) == -1){
-      printf("%.9f < %.9f\n", ans, get_value_without_check(r, 1, prob->g));
       return false;
     }
   }
