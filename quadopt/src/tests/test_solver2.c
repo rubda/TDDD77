@@ -128,7 +128,5 @@ int main() {
 
   print_problem(problem);
 
-  assert(NULL);
-
   free_problem(problem);
 }
