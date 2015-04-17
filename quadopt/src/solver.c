@@ -26,7 +26,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   /* Right hand side for F */
   prob->g = g;
 
-  if (E == NULL) {
+  if (E == NULL){
     prob->equality_count = 0;
   }else{
     prob->equality_count = E->rows;
@@ -288,10 +288,6 @@ bool find_starting_point(problem* prob) {
 
 /* solves the subproblem for active set */
 void solve_subproblem(problem* prob){
-
-  int i;
-
-
  /* gk */
   matrix* tmp = create_matrix(prob->q->rows, 1);
   multiply_matrices(prob->Q, prob->z, tmp);
@@ -323,7 +319,9 @@ void solve_subproblem(problem* prob){
 
     if(success){
       /* Remove condition */
-      if (!remove_constraint(prob)) {
+      if (!remove_constraint(prob)){
+
+	int i;
         for(i = 1; i <= prob->p->rows; i++){
           insert_value_without_check(0, i, 1, prob->p);
         }
@@ -453,9 +451,8 @@ matrix* get_active_conditions(problem* prob){
   }
 }
 
-/* checks if the lagrange multipliers for all inequality constraints are positive */
+/* Checks if the lagrange multipliers for all inequality constraints are positive */
 bool is_positive_lagrange(problem* prob) {
-  
   matrix* ait;
   matrix* ai;
   matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
@@ -528,20 +525,20 @@ bool remove_constraint(problem* prob){
   }
 
   if (val < 0) {
-    /* remove */
+    /* Remove */
     work_set_remove(prob->active_set,small);
     free_matrix(LA);
     free_matrix(lagrange);
     return true;
   }
 
-  /* could not remove any constraints */
+  /* Could not remove any constraints */
   free_matrix(LA);
   free_matrix(lagrange);
   return false;
 }
 
-/* fills the active set according to the current position */
+/* Fills the active set according to the current position */
 bool fill_active_set(problem* prob){
   work_set_clear(prob->active_set);
 
@@ -557,7 +554,7 @@ bool fill_active_set(problem* prob){
     int j;
     for (j = 1; j <= prob->A->columns; j++){
       ans += get_value(i, j, prob->A)*get_value(j, 1, prob->z); 
-      /*TODO add check and get_value_without_check and return false*/
+      /* TODO add check and get_value_without_check and return false */
     }
 
     if (compare_elements(ans, get_value_without_check(i, 1, prob->b))) { /*+get_value(i,0,s)*/
@@ -568,7 +565,7 @@ bool fill_active_set(problem* prob){
   return true;
 }
 
-/* calculates and takes the step for active set method */
+/* Calculates and takes the step for active set method */
 bool take_step(problem* prob) {
   matrix* ai, *ati;
   ati = create_matrix(prob->A->columns, 1);
@@ -611,7 +608,7 @@ bool take_step(problem* prob) {
   return false;
 }
 
-/* solves a quadratic problem using the active set method */
+/* Solves a quadratic problem using the active set method */
 matrix* quadopt_solver(problem* prob){
   /* Calculate starting point if no one is provide or the one provided is infeasible */
   
@@ -663,11 +660,8 @@ bool get_solution_value(problem* prob){
 
   matrix* zTQ = multiply_matrices_with_return(z_trans, prob->Q);
   matrix* zTQz = multiply_matrices_with_return(zTQ, prob->z);
-
   multiply_matrix_with_scalar(0.5, zTQz);
-
   matrix* qTz = multiply_matrices_with_return(q_trans, prob->z);
-
   matrix* solution = add_matrices_with_return(zTQz, qTz);
 
   prob->solution_value = get_value_without_check(1, 1, solution);
