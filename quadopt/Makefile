@@ -1,6 +1,6 @@
 BUILD_DIR = obj
 SRC_DIR = src
-INCLUDE_DIR = $(SRC_DIR)
+INCLUDE_DIR = include
 
 LIBMATRIX_DIR = ../matrixlibrary/obj
 LIBMATRIX_SRC = ../matrixlibrary/src
