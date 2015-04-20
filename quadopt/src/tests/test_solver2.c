@@ -122,7 +122,7 @@ int main(){
 	  assert(compare_matrices(problem->solution, optimum));
 	  assert(is_feasible_point(problem->solution, problem));
 
-	  reset_problem(problem);
+	  problem->has_solution = false;
 
 	}
 
