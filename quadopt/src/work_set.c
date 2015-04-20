@@ -1,4 +1,6 @@
-#include "work_set.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <work_set.h>
 
 /* Creates a new work set */
 work_set* work_set_create(int ws_max) {

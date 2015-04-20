@@ -8,7 +8,7 @@ LIBMATRIX_INCLUDE = ../matrixlibrary/include
 LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
 
 CC = gcc
-CFLAGS = -g -Wall -pedantic --std=c99
+CFLAGS = -g -Wall -Wextra -pedantic --std=c99
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))

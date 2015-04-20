@@ -2,7 +2,7 @@
 #define PROBLEM_H
 
 #include <matLib.h>
-#include "work_set.h"
+#include <work_set.h>
 
 /* Allocates the problem and sets all necessary variables */
 struct problem{
