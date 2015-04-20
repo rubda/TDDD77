@@ -113,12 +113,18 @@ int main(){
 		       0.0631};
   insert_array(optimum_arr, optimum);
 
-  problem* problem = create_problem(Q,q,E,h,F,g,z0);
+  problem* problem = create_problem(Q,q,E,h,F,g,NULL);
+  int i;
+  for(i = 0; i < 1000; i++) {
 
-  quadopt_solver(problem);
+	  quadopt_solver(problem);
 
-  assert(compare_matrices(problem->solution, optimum));
-  assert(is_feasible_point(problem->solution, problem));
+	  assert(compare_matrices(problem->solution, optimum));
+	  assert(is_feasible_point(problem->solution, problem));
+
+	  reset_problem(problem);
+
+	}
 
   free_matrix(optimum);
   free_problem(problem);
