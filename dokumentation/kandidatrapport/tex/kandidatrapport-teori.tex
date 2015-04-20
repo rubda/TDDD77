@@ -7,34 +7,45 @@ Tanken med vårt program är att vi ska äga det, men Saab AB ska ha rätten att
 
 \subsection{Algoritmer och metoder}
 Vår huvudsakliga källa för de algoritmer och metoder vi använt kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
-
-\subsection{Forskningsmetod}
+\\
 När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde att vi tillslut valde att gå vidare med den metoden. 
 \\
 För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner.     
 
-\subsubsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. I figur 1 nedanför visas pseudokod för våran variant på algoritmen från \emph{Numerical Optimization}.
+\subsection{Active set method}   
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. 
+
+\subsection{Vår lösning}
+I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
 \begin{algorithm}
-\caption{Active-Set method}
+\caption{Quadopt-solver}
 \begin{algorithmic}
-\Procedure{Active-Set method}{$A$}
-\State Compute a feasible starting point $x_0$;
-\State Set $W_0$ to be a subset of the active constraints at $x_0$;
-\For{$k$ = 0, 1, 2, . . .}
-	\State Solve subproblem to find $p_k$;
-	\If{$p_k$ = 0}
-		\State Compute Lagrange multipliers $\hat{\lambda_i}$ that satisfy $\sum\limits_{i \in \hat{W}}$$a_i\hat{\lambda_i}=g$
-		\State Set $\hat{W}=W_k$;
-		\If{$\hat{\lambda_i} \geq 0 $ for all $i \in W_k$ $\cap$ all inequality constraints $I$}
-		\State \textbf{STOP} with solution $x^* = x_k$;
-		\Else
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find vector $p$ pointing towards the global minimum;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $P$}
+			\State \textbf{break};
 		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
 	\EndIf
-	
-\EndFor
-	
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
 	
 \EndProcedure
 \end{algorithmic}
