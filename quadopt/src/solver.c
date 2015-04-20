@@ -173,7 +173,7 @@ void free_problem(problem* prob){
 }
 
 /* Checks if a point is feasible subject to the constraints in a problem */
-bool is_feasible_point(matrix* z, problem* prob) {
+bool is_feasible_point(matrix* z, problem* prob){
   value ans;
   int r, c;
   
@@ -187,6 +187,7 @@ bool is_feasible_point(matrix* z, problem* prob) {
       return false;
     }    
   }
+
   /* Check all inequality constraints */
   for (r = 1; r <= prob->inequality_count; r++){
     ans = 0;    
@@ -413,7 +414,6 @@ void solve_subproblem(problem* prob){
   matrix* Qp = create_matrix(prob->gk->rows, prob->gk->columns);
   multiply_matrices(prob->Q, prob->p, Qp);
   
-  
   if(compare_matrices(Qp, prob->gk)){
     int i;
     for(i = 1; i <= prob->p->rows; i++){
@@ -581,7 +581,7 @@ bool fill_active_set(problem* prob){
       /* TODO add check and get_value_without_check and return false */
     }
 
-    if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0) { /*+get_value(i,0,s)*/
+    if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
       work_set_append(prob->active_set, i);
     }
   }
@@ -636,13 +636,11 @@ bool take_step(problem* prob){
 matrix* quadopt_solver(problem* prob){
   /* Calculate starting point if no one is provide or the one provided is infeasible */
   if (!prob->has_start_point || !is_feasible_point(prob->z0, prob)){
-
     if (!find_starting_point(prob)){
       printf("No feasible point\n");
       return NULL;
     }
   }
-
   matrix_copy_data(prob->z0, prob->z);
   fill_active_set(prob);
 
