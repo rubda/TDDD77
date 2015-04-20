@@ -1,10 +1,15 @@
 #include <solver.h>
 #include <matLib.h>
 #include <assert.h>
+#include <time.h>
+#include <stdio.h>
 
 /* example 16.3 from the book */
 
-int main() {
+int main(){
+  clock_t begin, end;
+  double time_spent;
+  begin = clock();
 
   matrix* Q = create_matrix(2,2);
   value Q_arr[4] = {	2, 0,
@@ -59,6 +64,10 @@ int main() {
 
   free_matrix(expected);
   free_problem(problem);
+
+  end = clock(); 
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("time taken was: %f \n", time_spent);
 
   return 0;
 }

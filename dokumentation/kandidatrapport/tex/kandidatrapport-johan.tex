@@ -1,41 +1,80 @@
-Datorsystem\section{Johan Isaksson}
+\section{Johan Isaksson}
+	Följande billaga är EJ klar. Mycket kladd och stödord för framtida skrivning finns med.
 	\subsection{Inledning}
 	Då jag (Johan Isaksson) är testledare i gruppen faller det naturligt att skriva om något testrelaterat. Därför ska denna del av rapporten handla om hur kod och andra aspekter av ett program ska testas. Även vilka olika sätt man kan testa på samt en utvärdering av hur bra de fungerar, både i praktiken och på papper. Informationen i denna del kommer att komma från läroböcker, internet och från egna erfarenheter under projektet. 
 	
 	
 	\subsubsection{Syfte}
-	Syftet med denna del av rapporten är att klargöra hur bra olika metodiker inom mjukvarutestniong fungerar.
+	Syftet med denna del av rapporten är att klargöra hur bra olika metodiker inom mjukvarutestning fungerar samt hur och när de ska användas. 
 	
 	
 	\subsubsection{Frågeställning}
+	I denna del kommer följande frågor att besvaras:
+	\begin{enumerate}
+	\item{Hur ska programmet testas?}
+	\item{Gjorde vi på bästa sätt?}
+	\item{Vad kan göras bättre?}
+	\item{svårt att verifiera större tester?}
+	\item{Vad? Hur? När? Var? Varför?}	
+	\end{enumerate}
 	
 	\subsubsection{Avgränsningar}
-	Metoder vi valt att inte använda
-	
+	De delar som valts att tas bort i detta avsnitt av rapporten är de testmetoder som inte använts under projektets gång. Detta för att tiden är begränsad och för att få så mycket förståelse som möjligt för just det som tas med. Huvudsakligen kommer det att handla om de tre områdena Enhetstester, Systemtester och Acceptanstester. \newline
+	Då mjukvarutestning är ett väldigt brett ämne måste vissa delar skippas för att hålla rapporten till en rimlig storlek. Dessutom så känns det mest relevant att diskutera de aspekter som har utövats under projektet, något man har erfarenhet utav.
 	
 	\subsection{Bakgrund}
+	
+	Dagens datorsystem blir mer och mer avancerade och får hela tiden en allt större beräkningskapacitet. Därför öppnas dörrarna upp för att skapa komplexare applikationer som har betydligt mer funktionalitet än förut, och i och med detta krävs det en större del testning för att garantera funktionaliteten hos koden, och framförallt mer planering. \newline
+	Jag har valt att skriva om just testning av ett program eftersom det är sådan kritisk del av ett projekt. Dessutom så har erfarenheterna i detta projekt tydligt visat mig hur det kan underlätta arbetet och betydligt öka effektiviteten när man med säkerhet kan lita på de funktioner man använder. Samtidigt minskar man det området där buggar kan uppstå vilket gör att även debugtiden i senare skriven kod minskar. \newline
+	
+	varför valde jag detta ämne?
 	beskriv testningen genom projektet
 	
 	
 	\subsection{Teori}
+	Eftersom testprocessen sträcker sig över hela projektet är det viktigt att tidigt tänka på vad som ska göras. Att veta hur testningen går till och information om när man ska använda en viss metod är kritiskt. Utan det skulle ingen som hade ett system gå säker. När som helst skulle ett fel kunna uppstå vilket skulle kunna leda till dyra skador beroende på användningsområdet. \newline
+	Som det står skrivet i The art of software testing (referens) så spenderas vanligen ca 50\% av den totala arbetstiden i ett projekt på testning av mjukvaran. 50\% är väldigt stor del vilket gör att det är viktigt att veta hur man spenderar denna tid på bästa sätt. I följande del kommer det bekrivas hur man ska utnyttja tiden på bästa sätt för att säkerställa en så stor del av koden som möjligt.
 	
 	\subsection{Metod}
-	Black Box
-	Acceptans
+	För att ta reda på all information som behövs har ett flertal böcker tittats igenom. Ingen av dem har läst igenom till 100\%, utan endast de intressanta delarna har läst med mer nogrannhet. För att verifiera att det som lästs stämmer har vissa delar testats i praktiken, i detta fall på projketet. Till exempel så har enhetstester körts på matris bibliotekts funktioner såsom matrisaddition, sytemtester har körts på den kvadratiska problem-lösaren och acceptanstester har körts på alla delar i projektet för att se till att alla krav är uppfyllda.\newline
+	I projektet har även ett byggsystem använts som kompilerar all kod och därefter kör alla hittills skapade tester. Med hjälp av byggsystemet och Continuous Integration har all kod då kunnat testas direkt när någon har skrivit ny kod och därav har statistik kunnat tas fram. Denna statistik är dock inte så omfattande då byggsystemet inte körde alla test från början (nya test skrivs hela tiden). Men statistiken ger ändå en bra riktlinje att jämföra med mot det optimala fallet.
+	
+	Systemtest
+	Acceptanstest
 	
 	
-	\subsection{Resultat}
-	reslutat av testningen, hur mycket fel hittateds, hastighet och exakthet
-	resultat av metod, användes den på korrekt sätt, vad uppfylldes inte
+	
+	\subsection{Resultat}	
+	resultat av efterforskning, \newline
+	
+	reslutat av testningen, \newline
+	
+	hur mycket fel hittateds, \newline
+	hastighet och exakthet\newline
+	resultat av metod, \newline
+	användes den på korrekt sätt, \newline
+	vad uppfylldes inte, \newline
+	problem\newline
+	
+	\subsubsection{Enhetstester}
+	\subsubsection{Systemtester}
+	\subsubsection{Acceptanstester}
 	
 	
 	\subsection{Diskussion}
-	varför blev det som det blev i "Resultat"
-	annan lämpligare approach?
-	
+	Denna sektion kommer att förklara varför resultatet blev som det blev och vad som kan förbättras.	
 	
 	\subsubsection{Resultat}
+	varför blev det som det blev i ''Resultat''
 	
 	\subsubsection{Metod}
+	annan lämpligare approach?	
+	
 	\subsection{Slutsatser}
 	Vad ska man tänka på tills nästa gång
+	
+	\subsection{Referenser}
+	\begin{itemize}
+	\item{}
+	\end{itemize}
+	%https://www.google.se/books?hl=sv&lr=&id=GjyEFPkMCwcC&oi=fnd&pg=PT5&dq=software+testing&ots=AgsVH2p07i&sig=zzLSW6A3h32-DgT7IxiMqB_7EcY&redir_esc=y#v=onepage&q&f=false}

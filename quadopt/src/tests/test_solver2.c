@@ -1,8 +1,13 @@
 #include <solver.h>
 #include <matLib.h>
 #include <assert.h>
+#include <time.h>
+#include <stdio.h>
 
-int main() {
+int main(){
+  clock_t begin, end;
+  double time_spent;
+  begin = clock();
 
   /* Quadratic terms. */
   matrix* Q = create_matrix(4,4);
@@ -115,18 +120,23 @@ int main() {
 
   /* Optimum should be this, according to MATLAB */
   matrix* optimum = create_matrix(4, 1);
-  value optimum_arr[4] = {-0.0113
+  value optimum_arr[4] = {-0.0113,
 		       -0.9370,
 		       1.4143,
 		       0.0631};
   insert_array(optimum_arr, optimum);
 
-
   problem* problem = create_problem(Q,q,E,h,F,g,z0);
 
   quadopt_solver(problem);
 
-  print_problem(problem);
+  assert(compare_matrices(problem->solution, optimum));
+  assert(is_feasible_point(problem->solution, problem));
 
+  free_matrix(optimum);
   free_problem(problem);
+
+  end = clock(); 
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("time taken was: %f \n", time_spent);
 }
