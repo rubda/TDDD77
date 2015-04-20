@@ -58,8 +58,8 @@ int main(){
 
   assert(compare_matrices(problem->solution, expected));
 
-  //free_matrix(expected);
-  //free_problem(problem);
+  free_matrix(expected);
+  free_problem(problem);
 
   end = clock(); 
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
