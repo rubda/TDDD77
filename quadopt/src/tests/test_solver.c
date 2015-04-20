@@ -49,11 +49,7 @@ int main(){
 
   problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
 
-  //print_qp_problem(problem);
-
   quadopt_solver(problem);
-
-  //print_qp_problem(problem);
 
   matrix* expected = create_matrix(2, 1);
   value e_arr[2] = {1.4,

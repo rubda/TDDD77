@@ -124,6 +124,8 @@ void test_is_non_negative_matrix(){
   free_matrix(col_vector);
   free_matrix(row_vector);
   free_matrix(not_zero);
+  free_matrix(col_vector_pos);
+  free_matrix(row_vector_pos);
 }
 
 void test_is_non_negative_diagonal_matrix(){

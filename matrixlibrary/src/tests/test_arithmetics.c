@@ -215,6 +215,7 @@ void test_divide_row_with_scalar(){
   free_matrix(m);
   free_matrix(ref);
 }
+
 void test_row_echelon(){
   matrix* temp=create_matrix(3,2);
   value temp_array[6]={1,0,0,1,0,1};
@@ -223,6 +224,7 @@ void test_row_echelon(){
   print_matrix(temp);
   free_matrix(temp);
 }
+
 void test_gauss(){
   matrix* temp=create_matrix(3,2);
   value temp_array[6]={1,0,0,1,0,1};
@@ -259,8 +261,6 @@ void test_gauss(){
   print_matrix(derivated);
   free_matrix(derive);
   free_matrix(derivated);
-
-
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef FEASIBLE_POINT_H
 #define FEASIBLE_POINT_H
 
-#include "problem.h"
+#include <problem.h>
 #include <matLib.h>
 
 /* Checks if a point is feasible subject to the constraints in a problem */

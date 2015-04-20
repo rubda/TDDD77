@@ -1,4 +1,4 @@
-#include "feasible_point.h"
+#include <feasible_point.h>
 
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, 
 	  matrix* A, matrix* b, matrix* z, bool* done);

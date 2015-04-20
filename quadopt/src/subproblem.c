@@ -1,6 +1,6 @@
-#include "subproblem.h"
+#include <subproblem.h>
 #include <matLib.h>
-#include "solver.h"
+#include <solver.h>
 
 /* Solves the subproblem for active set */
 void solve_subproblem(problem* prob){

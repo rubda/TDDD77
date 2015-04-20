@@ -1,8 +1,12 @@
 #include <stdio.h>
-#include "solver.h"
+#include <solver.h>
 #include <math.h>
-#include "feasible_point.h"
-#include "subproblem.h"
+#include <feasible_point.h>
+#include <subproblem.h>
+
+bool fill_active_set(problem* prob);
+
+bool take_step(problem* prob);
 
 /* Fills the active set according to the current position */
 bool fill_active_set(problem* prob){

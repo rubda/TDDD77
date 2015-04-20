@@ -1,4 +1,4 @@
-#include "problem.h"
+#include <problem.h>
 
 /* Allocates the problem and sets all necessary variables */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 

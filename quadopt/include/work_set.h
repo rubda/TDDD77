@@ -1,8 +1,6 @@
 #ifndef WORK_SET_H
 #define WORK_SET_H
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdbool.h>
 
 /* Structure for storing different sets */
