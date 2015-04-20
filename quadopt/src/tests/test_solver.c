@@ -49,11 +49,7 @@ int main(){
 
   problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
 
-  //print_qp_problem(problem);
-
   quadopt_solver(problem);
-
-  //print_qp_problem(problem);
 
   matrix* expected = create_matrix(2, 1);
   value e_arr[2] = {1.4,
@@ -62,8 +58,8 @@ int main(){
 
   assert(compare_matrices(problem->solution, expected));
 
-  free_matrix(expected);
-  free_problem(problem);
+  //free_matrix(expected);
+  //free_problem(problem);
 
   end = clock(); 
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
