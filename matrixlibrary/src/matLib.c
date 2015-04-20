@@ -128,7 +128,7 @@ bool compare_matrices(matrix* a, matrix* b) {
     for(int j = 1; j <= a->columns; j++){
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
-      if(!(fabs(a_val - b_val) < 0.001)){
+      if(!(fabs(a_val - b_val) < PRECISION)){
 	return false;
       }
     }
@@ -1050,11 +1050,19 @@ bool matrix_contains(value a,matrix* b){
 }
 
 /* compare two element values */
-bool compare_elements(value a, value b) {
-  if (fabs(a - b) <= PRECISION) {
-    return true;
+int compare_elements(value a, value b) {
+  value diff = fabs(a - b);
+
+  if (diff <= PRECISION) {
+    /* a == b */
+    return 0;
+  }else if(a - b < PRECISION && diff > PRECISION){
+    /* a < b */    
+    return -1;
+  }else{
+    /* a > b */
+    return 1;
   }
-  return false;
 }
 
 /* Creates new matrix with zero values */

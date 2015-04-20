@@ -13,21 +13,21 @@ Här visas teststatus för de olika delarna.
 \item{Byggsystem - 95 \%}
 \item{GUI - 90\%}
 \item{Parser - 55\%}
-\item{Lösare - 80\%}
-\item{Subproblemslösare - 90\%}
-\item{Startpunktsberäknare - 50\%}
+\item{Lösare - 95\%}
+\item{Subproblemslösare - 95\%}
+\item{Startpunktsberäknare - 80\%}
 \end{itemize}
 \raggedright Procentsatsen kan ses som ett uppskattat mått på hur tillförlitlig koden är just nu. Detta eftersom mycket kod tros fungera men ej testats tillräckligt. 
 
 \newpage
 \subsection{Slutfört}
-Som man kan se ovan är testning utav tre delar klar, Lagrangemultiplikatorer, Stegberäknare och work\_set. Lagrange- och stegdelen var relativt små delar och deras uppgifter var otvetydliga. Däremot så var svårare att avgöra hur komplett work\_set var. Anledningen till att den är satt till 100\% är då lösaren inte behöver mer funktionalitet från work\_set än vad som finns just nu. Dock finns det än risk att ytterligare funktioner kan tillkomma i framtiden, men de är i så fall av låg prioritet. 
+Som man kan se ovan är testning utav tre delar klar, Lagrangemultiplikatorer, Stegberäknare och work\_set. Lagrange- och stegdelen var relativt små delar och deras uppgifter var otvetydliga. Därför var det lätt att avgöra om de var klara. Däremot så var svårare att avgöra hur komplett work\_set var. Anledningen till att den är satt till 100\% är då lösaren inte behöver mer funktionalitet från work\_set än vad som finns just nu. Dock finns det än risk att ytterligare funktioner kan tillkomma i framtiden, men de är i så fall av låg prioritet.
 
 \subsection{Pågående}
 Just nu testas lösaren för fullt, detta genom att jämföra lösarens svar från olika problem med svar från matlabs egna funktioner. \newline
 Test av Parsern har kommit igång, men den är långt ifrån komplett då definitionerna av parserns uppgifter fortfarande är ganska vaga. \newline 
-Olika delar av matrisbiblioteket håller fortfarande på att testas. 
+Olika delar av matrisbiblioteket håller fortfarande på att testas. Detta då många funktioner har tillkommit. Till exempel så har ett flertal funktioner fått en tvillingfunktion som returner en matris (istället för att ha en utdataparameter), vilket gör att man inte behöver veta utdatamatrisens storlek på förhand.
 
 \subsection{Kommande}
 Det som ska testas i framtiden är som förut de resterande funktionerna i varje del. Nu när optimeringslösaren tros fungera måste den fortsätta testas för att garantera funktionaliteten. Möjligheten finns att något krångligt specialfall har glömts bort och att hitta detta fall är av högsta prioritet. \newline
-Efter att parserns funktionalitet har tydliggjorts efter ett kundmöte kommer ytterligare test att skapas och utföras.
+Som sagt så parsern är just nu ett litet frågetecken då gruppens medlemmar är ganska osäkra på dess syfte. Men efter att parserns funktionalitet har tydliggjorts efter ett kundmöte så ska ytterligare test skapas och utföras.

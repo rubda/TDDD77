@@ -1,8 +1,13 @@
 #include <solver.h>
 #include <matLib.h>
 #include <assert.h>
+#include <time.h>
+#include <stdio.h>
 
-int main() {
+int main(){
+  clock_t begin, end;
+  double time_spent;
+  begin = clock();
 
   /* Quadratic terms. */
   matrix* Q = create_matrix(4,4);
@@ -60,7 +65,9 @@ int main() {
 		     0.4882,   -1.7756,    0.0171,   -0.5727,
 		     3.2662,    0.3297,   -0.3630,    0.6592};
   insert_array(F_arr, F);
+  multiply_matrix_with_scalar(-1, F);
 
+  
 
   /* Inequality constraints RHS. */
   matrix* g = create_matrix(20, 1);
@@ -85,12 +92,51 @@ int main() {
 		     1.7168,
 		     1.8912};
   insert_array(g_arr, g);
+  multiply_matrix_with_scalar(-1, g);
 
-  problem* problem = create_problem(Q,q,E,h,F,g,NULL);
+  /* Start point */
+  matrix* z0 = create_matrix(4, 1);
+  value z0_arr[4] = {0, 
+		     0, 
+ 	       	     0, 
+       		     0};
+
+
+  /* MATLABs first iteration optimum point with active set */
+  value z0_active_set[4] = {-0.0019, 
+			    -0.8754, 
+			     1.4490, 
+			     0.0996};
+
+  /* MATLABs first iteration optimum point with interior point */
+  value z0_interior_point[4] = { 0.2532, 
+			        -0.4397, 
+				 1.2955, 
+				 0.3019};
+
+
+  /* Current start point */
+  insert_array(z0_arr, z0);
+
+  /* Optimum should be this, according to MATLAB */
+  matrix* optimum = create_matrix(4, 1);
+  value optimum_arr[4] = {-0.0113,
+		       -0.9370,
+		       1.4143,
+		       0.0631};
+  insert_array(optimum_arr, optimum);
+
+  problem* problem = create_problem(Q,q,E,h,F,g,z0);
 
   quadopt_solver(problem);
 
-  print_problem(problem);
+  assert(compare_matrices(problem->solution, optimum));
+  assert(is_feasible_point(problem->solution, problem));
 
+  free_matrix(optimum);
   free_problem(problem);
+
+  end = clock(); 
+  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("time taken was: %f \n", time_spent);
 }

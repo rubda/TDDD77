@@ -255,7 +255,7 @@ void transform_to_reduced_row_echelon_form(matrix* M);
 bool matrix_contains(value a,matrix* b);
 
 /* compare two element values */
-bool compare_elements(value a, value b);
+int compare_elements(value a, value b);
 
 /* Creates new matrix with zero values */
 matrix* get_zero_matrix(int rows, int columns);
