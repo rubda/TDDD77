@@ -261,8 +261,6 @@ void test_gauss(){
   print_matrix(derivated);
   free_matrix(derive);
   free_matrix(derivated);
-
-
 }
 
 

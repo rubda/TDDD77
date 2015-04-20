@@ -27,7 +27,7 @@ struct problem{
   matrix* b;
   int constraints_count;
 
-  /* variables */
+  /* Variables */
   bool has_start_point;
   matrix* z0;
 

@@ -40,7 +40,7 @@ int main() {
   problem* problem = create_problem(Q, q, E, h, F, g, NULL);
 
   assert(find_starting_point(problem));
-
   assert(is_feasible_point(problem->z0, problem));
 
+  free_problem(problem);
 }
