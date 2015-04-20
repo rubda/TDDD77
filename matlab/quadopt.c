@@ -6,7 +6,8 @@
 */
 
 #include "mex.h"
-#include "../quadopt/src/solver.h"
+#include "../quadopt/include/solver.h"
+#include "../quadopt/include/problem.h"
 
 void mexFunction( int nlhs, mxArray* plhs[],
 		  int nrhs, const mxArray* prhs[])
