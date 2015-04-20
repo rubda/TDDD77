@@ -211,6 +211,7 @@ matrix* get_active_conditions_rhs(problem* prob){
   }
 }
 
+/* Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob){
   if(!prob->has_solution) return false;
 

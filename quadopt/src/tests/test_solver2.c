@@ -68,8 +68,6 @@ int main(){
   insert_array(F_arr, F);
   multiply_matrix_with_scalar(-1, F);
 
-  
-
   /* Inequality constraints RHS. */
   matrix* g = create_matrix(20, 1);
   value g_arr[20] = {2.5608,
@@ -113,20 +111,20 @@ int main(){
 		       0.0631};
   insert_array(optimum_arr, optimum);
 
-  problem* problem = create_problem(Q,q,E,h,F,g,NULL);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL);
   int i;
-  for(i = 0; i < 1000; i++) {
 
-	  quadopt_solver(problem);
+  for(i = 0; i < 1000; i++){
+    quadopt_solver(problem);
 
-	  assert(compare_matrices(problem->solution, optimum));
-	  assert(is_feasible_point(problem->solution, problem));
+    assert(compare_matrices(problem->solution, optimum));
+    assert(is_feasible_point(problem->solution, problem));
 
-	  problem->has_solution = false;
-
-	}
+    problem->has_solution = false;
+  }
 
   free_matrix(optimum);
+  free_matrix(z0);
   free_problem(problem);
 
   end = clock(); 

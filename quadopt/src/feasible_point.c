@@ -1,6 +1,7 @@
 #include "feasible_point.h"
 
-void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done);
+void comb(int pool, int need, int* rows, int at, int ri, problem* prob, 
+	  matrix* A, matrix* b, matrix* z, bool* done);
 
 /* Checks if a point is feasible subject to the constraints in a problem */
 bool is_feasible_point(matrix* z, problem* prob){
@@ -34,8 +35,10 @@ bool is_feasible_point(matrix* z, problem* prob){
 }
 
 /* Iterate through all possible combinations of inequality constraints to add */
-void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done) {
-  if (pool < need + at || *done) return; /* no more slot */
+void comb(int pool, int need, int* rows, int at, int ri, problem* prob, 
+	  matrix* A, matrix* b, matrix* z, bool* done){
+  /* No more slot */
+  if (pool < need + at || *done) return;
  
   if (need == 0){
     matrix* fi;
@@ -46,7 +49,8 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
       fi = get_row_vector_with_return(rows[i]+1, prob->F);
       insert_row_vector(i+prob->equality_count+1, fi, A);
       free_matrix(fi);
-      insert_value_without_check(get_value_without_check(rows[i]+1, 1, prob->g), i+prob->equality_count+1, 1, b);
+      insert_value_without_check(get_value_without_check(rows[i]+1, 1, prob->g), 
+				 i+prob->equality_count+1, 1, b);
     }
     
     /* If solution is feasible, return */
@@ -61,13 +65,13 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
   /* If we choose the current item, "or" (|) the bit to mark it so. */
   rows[need-1] = at;
   comb(pool, need - 1, rows, at + 1, ri, prob, A, b, z, done);
-  comb(pool, need, rows, at + 1, ri, prob, A, b, z, done);  /* or don't choose it, go to next */
+  /* Or don't choose it, go to next */
+  comb(pool, need, rows, at + 1, ri, prob, A, b, z, done);
 }
 
 /* Calculates a feasible starting point for a problem */
-bool find_starting_point(problem* prob) {
-
-  if (prob->equality_count > 0 && prob->inequality_count > 0) {    
+bool find_starting_point(problem* prob){
+  if (prob->equality_count > 0 && prob->inequality_count > 0){    
 
     /* Variables */
     matrix* A = create_matrix(prob->z->rows, prob->z->rows);
@@ -94,6 +98,8 @@ bool find_starting_point(problem* prob) {
     comb(pool, need, rows, 0, need, prob, A, b, prob->z0, &done);
 
     free(rows);
+    free_matrix(A);
+    free_matrix(b);
 
     return done;
   }else{
