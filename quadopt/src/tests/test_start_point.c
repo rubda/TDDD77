@@ -1,5 +1,6 @@
 #include <solver.h>
 #include <assert.h>
+#include <feasible_point.h>
 
 int main() {
 

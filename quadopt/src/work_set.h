@@ -5,9 +5,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-
 /* Structure for storing different sets */
-struct work_set {
+struct work_set{
   int count;
   int* data;
 };
