@@ -7,3 +7,5 @@ Adam:
 Johan:
 - Vilken standard ska han ha? Större än ekvivalensvilkor eller mindre än.
 - Möjligtvis fråga honom hur man hittar en giltig startpunkt och bypassar de problem vi har?
+- Alltid tillräckligt med bivillkor?
+- Struktur i matriser?
