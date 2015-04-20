@@ -2,8 +2,6 @@ language: c
 script: 
   - echo "Running unit tests"
   - make test
-  - echo "Checking for memory leaks"
-  - bash -c "cd quadopt/obj/tests && valgrind ./test_solver --leak-check=full --error-exitcode=1"
 notifications:
   email:
     on_success: never
