@@ -1,3 +1,11 @@
+/*
+  Author: Johan Isaksson
+  Email: johis024@student.liu.se
+  Date: 2015-04-21
+  Description: This file containts the necessary functions to determine if a point is feasible.
+               It also contains functions that can calculate a feasible point with given constraints.
+*/
+
 #include <feasible_point.h>
 
 void comb(int pool, int need, int* rows, int at, int ri, problem* prob, 

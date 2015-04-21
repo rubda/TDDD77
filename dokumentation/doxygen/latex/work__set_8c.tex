@@ -1,0 +1,78 @@
+\hypertarget{work__set_8c}{}\section{T\+D\+D\+D77/quadopt/src/work\+\_\+set.c File Reference}
+\label{work__set_8c}\index{T\+D\+D\+D77/quadopt/src/work\+\_\+set.\+c@{T\+D\+D\+D77/quadopt/src/work\+\_\+set.\+c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$work\+\_\+set.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structwork__set}{work\+\_\+set} $\ast$ \hyperlink{work__set_8c_a5e787fbc18e0f9d059670bccd4b06f6f}{work\+\_\+set\+\_\+create} (int ws\+\_\+max)
+\item 
+bool \hyperlink{work__set_8c_a6df80539a5baa7d61fe2562a2d6b7094}{work\+\_\+set\+\_\+append} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws, int val)
+\item 
+bool \hyperlink{work__set_8c_a6730f7220d19aa2385ef38d7203a3cfd}{work\+\_\+set\+\_\+remove} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws, int val)
+\item 
+bool \hyperlink{work__set_8c_a4ed02af9463ddab69e75c724221254b8}{work\+\_\+set\+\_\+free} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws)
+\item 
+void \hyperlink{work__set_8c_a0cd572976b59300a89ec6f52a193b558}{work\+\_\+set\+\_\+print} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws)
+\item 
+bool \hyperlink{work__set_8c_a80712603fb9c21daa035726c6dfb77ae}{work\+\_\+set\+\_\+contains} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws, int item)
+\item 
+void \hyperlink{work__set_8c_ab4646848888245eefd7f0f42e29c3b04}{work\+\_\+set\+\_\+clear} (\hyperlink{structwork__set}{work\+\_\+set} $\ast$ws)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{work__set_8c_a6df80539a5baa7d61fe2562a2d6b7094}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+append@{work\+\_\+set\+\_\+append}}
+\index{work\+\_\+set\+\_\+append@{work\+\_\+set\+\_\+append}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+append}]{\setlength{\rightskip}{0pt plus 5cm}bool work\+\_\+set\+\_\+append (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws, }
+\item[{int}]{val}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a6df80539a5baa7d61fe2562a2d6b7094}
+Adds an element to the set \hypertarget{work__set_8c_ab4646848888245eefd7f0f42e29c3b04}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+clear@{work\+\_\+set\+\_\+clear}}
+\index{work\+\_\+set\+\_\+clear@{work\+\_\+set\+\_\+clear}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+clear}]{\setlength{\rightskip}{0pt plus 5cm}void work\+\_\+set\+\_\+clear (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_ab4646848888245eefd7f0f42e29c3b04}
+Clears the set \hypertarget{work__set_8c_a80712603fb9c21daa035726c6dfb77ae}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+contains@{work\+\_\+set\+\_\+contains}}
+\index{work\+\_\+set\+\_\+contains@{work\+\_\+set\+\_\+contains}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+contains}]{\setlength{\rightskip}{0pt plus 5cm}bool work\+\_\+set\+\_\+contains (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws, }
+\item[{int}]{item}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a80712603fb9c21daa035726c6dfb77ae}
+Checks if the set is containing the item \hypertarget{work__set_8c_a5e787fbc18e0f9d059670bccd4b06f6f}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+create@{work\+\_\+set\+\_\+create}}
+\index{work\+\_\+set\+\_\+create@{work\+\_\+set\+\_\+create}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+create}]{\setlength{\rightskip}{0pt plus 5cm}{\bf work\+\_\+set}$\ast$ work\+\_\+set\+\_\+create (
+\begin{DoxyParamCaption}
+\item[{int}]{ws\+\_\+max}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a5e787fbc18e0f9d059670bccd4b06f6f}
+Creates a new work set \hypertarget{work__set_8c_a4ed02af9463ddab69e75c724221254b8}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+free@{work\+\_\+set\+\_\+free}}
+\index{work\+\_\+set\+\_\+free@{work\+\_\+set\+\_\+free}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+free}]{\setlength{\rightskip}{0pt plus 5cm}bool work\+\_\+set\+\_\+free (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a4ed02af9463ddab69e75c724221254b8}
+Removes and deallocates the set \hypertarget{work__set_8c_a0cd572976b59300a89ec6f52a193b558}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+print@{work\+\_\+set\+\_\+print}}
+\index{work\+\_\+set\+\_\+print@{work\+\_\+set\+\_\+print}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+print}]{\setlength{\rightskip}{0pt plus 5cm}void work\+\_\+set\+\_\+print (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a0cd572976b59300a89ec6f52a193b558}
+Prints all current elements in the set \hypertarget{work__set_8c_a6730f7220d19aa2385ef38d7203a3cfd}{}\index{work\+\_\+set.\+c@{work\+\_\+set.\+c}!work\+\_\+set\+\_\+remove@{work\+\_\+set\+\_\+remove}}
+\index{work\+\_\+set\+\_\+remove@{work\+\_\+set\+\_\+remove}!work\+\_\+set.\+c@{work\+\_\+set.\+c}}
+\subsubsection[{work\+\_\+set\+\_\+remove}]{\setlength{\rightskip}{0pt plus 5cm}bool work\+\_\+set\+\_\+remove (
+\begin{DoxyParamCaption}
+\item[{{\bf work\+\_\+set} $\ast$}]{ws, }
+\item[{int}]{val}
+\end{DoxyParamCaption}
+)}\label{work__set_8c_a6730f7220d19aa2385ef38d7203a3cfd}
+Removes an element from the set 

@@ -1,0 +1,47 @@
+\hypertarget{feasible__point_8c}{}\section{T\+D\+D\+D77/quadopt/src/feasible\+\_\+point.c File Reference}
+\label{feasible__point_8c}\index{T\+D\+D\+D77/quadopt/src/feasible\+\_\+point.\+c@{T\+D\+D\+D77/quadopt/src/feasible\+\_\+point.\+c}}
+{\ttfamily \#include $<$feasible\+\_\+point.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{feasible__point_8c_a2250d2f537d2db970a5f4e554b08e012}{comb} (int pool, int need, int $\ast$rows, int at, int ri, \hyperlink{structproblem}{problem} $\ast$prob, \hyperlink{structmatrix}{matrix} $\ast$A, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$z, bool $\ast$done)
+\item 
+bool \hyperlink{feasible__point_8c_ab5a324cc412f00a1ae586f3313423da5}{is\+\_\+feasible\+\_\+point} (\hyperlink{structmatrix}{matrix} $\ast$z, \hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+bool \hyperlink{feasible__point_8c_a69d89a1ae470470d053e95ee6ee512e2}{find\+\_\+starting\+\_\+point} (\hyperlink{structproblem}{problem} $\ast$prob)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{feasible__point_8c_a2250d2f537d2db970a5f4e554b08e012}{}\index{feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}!comb@{comb}}
+\index{comb@{comb}!feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}}
+\subsubsection[{comb}]{\setlength{\rightskip}{0pt plus 5cm}void comb (
+\begin{DoxyParamCaption}
+\item[{int}]{pool, }
+\item[{int}]{need, }
+\item[{int $\ast$}]{rows, }
+\item[{int}]{at, }
+\item[{int}]{ri, }
+\item[{{\bf problem} $\ast$}]{prob, }
+\item[{{\bf matrix} $\ast$}]{A, }
+\item[{{\bf matrix} $\ast$}]{b, }
+\item[{{\bf matrix} $\ast$}]{z, }
+\item[{bool $\ast$}]{done}
+\end{DoxyParamCaption}
+)}\label{feasible__point_8c_a2250d2f537d2db970a5f4e554b08e012}
+\hypertarget{feasible__point_8c_a69d89a1ae470470d053e95ee6ee512e2}{}\index{feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}!find\+\_\+starting\+\_\+point@{find\+\_\+starting\+\_\+point}}
+\index{find\+\_\+starting\+\_\+point@{find\+\_\+starting\+\_\+point}!feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}}
+\subsubsection[{find\+\_\+starting\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}bool find\+\_\+starting\+\_\+point (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{feasible__point_8c_a69d89a1ae470470d053e95ee6ee512e2}
+Calculates a feasible starting point for a problem \hypertarget{feasible__point_8c_ab5a324cc412f00a1ae586f3313423da5}{}\index{feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}!is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}}
+\index{is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}!feasible\+\_\+point.\+c@{feasible\+\_\+point.\+c}}
+\subsubsection[{is\+\_\+feasible\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}bool is\+\_\+feasible\+\_\+point (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{z, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{feasible__point_8c_ab5a324cc412f00a1ae586f3313423da5}
+Checks if a point is feasible subject to the constraints in a problem 
