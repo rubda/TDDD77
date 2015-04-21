@@ -9,7 +9,7 @@
 
 /* Allocates the problem and sets all necessary variables */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0, unsigned int max_iter){
+			matrix* F, matrix* g, matrix* z0, int max_iter){
 
   problem* prob = malloc(sizeof(problem));
 

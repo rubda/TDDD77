@@ -52,14 +52,16 @@ struct problem{
   work_set* active_set;
 
   value accuracy;
-  unsigned int max_iter;
+
+  /* Max iterations/ms restrictions */
+  int max_iter;
 };
 
 typedef struct problem problem;
 
 /** Puts matrices to a problem struct */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0, unsigned int max_iter);
+			matrix* F, matrix* g, matrix* z0, int max_iter);
 
 /** Prints the matrices defined in the problem struct */
 void print_problem(problem* prob);
