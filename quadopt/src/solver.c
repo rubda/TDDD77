@@ -152,12 +152,8 @@ matrix* quadopt_solver(problem* prob){
 
   while (true){
     solve_subproblem(prob);
-
-    if(prob->max_iter > 0){
-      copy_solution(prob);
-      return prob->solution;
-    }
-
+    printf("Solve sub\n");
+    
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
         break;
@@ -173,6 +169,11 @@ matrix* quadopt_solver(problem* prob){
       /* Set active set */
       fill_active_set(prob);
     }
+
+    if(prob->max_iter == 1){
+      break;
+    }
+    prob->max_iter--;
   }
 
   copy_solution(prob);
