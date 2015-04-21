@@ -1,0 +1,87 @@
+\hypertarget{problem_8h}{}\section{T\+D\+D\+D77/quadopt/include/problem.h File Reference}
+\label{problem_8h}\index{T\+D\+D\+D77/quadopt/include/problem.\+h@{T\+D\+D\+D77/quadopt/include/problem.\+h}}
+{\ttfamily \#include $<$mat\+Lib.\+h$>$}\\*
+{\ttfamily \#include $<$work\+\_\+set.\+h$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structproblem}{problem}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structproblem}{problem} \hyperlink{problem_8h_a8f761a52800d0c65186c16662a1197a7}{problem}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structproblem}{problem} $\ast$ \hyperlink{problem_8h_adf650a3a8d3b853f0f0f33de43df7645}{create\+\_\+problem} (\hyperlink{structmatrix}{matrix} $\ast$Q, \hyperlink{structmatrix}{matrix} $\ast$q, \hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$h, \hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$g, \hyperlink{structmatrix}{matrix} $\ast$z0)
+\item 
+void \hyperlink{problem_8h_a3b34d735f176c91c912671f182e447d6}{print\+\_\+problem} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}{free\+\_\+problem} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8h_ac3c11b6e9f5ee8d74af24f1a4b96089e}{get\+\_\+active\+\_\+conditions} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8h_a3e0c97402fe21797b7fb635415749bd1}{get\+\_\+active\+\_\+conditions\+\_\+rhs} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\+\_\+value} (\hyperlink{structproblem}{problem} $\ast$prob)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{problem_8h_a8f761a52800d0c65186c16662a1197a7}{}\index{problem.\+h@{problem.\+h}!problem@{problem}}
+\index{problem@{problem}!problem.\+h@{problem.\+h}}
+\subsubsection[{problem}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf problem} {\bf problem}}\label{problem_8h_a8f761a52800d0c65186c16662a1197a7}
+
+
+\subsection{Function Documentation}
+\hypertarget{problem_8h_adf650a3a8d3b853f0f0f33de43df7645}{}\index{problem.\+h@{problem.\+h}!create\+\_\+problem@{create\+\_\+problem}}
+\index{create\+\_\+problem@{create\+\_\+problem}!problem.\+h@{problem.\+h}}
+\subsubsection[{create\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}{\bf problem}$\ast$ create\+\_\+problem (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{Q, }
+\item[{{\bf matrix} $\ast$}]{q, }
+\item[{{\bf matrix} $\ast$}]{E, }
+\item[{{\bf matrix} $\ast$}]{h, }
+\item[{{\bf matrix} $\ast$}]{F, }
+\item[{{\bf matrix} $\ast$}]{g, }
+\item[{{\bf matrix} $\ast$}]{z0}
+\end{DoxyParamCaption}
+)}\label{problem_8h_adf650a3a8d3b853f0f0f33de43df7645}
+Puts matrices to a problem struct \hypertarget{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}{}\index{problem.\+h@{problem.\+h}!free\+\_\+problem@{free\+\_\+problem}}
+\index{free\+\_\+problem@{free\+\_\+problem}!problem.\+h@{problem.\+h}}
+\subsubsection[{free\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+problem (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}
+Deallocates all the problems resources \hypertarget{problem_8h_ac3c11b6e9f5ee8d74af24f1a4b96089e}{}\index{problem.\+h@{problem.\+h}!get\+\_\+active\+\_\+conditions@{get\+\_\+active\+\_\+conditions}}
+\index{get\+\_\+active\+\_\+conditions@{get\+\_\+active\+\_\+conditions}!problem.\+h@{problem.\+h}}
+\subsubsection[{get\+\_\+active\+\_\+conditions}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ get\+\_\+active\+\_\+conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_ac3c11b6e9f5ee8d74af24f1a4b96089e}
+Returns a matrix with the currently active constraints \hypertarget{problem_8h_a3e0c97402fe21797b7fb635415749bd1}{}\index{problem.\+h@{problem.\+h}!get\+\_\+active\+\_\+conditions\+\_\+rhs@{get\+\_\+active\+\_\+conditions\+\_\+rhs}}
+\index{get\+\_\+active\+\_\+conditions\+\_\+rhs@{get\+\_\+active\+\_\+conditions\+\_\+rhs}!problem.\+h@{problem.\+h}}
+\subsubsection[{get\+\_\+active\+\_\+conditions\+\_\+rhs}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ get\+\_\+active\+\_\+conditions\+\_\+rhs (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_a3e0c97402fe21797b7fb635415749bd1}
+Returns a matrix with the right hand side of the currently active constraints \hypertarget{problem_8h_a828fe3528592c279acbdf6f11d83d743}{}\index{problem.\+h@{problem.\+h}!get\+\_\+solution\+\_\+value@{get\+\_\+solution\+\_\+value}}
+\index{get\+\_\+solution\+\_\+value@{get\+\_\+solution\+\_\+value}!problem.\+h@{problem.\+h}}
+\subsubsection[{get\+\_\+solution\+\_\+value}]{\setlength{\rightskip}{0pt plus 5cm}bool get\+\_\+solution\+\_\+value (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_a828fe3528592c279acbdf6f11d83d743}
+Calculates the optimum value given by the solution point \hypertarget{problem_8h_a3b34d735f176c91c912671f182e447d6}{}\index{problem.\+h@{problem.\+h}!print\+\_\+problem@{print\+\_\+problem}}
+\index{print\+\_\+problem@{print\+\_\+problem}!problem.\+h@{problem.\+h}}
+\subsubsection[{print\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+problem (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_a3b34d735f176c91c912671f182e447d6}
+Prints the matrices defined in the problem struct 
