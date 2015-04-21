@@ -2,7 +2,7 @@
 
 /* Allocates the problem and sets all necessary variables */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0){
+			matrix* F, matrix* g, matrix* z0, unsigned int max_iter){
 
   problem* prob = malloc(sizeof(problem));
 
@@ -81,6 +81,10 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h,
 
   /* Work set */
   prob->active_set = work_set_create(prob->A->rows);
+
+  /* Max iterations */
+  /* 0 is unlimited */
+  prob->max_iter = max_iter;
 
   return prob;
 }

@@ -37,7 +37,7 @@ int main() {
 		     0};
   insert_array(g_arr, g);
 
-  problem* problem = create_problem(Q, q, E, h, F, g, NULL);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0);
 
   assert(find_starting_point(problem));
   assert(is_feasible_point(problem->z0, problem));

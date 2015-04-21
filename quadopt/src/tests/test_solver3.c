@@ -52,7 +52,7 @@ int main(){
   insert_array(z_arr, z);
 
 
-  problem* problem = create_problem(Q,q,E,h,F,g,z);
+  problem* problem = create_problem(Q,q,E,h,F,g,z, 0);
 
   //print_qp_problem(problem);
 
