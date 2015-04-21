@@ -13,28 +13,28 @@
 
 /** Allocates the problem and sets all necessary variables */
 struct problem{
-  /** Optimization function */
-  matrix* Q;
-  matrix* Q_inv;
+  /* Optimization function */
+  matrix* Q; /**< The matrix containing the quadratic optimization problem. */
+  matrix* Q_inv; /**< Q inverse. */
 
-  matrix* q;
+  matrix* q; /**< The matrix containing the linear optimization problem. */
 
-  /** Equality constraints */
-  int equality_count;
+  /* Equality constraints */
+  int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
   matrix* E;
   matrix* h;
 
-  /** Larger-than constraints */
+  /* Larger-than constraints */
   int inequality_count;
   matrix* F;
   matrix* g;
 
-  /** All constraints */
+  /* All constraints */
   matrix* A;
   matrix* b;
   int constraints_count;
 
-  /** Variables */
+  /* Variables */
   bool has_start_point;
   matrix* z0;
 
