@@ -152,7 +152,6 @@ matrix* quadopt_solver(problem* prob){
 
   while (true){
     solve_subproblem(prob);
-    printf("Solve sub\n");
     
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
