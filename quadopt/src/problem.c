@@ -1,3 +1,10 @@
+/*
+  Author: Ruben Das
+  Email: rubda680@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to retrieve values from the matrices given.
+*/
+
 #include <problem.h>
 
 /* Allocates the problem and sets all necessary variables */
@@ -15,6 +22,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h,
   prob->q = q;
 
   /* Constraints */
+
   /* Equality constraints */
   prob->E = E;
   /* Right hand side for E */

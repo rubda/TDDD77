@@ -1,6 +1,13 @@
 #ifndef WORK_SET_H
 #define WORK_SET_H
 
+/*
+  Author: Alexander Yngve
+  Email: aleyn573@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to work with the struct "work_set".
+*/
+
 #include <stdbool.h>
 
 /** Structure for storing different sets */

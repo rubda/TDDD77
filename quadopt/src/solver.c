@@ -1,3 +1,10 @@
+/*
+  Author: Johan Isaksson
+  Email: johis024@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to reach the optimum value given by the problem.
+*/
+
 #include <stdio.h>
 #include <solver.h>
 #include <math.h>

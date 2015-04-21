@@ -1,6 +1,13 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
 
+/*
+  Author: Ruben Das
+  Email: rubda680@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to retrieve values from the matrices given.
+*/
+
 #include <matLib.h>
 #include <work_set.h>
 
