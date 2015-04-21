@@ -4,30 +4,30 @@
 #include <matLib.h>
 #include <work_set.h>
 
-/* Allocates the problem and sets all necessary variables */
+/** Allocates the problem and sets all necessary variables */
 struct problem{
-  /* Optimization function */
+  /** Optimization function */
   matrix* Q;
   matrix* Q_inv;
 
   matrix* q;
 
-  /* Equality constraints */
+  /** Equality constraints */
   int equality_count;
   matrix* E;
   matrix* h;
 
-  /* Larger-than constraints */
+  /** Larger-than constraints */
   int inequality_count;
   matrix* F;
   matrix* g;
 
-  /* All constraints */
+  /** All constraints */
   matrix* A;
   matrix* b;
   int constraints_count;
 
-  /* Variables */
+  /** Variables */
   bool has_start_point;
   matrix* z0;
 
@@ -49,23 +49,23 @@ struct problem{
 
 typedef struct problem problem;
 
-/* Puts matrices to a problem struct */
+/** Puts matrices to a problem struct */
 problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
 			matrix* F, matrix* g, matrix* z0);
 
-/* Prints the matrices defined in the problem struct */
+/** Prints the matrices defined in the problem struct */
 void print_problem(problem* prob);
 
-/* Deallocates all the problems resources */
+/** Deallocates all the problems resources */
 void free_problem(problem* prob);
 
-/* Returns a matrix with the currently active constraints */
+/** Returns a matrix with the currently active constraints */
 matrix* get_active_conditions(problem* prob);
 
-/* Returns a matrix with the right hand side of the currently active constraints */
+/** Returns a matrix with the right hand side of the currently active constraints */
 matrix* get_active_conditions_rhs(problem* prob);
 
-/* Calculates the optimum value given by the solution point */
+/** Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob);
 
 #endif /* PROBLEM_H */
