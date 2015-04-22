@@ -49,6 +49,7 @@
 	
 	reslutat av testningen, \newline
 	
+	
 	hur mycket fel hittateds, \newline
 	hastighet och exakthet\newline
 	resultat av metod, \newline
@@ -57,9 +58,12 @@
 	problem\newline
 	
 	\subsubsection{Enhetstester}
+	Ett enhetstest är ett test utav en enhet av kod. Oftast är koden en funktion eller metod som har ett specifikt syfte, men kan också vara olika strukturer eller objekt. Enhetstest utförs vanligtvis efter att ett nytt stycke kod har skrivits för att garantera dess funktionalitet. I och med att man kör enhetstester på så små delar av kod har de i teorin en tendens till att bli väldigt många om man ska täcka tillräckligt stor funktionalitet. Detta är dock inget hinder i praktiken eftersom många små funktioner ofta har ytterst få uppgifter och inte behöver så många test (om ens ett enda). \newline
+	Under projektet har många enhetstest skrivits (framförallt för matrisbiblioteket), 
 	\subsubsection{Systemtester}
+	Systemtester är, som det hörs på namnet, tester av system. Testerna fungerar på samma som ett enhetstest men istället för på enskillda funktioner så sker testerna på en sammansättning av funktioner som bygger upp ett system. Det är kritiskt vid dessa test att underliggande funktioner redan är testade.
 	\subsubsection{Acceptanstester}
-	
+	De acceptanstester som utförts under projektet är framförallt prestandatester. Detta för att det enda kravet lösaren hade var att den skulle vara ungefär lika snabb som den kommersiella lösaren gurobi. De delar som testats då var underfunktioner till lösaren, såsom matrisbiblioteket och subproblemslösaren.
 	
 	\subsection{Diskussion}
 	Denna sektion kommer att förklara varför resultatet blev som det blev och vad som kan förbättras.	
