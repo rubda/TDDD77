@@ -10,6 +10,7 @@
 #include <math.h>
 #include <feasible_point.h>
 #include <subproblem.h>
+#include <time.h>
 
 bool fill_active_set(problem* prob);
 
@@ -140,6 +141,9 @@ bool take_step(problem* prob){
 
 /* Solves a quadratic problem using the active set method */
 matrix* quadopt_solver(problem* prob){
+  clock_t begin, end;
+  double time_spent, tmp_spent;
+
   /* Calculate starting point if no one is provide or the one provided is infeasible */
   if (!prob->has_start_point || !is_feasible_point(prob->z0, prob)){
     if (!find_starting_point(prob)){
@@ -151,6 +155,7 @@ matrix* quadopt_solver(problem* prob){
   fill_active_set(prob);
 
   while (true){
+    begin = clock();
     solve_subproblem(prob);
     
     if (is_zero_matrix(prob->p)){
@@ -169,10 +174,14 @@ matrix* quadopt_solver(problem* prob){
       fill_active_set(prob);
     }
 
-    if(prob->max_iter == 1){
+    end = clock();
+    tmp_spent = (double)(end - begin) / (CLOCKS_PER_SEC/1000000);
+    time_spent += tmp_spent;
+
+    /* Exit if maximal iterations or microseconds have been fullfilled */
+    if (time_to_exit(prob, time_spent)){
       break;
     }
-    prob->max_iter--;
   }
 
   copy_solution(prob);
@@ -185,4 +194,3 @@ void copy_solution(problem* prob){
   prob->has_solution = true;
   get_solution_value(prob);
 }
-

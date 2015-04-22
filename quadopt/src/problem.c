@@ -8,8 +8,8 @@
 #include <problem.h>
 
 /* Allocates the problem and sets all necessary variables */
-problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0, int max_iter){
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g,
+			matrix* z0, int max_iter, int max_micro_sec){
 
   problem* prob = malloc(sizeof(problem));
 
@@ -93,6 +93,14 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h,
   /* Max iterations */
   /* 0 is unlimited */
   prob->max_iter = max_iter;
+
+  /* Max microseconds */
+  if (max_micro_sec != 0){
+    prob->check_time = true;
+    prob->max_micro_sec = max_micro_sec;
+  }else{
+    prob->check_time = false;
+  }
 
   return prob;
 }
@@ -249,4 +257,22 @@ bool get_solution_value(problem* prob){
   free_matrix(solution);
 
   return true;
+}
+
+
+/* Exits solver if maximal iterations or microseconds have been fullfilled */
+bool time_to_exit(problem* prob, double time_spent){
+  /* Exit if maximal iterations have been fullfilled */
+  if (prob->max_iter == 1){
+    return true;
+  }
+  prob->max_iter--;
+
+  /* Exit if maximal micro seconds have been fullfilled */
+  if (prob->check_time && time_spent >= prob->max_micro_sec){
+    return true;
+  }
+
+  /* None have been fullfilled */
+  return false;
 }

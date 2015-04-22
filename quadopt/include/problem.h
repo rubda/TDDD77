@@ -53,15 +53,17 @@ struct problem{
 
   value accuracy;
 
-  /* Max iterations/ms restrictions */
+  /* Max iterations/µs restrictions */
   int max_iter;
+  int max_micro_sec;
+  bool check_time;
 };
 
 typedef struct problem problem;
 
 /** Puts matrices to a problem struct */
-problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0, int max_iter);
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, 
+			matrix* z0, int max_iter, int max_micro_sec);
 
 /** Prints the matrices defined in the problem struct */
 void print_problem(problem* prob);
@@ -77,5 +79,8 @@ matrix* get_active_conditions_rhs(problem* prob);
 
 /** Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob);
+
+/** Exits solver if maximal iterations or microseconds have been fullfilled */
+bool time_to_exit(problem* prob, double time_spent);
 
 #endif /* PROBLEM_H */

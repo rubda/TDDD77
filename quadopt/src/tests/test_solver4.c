@@ -41,7 +41,7 @@ int main(){
 		    -2};
   insert_array(z_arr, z);
 
-  problem* problem = create_problem(Q, q, E, h, NULL, NULL, z, 0);
+  problem* problem = create_problem(Q, q, E, h, NULL, NULL, z, 0, 0);
 
   quadopt_solver(problem);
 
