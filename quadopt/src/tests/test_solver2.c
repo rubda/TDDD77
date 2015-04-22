@@ -111,7 +111,7 @@ int main(){
 		       0.0631};
   insert_array(optimum_arr, optimum);
 
-  problem* problem = create_problem(Q, q, E, h, F, g, NULL);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0);
   int i;
 
   for(i = 0; i < 1000; i++){

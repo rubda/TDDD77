@@ -1,3 +1,10 @@
+/*
+  Author: Johan Isaksson
+  Email: johis024@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to reach the optimum value given by the problem.
+*/
+
 #include <stdio.h>
 #include <solver.h>
 #include <math.h>
@@ -7,6 +14,8 @@
 bool fill_active_set(problem* prob);
 
 bool take_step(problem* prob);
+
+void copy_solution(problem* prob);
 
 /* Fills the active set according to the current position */
 bool fill_active_set(problem* prob){
@@ -143,6 +152,7 @@ matrix* quadopt_solver(problem* prob){
 
   while (true){
     solve_subproblem(prob);
+    
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
         break;
@@ -158,11 +168,21 @@ matrix* quadopt_solver(problem* prob){
       /* Set active set */
       fill_active_set(prob);
     }
+
+    if(prob->max_iter == 1){
+      break;
+    }
+    prob->max_iter--;
   }
 
+  copy_solution(prob);
+  return prob->solution;
+}
+
+/* Copies the current point (z) to the solution matrix. */
+void copy_solution(problem* prob){
   matrix_copy_data(prob->z, prob->solution);
   prob->has_solution = true;
   get_solution_value(prob);
-  return prob->solution;
 }
 
