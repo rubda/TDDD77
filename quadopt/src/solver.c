@@ -142,7 +142,8 @@ bool take_step(problem* prob){
 /* Solves a quadratic problem using the active set method */
 matrix* quadopt_solver(problem* prob){
   clock_t begin, end;
-  double time_spent, tmp_spent;
+  double time_spent = 0;
+  double tmp_spent = 0;
 
   /* Calculate starting point if no one is provide or the one provided is infeasible */
   if (!prob->has_start_point || !is_feasible_point(prob->z0, prob)){
