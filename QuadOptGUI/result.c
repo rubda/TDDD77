@@ -41,7 +41,10 @@ int main(){
 
   /* Solveranropp */ 
 
-  problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,1);
-  quadopt_solver(problem);
-  print_solution(problem);
+  int i; 
+  for(i = 0; i <= 10; i++){ 
+    problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,1);
+    quadopt_solver(problem);
+    print_solution(problem);
+ } 
 }
