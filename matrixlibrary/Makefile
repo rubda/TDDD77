@@ -30,7 +30,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 
 $(BUILD_DIR)/matLib.o: $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@ -pthread
+	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@
 
 
 # Rule for making the library
