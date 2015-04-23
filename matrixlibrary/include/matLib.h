@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <pthread.h>
 
 
 /** Uncomment which mode you want the library to run in */
@@ -47,6 +46,9 @@ typedef long double value;
 #define PRECISION 0.000001
 #endif
 
+/** Uncomment to allow parallel operations */
+//#define PARALLEL
+
 /** This is the core-struct in this library. All matrix-operations are based on this Struct. */
 struct matrix {
 	int columns;
@@ -59,6 +61,20 @@ struct matrix {
 /* Matrix instead of struct matrix */
 typedef struct matrix matrix;
 
+#ifdef PARALLEL
+
+#include <pthread.h>
+#include <semaphore.h>
+
+/** Sets on how many cores calculations can run on */
+static const int number_of_cores=4;
+
+/** Used to protect the counter, remember to run initialize_parallelization */
+sem_t* mutex;
+
+pthread_mutex_t* count_mutex;
+
+
 /* Used in strassen parallel to pass matrices to target functions */
 struct matrices{
   matrix* one;
@@ -70,6 +86,8 @@ struct matrices{
 
 /* Matrices instead of struct matrices */
 typedef struct matrices matrices;
+
+#endif
 
 /** Create a matrix */
 matrix* create_matrix(int row, int col);
@@ -137,6 +155,8 @@ matrix* strassen_matrices_with_return(matrix* a, matrix* b);
 /* Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices(matrix* a, matrix* b, matrix* c);
 
+#ifdef PARALLEL
+
 /* Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
 matrix* strassen_matrices_parallel_with_return(matrix* a, matrix* b);
 
@@ -163,6 +183,20 @@ void *calculation_seven(void* arg);
 
 /* Multiply a and b into c using the Strassen algorithm running in parallel. c=a*b */
 bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c);
+
+/** Initializes parallel variables */
+void initialize_parallelization();
+
+/** Free parallel variables */
+void deinitialize_parallelization();
+
+/** Used to insure the number of processes */
+void start_thread();
+
+/** Used to insure the number of processes */
+void exit_thread();
+
+#endif
 
 /** Multiply a and b by returning a pointer to a new matrix with a*b*/
 matrix* multiply_matrices_with_return(matrix* a, matrix* b);
@@ -309,5 +343,8 @@ int compare_elements(value a, value b);
 
 /** Creates new matrix with zero values */
 matrix* get_zero_matrix(int rows, int columns);
+
+/** Returns the absolute value of a */
+value matlib_fabs(value a);
 
 #endif /* MATLIB_H */

@@ -43,5 +43,13 @@ int main(){
   free_matrix(f);
   free_matrix(ref_new);
 
+  matrix* g = create_identity_matrix(10, 10);
+
+  matrix* h = create_identity_matrix(10, 10);
+
+  matrix* i = create_matrix(10, 10);
+  assert(strassen_matrices(g, h, i));
+  assert(compare_matrices(i, g));
+
   return 0;
 }

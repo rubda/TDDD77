@@ -3,6 +3,8 @@
 
 
 int main(){
+#ifdef PARALLEL
+  initialize_parallelization();
   matrix* a = create_matrix(2, 2);
   value a_values[4] = {2, 0, 1, 2};
   assert(insert_array(a_values, a));
@@ -44,6 +46,15 @@ int main(){
   free_matrix(f);
   free_matrix(ref_new);
 
+  matrix* g = create_identity_matrix(1024, 1024);
 
+  matrix* h = create_identity_matrix(1024, 1024);
+
+  matrix* i = create_matrix(1024, 1024);
+  assert(strassen_matrices_parallel(g, h, i));
+  assert(compare_matrices(i, g));
+
+  deinitialize_parallelization();
+#endif
   return 0;
 }

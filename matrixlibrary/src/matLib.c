@@ -7,7 +7,6 @@
 
 /* This is the only include that is allowed in this file */
 #include <matLib.h>
-#include <math.h>
 
 /* a 3 x 3 matrix created with create_matrix(3,3);
  * 		column 	1	2	3
@@ -128,7 +127,7 @@ bool compare_matrices(matrix* a, matrix* b) {
     for(int j = 1; j <= a->columns; j++){
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
-      if(!(fabs(a_val - b_val) < PRECISION)){
+      if(!(matlib_fabs(a_val - b_val) < PRECISION)){
 	return false;
       }
     }
@@ -412,15 +411,16 @@ bool strassen_matrices(matrix* a, matrix* b, matrix* c) {
 
   M7=strassen_matrices_with_return(a12a22,b21b22);
 
+
   free_matrix(a12a22);
   free_matrix(b21b22);
 
   matrix* M1M4=add_matrices_with_return(M1,M4);
-  matrix* M5M7=add_matrices_with_return(M5,M7);
-  matrix* C11=subtract_matrices_with_return(M1M4,M5M7);
+  matrix* M1M4M5=subtract_matrices_with_return(M1M4,M5);
+  matrix* C11=add_matrices_with_return(M1M4M5,M7);
 
   free_matrix(M1M4);
-  free_matrix(M5M7);
+  free_matrix(M1M4M5);
 
   matrix* C12=add_matrices_with_return(M3,M5);
 
@@ -473,6 +473,8 @@ bool strassen_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+#ifdef PARALLEL
+
 /* Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
 matrix* strassen_matrices_parallel_with_return(matrix* a, matrix* b) {
   matrix* c =create_matrix(a->columns,b->rows);
@@ -496,10 +498,11 @@ void *calculation_one(void* arg){
   matrix* a11a22=add_matrices_with_return(a11,a22);
   matrix* b11b22=add_matrices_with_return(b11,b22);
 
-  M1=strassen_matrices_with_return(a11a22,b11b22);
+  M1=strassen_matrices_parallel_with_return(a11a22,b11b22);
 
   free_matrix(a11a22);
   free_matrix(b11b22);
+  exit_thread();
   pthread_exit(M1);
 }
 
@@ -513,9 +516,10 @@ void *calculation_two(void* arg){
   matrix* a21a22=add_matrices_with_return(a21,a22);
   matrix* M2;
 
-  M2=strassen_matrices_with_return(a21a22,b11);
+  M2=strassen_matrices_parallel_with_return(a21a22,b11);
 
   free_matrix(a21a22);
+  exit_thread();
   pthread_exit(M2);
 }
 
@@ -528,9 +532,10 @@ void *calculation_three(void* arg){
 
   matrix* b12b22=subtract_matrices_with_return(b12,b22);
   matrix* M3;
-  M3=strassen_matrices_with_return(a11,b12b22);
+  M3=strassen_matrices_parallel_with_return(a11,b12b22);
 
   free_matrix(b12b22);
+  exit_thread();
   pthread_exit(M3);
 }
 
@@ -543,9 +548,10 @@ void *calculation_four(void* arg){
   matrix* b21b11=subtract_matrices_with_return(b21,b11);
   matrix* M4;
 
-    M4=strassen_matrices_with_return(a22,b21b11);
+    M4=strassen_matrices_parallel_with_return(a22,b21b11);
 
   free_matrix(b21b11);
+  exit_thread();
   pthread_exit(M4);
 }
 
@@ -559,9 +565,10 @@ void *calculation_five(void* arg){
   matrix* a11a12=add_matrices_with_return(a11,a12);
   matrix* M5;
 
-    M5=strassen_matrices_with_return(a11a12,b22);
+    M5=strassen_matrices_parallel_with_return(a11a12,b22);
 
   free_matrix(a11a12);
+  exit_thread();
   pthread_exit(M5);
 }
 
@@ -576,10 +583,11 @@ void *calculation_six(void* arg){
   matrix* b11b12=add_matrices_with_return(b11,b12);
   matrix* M6;
 
-    M6=strassen_matrices_with_return(a21a11,b11b12);
+    M6=strassen_matrices_parallel_with_return(a21a11,b11b12);
 
   free_matrix(a21a11);
   free_matrix(b11b12);
+  exit_thread();
   pthread_exit(M6);
 }
 
@@ -594,22 +602,31 @@ void *calculation_seven(void* arg){
   matrix* b21b22=add_matrices_with_return(b21,b22);
   matrix* M7;
 
-  M7=strassen_matrices_with_return(a12a22,b21b22);
+  M7=strassen_matrices_parallel_with_return(a12a22,b21b22);
 
   free_matrix(a12a22);
   free_matrix(b21b22);
+  exit_thread();
   pthread_exit(M7);
 }
 
 /* Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
-  if (a->rows<10  && b->columns<10){
+  if (a->rows<=512  && b->columns<=512){
     return multiply_matrices(a,b,c);
   }
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
     return false;
   }
+  pthread_mutex_lock(count_mutex);
+  int processes;
+  sem_getvalue(mutex, &processes);
+  pthread_mutex_unlock(count_mutex);
+  if (processes==0){
+    return strassen_matrices(a,b,c);
+  }
+
   matrix* a_corrected;
   matrix* b_corrected;
   matrix* c_corrected;
@@ -640,7 +657,6 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
 
   get_sub_matrix(a_corrected->rows/2+1 ,a_corrected->rows,a_corrected->columns/2+1,a_corrected->columns,a_corrected,mover);
   matrix* a22=matrix_copy(mover);
-
   free_matrix(mover);
 
   mover=create_matrix(b_corrected->rows/2,b_corrected->columns/2);
@@ -659,8 +675,8 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   get_sub_matrix(b_corrected->rows/2+1 ,b_corrected->rows,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
   matrix* b22=matrix_copy(mover);
 
-  free_matrix(mover);
 
+  free_matrix(mover);
 
   /* Execute thread one */
   pthread_t thread1;
@@ -670,6 +686,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread1_data->three=b11;
   thread1_data->four=b22;
 
+  start_thread();
   pthread_create (&thread1, NULL, calculation_one, (void *) thread1_data);
 
   /* Execute thread two */
@@ -679,6 +696,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread2_data->two=a22;
   thread2_data->three=b11;
 
+  start_thread();
   pthread_create (&thread2, NULL, calculation_two, (void *) thread2_data);
 
   /* Execute thread three */
@@ -688,6 +706,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread3_data->two=b22;
   thread3_data->three=a11;
 
+  start_thread();
   pthread_create (&thread3, NULL, calculation_three, (void *) thread3_data);
 
 
@@ -698,6 +717,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread4_data->two=b11;
   thread4_data->three=a22;
 
+  start_thread();
   pthread_create (&thread4, NULL,calculation_four, (void *) thread4_data);
 
   /* Execute thread five */
@@ -707,6 +727,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread5_data->two=a12;
   thread5_data->three=b22;
 
+  start_thread();
   pthread_create (&thread5, NULL, calculation_five, (void *) thread5_data);
 
   /* Execute thread six */
@@ -717,6 +738,7 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread6_data->three=b11;
   thread6_data->four=b12;
 
+  start_thread();
   pthread_create (&thread6, NULL, calculation_six, (void *) thread6_data);
 
   /* Execute thread seven */
@@ -727,59 +749,45 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   thread7_data->three=b21;
   thread7_data->four=b22;
 
+  start_thread();
   pthread_create (&thread7, NULL, calculation_seven, (void *) thread7_data);
 
-  void *vptr;
 
   /* Wait for all threads free all memory */
   matrix* M1;
-  pthread_join(thread1, &vptr);
-  M1 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread1, &M1);
   free(thread1_data);
 
   matrix* M2;
-  pthread_join(thread2, &vptr);
-  M2 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread2, &M2);
   free(thread2_data);
 
   matrix* M3;
-  pthread_join(thread3, &vptr);
-  M3 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread3, &M3);
   free(thread3_data);
 
   matrix* M4;
-  pthread_join(thread4, &vptr);
-  M4 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread4, &M4);
   free(thread4_data);
 
   matrix* M5;
-  pthread_join(thread5, &vptr);
-  M5 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread5, &M5);
   free(thread5_data);
 
   matrix* M6;
-  pthread_join(thread6, &vptr);
-  M6 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread6, &M6);
   free(thread6_data);
 
   matrix* M7;
-  pthread_join(thread7, &vptr);
-  M7 = (matrix*)vptr;
-  free(vptr);
+  pthread_join(thread7, &M7);
   free(thread7_data);
 
   matrix* M1M4=add_matrices_with_return(M1,M4);
-  matrix* M5M7=add_matrices_with_return(M5,M7);
-  matrix* C11=subtract_matrices_with_return(M1M4,M5M7);
+  matrix* M1M4M5=subtract_matrices_with_return(M1M4,M5);
+  matrix* C11=add_matrices_with_return(M1M4M5,M7);
 
   free_matrix(M1M4);
-  free_matrix(M5M7);
+  free_matrix(M1M4M5);
 
   matrix* C12=add_matrices_with_return(M3,M5);
 
@@ -831,7 +839,32 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/** Initializes parallel variables */
+void initialize_parallelization(){
+  mutex=(sem_t*)malloc(sizeof(sem_t));
+  sem_init(mutex, 1, number_of_cores);
+  count_mutex=(pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
+}
 
+/** Free parallel variables */
+void deinitialize_parallelization(){
+  free(mutex);
+  free(count_mutex);
+}
+
+/** Used to insure the number of processes */
+void start_thread(){
+  pthread_mutex_lock(count_mutex);
+  sem_wait(mutex);
+  pthread_mutex_unlock(count_mutex);
+}
+
+/** Used to insure the number of processes */
+void exit_thread(){
+  sem_post(mutex);
+}
+
+#endif
 
 
 /* Multiply a and b by returning a pointer to a new matrix with a*b*/
@@ -1493,7 +1526,7 @@ void matrix_copy_data(matrix* a, matrix* b) {
 bool is_zero_matrix(matrix* v) {
   for (int i = 1; i <= v->rows; i++) {
     for(int j = 1; j <= v->columns; j++){
-      if (fabs(get_value_without_check(i,j,v)) > 0.0001) {
+      if (matlib_fabs(get_value_without_check(i,j,v)) > 0.0001) {
 	return false;
       }
     }
@@ -1629,7 +1662,7 @@ bool matrix_contains(value a,matrix* b){
 
 /* compare two element values */
 int compare_elements(value a, value b) {
-  value diff = fabs(a - b);
+  value diff = matlib_fabs(a - b);
 
   if (diff <= PRECISION) {
     /* a == b */
@@ -1655,3 +1688,19 @@ matrix* get_zero_matrix(int rows, int columns){
 
   return zero;
 }
+
+/** Returns the absolute value of a */
+value matlib_fabs(value a){
+  if (a==0){
+    return 0;
+  }
+  if (a<0){
+    return -a;
+  }
+  else{
+    return a;
+  }
+
+}
+
+
