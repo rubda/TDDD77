@@ -4,9 +4,6 @@ from tkinter.messagebox import *
 from tkinter import messagebox
 from CustomText import *
 from parser import *
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from numpy import *
 import re
 import os
 
@@ -116,9 +113,6 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
-
-    # Prompt user to save before proceeds
-    # save_as()
 
     parse_qp(filename, "result.c", "exempel.qopt")
 
@@ -257,9 +251,6 @@ text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
 root.bind("<KeyPress>", highlight)
-
-# Hide the matplotlib toolbar
-plt.rcParams['toolbar'] = 'None'
 
 root.config(menu=menuBar)
 root.wm_title("QuadOpt Solver")

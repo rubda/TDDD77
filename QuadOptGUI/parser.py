@@ -45,23 +45,7 @@ def parse_qp(filename, out_filename, data_filename):
 
         out_file.write("}")
 
-
-def get_indices(line):
-    if "[" in line:
-        index = line[::-1].split(',', 1)[0][::-1]
-        dimensions = re.findall(r'\d+', index)
-        dimensions = list(map(int, dimensions))
-        return range(dimensions[0],dimensions[1])
-    else:
-        return range(0,1)
-
-
-def get_range_name(line):
-    range_name = line.split(']')[0]
-    range_name = range_name.split('[')[1]
-    return range_name
-
-
+        
 def create_matrices(line):
     indent = " "*2
     line = line.replace(' ', '')
