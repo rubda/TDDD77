@@ -15,11 +15,11 @@
 void mexFunction(int nlhs, mxArray* plhs[],
 		 int nrhs, const mxArray* prhs[]){ 
   /* Declare variables */
-  mxArray* mat_matrix;
-  double* out_matrix;
-  matrix* lib_matrix;
-  matrix* result_matrix; 
-  matrix* lib_matrices[nrhs-1];
+  mxArray* mat_matrix; /* Used to store the incoming matrices from Matlab when converting to Matlib matrices. */
+  double* out_matrix; /* Used to return the result back to Matlab. */
+  matrix* lib_matrix; /* Used to temporarily store the Matlib matrix that is created when converting the Matlab matrix. */
+  matrix* result_matrix; /* The Matlib matrix containing the result returned from the solver. */
+  matrix* lib_matrices[nrhs-1]; /* An array of all the matrices that should be sent to the solver. */
   
   /* Check for proper number of arguments */
   if(nrhs != 7){

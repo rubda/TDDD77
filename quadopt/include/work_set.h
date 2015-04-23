@@ -12,8 +12,8 @@
 
 /** Structure for storing different sets */
 struct work_set{
-  int count;
-  int* data;
+  int count; /**< Number of elements in the work set. */
+  int* data; /**< Array of elements in the work set. */
 };
 
 typedef struct work_set work_set;
