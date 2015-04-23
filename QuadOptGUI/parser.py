@@ -118,16 +118,23 @@ def create_solver_call(out_file, problem, matrix_variables, max_iterations, max_
         indent = " "*2
         out_file.write("\n\n" + indent + "/* Solveranropp */ \n\n")
 
-        create_problem = indent + "problem* problem = create_problem("
+        iter_range = re.findall(r'\d+', problem)
+        
+        out_file.write(indent + "int i; \n")
+        out_file.write(indent + "for(i = " + iter_range[0] + "; i <= " + iter_range[1] + "; i++){ \n")
+        
+        
+        create_problem = indent*2 + "problem* problem = create_problem("
 
         for var in matrix_variables:
             create_problem += var + ","
 
         create_problem = create_problem + str(max_iterations) + "," + str(max_ms) + ");\n"
-        solver_call = indent + "quadopt_solver(problem);\n"
-        print_solution = indent + "print_solution(problem);\n"
+        solver_call = indent*2 + "quadopt_solver(problem);\n"
+        print_solution = indent*2 + "print_solution(problem);\n "+indent+"} \n"
 
         out_file.write(create_problem)
         out_file.write(solver_call)
         out_file.write(print_solution)
 
+        
