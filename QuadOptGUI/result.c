@@ -1,8 +1,7 @@
 #include <matLib.h>
+#include <solver.h>
 
-int
-main()
-{
+int main(){
 
   /* Parameters */
 
@@ -41,6 +40,7 @@ main()
 
   /* Solveranropp */ 
 
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
+  problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,0);
+  quadopt_solver(problem);
+  print_solution(problem);
 }

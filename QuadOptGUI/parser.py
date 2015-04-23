@@ -1,7 +1,7 @@
 import re
 
 
-start_text = "#include <matLib.h>\n\n"
+start_text = "#include <matLib.h>\n#include <solver.h>\n\n"
 
 
 def parse_qp(filename, out_filename, data_filename):
@@ -9,7 +9,7 @@ def parse_qp(filename, out_filename, data_filename):
     with open(filename) as in_file, open(data_filename) as data_file, open(out_filename, 'w') as out_file:
 
         out_file.write(start_text)
-        out_file.write("int\nmain()\n{\n\n")
+        out_file.write("int main(){\n\n")
 
         indent = " "*2
 
@@ -45,7 +45,7 @@ def parse_qp(filename, out_filename, data_filename):
 
         out_file.write("}")
 
-        
+
 def create_matrices(line):
     indent = " "*2
     line = line.replace(' ', '')
@@ -98,29 +98,19 @@ def fill_matrices(data_file, out_file):
 
 
 def create_solver_call(out_file, problem, matrix_variables):
-        # Generate the call/calls to the solver
-        # Hur ska summa av problem se ut???
-
         indent = " "*2
         out_file.write("\n\n" + indent + "/* Solveranropp */ \n\n")
-        solver_call = indent + "quadOpt("
+
+        create_problem = indent + "problem* problem = create_problem("
 
         for var in matrix_variables:
-            solver_call += var + ","
+            create_problem += var + ","
 
-        solver_call = solver_call[:-1] + ");\n\n"
+        create_problem = create_problem[:-1] + ",0,0);\n"
+        solver_call = indent + "quadopt_solver(problem);\n"
+        print_solution = indent + "print_solution(problem);\n"
 
-        sum_number = 1
-        find_iterate = 0
-        if problem.startswith("sum"):
-            for char in problem:
-                if char == ".":
-                    find_iterate += 1
-                elif find_iterate == 2:
-                    sum_number = int(char)
-                    find_iterate = 0
-                    break
+        out_file.write(create_problem)
+        out_file.write(solver_call)
+        out_file.write(print_solution)
 
-        while sum_number > 0:
-            out_file.write(solver_call)
-            sum_number -= 1
