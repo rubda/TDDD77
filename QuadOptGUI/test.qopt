@@ -11,6 +11,11 @@ variables
     z(4,1)
 end
 
+limits
+  max_iterations=0
+  max_ms=1
+end
+
 minimize
     z'Qz + q'z
 subject to

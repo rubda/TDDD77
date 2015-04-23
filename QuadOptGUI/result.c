@@ -24,6 +24,7 @@ int main(){
   z = create_matrix(4, 1);
 
 
+
   /* Insert values into matrices */
 
   value Q_data[16] = {10,0,0,0,0,2,0,0,0,0,5,0,0,0,0,100};
@@ -40,7 +41,7 @@ int main(){
 
   /* Solveranropp */ 
 
-  problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,0);
+  problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,1);
   quadopt_solver(problem);
   print_solution(problem);
 }
