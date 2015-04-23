@@ -1,7 +1,7 @@
 import re
 
 
-start_text = "#include <matLib.h>\n\n"
+start_text = "#include <matLib.h>\n#include <solver.h>\n\n"
 
 
 def parse_qp(filename, out_filename, data_filename):
@@ -9,13 +9,17 @@ def parse_qp(filename, out_filename, data_filename):
     with open(filename) as in_file, open(data_filename) as data_file, open(out_filename, 'w') as out_file:
 
         out_file.write(start_text)
-        out_file.write("int\nmain()\n{\n\n")
+        out_file.write("int main(){\n\n")
 
         indent = " "*2
 
         problem = ""
         found_min = False
         copy = False
+        copy_limits = False
+
+        max_iterations = -1
+        max_ms = -1
 
         for line in in_file:
             line = line.strip()
@@ -25,6 +29,8 @@ def parse_qp(filename, out_filename, data_filename):
             elif line == "variables":
                 out_file.write(indent + "/* Variables */\n\n")
                 copy = True
+            elif line == "limits":
+                copy_limits = True
             elif line == "minimize":
                 found_min = True
             elif line == "subject to":
@@ -33,19 +39,30 @@ def parse_qp(filename, out_filename, data_filename):
                 out = "\n"
                 out_file.write(out)
                 copy = False
+                copy_limits = False
             elif found_min:
                 problem = line
                 found_min = False
+            elif copy_limits:
+                if line.startswith("max_iterations"):
+                    max_iterations = get_limits(line)
+                elif line.startswith("max_ms"):
+                    max_ms = get_limits(line)
             elif copy:
                 out = create_matrices(line)
                 out_file.write(out)
 
         matrix_variables = fill_matrices(data_file, out_file)
-        create_solver_call(out_file, problem, matrix_variables)
+        create_solver_call(out_file, problem, matrix_variables, max_iterations, max_ms)
 
         out_file.write("}")
 
-        
+def get_limits(line):
+    return_value = re.findall(r'\d+', line)
+    return_value = list(map(int, return_value))[0]
+    return return_value
+
+
 def create_matrices(line):
     indent = " "*2
     line = line.replace(' ', '')
@@ -97,30 +114,20 @@ def fill_matrices(data_file, out_file):
     return matrix_variables
 
 
-def create_solver_call(out_file, problem, matrix_variables):
-        # Generate the call/calls to the solver
-        # Hur ska summa av problem se ut???
-
+def create_solver_call(out_file, problem, matrix_variables, max_iterations, max_ms):
         indent = " "*2
         out_file.write("\n\n" + indent + "/* Solveranropp */ \n\n")
-        solver_call = indent + "quadOpt("
+
+        create_problem = indent + "problem* problem = create_problem("
 
         for var in matrix_variables:
-            solver_call += var + ","
+            create_problem += var + ","
 
-        solver_call = solver_call[:-1] + ");\n\n"
+        create_problem = create_problem + str(max_iterations) + "," + str(max_ms) + ");\n"
+        solver_call = indent + "quadopt_solver(problem);\n"
+        print_solution = indent + "print_solution(problem);\n"
 
-        sum_number = 1
-        find_iterate = 0
-        if problem.startswith("sum"):
-            for char in problem:
-                if char == ".":
-                    find_iterate += 1
-                elif find_iterate == 2:
-                    sum_number = int(char)
-                    find_iterate = 0
-                    break
+        out_file.write(create_problem)
+        out_file.write(solver_call)
+        out_file.write(print_solution)
 
-        while sum_number > 0:
-            out_file.write(solver_call)
-            sum_number -= 1

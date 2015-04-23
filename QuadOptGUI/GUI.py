@@ -1,15 +1,12 @@
-from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
-from tkinter import messagebox
 from CustomText import *
 from parser import *
-import re
 import os
 
 filename = None
 clipboard = None
-start_file = "parameters\n\nend\n\nvariables\n\nend\n\nminimize\n\nsubject to\n\nend\n"
+start_file = "parameters\n\nend\n\nvariables\n\nend\n\nlimits\n  max_iterations= \n  max_ms=\nend\n\nminimize\n\nsubject to\n\nend\n"
 
 
 def new_file(event=None):
@@ -113,37 +110,14 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
-
-    parse_qp(filename, "result.c", "exempel.qopt")
-
-    f = open("result.c")
-    t = f.read()
-
-    text.delete(0.0, END)
-    text.insert(0.0, t)
-    root.title(filename)
-    text.config(state=DISABLED)
-    showinfo(title="C code generation",
-             message="The generated C code was written to " + "result.c")
-
     try:
-        assert(1 == 2) # Temp dont ask to open any files
-        f = askopenfile(mode='r', title='Select datafile')
-        data_filename = f.name
-        f = askopenfile(mode='r', title='Select output file')
-        out_filename = f.name
+        parse_qp(filename, "result.c", "exempel.qopt")
 
-        parse_qp(filename, out_filename, data_filename)
-
-        f = open(out_filename)
+        f = open("result.c")
         t = f.read()
 
-        text.delete(0.0, END)
-        text.insert(0.0, t)
-        root.title(filename)
-        text.config(state=DISABLED)
         showinfo(title="C code generation",
-                 message="The generated C code was written to " + out_filename)
+                 message="The generated C code was written to " + "result.c")
     except:
         showerror(title="Error", message="Something went wrong!")
 
@@ -250,6 +224,7 @@ text.bind("<Control-S>", save_as)
 text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
+text.bind("<Control-q>", quit)
 root.bind("<KeyPress>", highlight)
 
 root.config(menu=menuBar)
