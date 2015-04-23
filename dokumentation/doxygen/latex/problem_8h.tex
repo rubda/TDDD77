@@ -15,7 +15,7 @@ typedef struct \hyperlink{structproblem}{problem} \hyperlink{problem_8h_a8f761a5
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{structproblem}{problem} $\ast$ \hyperlink{problem_8h_aba609a7f54f072348dbe5e8e1098c0fb}{create\+\_\+problem} (\hyperlink{structmatrix}{matrix} $\ast$Q, \hyperlink{structmatrix}{matrix} $\ast$q, \hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$h, \hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$g, \hyperlink{structmatrix}{matrix} $\ast$z0, unsigned int max\+\_\+iter)
+\hyperlink{structproblem}{problem} $\ast$ \hyperlink{problem_8h_aaff088c718084e7ced83dc9cc33e9af4}{create\+\_\+problem} (\hyperlink{structmatrix}{matrix} $\ast$Q, \hyperlink{structmatrix}{matrix} $\ast$q, \hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$h, \hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$g, \hyperlink{structmatrix}{matrix} $\ast$z0, int max\+\_\+iter, int max\+\_\+micro\+\_\+sec)
 \item 
 void \hyperlink{problem_8h_a3b34d735f176c91c912671f182e447d6}{print\+\_\+problem} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
@@ -26,6 +26,10 @@ void \hyperlink{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}{free\+\_\+problem}
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8h_a3e0c97402fe21797b7fb635415749bd1}{get\+\_\+active\+\_\+conditions\+\_\+rhs} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\+\_\+value} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{problem_8h_acefe821ee0ec9c82e8db668beaf89972}{print\+\_\+solution} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+bool \hyperlink{problem_8h_aac78795d52fa0cf6857afe4117a1a148}{time\+\_\+to\+\_\+exit} (\hyperlink{structproblem}{problem} $\ast$prob, double time\+\_\+spent)
 \end{DoxyCompactItemize}
 
 
@@ -36,7 +40,7 @@ bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\
 
 
 \subsection{Function Documentation}
-\hypertarget{problem_8h_aba609a7f54f072348dbe5e8e1098c0fb}{}\index{problem.\+h@{problem.\+h}!create\+\_\+problem@{create\+\_\+problem}}
+\hypertarget{problem_8h_aaff088c718084e7ced83dc9cc33e9af4}{}\index{problem.\+h@{problem.\+h}!create\+\_\+problem@{create\+\_\+problem}}
 \index{create\+\_\+problem@{create\+\_\+problem}!problem.\+h@{problem.\+h}}
 \subsubsection[{create\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}{\bf problem}$\ast$ create\+\_\+problem (
 \begin{DoxyParamCaption}
@@ -47,9 +51,10 @@ bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\
 \item[{{\bf matrix} $\ast$}]{F, }
 \item[{{\bf matrix} $\ast$}]{g, }
 \item[{{\bf matrix} $\ast$}]{z0, }
-\item[{unsigned int}]{max\+\_\+iter}
+\item[{int}]{max\+\_\+iter, }
+\item[{int}]{max\+\_\+micro\+\_\+sec}
 \end{DoxyParamCaption}
-)}\label{problem_8h_aba609a7f54f072348dbe5e8e1098c0fb}
+)}\label{problem_8h_aaff088c718084e7ced83dc9cc33e9af4}
 Puts matrices to a problem struct \hypertarget{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}{}\index{problem.\+h@{problem.\+h}!free\+\_\+problem@{free\+\_\+problem}}
 \index{free\+\_\+problem@{free\+\_\+problem}!problem.\+h@{problem.\+h}}
 \subsubsection[{free\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+problem (
@@ -85,4 +90,19 @@ Calculates the optimum value given by the solution point \hypertarget{problem_8h
 \item[{{\bf problem} $\ast$}]{prob}
 \end{DoxyParamCaption}
 )}\label{problem_8h_a3b34d735f176c91c912671f182e447d6}
-Prints the matrices defined in the problem struct 
+Prints the matrices defined in the problem struct \hypertarget{problem_8h_acefe821ee0ec9c82e8db668beaf89972}{}\index{problem.\+h@{problem.\+h}!print\+\_\+solution@{print\+\_\+solution}}
+\index{print\+\_\+solution@{print\+\_\+solution}!problem.\+h@{problem.\+h}}
+\subsubsection[{print\+\_\+solution}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+solution (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_acefe821ee0ec9c82e8db668beaf89972}
+Prints optimal point and optimal value \hypertarget{problem_8h_aac78795d52fa0cf6857afe4117a1a148}{}\index{problem.\+h@{problem.\+h}!time\+\_\+to\+\_\+exit@{time\+\_\+to\+\_\+exit}}
+\index{time\+\_\+to\+\_\+exit@{time\+\_\+to\+\_\+exit}!problem.\+h@{problem.\+h}}
+\subsubsection[{time\+\_\+to\+\_\+exit}]{\setlength{\rightskip}{0pt plus 5cm}bool time\+\_\+to\+\_\+exit (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob, }
+\item[{double}]{time\+\_\+spent}
+\end{DoxyParamCaption}
+)}\label{problem_8h_aac78795d52fa0cf6857afe4117a1a148}
+Exits solver if maximal iterations or microseconds have been fullfilled 
