@@ -215,53 +215,6 @@ void test_divide_row_with_scalar(){
   free_matrix(m);
   free_matrix(ref);
 }
-void test_row_echelon(){
-  matrix* temp=create_matrix(3,2);
-  value temp_array[6]={1,0,0,1,0,1};
-  insert_array(temp_array,temp);
-  transform_to_reduced_row_echelon_form(temp);
-  print_matrix(temp);
-  free_matrix(temp);
-}
-void test_gauss(){
-  matrix* temp=create_matrix(3,2);
-  value temp_array[6]={1,0,0,1,0,1};
-  insert_array(temp_array,temp);
-  gauss_jordan(temp);
-  print_matrix(temp);
-  free_matrix(temp);
-
-  matrix* temp1=create_matrix(2,2);
-  value temp_array1[4]={2,1,2,2};
-  insert_array(temp_array1,temp1);
-  print_matrix(temp1);
-  gauss_jordan(temp1);
-  print_matrix(temp1);
-  free_matrix(temp1);
-
-  matrix* temp2=create_matrix(3,4);
-  value temp_array2[12]={1,1,1,1,2,2,2,2,1,2,3,4};
-  insert_array(temp_array2,temp2);
-  print_matrix(temp2);
-  gauss_jordan(temp2);
-  print_matrix(temp2);
-
-  matrix* temp3=get_matrix_with_only_pivots(temp2);
-  print_matrix(temp3);
-  free_matrix(temp2);
-  free_matrix(temp3);
-
-  matrix* derive=create_matrix(3,3);
-  value derive_array[9]={1,1,1,1,1,1,1,1,1};
-  insert_array(derive_array,derive);
-  print_matrix(derive);
-  matrix* derivated=derivate_matrix_with_return(1,derive);
-  print_matrix(derivated);
-  free_matrix(derive);
-  free_matrix(derivated);
-
-
-}
 
 
 void test_multiply_column_with_scalar(){}
@@ -285,8 +238,6 @@ int main(){
   test_multiply_column_with_scalar();
   test_divide_column_with_scalar();
   test_transpose_matrix();
-  test_row_echelon();
-  test_gauss();
 
   return 0;
 }
