@@ -1,18 +1,12 @@
-from tkinter import *
 from tkinter.filedialog import *
 from tkinter.messagebox import *
-from tkinter import messagebox
 from CustomText import *
 from parser import *
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
-from numpy import *
-import re
 import os
 
 filename = None
 clipboard = None
-start_file = "parameters\n\nend\n\nvariables\n\nend\n\nminimize\n\nsubject to\n\nend\n"
+start_file = "parameters\n\nend\n\nvariables\n\nend\n\nlimits\n  max_iterations= \n  max_ms=\nend\n\nminimize\n\nsubject to\n\nend\n"
 
 
 def new_file(event=None):
@@ -116,80 +110,16 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
-
-    # Prompt user to save before proceeds
-    # save_as()
-
-    parse_qp(filename, "result.c", "exempel.qopt")
-
-    f = open("result.c")
-    t = f.read()
-
-    text.delete(0.0, END)
-    text.insert(0.0, t)
-    root.title(filename)
-    text.config(state=DISABLED)
-    showinfo(title="C code generation",
-             message="The generated C code was written to " + "result.c")
-
     try:
-        assert(1 == 2) # Temp dont ask to open any files
-        f = askopenfile(mode='r', title='Select datafile')
-        data_filename = f.name
-        f = askopenfile(mode='r', title='Select output file')
-        out_filename = f.name
+        parse_qp(filename, "result.c", "exempel.qopt")
 
-        parse_qp(filename, out_filename, data_filename)
-
-        f = open(out_filename)
+        f = open("result.c")
         t = f.read()
 
-        text.delete(0.0, END)
-        text.insert(0.0, t)
-        root.title(filename)
-        text.config(state=DISABLED)
         showinfo(title="C code generation",
-                 message="The generated C code was written to " + out_filename)
+                 message="The generated C code was written to " + "result.c")
     except:
         showerror(title="Error", message="Something went wrong!")
-
-
-def generate_mat(event=None):
-    showinfo(title="Matlab",
-             message="Please run quadopt in Matlab")
-
-
-def view_problem(event=None):
-    global filename
-    try:
-        ylim = 10
-        xlim = 10
-
-        fig = plt.figure(facecolor='white')
-
-        plt.axis([0, xlim, 0, ylim])
-        plt.axis('off')
-
-        minimize = "$minimize \ "
-        subject = "$subject \ to$\n"
-        problem = convert_problem(filename)
-        constraints = convert_constraints(filename)
-
-        problem_text = "\n"*4 + minimize + problem + subject + constraints
-
-        plt.text(-1, ylim, problem_text, fontsize=14,
-                 horizontalalignment='left', verticalalignment='center')
-        fig.savefig("problem.png")
-
-        img = PhotoImage(file="problem.png")
-        os.remove("problem.png")
-
-        text.config(state=NORMAL)
-        text.delete(0.0, END)
-        text.image_create(0.0, image=img)
-    except:
-        showerror(title="Something went wrong",
-                  message="Unable to view the problem")
 
 
 def edit_problem(event=None):
@@ -244,8 +174,6 @@ problemLabel.pack()
 
 editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
 editButton.pack()
-viewButton = Button(sideBar, text="View", width=15, command=view_problem)
-viewButton.pack()
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold",
                    fg="#305080", bg="#f6f6f6")
@@ -256,9 +184,6 @@ codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold",
 codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
-matlabButton = Button(sideBar, text="Matlab code", width=15,
-                      command=generate_mat)
-matlabButton.pack()
 
 exitButton = Button(sideBar, text="Exit", width=15, command=quit)
 exitButton.pack(side=BOTTOM)
@@ -299,10 +224,8 @@ text.bind("<Control-S>", save_as)
 text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
+text.bind("<Control-q>", quit)
 root.bind("<KeyPress>", highlight)
-
-# Hide the matplotlib toolbar
-plt.rcParams['toolbar'] = 'None'
 
 root.config(menu=menuBar)
 root.wm_title("QuadOpt Solver")

@@ -21,18 +21,18 @@ struct problem{
 
   /* Equality constraints */
   int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
-  matrix* E;
-  matrix* h;
+  matrix* E; /**< Equality constraints left-hand side coefficient. */
+  matrix* h; /**< Equality constraints right-hand side constraint. */
 
   /* Larger-than constraints */
-  int inequality_count;
-  matrix* F;
-  matrix* g;
+  int inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
+  matrix* F; /**< Larger-than constraints left-hand side coefficient. */
+  matrix* g; /**< Larger-than constraints right-hand side constraint. */
 
   /* All constraints */
-  matrix* A;
-  matrix* b;
-  int constraints_count;
+  matrix* A; /**< All constraints left-hand side coefficients. */
+  matrix* b; /**< All constraints right-hand side constraints. */
+  int constraints_count; /**< Total number of constraints. */
 
   /* Variables */
   bool has_start_point;
@@ -53,15 +53,17 @@ struct problem{
 
   value accuracy;
 
-  /* Max iterations/ms restrictions */
+  /* Max iterations/µs restrictions */
   int max_iter;
+  int max_micro_sec;
+  bool check_time;
 };
 
 typedef struct problem problem;
 
 /** Puts matrices to a problem struct */
-problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, 
-			matrix* F, matrix* g, matrix* z0, int max_iter);
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, 
+			matrix* z0, int max_iter, int max_micro_sec);
 
 /** Prints the matrices defined in the problem struct */
 void print_problem(problem* prob);
@@ -77,5 +79,11 @@ matrix* get_active_conditions_rhs(problem* prob);
 
 /** Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob);
+
+/** Prints optimal point and optimal value */
+void print_solution(problem* prob);
+
+/** Exits solver if maximal iterations or microseconds have been fullfilled */
+bool time_to_exit(problem* prob, double time_spent);
 
 #endif /* PROBLEM_H */

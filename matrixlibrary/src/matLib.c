@@ -260,6 +260,580 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
+/* Multiply a and b into c. Uses row-major optimization. c=a*b */
+bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c) {
+  if ((a->columns != b->rows) || (a->rows != c->rows)
+      || (b->columns != c->columns)) {
+    return false;
+  }
+  matrix* b_trans= transpose_matrix_with_return(b);
+  int j = 1;
+  int i = 1;
+  int k = 1;
+  value sum = 0;
+  for (; i <= a->rows; i++) {
+    k = 1;
+    for (; k <= b_trans->rows; k++) {
+      sum = 0;
+      j = 1;
+      for (; j <= b_trans->columns; j++) {
+  sum += get_value_without_check(i, j, a)* get_value_without_check(k,j, b_trans);
+      }
+      insert_value_without_check(sum, i, k, c);
+    }
+  }
+  free_matrix(b_trans);
+  return true;
+}
+
+/* Multiply a and b using the Strassen algorithm and return a pointer to matrix c. c=a*b */
+matrix* strassen_matrices_with_return(matrix* a, matrix* b) {
+  matrix* c =create_matrix(a->columns,b->rows);
+  if (strassen_matrices(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
+}
+
+
+/* Multiply a and b into c using the Strassen algorithm. c=a*b */
+bool strassen_matrices(matrix* a, matrix* b, matrix* c) {
+  if (a->rows<=512  && b->columns<=512){
+    return multiply_matrices(a,b,c);
+  }
+  if ((a->columns != b->rows) || (a->rows != c->rows)
+      || (b->columns != c->columns)) {
+    return false;
+  }
+  matrix* a_corrected;
+  matrix* b_corrected;
+  matrix* c_corrected;
+
+   /* If any of the matrices are uneven they are filled out with a zero row and/or column
+    * to make them even */
+  a_corrected=create_zero_matrix(a->rows+a->rows%2,a->columns+a->columns%2);
+  insert_sub_matrix(1,a->rows,1,a->columns,a,a_corrected);
+
+  b_corrected=create_zero_matrix(b->rows+b->rows%2,b->columns+b->columns%2);
+  insert_sub_matrix(1,b->rows,1,b->columns,b,b_corrected);
+
+  c_corrected=create_zero_matrix(c->rows+c->rows%2,c->columns+c->columns%2);
+
+  matrix* mover=create_matrix(a_corrected->rows/2,a_corrected->columns/2);
+
+  /* a is split into | a11 a12 |
+   *                 | a21 a22 | */
+
+  get_sub_matrix(1,a_corrected->rows/2,1,a_corrected->columns/2,a_corrected,mover);
+  matrix* a11=matrix_copy(mover);
+
+  get_sub_matrix(a_corrected->rows/2+1,a_corrected->rows,1,a_corrected->columns/2,a_corrected,mover);
+  matrix* a21=matrix_copy(mover);
+
+  get_sub_matrix(1,a_corrected->rows/2,a_corrected->columns/2+1,a_corrected->columns,a_corrected,mover);
+  matrix* a12=matrix_copy(mover);
+
+  get_sub_matrix(a_corrected->rows/2+1 ,a_corrected->rows,a_corrected->columns/2+1,a_corrected->columns,a_corrected,mover);
+  matrix* a22=matrix_copy(mover);
+
+  free_matrix(mover);
+
+  mover=create_matrix(b_corrected->rows/2,b_corrected->columns/2);
+  /* b is split into | b11 b12 |
+   *                 | b21 b22 | */
+
+  get_sub_matrix(1,b_corrected->rows/2,1,b_corrected->columns/2,b_corrected,mover);
+  matrix* b11=matrix_copy(mover);
+
+  get_sub_matrix(b_corrected->rows/2+1,b_corrected->rows,1,b_corrected->columns/2,b_corrected,mover);
+  matrix* b21=matrix_copy(mover);
+
+  get_sub_matrix(1,b_corrected->rows/2,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
+  matrix* b12=matrix_copy(mover);
+
+  get_sub_matrix(b_corrected->rows/2+1 ,b_corrected->rows,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
+  matrix* b22=matrix_copy(mover);
+
+  free_matrix(mover);
+
+  matrix* a11a22=add_matrices_with_return(a11,a22);
+  matrix* b11b22=add_matrices_with_return(b11,b22);
+
+  matrix* M1;
+
+  M1=strassen_matrices_with_return(a11a22,b11b22);
+
+  free_matrix(a11a22);
+  free_matrix(b11b22);
+
+  matrix* a21a22=add_matrices_with_return(a21,a22);
+  matrix* M2;
+
+  M2=strassen_matrices_with_return(a21a22,b11);
+
+  free_matrix(a21a22);
+
+  matrix* b12b22=subtract_matrices_with_return(b12,b22);
+  matrix* M3;
+
+    M3=strassen_matrices_with_return(a11,b12b22);
+
+  free_matrix(b12b22);
+
+  matrix* b21b11=subtract_matrices_with_return(b21,b11);
+  matrix* M4;
+
+  M4=strassen_matrices_with_return(a22,b21b11);
+
+  free_matrix(b21b11);
+
+  matrix* a11a12=add_matrices_with_return(a11,a12);
+  matrix* M5;
+
+  M5=strassen_matrices_with_return(a11a12,b22);
+
+  free_matrix(a11a12);
+
+  matrix* a21a11=subtract_matrices_with_return(a21,a11);
+  matrix* b11b12=add_matrices_with_return(b11,b12);
+  matrix* M6;
+
+  M6=strassen_matrices_with_return(a21a11,b11b12);
+
+  free_matrix(a21a11);
+  free_matrix(b11b12);
+
+  matrix* a12a22=subtract_matrices_with_return(a12,a22);
+  matrix* b21b22=add_matrices_with_return(b21,b22);
+  matrix* M7;
+
+  M7=strassen_matrices_with_return(a12a22,b21b22);
+
+  free_matrix(a12a22);
+  free_matrix(b21b22);
+
+  matrix* M1M4=add_matrices_with_return(M1,M4);
+  matrix* M5M7=add_matrices_with_return(M5,M7);
+  matrix* C11=subtract_matrices_with_return(M1M4,M5M7);
+
+  free_matrix(M1M4);
+  free_matrix(M5M7);
+
+  matrix* C12=add_matrices_with_return(M3,M5);
+
+  matrix* C21=add_matrices_with_return(M2,M4);
+
+  matrix* M1M2=subtract_matrices_with_return(M1,M2);
+  matrix* M3M6=add_matrices_with_return(M3,M6);
+  matrix* C22=add_matrices_with_return(M1M2,M3M6);
+
+  free_matrix(M1M2);
+  free_matrix(M3M6);
+
+  insert_sub_matrix(1,c_corrected->rows/2,1,c_corrected->columns/2,C11,c_corrected);
+
+  insert_sub_matrix(1,c_corrected->rows/2,c_corrected->columns/2+1,c_corrected->columns,C12,c_corrected);
+
+  insert_sub_matrix(c_corrected->rows/2+1,c_corrected->rows,1,c_corrected->columns/2,C21,c_corrected);
+
+  insert_sub_matrix(c_corrected->rows/2+1,c_corrected->rows,c_corrected->columns/2+1,c_corrected->columns,C22,c_corrected);
+
+  free_matrix(a11);
+  free_matrix(a12);
+  free_matrix(a21);
+  free_matrix(a22);
+
+  free_matrix(b11);
+  free_matrix(b12);
+  free_matrix(b21);
+  free_matrix(b22);
+
+  free_matrix(C11);
+  free_matrix(C12);
+  free_matrix(C21);
+  free_matrix(C22);
+
+  free_matrix(M1);
+  free_matrix(M2);
+  free_matrix(M3);
+  free_matrix(M4);
+  free_matrix(M5);
+  free_matrix(M6);
+  free_matrix(M7);
+
+  free_matrix(a_corrected);
+  free_matrix(b_corrected);
+
+  insert_sub_matrix(1,c->rows,1,c->columns,c_corrected,c);
+  free_matrix(c_corrected);
+
+  return true;
+}
+
+/* Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
+matrix* strassen_matrices_parallel_with_return(matrix* a, matrix* b) {
+  matrix* c =create_matrix(a->columns,b->rows);
+  if (strassen_matrices_parallel(a,b,c)){
+    return c;
+  }
+  else{
+    free_matrix(c);
+    return NULL;
+  }
+}
+
+/* Help function to strassen parallel */
+void *calculation_one(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* a11=a->one;
+  matrix* a22=a->two;
+  matrix* b11=a->three;
+  matrix* b22=a->four;
+  matrix* M1;
+  matrix* a11a22=add_matrices_with_return(a11,a22);
+  matrix* b11b22=add_matrices_with_return(b11,b22);
+
+  M1=strassen_matrices_with_return(a11a22,b11b22);
+
+  free_matrix(a11a22);
+  free_matrix(b11b22);
+  pthread_exit(M1);
+}
+
+/* Help function to strassen parallel */
+void *calculation_two(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* a21=a->one;
+  matrix* a22=a->two;
+  matrix* b11=a->three;
+
+  matrix* a21a22=add_matrices_with_return(a21,a22);
+  matrix* M2;
+
+  M2=strassen_matrices_with_return(a21a22,b11);
+
+  free_matrix(a21a22);
+  pthread_exit(M2);
+}
+
+/* Help function to strassen parallel */
+void *calculation_three(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* b12=a->one;
+  matrix* b22=a->two;
+  matrix* a11=a->three;
+
+  matrix* b12b22=subtract_matrices_with_return(b12,b22);
+  matrix* M3;
+  M3=strassen_matrices_with_return(a11,b12b22);
+
+  free_matrix(b12b22);
+  pthread_exit(M3);
+}
+
+/* Help function to strassen parallel */
+void *calculation_four(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* b21=a->one;
+  matrix* b11=a->two;
+  matrix* a22=a->three;
+  matrix* b21b11=subtract_matrices_with_return(b21,b11);
+  matrix* M4;
+
+    M4=strassen_matrices_with_return(a22,b21b11);
+
+  free_matrix(b21b11);
+  pthread_exit(M4);
+}
+
+/* Help function to strassen parallel */
+void *calculation_five(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* a11=a->one;
+  matrix* a12=a->two;
+  matrix* b22=a->three;
+
+  matrix* a11a12=add_matrices_with_return(a11,a12);
+  matrix* M5;
+
+    M5=strassen_matrices_with_return(a11a12,b22);
+
+  free_matrix(a11a12);
+  pthread_exit(M5);
+}
+
+/* Help function to strassen parallel */
+void *calculation_six(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* a21=a->one;
+  matrix* a11=a->two;
+  matrix* b11=a->three;
+  matrix* b12=a->four;
+  matrix* a21a11=subtract_matrices_with_return(a21,a11);
+  matrix* b11b12=add_matrices_with_return(b11,b12);
+  matrix* M6;
+
+    M6=strassen_matrices_with_return(a21a11,b11b12);
+
+  free_matrix(a21a11);
+  free_matrix(b11b12);
+  pthread_exit(M6);
+}
+
+/* Help function to strassen parallel */
+void *calculation_seven(void* arg){
+  matrices* a = (matrices*)(arg);
+  matrix* a12=a->one;
+  matrix* a22=a->two;
+  matrix* b21=a->three;
+  matrix* b22=a->four;
+  matrix* a12a22=subtract_matrices_with_return(a12,a22);
+  matrix* b21b22=add_matrices_with_return(b21,b22);
+  matrix* M7;
+
+  M7=strassen_matrices_with_return(a12a22,b21b22);
+
+  free_matrix(a12a22);
+  free_matrix(b21b22);
+  pthread_exit(M7);
+}
+
+/* Multiply a and b into c using the Strassen algorithm. c=a*b */
+bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
+  if (a->rows<10  && b->columns<10){
+    return multiply_matrices(a,b,c);
+  }
+  if ((a->columns != b->rows) || (a->rows != c->rows)
+      || (b->columns != c->columns)) {
+    return false;
+  }
+  matrix* a_corrected;
+  matrix* b_corrected;
+  matrix* c_corrected;
+
+   /* If any of the matrices are uneven they are filled out with a zero row and/or column
+    * to make them even */
+  a_corrected=create_zero_matrix(a->rows+a->rows%2,a->columns+a->columns%2);
+  insert_sub_matrix(1,a->rows,1,a->columns,a,a_corrected);
+
+  b_corrected=create_zero_matrix(b->rows+b->rows%2,b->columns+b->columns%2);
+  insert_sub_matrix(1,b->rows,1,b->columns,b,b_corrected);
+
+  c_corrected=create_zero_matrix(c->rows+c->rows%2,c->columns+c->columns%2);
+
+  matrix* mover=create_matrix(a_corrected->rows/2,a_corrected->columns/2);
+
+  /* a is split into | a11 a12 |
+   *                 | a21 a22 | */
+
+  get_sub_matrix(1,a_corrected->rows/2,1,a_corrected->columns/2,a_corrected,mover);
+  matrix* a11=matrix_copy(mover);
+
+  get_sub_matrix(a_corrected->rows/2+1,a_corrected->rows,1,a_corrected->columns/2,a_corrected,mover);
+  matrix* a21=matrix_copy(mover);
+
+  get_sub_matrix(1,a_corrected->rows/2,a_corrected->columns/2+1,a_corrected->columns,a_corrected,mover);
+  matrix* a12=matrix_copy(mover);
+
+  get_sub_matrix(a_corrected->rows/2+1 ,a_corrected->rows,a_corrected->columns/2+1,a_corrected->columns,a_corrected,mover);
+  matrix* a22=matrix_copy(mover);
+
+  free_matrix(mover);
+
+  mover=create_matrix(b_corrected->rows/2,b_corrected->columns/2);
+  /* b is split into | b11 b12 |
+   *                 | b21 b22 | */
+
+  get_sub_matrix(1,b_corrected->rows/2,1,b_corrected->columns/2,b_corrected,mover);
+  matrix* b11=matrix_copy(mover);
+
+  get_sub_matrix(b_corrected->rows/2+1,b_corrected->rows,1,b_corrected->columns/2,b_corrected,mover);
+  matrix* b21=matrix_copy(mover);
+
+  get_sub_matrix(1,b_corrected->rows/2,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
+  matrix* b12=matrix_copy(mover);
+
+  get_sub_matrix(b_corrected->rows/2+1 ,b_corrected->rows,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
+  matrix* b22=matrix_copy(mover);
+
+  free_matrix(mover);
+
+
+  /* Execute thread one */
+  pthread_t thread1;
+  matrices* thread1_data= (matrices *) malloc(sizeof(matrices));
+  thread1_data->one=a11;
+  thread1_data->two=a22;
+  thread1_data->three=b11;
+  thread1_data->four=b22;
+
+  pthread_create (&thread1, NULL, calculation_one, (void *) thread1_data);
+
+  /* Execute thread two */
+  pthread_t thread2;
+  matrices* thread2_data= (matrices *) malloc(sizeof(matrices));
+  thread2_data->one=a21;
+  thread2_data->two=a22;
+  thread2_data->three=b11;
+
+  pthread_create (&thread2, NULL, calculation_two, (void *) thread2_data);
+
+  /* Execute thread three */
+  pthread_t thread3;
+  matrices* thread3_data= (matrices *) malloc(sizeof(matrices));
+  thread3_data->one=b12;
+  thread3_data->two=b22;
+  thread3_data->three=a11;
+
+  pthread_create (&thread3, NULL, calculation_three, (void *) thread3_data);
+
+
+  /* Execute thread four */
+  pthread_t thread4;
+  matrices* thread4_data= (matrices *) malloc(sizeof(matrices));
+  thread4_data->one=b21;
+  thread4_data->two=b11;
+  thread4_data->three=a22;
+
+  pthread_create (&thread4, NULL,calculation_four, (void *) thread4_data);
+
+  /* Execute thread five */
+  pthread_t thread5;
+  matrices* thread5_data= (matrices *) malloc(sizeof(matrices));
+  thread5_data->one=a11;
+  thread5_data->two=a12;
+  thread5_data->three=b22;
+
+  pthread_create (&thread5, NULL, calculation_five, (void *) thread5_data);
+
+  /* Execute thread six */
+  pthread_t thread6;
+  matrices* thread6_data= (matrices *) malloc(sizeof(matrices));
+  thread6_data->one=a21;
+  thread6_data->two=a11;
+  thread6_data->three=b11;
+  thread6_data->four=b12;
+
+  pthread_create (&thread6, NULL, calculation_six, (void *) thread6_data);
+
+  /* Execute thread seven */
+  pthread_t thread7;
+  matrices* thread7_data= (matrices *) malloc(sizeof(matrices));
+  thread7_data->one=a12;
+  thread7_data->two=a22;
+  thread7_data->three=b21;
+  thread7_data->four=b22;
+
+  pthread_create (&thread7, NULL, calculation_seven, (void *) thread7_data);
+
+  void *vptr;
+
+  /* Wait for all threads free all memory */
+  matrix* M1;
+  pthread_join(thread1, &vptr);
+  M1 = (matrix*)vptr;
+  free(vptr);
+  free(thread1_data);
+
+  matrix* M2;
+  pthread_join(thread2, &vptr);
+  M2 = (matrix*)vptr;
+  free(vptr);
+  free(thread2_data);
+
+  matrix* M3;
+  pthread_join(thread3, &vptr);
+  M3 = (matrix*)vptr;
+  free(vptr);
+  free(thread3_data);
+
+  matrix* M4;
+  pthread_join(thread4, &vptr);
+  M4 = (matrix*)vptr;
+  free(vptr);
+  free(thread4_data);
+
+  matrix* M5;
+  pthread_join(thread5, &vptr);
+  M5 = (matrix*)vptr;
+  free(vptr);
+  free(thread5_data);
+
+  matrix* M6;
+  pthread_join(thread6, &vptr);
+  M6 = (matrix*)vptr;
+  free(vptr);
+  free(thread6_data);
+
+  matrix* M7;
+  pthread_join(thread7, &vptr);
+  M7 = (matrix*)vptr;
+  free(vptr);
+  free(thread7_data);
+
+  matrix* M1M4=add_matrices_with_return(M1,M4);
+  matrix* M5M7=add_matrices_with_return(M5,M7);
+  matrix* C11=subtract_matrices_with_return(M1M4,M5M7);
+
+  free_matrix(M1M4);
+  free_matrix(M5M7);
+
+  matrix* C12=add_matrices_with_return(M3,M5);
+
+  matrix* C21=add_matrices_with_return(M2,M4);
+
+  matrix* M1M2=subtract_matrices_with_return(M1,M2);
+  matrix* M3M6=add_matrices_with_return(M3,M6);
+  matrix* C22=add_matrices_with_return(M1M2,M3M6);
+
+  free_matrix(M1M2);
+  free_matrix(M3M6);
+
+  insert_sub_matrix(1,c_corrected->rows/2,1,c_corrected->columns/2,C11,c_corrected);
+
+  insert_sub_matrix(1,c_corrected->rows/2,c_corrected->columns/2+1,c_corrected->columns,C12,c_corrected);
+
+  insert_sub_matrix(c_corrected->rows/2+1,c_corrected->rows,1,c_corrected->columns/2,C21,c_corrected);
+
+  insert_sub_matrix(c_corrected->rows/2+1,c_corrected->rows,c_corrected->columns/2+1,c_corrected->columns,C22,c_corrected);
+
+  free_matrix(a11);
+  free_matrix(a12);
+  free_matrix(a21);
+  free_matrix(a22);
+
+  free_matrix(b11);
+  free_matrix(b12);
+  free_matrix(b21);
+  free_matrix(b22);
+
+  free_matrix(C11);
+  free_matrix(C12);
+  free_matrix(C21);
+  free_matrix(C22);
+
+  free_matrix(M1);
+  free_matrix(M2);
+  free_matrix(M3);
+  free_matrix(M4);
+  free_matrix(M5);
+  free_matrix(M6);
+  free_matrix(M7);
+
+  free_matrix(a_corrected);
+  free_matrix(b_corrected);
+
+  insert_sub_matrix(1,c->rows,1,c->columns,c_corrected,c);
+
+  return true;
+}
+
+
+
+
 /* Multiply a and b by returning a pointer to a new matrix with a*b*/
 matrix* multiply_matrices_with_return(matrix* a, matrix* b) {
   if ((a->columns != b->rows)) {
@@ -377,7 +951,7 @@ bool crout(matrix* a, matrix* l, matrix* u) {
     for (i = j; i <= n; i++) {
       sum = 0;
       for (k = 1; k < j; k++) {
-	sum = sum + get_value(i, k, l) * get_value(k, j, u);
+        sum = sum + get_value(i, k, l) * get_value(k, j, u);
       }
       insert_value(get_value(i, j, a) - sum, i, j, l);
     }
@@ -862,6 +1436,37 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
   for(int i = 0; i < num_rows; i++){
     void* to = b->start + b_row_size * i;
     void* from = a->start + offset + a_row_size * i;
+    memcpy(to, from, bytes_per_row);
+  }
+
+  return true;
+}
+
+/* inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
+bool insert_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* b, matrix* a) {
+  if (!check_boundaries(start_row, start_col, a)
+      || !check_boundaries(end_row, end_col, a)) {
+    return false;
+  }
+  if ((b->rows != (end_row - start_row + 1))
+      || (b->columns != (end_col - start_col + 1))) {
+    return false;
+  }
+
+  start_row -= 1;
+  end_row -= 1;
+  start_col -= 1;
+  end_col -= 1;
+
+  int a_row_size = a->columns;
+  int b_row_size = b->columns;
+  int offset = a_row_size * start_row + start_col;
+  int num_rows = end_row - start_row + 1;
+  int bytes_per_row = (end_col - start_col + 1) * sizeof(value);
+
+  for(int i = 0; i < num_rows; i++){
+    void* from = b->start + b_row_size * i;
+    void* to = a->start + offset + a_row_size * i;
     memcpy(to, from, bytes_per_row);
   }
 

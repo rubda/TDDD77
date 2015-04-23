@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <pthread.h>
+
 
 /** Uncomment which mode you want the library to run in */
 /*#define INT*/
@@ -54,8 +56,20 @@ struct matrix {
 	bool diagonals;
 };
 
-/** matrix instead of struct matrix */
+/* Matrix instead of struct matrix */
 typedef struct matrix matrix;
+
+/* Used in strassen parallel to pass matrices to target functions */
+struct matrices{
+  matrix* one;
+  matrix* two;
+  matrix* three;
+  matrix* four;
+  matrix* five;
+};
+
+/* Matrices instead of struct matrices */
+typedef struct matrices matrices;
 
 /** Create a matrix */
 matrix* create_matrix(int row, int col);
@@ -113,6 +127,42 @@ matrix* subtract_matrices_with_return(matrix* a, matrix* b);
 
 /** Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Multiply a and b into c. Uses row-major optimization. c=a*b */
+bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c);
+
+/* Multiply a and b using the Strassen algorithm and return a pointer to matrix c. c=a*b */
+matrix* strassen_matrices_with_return(matrix* a, matrix* b);
+
+/* Multiply a and b into c using the Strassen algorithm. c=a*b */
+bool strassen_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
+matrix* strassen_matrices_parallel_with_return(matrix* a, matrix* b);
+
+/* Help function to strassen parallel */
+void *calculation_one(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_two(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_three(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_four(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_five(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_six(void* arg);
+
+/* Help function to strassen parallel */
+void *calculation_seven(void* arg);
+
+/* Multiply a and b into c using the Strassen algorithm running in parallel. c=a*b */
+bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c);
 
 /** Multiply a and b by returning a pointer to a new matrix with a*b*/
 matrix* multiply_matrices_with_return(matrix* a, matrix* b);
@@ -223,6 +273,9 @@ bool insert_column_vector(int column, matrix *a, matrix* b);
 
 /** Get a sub matrix from a */
 bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* a, matrix* b);
+
+/* inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
+bool insert_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* b, matrix* a);
 
 /** Copy and return new matrix. */
 matrix* matrix_copy(matrix* source);
