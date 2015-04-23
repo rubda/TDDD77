@@ -154,44 +154,6 @@ def generate_c(event=None):
         showerror(title="Error", message="Something went wrong!")
 
 
-def generate_mat(event=None):
-    showinfo(title="Matlab",
-             message="Please run quadopt in Matlab")
-
-
-def view_problem(event=None):
-    global filename
-    try:
-        ylim = 10
-        xlim = 10
-
-        fig = plt.figure(facecolor='white')
-
-        plt.axis([0, xlim, 0, ylim])
-        plt.axis('off')
-
-        minimize = "$minimize \ "
-        subject = "$subject \ to$\n"
-        problem = convert_problem(filename)
-        constraints = convert_constraints(filename)
-
-        problem_text = "\n"*4 + minimize + problem + subject + constraints
-
-        plt.text(-1, ylim, problem_text, fontsize=14,
-                 horizontalalignment='left', verticalalignment='center')
-        fig.savefig("problem.png")
-
-        img = PhotoImage(file="problem.png")
-        os.remove("problem.png")
-
-        text.config(state=NORMAL)
-        text.delete(0.0, END)
-        text.image_create(0.0, image=img)
-    except:
-        showerror(title="Something went wrong",
-                  message="Unable to view the problem")
-
-
 def edit_problem(event=None):
     global filename
     try:
@@ -244,8 +206,6 @@ problemLabel.pack()
 
 editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
 editButton.pack()
-viewButton = Button(sideBar, text="View", width=15, command=view_problem)
-viewButton.pack()
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold",
                    fg="#305080", bg="#f6f6f6")
@@ -256,9 +216,6 @@ codegenLabel = Label(sideBar, text="CODEGEN", font="Verdana 12 bold",
 codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
-matlabButton = Button(sideBar, text="Matlab code", width=15,
-                      command=generate_mat)
-matlabButton.pack()
 
 exitButton = Button(sideBar, text="Exit", width=15, command=quit)
 exitButton.pack(side=BOTTOM)

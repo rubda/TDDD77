@@ -21,8 +21,8 @@ main()
 
   /* Variables */
 
-  matrix* z[i]; 
-  z[i] = create_matrix(4, 1);
+  matrix* z; 
+  z = create_matrix(4, 1);
 
 
   /* Insert values into matrices */
@@ -40,14 +40,6 @@ main()
 
 
   /* Solveranropp */ 
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
 
   quadOpt(Q ,q ,A ,b ,F ,g );
 
