@@ -267,9 +267,9 @@ bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c) {
     return false;
   }
   matrix* b_trans= transpose_matrix_with_return(b);
-  size_t j = 1;
-  size_t i = 1;
-  size_t k = 1;
+  int j = 1;
+  int i = 1;
+  int k = 1;
   value sum = 0;
   for (; i <= a->rows; i++) {
     k = 1;
@@ -1458,11 +1458,11 @@ bool insert_sub_matrix(int start_row, int end_row, int start_col, int end_col, m
   start_col -= 1;
   end_col -= 1;
 
-  size_t a_row_size = a->columns;
-  size_t b_row_size = b->columns;
-  size_t offset = a_row_size * start_row + start_col;
-  size_t num_rows = end_row - start_row + 1;
-  size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
+  int a_row_size = a->columns;
+  int b_row_size = b->columns;
+  int offset = a_row_size * start_row + start_col;
+  int num_rows = end_row - start_row + 1;
+  int bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
   for(int i = 0; i < num_rows; i++){
     void* from = b->start + b_row_size * i;

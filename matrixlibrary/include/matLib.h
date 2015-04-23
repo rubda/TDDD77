@@ -71,9 +71,6 @@ struct matrices{
 /* Matrices instead of struct matrices */
 typedef struct matrices matrices;
 
-/** matrix instead of struct matrix */
-typedef struct matrix matrix;
-
 /** Create a matrix */
 matrix* create_matrix(int row, int col);
 
