@@ -30,7 +30,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 
 $(BUILD_DIR)/matLib.o: $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@ 
+	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@
 
 
 # Rule for making the library
@@ -51,5 +51,5 @@ test: $(TEST_BINS)
 	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(LIB)
-	$(CC) $@.o -o $@ -L $(BUILD_DIR) -lmatrix
+	$(CC) $@.o -o $@ -L $(BUILD_DIR) -lmatrix -pthread
 	chmod 755 $@

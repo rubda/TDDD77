@@ -114,7 +114,7 @@ int main(){
   problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
   int i;
 
-  for(i = 0; i < 1000; i++){
+  for(i = 0; i < 1; i++){
     quadopt_solver(problem);
 
     assert(compare_matrices(problem->solution, optimum));

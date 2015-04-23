@@ -1,13 +1,33 @@
 \section{Teori}
+
+\subsection{Allmän design av biblioteket}
+Alla operationer på matriser och vektorer bygger i grunden på matris structen som är definierad i matLib.h.
+\lstinputlisting[language=C]{martin-tex/matrix_struct.c}
+När en matris skapas så används följande funktion:
+\lstinputlisting[language=C]{martin-tex/create_matrix.c}
+Som skapar en $row \ x \ column$ stor matris. \\ \\
+För att sätt in ett värde i matris används följande funktion:
+\lstinputlisting[language=C]{martin-tex/insert_value.c}
+Matriserna lagras row major så datan ligger lagrad enligt figur 1. 
+\begin{figure}[h]
+\center
+\scalebox{0.8}{\input{martin-tex/matrix_dia}}
+\caption{Ordning som data i matrisen lagras på}
+\end{figure}
+
+
 \subsection{Tidskomplexitet på nuvarande implementationer operationer}
-Alla tidskomplexiteter beräknas på nxn matriser.\\
+Alla tidskomplexiteter beräknas på nxn matriser.
 Addition: $\mathcal{O}(n^2)$\\
 Subtraktion: $\mathcal{O}(n^2)$\\
 Multiplikation: $\mathcal{O}(n^3)$\\
 Invers (crout och sedan lösa n ekvationssystem): $\mathcal{O}(n^3)$\\ 
 
-\subsection{Eventuella förbättringar}
+\subsection{Algoritmiska förbättringar}
 Multiplikation:\\
-Istället för den naive algoritmen kan strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^2.807)$ (källa). \\
+Istället för den naive algoritmen kan strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$ (källa). \\
 Inverse:\\
-Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^2.807)$.
+Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$.
+
+\subsection{Strukturella förbättringar}
+När ett linjärt ekvationssystem på formen $Ax=b $ löses så bryts A ned till två matriser L och U där L är en undre triangulär matris och U är en övre triangulär matris. I matris structen skulle dessa matriser kunna sparas tillsammans med en boolean som säger om matrisen har modifierats så skulle man kunna undvika att beräkna U och L flera gånger för samma matris. Samma sätt skulle kunna användas för inversen till matriser. 

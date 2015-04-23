@@ -17,7 +17,7 @@ limits
 end
 
 minimize
-    z'Qz + q'z
+    sum[t=0..10](z'Qz + q'z)
 subject to
     Az == b 
     Fz <= g

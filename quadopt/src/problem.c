@@ -259,6 +259,17 @@ bool get_solution_value(problem* prob){
   return true;
 }
 
+/* Prints optimal point and optimal value */
+void print_solution(problem* prob){
+  printf("----------------Solution----------------\n");
+  if (prob->has_solution){
+    printf("z = \n");
+    print_matrix(prob->solution);
+    printf("value = %f\n", prob->solution_value);
+  }else{
+    printf("Not calculated yet.\n\n");
+  }
+}
 
 /* Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent){

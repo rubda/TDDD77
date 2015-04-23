@@ -80,6 +80,9 @@ matrix* get_active_conditions_rhs(problem* prob);
 /** Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob);
 
+/** Prints optimal point and optimal value */
+void print_solution(problem* prob);
+
 /** Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent);
 
