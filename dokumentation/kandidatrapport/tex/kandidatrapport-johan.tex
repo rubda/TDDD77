@@ -19,7 +19,7 @@
 	\end{enumerate}
 	
 	\subsubsection{Avgränsningar}
-	De delar som valts att tas bort i detta avsnitt av rapporten är de testmetoder som inte använts under projektets gång. Detta för att tiden är begränsad och för att få så mycket förståelse som möjligt för just det som tas med. Huvudsakligen kommer det att handla om de tre områdena Enhetstester, Systemtester och Acceptanstester. \newline
+	De delar som valts att tas bort i detta avsnitt av rapporten är de testmetoder som inte använts under projektets gång. Detta för att tiden är begränsad och för att få så mycket förståelse som möjligt för just det som tas med. Huvudsakligen kommer det att handla om områdena Enhetstester, modultester, Systemtester och Acceptanstester. \newline
 	Då mjukvarutestning är ett väldigt brett ämne måste vissa delar skippas för att hålla rapporten till en rimlig storlek. Dessutom så känns det mest relevant att diskutera de aspekter som har utövats under projektet, något man har erfarenhet utav.
 	
 	\subsection{Bakgrund}
@@ -33,11 +33,22 @@
 	
 	\subsection{Teori}
 	Eftersom testprocessen sträcker sig över hela projektet är det viktigt att tidigt tänka på vad som ska göras. Att veta hur testningen går till och information om när man ska använda en viss metod är kritiskt. Utan det skulle ingen som hade ett system gå säker. När som helst skulle ett fel kunna uppstå vilket skulle kunna leda till dyra skador beroende på användningsområdet. \newline
-	Som det står skrivet i The art of software testing (referens) så spenderas vanligen ca 50\% av den totala arbetstiden i ett projekt på testning av mjukvaran. 50\% är väldigt stor del vilket gör att det är viktigt att veta hur man spenderar denna tid på bästa sätt. I följande del kommer det bekrivas hur man ska utnyttja tiden på bästa sätt för att säkerställa en så stor del av koden som möjligt.
+	Som det står skrivet i The art of software testing (referens) så spenderas vanligen ca 50\% av den totala arbetstiden i ett projekt på testning av mjukvaran. 50\% är väldigt stor del vilket gör att det är viktigt att veta hur man spenderar denna tid på bästa sätt. I följande del kommer det bekrivas hur man ska utnyttja tiden på bästa sätt för att säkerställa en så stor del av koden som möjligt. \newline
 	
 	\subsection{Metod}
-	För att ta reda på all information som behövs har ett flertal böcker tittats igenom. Ingen av dem har läst igenom till 100\%, utan endast de intressanta delarna har läst med mer nogrannhet. För att verifiera att det som lästs stämmer har vissa delar testats i praktiken, i detta fall på projketet. Till exempel så har enhetstester körts på matris bibliotekts funktioner såsom matrisaddition, sytemtester har körts på den kvadratiska problem-lösaren och acceptanstester har körts på alla delar i projektet för att se till att alla krav är uppfyllda.\newline
-	I projektet har även ett byggsystem använts som kompilerar all kod och därefter kör alla hittills skapade tester. Med hjälp av byggsystemet och Continuous Integration har all kod då kunnat testas direkt när någon har skrivit ny kod och därav har statistik kunnat tas fram. Denna statistik är dock inte så omfattande då byggsystemet inte körde alla test från början (nya test skrivs hela tiden). Men statistiken ger ändå en bra riktlinje att jämföra med mot det optimala fallet.
+	För att ta reda på all information som behövs har ett flertal böcker tittats igenom. Ingen av dem har läst igenom till 100\%, utan endast de intressanta delarna har läst med mer nogrannhet. För att verifiera att det som lästs stämmer har vissa delar testats i praktiken, i detta fall på projketet. Till exempel så har enhetstester körts på matris bibliotekts funktioner såsom matrisaddition, sytemtester och modultester har körts på den kvadratiska problem-lösaren och acceptanstester har körts på alla delar i projektet för att se till att alla krav är uppfyllda. Mer om detta kan läsas i resultat. \newline
+	
+	''Software Unit Testing'', ett papper från IV\&V Australia definierar ett enhetstest som ett test på den minsta möjliga samlingen kod som fortfarande går att testa nyttofullt, alltså att koden är tillräckligt stor för att fel ska kunna uppstå. Dessa test är bra då de är riktade mot en så liten portion med kod och i och med detta sällan missar buggar och fel. Det som kan vara krångligt med enhetstest är att just hitta dessa minsta samlingarna med kod, speciellt om det är en extern part (en annan programmerare) som ska skapa och utföra testen. I och med att man kör enhetstester på så små delar av kod har de i teorin en tendens till att bli väldigt många om man ska täcka tillräckligt stor funktionalitet. Detta är dock oftast inget problem i praktiken eftersom många små funktioner ofta har ytterst få uppgifter och inte behöver så många test (om ens ett enda). \newline
+	
+	Ett modultest är ett integrationtest utav två eller fler enheter. Det går ut på att man kombinerar ett antal enheter och sedan testar dem tillsammans. Testen i sig kan var väldigt lika enhetstest men täcker nu en komplexare funktionalitet. Precis som enheter kan moduler vara svåra att definiera. Om allt för många enheter förs samman och modulen får mer funktionalitet kanske den till slut kan klassas som ett system, och då förlorar modultestningen sitt syfte. Om man har ett så litet projekt som detta så är moduldefinitionen ofta inte så svår, eftersom både komplexiteten och utvecklingsmöjligheterna är begränsade. \newline
+	
+	Ett systemtest är precis som modultest ett integrationstest, men nu utav ett antal moduler isället. 
+	
+	
+	
+	
+	I projektet har ett byggsystem använts som kompilerat all kod. Systemet har därefter även kört alla tester som skapats genom projektet.
+	Med hjälp av byggsystemet och Continuous Integration har all kod då kunnat testas direkt när någon har skrivit ny kod och därav har statistik kunnat tas fram. Denna statistik är dock inte så omfattande då byggsystemet inte körde alla test från början (nya test skrivs hela tiden). Men statistiken ger ändå en bra riktlinje att jämföra med mot det optimala fallet.
 	
 	Systemtest
 	Acceptanstest
@@ -46,7 +57,12 @@
 	
 	\subsection{Resultat}	
 	resultat av efterforskning, \newline
-	
+	Det finns otroligt mycket information om mjukvarutestning men samtidigt är ämnet ganska vagt då testning beror så mycket på just vad som ska testas. I vårt projekt visade det sig att ''Black box-testing'' var den metod som överlägset lämpade sig bäst då svar och resultat från funktioner oftast är kända. Ett exempel på detta är matrisaritmetiken där resultaten, av till exempel en multiplikation, går att räkna ut ganska enkelt på papper. \newline
+	För att säkerställa projektets krav behövdes bara en testmetod till, och det var en metod för att mäta prestanda. Den som valdes var ''Load testing'' som innebär att man belastar programmet med mycket data och så kollar man på hur bra det fungerar. I vårt fall gav vi lösaren många problem och kollade på hur fort det gick i förhållande till andra lösare. \newline
+	Då varje testkörning tog 0.00 sekunder för alla lösarna förutom MATLAB behövdes testen köras många gånger för att se en tydlig skillnad. Anledningen till att MATLAB är långsammare är för att den är oerhört generell men förmodligen inte gjorts med fokus på att vara snabb. Gurobi är snabb eftersom dens enda uppgift är att lösa sådana här problem och har arbetats på under lång tid. Vår algoritm är snabb eftersom den inte är generell, alltså bryr vi oss inte om vissa specialfall som vi aldrig kommer stöta på. \newline
+	För att då testa deras prestanda fick lösarna lösa olika optimeringsproblem många gånger, ofta 1000 gånger, för att kunna skilja deras egentliga hastighet.
+		
+	Misstag: Det hände att vissa modul- och systemtester skedde innan de underliggande enheterna blivit testade. Ett exempel på det är lösaren som vi var ivriga att få igång och började testa tidigt. Då den inte fungreade korrekt gjorde detta att det tog lång tid att hitta felet som förmodligen hade upptäckts mycket snabbare om bara rätt testprocess hade använts. 
 	reslutat av testningen, \newline
 	
 	
@@ -57,9 +73,11 @@
 	vad uppfylldes inte, \newline
 	problem\newline
 	
+	visa grafer på 3 prestandamätningar (2,3,4 vars, matlab, gurobi, quadopt) 	
+	
+	
 	\subsubsection{Enhetstester}
-	Ett enhetstest är ett test utav en enhet av kod. Oftast är koden en funktion eller metod som har ett specifikt syfte, men kan också vara olika strukturer eller objekt. Enhetstest utförs vanligtvis efter att ett nytt stycke kod har skrivits för att garantera dess funktionalitet. I och med att man kör enhetstester på så små delar av kod har de i teorin en tendens till att bli väldigt många om man ska täcka tillräckligt stor funktionalitet. Detta är dock inget hinder i praktiken eftersom många små funktioner ofta har ytterst få uppgifter och inte behöver så många test (om ens ett enda). \newline
-	Under projektet har många enhetstest skrivits (framförallt för matrisbiblioteket), 
+	Under projektet har många enhetstest skrivits (framförallt för matrisbiblioteket). Dessa test har skrivits innan och under kodningen och sedan utförts direkt efter att koden blivit klar. Det som var intressant med dessa test var mängden av fel som upptäcktes direkt. Det ledde till att utvecklingen blev mycket effektiv då fel kunde åtgärdas direkt.
 	\subsubsection{Systemtester}
 	Systemtester är, som det hörs på namnet, tester av system. Testerna fungerar på samma som ett enhetstest men istället för på enskillda funktioner så sker testerna på en sammansättning av funktioner som bygger upp ett system. Det är kritiskt vid dessa test att underliggande funktioner redan är testade.
 	\subsubsection{Acceptanstester}
@@ -69,9 +87,11 @@
 	Denna sektion kommer att förklara varför resultatet blev som det blev och vad som kan förbättras.	
 	
 	\subsubsection{Resultat}
-	varför blev det som det blev i ''Resultat''
+	varför blev det som det blev i ''Resultat'' \newline
+	Då detta är första gången som gruppen jobbar med testning som en aktiv del av ett projektet var planering och utförandet ganska svårt att ta sig in i. I början testades precis som planerat små enheter men på grund utav bristfällig utbildning påbörjades sytemtesterna för tidigt. Gruppen ville tidigt testa lösaren då dens funktionalitet var av högsta prioritet, men eftersom subproblemslösaren var bristfälligt testad (ty den bristfälliga utbildningen) och i själva verket inte fungerade, även om den klarade de test som var skrivna, så var vi tvungna att testa om stora delar av koden. Detta hade lätt undvikts om vi hade lagt mer tidigt på utbildningen. Eftersom det var i slutet av iteration 2 som subproblemslösaren först blev färdigställd gjordes många test i onödan, men dock berodde inte det på val av fel metod. 
 	
 	\subsubsection{Metod}
+	Tanken var att genom hela projektet använda oss utav en ''Bottom-up''-strategi. Men eftersom organisationen i gruppen angående vem som skulle göra vad var dålig i början glömdes större delar av testningen bort. Detta ledde till att en ''Top-down''-strategi användes senare vilket inte fungerade så bra då majoriteten av fel hittades på låg nivå i koden.
 	annan lämpligare approach?	
 	
 	\subsection{Slutsatser}
@@ -82,3 +102,7 @@
 	\item{}
 	\end{itemize}
 	%https://www.google.se/books?hl=sv&lr=&id=GjyEFPkMCwcC&oi=fnd&pg=PT5&dq=software+testing&ots=AgsVH2p07i&sig=zzLSW6A3h32-DgT7IxiMqB_7EcY&redir_esc=y#v=onepage&q&f=false}
+	
+	%TDDC88 slides
+	%IV&V Australia unit testing
+	%Testing in Software Development By Martyn A. Ould, Charles Unwin, British Computer Society. Working Group on Testing
