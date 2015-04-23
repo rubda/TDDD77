@@ -43,6 +43,30 @@ bool \hyperlink{mat_lib_8c_aaea31007b63ee35effb0b16d75dbe1d2}{subtract\+\_\+matr
 \item 
 bool \hyperlink{mat_lib_8c_a00c09497222847b454745ad8f8a41037}{multiply\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$c)
 \item 
+bool \hyperlink{mat_lib_8c_ae6d70a167c49ac318d1cd3c3827c1746}{multiply\+\_\+matrices\+\_\+optimized} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$c)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{mat_lib_8c_a5f578dc66bca8d2c96dd69ac56b48d76}{strassen\+\_\+matrices\+\_\+with\+\_\+return} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b)
+\item 
+bool \hyperlink{mat_lib_8c_a4e84724f62c5c0fe9092390affc540fd}{strassen\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$c)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{mat_lib_8c_a8307525e56130ce78f7961df3e94e7eb}{strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_a0cdd169e21472ec265eac65166d71b08}{calculation\+\_\+one} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_a799c237aa8aa529bc2bdb83d10c1536d}{calculation\+\_\+two} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_ace16c1991c0d904ce2ac17e875824407}{calculation\+\_\+three} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_abfd1abe4d9e33526cf1afa207797bbbd}{calculation\+\_\+four} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_ae81ce12f39d0122d2d853513d6114738}{calculation\+\_\+five} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_a58df03784cad17402e7bfe9eb25480f0}{calculation\+\_\+six} (void $\ast$arg)
+\item 
+void $\ast$ \hyperlink{mat_lib_8c_a8cf3613599912ae18e01acce5b922812}{calculation\+\_\+seven} (void $\ast$arg)
+\item 
+bool \hyperlink{mat_lib_8c_a8f98d717ab4e5abd110d65d88933e5cb}{strassen\+\_\+matrices\+\_\+parallel} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$c)
+\item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{mat_lib_8c_a5faaa4d273a0129dbef58ebf0444d945}{multiply\+\_\+matrices\+\_\+with\+\_\+return} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b)
 \item 
 \hyperlink{mat_lib_8h_a24f54d55d636a8405ad2cf062c3c9bee}{value} \hyperlink{mat_lib_8c_a8a8af69ec52f56d7a2f0891882bc5983}{get\+\_\+determinant} (\hyperlink{structmatrix}{matrix} $\ast$a)
@@ -115,6 +139,8 @@ bool \hyperlink{mat_lib_8c_aa15c6d23a417ab254c73f6ecb9da76c0}{insert\+\_\+column
 \item 
 bool \hyperlink{mat_lib_8c_adafaa9c817a013593c43a8ed3f919f43}{get\+\_\+sub\+\_\+matrix} (int start\+\_\+row, int end\+\_\+row, int start\+\_\+col, int end\+\_\+col, \hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b)
 \item 
+bool \hyperlink{mat_lib_8c_ae557797663ff310e7c46310316bbbd5f}{insert\+\_\+sub\+\_\+matrix} (int start\+\_\+row, int end\+\_\+row, int start\+\_\+col, int end\+\_\+col, \hyperlink{structmatrix}{matrix} $\ast$b, \hyperlink{structmatrix}{matrix} $\ast$a)
+\item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{mat_lib_8c_a7af4c590dce57c99c2fbebeac608e2c6}{matrix\+\_\+copy} (\hyperlink{structmatrix}{matrix} $\ast$source)
 \item 
 void \hyperlink{mat_lib_8c_a52cf041af389988648d76d4a7cb9d8f3}{matrix\+\_\+copy\+\_\+data} (\hyperlink{structmatrix}{matrix} $\ast$a, \hyperlink{structmatrix}{matrix} $\ast$b)
@@ -166,7 +192,56 @@ Adds a and b by returning a pointer a matrix with a+b \hypertarget{mat_lib_8c_ab
 \item[{{\bf matrix} $\ast$}]{a}
 \end{DoxyParamCaption}
 )}\label{mat_lib_8c_abf0f4be98387f1a059fde38152d7b199}
-Adds each element in row1 and row 2 and puts the result on row2 \hypertarget{mat_lib_8c_a26a5ae3741d2818e1a04905204b92d6e}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!check\+\_\+boundaries@{check\+\_\+boundaries}}
+Adds each element in row1 and row 2 and puts the result on row2 \hypertarget{mat_lib_8c_ae81ce12f39d0122d2d853513d6114738}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+five@{calculation\+\_\+five}}
+\index{calculation\+\_\+five@{calculation\+\_\+five}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+five}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+five (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_ae81ce12f39d0122d2d853513d6114738}
+\hypertarget{mat_lib_8c_abfd1abe4d9e33526cf1afa207797bbbd}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+four@{calculation\+\_\+four}}
+\index{calculation\+\_\+four@{calculation\+\_\+four}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+four}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+four (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_abfd1abe4d9e33526cf1afa207797bbbd}
+\hypertarget{mat_lib_8c_a0cdd169e21472ec265eac65166d71b08}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+one@{calculation\+\_\+one}}
+\index{calculation\+\_\+one@{calculation\+\_\+one}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+one}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+one (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a0cdd169e21472ec265eac65166d71b08}
+\hypertarget{mat_lib_8c_a8cf3613599912ae18e01acce5b922812}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+seven@{calculation\+\_\+seven}}
+\index{calculation\+\_\+seven@{calculation\+\_\+seven}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+seven}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+seven (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a8cf3613599912ae18e01acce5b922812}
+\hypertarget{mat_lib_8c_a58df03784cad17402e7bfe9eb25480f0}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+six@{calculation\+\_\+six}}
+\index{calculation\+\_\+six@{calculation\+\_\+six}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+six}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+six (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a58df03784cad17402e7bfe9eb25480f0}
+\hypertarget{mat_lib_8c_ace16c1991c0d904ce2ac17e875824407}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+three@{calculation\+\_\+three}}
+\index{calculation\+\_\+three@{calculation\+\_\+three}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+three}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+three (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_ace16c1991c0d904ce2ac17e875824407}
+\hypertarget{mat_lib_8c_a799c237aa8aa529bc2bdb83d10c1536d}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!calculation\+\_\+two@{calculation\+\_\+two}}
+\index{calculation\+\_\+two@{calculation\+\_\+two}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{calculation\+\_\+two}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calculation\+\_\+two (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a799c237aa8aa529bc2bdb83d10c1536d}
+\hypertarget{mat_lib_8c_a26a5ae3741d2818e1a04905204b92d6e}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!check\+\_\+boundaries@{check\+\_\+boundaries}}
 \index{check\+\_\+boundaries@{check\+\_\+boundaries}!mat\+Lib.\+c@{mat\+Lib.\+c}}
 \subsubsection[{check\+\_\+boundaries}]{\setlength{\rightskip}{0pt plus 5cm}bool check\+\_\+boundaries (
 \begin{DoxyParamCaption}
@@ -436,7 +511,19 @@ Inserts column vector a into matrix b at position column \hypertarget{mat_lib_8c
 \item[{{\bf matrix} $\ast$}]{b}
 \end{DoxyParamCaption}
 )}\label{mat_lib_8c_a88e74e69fbb29b826c85f29a69548dda}
-Inserts row vector a into b\+:s row \hypertarget{mat_lib_8c_affe806bf49fb1c52fad1f2a17e51d905}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!insert\+\_\+value@{insert\+\_\+value}}
+Inserts row vector a into b\+:s row \hypertarget{mat_lib_8c_ae557797663ff310e7c46310316bbbd5f}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!insert\+\_\+sub\+\_\+matrix@{insert\+\_\+sub\+\_\+matrix}}
+\index{insert\+\_\+sub\+\_\+matrix@{insert\+\_\+sub\+\_\+matrix}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{insert\+\_\+sub\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+sub\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{int}]{start\+\_\+row, }
+\item[{int}]{end\+\_\+row, }
+\item[{int}]{start\+\_\+col, }
+\item[{int}]{end\+\_\+col, }
+\item[{{\bf matrix} $\ast$}]{b, }
+\item[{{\bf matrix} $\ast$}]{a}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_ae557797663ff310e7c46310316bbbd5f}
+\hypertarget{mat_lib_8c_affe806bf49fb1c52fad1f2a17e51d905}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!insert\+\_\+value@{insert\+\_\+value}}
 \index{insert\+\_\+value@{insert\+\_\+value}!mat\+Lib.\+c@{mat\+Lib.\+c}}
 \subsubsection[{insert\+\_\+value}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+value (
 \begin{DoxyParamCaption}
@@ -552,7 +639,16 @@ Multiplies a column with a scalar \hypertarget{mat_lib_8c_a00c09497222847b454745
 \item[{{\bf matrix} $\ast$}]{c}
 \end{DoxyParamCaption}
 )}\label{mat_lib_8c_a00c09497222847b454745ad8f8a41037}
-Multiply a and b into c. c=a$\ast$b \hypertarget{mat_lib_8c_a5faaa4d273a0129dbef58ebf0444d945}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!multiply\+\_\+matrices\+\_\+with\+\_\+return@{multiply\+\_\+matrices\+\_\+with\+\_\+return}}
+Multiply a and b into c. c=a$\ast$b \hypertarget{mat_lib_8c_ae6d70a167c49ac318d1cd3c3827c1746}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!multiply\+\_\+matrices\+\_\+optimized@{multiply\+\_\+matrices\+\_\+optimized}}
+\index{multiply\+\_\+matrices\+\_\+optimized@{multiply\+\_\+matrices\+\_\+optimized}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{multiply\+\_\+matrices\+\_\+optimized}]{\setlength{\rightskip}{0pt plus 5cm}bool multiply\+\_\+matrices\+\_\+optimized (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{a, }
+\item[{{\bf matrix} $\ast$}]{b, }
+\item[{{\bf matrix} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_ae6d70a167c49ac318d1cd3c3827c1746}
+\hypertarget{mat_lib_8c_a5faaa4d273a0129dbef58ebf0444d945}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!multiply\+\_\+matrices\+\_\+with\+\_\+return@{multiply\+\_\+matrices\+\_\+with\+\_\+return}}
 \index{multiply\+\_\+matrices\+\_\+with\+\_\+return@{multiply\+\_\+matrices\+\_\+with\+\_\+return}!mat\+Lib.\+c@{mat\+Lib.\+c}}
 \subsubsection[{multiply\+\_\+matrices\+\_\+with\+\_\+return}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ multiply\+\_\+matrices\+\_\+with\+\_\+return (
 \begin{DoxyParamCaption}
@@ -626,7 +722,41 @@ Solves Ax=B \hypertarget{mat_lib_8c_ae5ce930466333a83cc2da8ef5640feb4}{}\index{m
 \item[{{\bf matrix} $\ast$}]{b}
 \end{DoxyParamCaption}
 )}\label{mat_lib_8c_ae5ce930466333a83cc2da8ef5640feb4}
-Solves ax=b by returning a pointer to x \hypertarget{mat_lib_8c_aaea31007b63ee35effb0b16d75dbe1d2}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!subtract\+\_\+matrices@{subtract\+\_\+matrices}}
+Solves ax=b by returning a pointer to x \hypertarget{mat_lib_8c_a4e84724f62c5c0fe9092390affc540fd}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!strassen\+\_\+matrices@{strassen\+\_\+matrices}}
+\index{strassen\+\_\+matrices@{strassen\+\_\+matrices}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{strassen\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool strassen\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{a, }
+\item[{{\bf matrix} $\ast$}]{b, }
+\item[{{\bf matrix} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a4e84724f62c5c0fe9092390affc540fd}
+\hypertarget{mat_lib_8c_a8f98d717ab4e5abd110d65d88933e5cb}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!strassen\+\_\+matrices\+\_\+parallel@{strassen\+\_\+matrices\+\_\+parallel}}
+\index{strassen\+\_\+matrices\+\_\+parallel@{strassen\+\_\+matrices\+\_\+parallel}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{strassen\+\_\+matrices\+\_\+parallel}]{\setlength{\rightskip}{0pt plus 5cm}bool strassen\+\_\+matrices\+\_\+parallel (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{a, }
+\item[{{\bf matrix} $\ast$}]{b, }
+\item[{{\bf matrix} $\ast$}]{c}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a8f98d717ab4e5abd110d65d88933e5cb}
+\hypertarget{mat_lib_8c_a8307525e56130ce78f7961df3e94e7eb}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return@{strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return}}
+\index{strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return@{strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ strassen\+\_\+matrices\+\_\+parallel\+\_\+with\+\_\+return (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{a, }
+\item[{{\bf matrix} $\ast$}]{b}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a8307525e56130ce78f7961df3e94e7eb}
+\hypertarget{mat_lib_8c_a5f578dc66bca8d2c96dd69ac56b48d76}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!strassen\+\_\+matrices\+\_\+with\+\_\+return@{strassen\+\_\+matrices\+\_\+with\+\_\+return}}
+\index{strassen\+\_\+matrices\+\_\+with\+\_\+return@{strassen\+\_\+matrices\+\_\+with\+\_\+return}!mat\+Lib.\+c@{mat\+Lib.\+c}}
+\subsubsection[{strassen\+\_\+matrices\+\_\+with\+\_\+return}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ strassen\+\_\+matrices\+\_\+with\+\_\+return (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{a, }
+\item[{{\bf matrix} $\ast$}]{b}
+\end{DoxyParamCaption}
+)}\label{mat_lib_8c_a5f578dc66bca8d2c96dd69ac56b48d76}
+\hypertarget{mat_lib_8c_aaea31007b63ee35effb0b16d75dbe1d2}{}\index{mat\+Lib.\+c@{mat\+Lib.\+c}!subtract\+\_\+matrices@{subtract\+\_\+matrices}}
 \index{subtract\+\_\+matrices@{subtract\+\_\+matrices}!mat\+Lib.\+c@{mat\+Lib.\+c}}
 \subsubsection[{subtract\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool subtract\+\_\+matrices (
 \begin{DoxyParamCaption}

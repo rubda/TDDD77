@@ -103,6 +103,7 @@ def highlight(event=None):
     # apply the tag.
     text.highlight_pattern("parameters", "blue")
     text.highlight_pattern("variables", "blue")
+    text.highlight_pattern("limits", "blue")
     text.highlight_pattern("minimize", "blue")
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")

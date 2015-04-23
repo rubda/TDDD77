@@ -36,20 +36,24 @@ struct problem{
 
   /* Variables */
   bool has_start_point;
-  matrix* z0;
+  matrix* z0; /**< The starting point for the solution. */
 
-  matrix* z;
+  matrix* z; /**< The current point in the solution. */
 
-  matrix* solution;
-  value solution_value;
+  matrix* solution; /**< The final point in the solution. */
+  value solution_value; /**< The value of the solution point. */
   bool has_solution;
 
-  matrix* p;
-  matrix* gk;
-  value step;
-  matrix* lagrange;
+  matrix* p; /**< Current step direction towards the solution. */
+  matrix* gk; /**< gk = Qz + q, help matrix for the subproblem.
+  * @see Q
+  * @see z
+  * @see q
+  */
+  value step; /**< How far we will step towards the solution. */
+  matrix* lagrange; /**< The lagrange multipliers. */
 
-  work_set* active_set;
+  work_set* active_set; /**< The active constraints. */
 
   value accuracy;
 
@@ -79,6 +83,9 @@ matrix* get_active_conditions_rhs(problem* prob);
 
 /** Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob);
+
+/** Prints optimal point and optimal value */
+void print_solution(problem* prob);
 
 /** Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent);
