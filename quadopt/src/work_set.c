@@ -1,4 +1,13 @@
-#include "work_set.h"
+/*
+  Author: Ruben Das
+  Email: rubda680@student.liu.se
+  Date: 2015-04-21
+  Description: This file contains the necessary functions to work with the struct "work_set".
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <work_set.h>
 
 /* Creates a new work set */
 work_set* work_set_create(int ws_max) {

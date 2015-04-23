@@ -242,9 +242,9 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
       || (b->columns != c->columns)) {
     return false;
   }
-  size_t j = 1;
-  size_t i = 1;
-  size_t k = 1;
+  int j = 1;
+  int i = 1;
+  int k = 1;
   value sum = 0;
   for (; i <= a->rows; i++) {
     k = 1;
@@ -1153,7 +1153,7 @@ int first_nonezero_in_row_index(int row,int start, matrix* a) {
 void add_rows(int row1, int row2, matrix* a) {
   value* start1 = a->start + a->columns * (row1 - 1);
   value* start2 = a->start + a->columns * (row2 - 1);
-  size_t i = 0;
+  int i = 0;
   for (; i < a->columns; i++) {
     *(start2 + i) += *(start1 + i);
   }
@@ -1191,7 +1191,7 @@ value sum_of_row(int row, matrix* mat) {
   if (!check_boundaries(row, 1, mat)) {
     return false;
   }
-  size_t i = 0;
+  int i = 0;
   value *start = mat->start + (row - 1) * mat->columns;
   value to_return = 0;
   for (; i < mat->columns; i++) {
@@ -1207,7 +1207,7 @@ value sum_of_column(int column, matrix* mat) {
   if (!check_boundaries(1, column, mat)) {
     return false;
   }
-  size_t i = 0;
+  int i = 0;
   value *start = mat->start + (column - 1);
   value to_return = 0;
   for (; i < mat->rows; i++) {
@@ -1221,7 +1221,7 @@ value product_of_row(int row, matrix* mat) {
   if (!check_boundaries(row, 1, mat)) {
     return false;
   }
-  size_t i = 0;
+  int i = 0;
   value *start = mat->start + (row - 1) * mat->columns;
   value to_return = 1;
   for (; i < mat->columns; i++) {
@@ -1235,7 +1235,7 @@ value product_of_column(int column, matrix* mat) {
   if (!check_boundaries(1, column, mat)) {
     return false;
   }
-  size_t i = 0;
+  int i = 0;
   value *start = mat->start + (column - 1);
   value to_return = 1;
   for (; i < mat->rows; i++) {
@@ -1270,7 +1270,7 @@ void divide_matrix_with_scalar(value scal, matrix* mat)
 /* Multiplies a row with a scalar */
 void multiply_row_with_scalar(value scal, int row, matrix* mat) {
   value* start = mat->start + (row - 1) * mat->columns;
-  size_t i = 0;
+  int i = 0;
   for (; i < mat->columns; i++) {
     *(start + i) *= scal;
   }
@@ -1282,7 +1282,7 @@ void divide_row_with_scalar(value scal, int row, matrix* mat) {
     return;
   }
   value* start = mat->start + (row - 1) * mat->columns;
-  size_t i = 0;
+  int i = 0;
   for (; i < mat->columns; i++) {
     *(start + i) /= scal;
   }
@@ -1291,8 +1291,8 @@ void divide_row_with_scalar(value scal, int row, matrix* mat) {
 /* Multiplies a column with a scalar */
 void multiply_column_with_scalar(value scal, int col, matrix* mat) {
   value* start = mat->start + (col - 1);
-  size_t i = 0;
-  size_t step = mat->rows ;
+  int i = 0;
+  int step = mat->rows ;
   for (; i < mat->rows; i++) {
     *(start + i * step) *= scal;
   }
@@ -1304,8 +1304,8 @@ void divide_column_with_scalar(value scal, int col, matrix* mat) {
     return;
   }
   value* start = mat->start + (col - 1);
-  size_t i = 0;
-  size_t step = mat->rows ;
+  int i = 0;
+  int step = mat->rows ;
   for (; i < mat->rows; i++) {
     *(start + i * step) /= scal;
   }
@@ -1320,7 +1320,7 @@ bool get_row_vector(int row, matrix* a, matrix* b) {
   if (b->rows != 1 || b->columns != a->columns) {
     return false;
   }
-  size_t i = 0;
+  int i = 0;
   value *start = a->start + (row - 1) * a->columns;
   for (; i < a->columns; i++) {
     *(b->start + i ) = *(start + i);
@@ -1379,7 +1379,7 @@ bool get_column_vector(int column, matrix* a, matrix* b) {
     return false;
   }
 
-  size_t i = 0;
+  int i = 0;
   value *start = a->start + (column - 1);
   for (; i < a->rows; i++) {
     *(b->start + i) = *(start + i * a->columns);
@@ -1427,10 +1427,10 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
   start_col -= 1;
   end_col -= 1;
 
-  size_t a_row_size = a->columns;
-  size_t b_row_size = b->columns;
-  size_t offset = a_row_size * start_row + start_col;
-  size_t num_rows = end_row - start_row + 1;
+  int a_row_size = a->columns;
+  int b_row_size = b->columns;
+  int offset = a_row_size * start_row + start_col;
+  int num_rows = end_row - start_row + 1;
   size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
   for(int i = 0; i < num_rows; i++){

@@ -1,5 +1,6 @@
 #include <solver.h>
 #include <assert.h>
+#include <feasible_point.h>
 
 int main() {
 
@@ -36,10 +37,10 @@ int main() {
 		     0};
   insert_array(g_arr, g);
 
-  problem* problem = create_problem(Q, q, E, h, F, g, NULL);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
   assert(find_starting_point(problem));
-
   assert(is_feasible_point(problem->z0, problem));
 
+  free_problem(problem);
 }

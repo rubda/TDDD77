@@ -1,0 +1,58 @@
+\hypertarget{solver_8c}{}\section{T\+D\+D\+D77/quadopt/src/solver.c File Reference}
+\label{solver_8c}\index{T\+D\+D\+D77/quadopt/src/solver.\+c@{T\+D\+D\+D77/quadopt/src/solver.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$solver.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$feasible\+\_\+point.\+h$>$}\\*
+{\ttfamily \#include $<$subproblem.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{solver_8c_af9444418bce32ffef381ee4d343cf240}{fill\+\_\+active\+\_\+set} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+bool \hyperlink{solver_8c_a6c56681400745b71f3acd3d24bc87556}{take\+\_\+step} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{solver_8c_a37c2c09f693a0e838de3bf0a397e6065}{copy\+\_\+solution} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+bool \hyperlink{solver_8c_a45dc18fe59cea3ff70e8d42222f8c9ea}{remove\+\_\+constraint} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{solver_8c_ace5948c91938d67195dca41b1812951b}{quadopt\+\_\+solver} (\hyperlink{structproblem}{problem} $\ast$prob)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{solver_8c_a37c2c09f693a0e838de3bf0a397e6065}{}\index{solver.\+c@{solver.\+c}!copy\+\_\+solution@{copy\+\_\+solution}}
+\index{copy\+\_\+solution@{copy\+\_\+solution}!solver.\+c@{solver.\+c}}
+\subsubsection[{copy\+\_\+solution}]{\setlength{\rightskip}{0pt plus 5cm}void copy\+\_\+solution (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{solver_8c_a37c2c09f693a0e838de3bf0a397e6065}
+\hypertarget{solver_8c_af9444418bce32ffef381ee4d343cf240}{}\index{solver.\+c@{solver.\+c}!fill\+\_\+active\+\_\+set@{fill\+\_\+active\+\_\+set}}
+\index{fill\+\_\+active\+\_\+set@{fill\+\_\+active\+\_\+set}!solver.\+c@{solver.\+c}}
+\subsubsection[{fill\+\_\+active\+\_\+set}]{\setlength{\rightskip}{0pt plus 5cm}bool fill\+\_\+active\+\_\+set (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{solver_8c_af9444418bce32ffef381ee4d343cf240}
+\hypertarget{solver_8c_ace5948c91938d67195dca41b1812951b}{}\index{solver.\+c@{solver.\+c}!quadopt\+\_\+solver@{quadopt\+\_\+solver}}
+\index{quadopt\+\_\+solver@{quadopt\+\_\+solver}!solver.\+c@{solver.\+c}}
+\subsubsection[{quadopt\+\_\+solver}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ quadopt\+\_\+solver (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{solver_8c_ace5948c91938d67195dca41b1812951b}
+Solves a quadratic problem using the active set method \hypertarget{solver_8c_a45dc18fe59cea3ff70e8d42222f8c9ea}{}\index{solver.\+c@{solver.\+c}!remove\+\_\+constraint@{remove\+\_\+constraint}}
+\index{remove\+\_\+constraint@{remove\+\_\+constraint}!solver.\+c@{solver.\+c}}
+\subsubsection[{remove\+\_\+constraint}]{\setlength{\rightskip}{0pt plus 5cm}bool remove\+\_\+constraint (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{solver_8c_a45dc18fe59cea3ff70e8d42222f8c9ea}
+Removes the active constraint with the most negative lagrange multiplier \hypertarget{solver_8c_a6c56681400745b71f3acd3d24bc87556}{}\index{solver.\+c@{solver.\+c}!take\+\_\+step@{take\+\_\+step}}
+\index{take\+\_\+step@{take\+\_\+step}!solver.\+c@{solver.\+c}}
+\subsubsection[{take\+\_\+step}]{\setlength{\rightskip}{0pt plus 5cm}bool take\+\_\+step (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{solver_8c_a6c56681400745b71f3acd3d24bc87556}

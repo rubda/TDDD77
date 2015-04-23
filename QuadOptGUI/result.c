@@ -1,8 +1,7 @@
 #include <matLib.h>
+#include <solver.h>
 
-int
-main()
-{
+int main(){
 
   /* Parameters */
 
@@ -21,8 +20,9 @@ main()
 
   /* Variables */
 
-  matrix* z[i]; 
-  z[i] = create_matrix(4, 1);
+  matrix* z; 
+  z = create_matrix(4, 1);
+
 
 
   /* Insert values into matrices */
@@ -41,14 +41,7 @@ main()
 
   /* Solveranropp */ 
 
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
-  quadOpt(Q ,q ,A ,b ,F ,g );
-
+  problem* problem = create_problem(Q ,q ,A ,b ,F ,g ,0,1);
+  quadopt_solver(problem);
+  print_solution(problem);
 }

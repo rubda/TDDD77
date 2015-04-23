@@ -66,6 +66,12 @@ int main(void) {
     }
   }
 
+  free_matrix(a);
+  free_matrix(b);
+  free_matrix(x);
+  free_matrix(b_new);
+  free_matrix(diff);
+
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("time taken was: %f \n",time_spent);

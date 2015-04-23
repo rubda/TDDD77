@@ -47,13 +47,9 @@ int main(){
   insert_array(z_arr, z);
 
 
-  problem* problem = create_problem(Q,q,NULL,NULL,F,g,z);
-
-  //print_qp_problem(problem);
+  problem* problem = create_problem(Q, q, NULL, NULL, F, g, z, 0, 0);
 
   quadopt_solver(problem);
-
-  //print_qp_problem(problem);
 
   matrix* expected = create_matrix(2, 1);
   value e_arr[2] = {1.4,

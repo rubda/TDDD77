@@ -216,7 +216,6 @@ void test_divide_row_with_scalar(){
   free_matrix(ref);
 }
 
-
 void test_multiply_column_with_scalar(){}
 
 void test_divide_column_with_scalar(){}

@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
+#include <feasible_point.h>
 
 int main(){
   clock_t begin, end;
@@ -67,8 +68,6 @@ int main(){
   insert_array(F_arr, F);
   multiply_matrix_with_scalar(-1, F);
 
-  
-
   /* Inequality constraints RHS. */
   matrix* g = create_matrix(20, 1);
   value g_arr[20] = {2.5608,
@@ -101,20 +100,6 @@ int main(){
  	       	     0, 
        		     0};
 
-
-  /* MATLABs first iteration optimum point with active set */
-  value z0_active_set[4] = {-0.0019, 
-			    -0.8754, 
-			     1.4490, 
-			     0.0996};
-
-  /* MATLABs first iteration optimum point with interior point */
-  value z0_interior_point[4] = { 0.2532, 
-			        -0.4397, 
-				 1.2955, 
-				 0.3019};
-
-
   /* Current start point */
   insert_array(z0_arr, z0);
 
@@ -126,14 +111,20 @@ int main(){
 		       0.0631};
   insert_array(optimum_arr, optimum);
 
-  problem* problem = create_problem(Q,q,E,h,F,g,z0);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
+  int i;
 
-  quadopt_solver(problem);
+  for(i = 0; i < 1000; i++){
+    quadopt_solver(problem);
 
-  assert(compare_matrices(problem->solution, optimum));
-  assert(is_feasible_point(problem->solution, problem));
+    assert(compare_matrices(problem->solution, optimum));
+    assert(is_feasible_point(problem->solution, problem));
+
+    problem->has_solution = false;
+  }
 
   free_matrix(optimum);
+  free_matrix(z0);
   free_problem(problem);
 
   end = clock(); 

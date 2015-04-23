@@ -1,6 +1,7 @@
 language: c
-script: make test
-
+script: 
+  - echo "Running unit tests"
+  - make test
 notifications:
   email:
     on_success: never
