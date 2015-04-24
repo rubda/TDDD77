@@ -17,18 +17,19 @@ int main(){
   /* For summation sign */
   int upper_bound = value;
   int lower_bound = value;
+  int bound = upper_bound - lower_bound;
   float summation_value;
 
-  matrix* equality_constraints[upper_bound] = {E1,..,EN};
-  matrix* equality_constraints_rhs[upper_bound] = {h1,..,hN};
-  matrix* inequality_constraints[upper_bound] = {F1,..,FN};
-  matrix* inequality_constraints_rhs[upper_bound] = {g1,..,gN};
+  matrix* equality_constraints[bound] = {E1,..,EN};
+  matrix* equality_constraints_rhs[bound] = {h1,..,hN};
+  matrix* inequality_constraints[bound] = {F1,..,FN};
+  matrix* inequality_constraints_rhs[bound] = {g1,..,gN};
 
   matrix* x_start = NULL;
   matrix* u_start = NULL;
   
   int i;
-  for(i = lower_bound; i <= upper_bound; i++){
+  for(i = 0; i <= bound; i++){
     /* Constraints for the right index value */
     matrix* E = equality_constraints[i];
     matrix* h = equality_constraints_rhs[i];
@@ -48,7 +49,7 @@ int main(){
     /* Summarize the solution values */
     summation_value += x->solution_value + u->solution_value;
 
-    printf("Iteration %i\n");
+    printf("Solution for n = %i\n", lower_bound++);
     printf("x solution:\n");
     print_matrix(x->solution);
     printf("u solution:\n");
@@ -63,7 +64,7 @@ int main(){
   free_problem(x);
   free_problem(u);
 
-  for(i = lower_bound; i <= upper_bound; i++){
+  for(i = 0; i <= bound; i++){
     free_matrix(equality_constraints[i]);
     free_matrix(equality_constraints_rhs[i]);
     free_matrix(inequality_constraints[i]);
