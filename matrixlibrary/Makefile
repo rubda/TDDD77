@@ -53,3 +53,4 @@ test: $(TEST_BINS)
 $(TEST_BINS): $(TEST_OBJS) $(LIB)
 	$(CC) $@.o -o $@ -L $(BUILD_DIR) -lmatrix -pthread
 	chmod 755 $@
+
