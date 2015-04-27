@@ -1,21 +1,20 @@
 \section{Inledning}
-Idag när samhället har nått en utveckligsnivå där datorer är en viktig del i den dagliga verksamheten för både företag och privatpersoner har datorer även fått en plats i många av de produkter företagen producerar. Dessa integrerade datorer kan ge användaren en hjälpande hand för att denne ska kunna utföra fler och mer komplicerade uppgifter. Detta innebär även att avancerade konstruktioner så som flygplan innehåller många olika system där datorer spelar en viktig roll.
+Idag när samhället har nått en utveckligsnivå där datorer är en viktig del i den dagliga verksamheten för både företag och privatpersoner har datorer även fått en plats i många av de produkter företagen producerar. Dessa integrerade datorer kan ge användaren en hjälpande hand för att denne ska kunna utföra fler och mer komplicerade uppgifter. Detta innebär även att avancerade konstruktioner så som flygplan innehåller många olika system där datorer spelar en viktig roll. För att piloten inte ska behöva 
 \\ \\
-Detta projekt kommer från Saab och stridflygplanet JAS 39 Gripen. I flygplanet används en form av reglering som kallas prediktionsreglering.
-\\ \\
-Prediktionsreglering (eng. model predictive control, MPC) är en avancerad reglerstrategi som fått stort genomslag i industrin och som forskningsområde under de senaste decennierna. Styrkan ligger i att den ger högpresterande styrsystem som kan köras utan något högre ingripande under längre tid. Prediktionsreglering är dock beräkningskrävande och en modell krävs. Saab har under flera års tid forskat kring prediktionsregleringsalgoritmer för att kunna användas i nästa generations stridsflygsystem. Dessa algoritmer kräver att flygplanets styrdator löser avancerade optimeringsproblem i realtid. Projektuppgiften som fåtts av Saab är att välja ut och implementera en optimeringsalgoritm som löser detta optimeringsproblem.   
-
+Prediktionsreglering (eng. model predictive control, MPC) är en avancerad reglerstrategi som fått stort genomslag i industrin och som forskningsområde under de senaste decennierna. Styrkan ligger i att den ger högpresterande styrsystem som kan köras utan något högre ingripande under längre tid. Prediktionsreglering är dock beräkningskrävande och en modell krävs. \citep[2]{ir}
+\\
+Saab har under flera års tid forskat kring prediktionsregleringsalgoritmer för att kunna användas i nästa generations stridsflygsystem. Dessa algoritmer kräver att flygplanets styrdator löser avancerade optimeringsproblem i realtid. (Se bilaga A)
+\\ 
+Projektuppgiften som fåtts av Saab är att välja ut och implementera en optimeringsalgoritm som löser detta optimeringsproblem.
 \subsection{Syfte}
 Ett av de syften som finns med att genomföra detta projekt är att projektgruppens medlemmar systematiskt ska tillämpa de kunskaper som förvärvats under studietiden framför allt inom programmering och datalogi men även projektutvecklingsmetodik. Dessutom ska medlemmarna tillgodogöra sig innehållet i relevant facklitteratur samt relatera denna till sitt arbete. 
 Det finns även ett syfte från ett annat perspektiv där projektgruppen ska skapa en produkt som skapar värde för kunden samt att projektgruppen ska få en inblick i arbetslivet och hur en utvecklingsprocess kan se ut där.
 
 \subsection{Frågeställning}
 	\begin{enumerate}
+		\item Kan vi implementera ett system som löser kvadratiska optimeringsproblem snabbare än Gurobi?
 		\item Vilka erfarenheter kan man få genom att genomföra ett programmeringsprojekt?
-		\item Vilka erfarenheter är överförbara till kommande projekt?
 		\item Har vi noterat någon förbättring av de lärdomar vi dragit från tidigare projekt?
-		\item Vilket stöd kan man få genom att använda och följa upp SEMAT Kernel ALPHA:s?
-		\item Specifika frågeställningar.
 	\end{enumerate}
 
 \subsection{Avgränsningar}
