@@ -51,5 +51,9 @@ int main(){
   assert(strassen_matrices(g, h, i));
   assert(compare_matrices(i, g));
 
+  free_matrix(g);
+  free_matrix(h);
+  free_matrix(i);
+
   return 0;
 }

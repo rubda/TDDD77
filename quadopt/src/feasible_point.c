@@ -8,7 +8,7 @@
 
 #include <feasible_point.h>
 
-void comb(int pool, int need, int* rows, int at, int ri, problem* prob, 
+void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* F, matrix* g, 
 	  matrix* A, matrix* b, matrix* z, bool* done);
 
 /* Checks if a point is feasible subject to the constraints in a problem */
@@ -42,7 +42,7 @@ bool is_feasible_point(matrix* z, problem* prob){
   return true;
 }
 
-void rref(matrix* M, matrix* N) {
+void rref(matrix* M, matrix* N){
   int lead = 1;
   int i = 1;
 
@@ -52,28 +52,28 @@ void rref(matrix* M, matrix* N) {
   matrix* row2;
   matrix* row3;
 
-  for (int r = 1; r <= M->rows; r++) {
-    if (M->columns+1 <= lead) {
+  for (int r = 1; r <= M->rows; r++){
+    if (M->columns+1 <= lead){
       return;
     }
     i = r;
-    while (compare_elements(get_value_without_check(i,lead,M),0) == 0) {
+    while (compare_elements(get_value_without_check(i,lead,M),0) == 0){
       i = i + 1;
-      if (M->rows+1 == i) {
+      if (M->rows+1 == i){
         i = r;
         lead = lead + 1;
-        if (M->columns+1 == lead) {
+        if (M->columns+1 == lead){
           return;
         }
       }
     }
     switch_rows(i,r,M);
     switch_rows(i,r,N);
-    if (compare_elements(get_value_without_check(r,lead,M),0) != 0) {
+    if (compare_elements(get_value_without_check(r,lead,M),0) != 0){
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,N);
     }
-    for (i = 1; i <= M->rows; i++) {
+    for (i = 1; i <= M->rows; i++){
       if (i != r) {
         row1 = get_row_vector_with_return(r,M);
         row2 = get_row_vector_with_return(i,M);
@@ -95,7 +95,6 @@ void rref(matrix* M, matrix* N) {
         free_matrix(row1);
         free_matrix(row2);
         free_matrix(row3);
-
       }
     }
     lead++;
@@ -112,20 +111,20 @@ void rref1(matrix* M) {
   matrix* row2 = create_matrix(1,M->columns);
   matrix* row3 = create_matrix(1,M->columns);
 
-  for (int r = 1; r <= M->rows; r++) {
-    if (M->columns+1 <= lead) {
+  for (int r = 1; r <= M->rows; r++){
+    if (M->columns+1 <= lead){
       free_matrix(row1);
       free_matrix(row2);
       free_matrix(row3);
       return;
     }
     i = r;
-    while (compare_elements(get_value_without_check(i,lead,M),0) == 0) {
+    while (compare_elements(get_value_without_check(i,lead,M),0) == 0){
       i = i + 1;
-      if (M->rows+1 == i) {
+      if (M->rows+1 == i){
         i = r;
         lead = lead + 1;
-        if (M->columns+1 == lead) {
+        if (M->columns+1 == lead){
           free_matrix(row1);
           free_matrix(row2);
           free_matrix(row3);
@@ -134,10 +133,10 @@ void rref1(matrix* M) {
       }
     }
     switch_rows(i,r,M);
-    if (compare_elements(get_value_without_check(r,lead,M),0) != 0) {
+    if (compare_elements(get_value_without_check(r,lead,M),0) != 0){
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
     }
-    for (i = 1; i <= M->rows; i++) {
+    for (i = 1; i <= M->rows; i++){
       if (i != r) {
         get_row_vector(r,M,row1);
         get_row_vector(i,M,row2);
@@ -155,7 +154,7 @@ void rref1(matrix* M) {
 
 
 /* Iterate through all possible combinations of inequality constraints to add */
-void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* A, matrix* b, matrix* z, bool* done){
+void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* F, matrix* g, matrix* A, matrix* b, matrix* z, bool* done){
   /* No more slot */
   if (pool < need + at || *done) return;
  
@@ -165,10 +164,10 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
     
     /* Add constraints */
     for (i = 0; i < ri; i++){
-      fi = get_row_vector_with_return(rows[i]+1, prob->F);
+      fi = get_row_vector_with_return(rows[i]+1, F);
       insert_row_vector(i+prob->equality_count+1, fi, A);
       free_matrix(fi);
-      insert_value_without_check(get_value_without_check(rows[i]+1, 1, prob->g), 
+      insert_value_without_check(get_value_without_check(rows[i]+1, 1, g), 
 				 i+prob->equality_count+1, 1, b);
     }
     
@@ -183,9 +182,9 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
 
   /* If we choose the current item, "or" (|) the bit to mark it so. */
   rows[need-1] = at;
-  comb(pool, need - 1, rows, at + 1, ri, prob, A, b, z, done);
+  comb(pool, need - 1, rows, at + 1, ri, prob, F, g, A, b, z, done);
   /* Or don't choose it, go to next */
-  comb(pool, need, rows, at + 1, ri, prob, A, b, z, done);
+  comb(pool, need, rows, at + 1, ri, prob, F, g, A, b, z, done);
 }
 
 /* Calculates a feasible starting point for a problem */
@@ -202,14 +201,15 @@ bool find_starting_point(problem* prob){
     matrix* Er = matrix_copy(prob->E);
     matrix* hr = matrix_copy(prob->h);
 
-    /* reduce E so lead values can be retrieved */
-    rref(Er,hr);
+    /* Reduce E so lead values can be retrieved */
+    rref(Er, hr);
 
-    /* get leads */
+    /* Get leads */
     int curr = 1;
-    for (int r = 1; r <= Er->rows; r++) {
-      for (int c = curr; c <= Er->columns; c++) {
-        if (compare_elements(get_value_without_check(r, c, Er),1) == 0) {
+    int r, c;
+    for (r = 1; r <= Er->rows; r++){
+      for (c = curr; c <= Er->columns; c++){
+        if (compare_elements(get_value_without_check(r, c, Er),1) == 0){
           work_set_append(leads,c);
           curr = c+1;
           break;
@@ -217,15 +217,39 @@ bool find_starting_point(problem* prob){
       }
     }
 
-    /* get variables that can set to 0 later */
-    for (int v = 1; v <= prob->z->rows; v++) {
-      if (!work_set_contains(leads, v)) {
+    /* Get variables that can set to 0 later */
+    int v;
+    for (v = 1; v <= prob->z->rows; v++){
+      if (!work_set_contains(leads, v)){
         work_set_append(vars_to_zero,v);
       }
     }
 
+    /* Create new pool of possible constraints */
+    matrix* Fn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->Q->columns);
+    matrix* gn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->q->columns);
+
+    /* Copy all the old data */
+    matrix* row;
+    for (r = 1; r <= prob->inequality_count; r++){
+      row = get_row_vector_with_return(r, prob->F);
+      insert_row_vector(r, row, Fn);
+      free_matrix(row);
+      row = get_row_vector_with_return(r, prob->g);
+      insert_row_vector(r, row, gn);
+      free_matrix(row);
+    }
+
+    /* Insert vars set to 0 */
+    row = get_zero_matrix(1, prob->Q->columns);
+    for (r = prob->inequality_count+1; r <= Fn->rows; r++){
+      insert_value_without_check(1, 1, vars_to_zero->data[r-prob->inequality_count-1], row);
+      insert_row_vector(r, row, Fn);
+      insert_value_without_check(0, 1, vars_to_zero->data[r-prob->inequality_count-1], row);
+      insert_value_without_check(0, r, 1, gn);
+    }
+
     /* Fill A and b with equality constraints */
-    int r;
     for (r = 1; r <= prob->equality_count; r++){
       tmp_A = get_row_vector_with_return(r, prob->E);
       insert_row_vector(r, tmp_A, A);
@@ -234,82 +258,29 @@ bool find_starting_point(problem* prob){
       insert_value_without_check(tmp_b, r, 1, b);
     }
 
-    int pool = prob->inequality_count;    
+    int pool = prob->inequality_count+vars_to_zero->count;    
     int need = A->rows-prob->equality_count;
 
     int* rows = malloc(need*sizeof(int));
     bool done = false;
 
-    matrix* new_row = create_matrix(1,A->columns);
-    int count = 0;
+    /* Find a feasible point */
+    comb(pool, need, rows, 0, need, prob, Fn, gn, A, b, prob->z0, &done);
 
-    /* find feasible point */
-    while (need > 0) {
-
-      /* iterate through all combinations of inequality constraints */
-      comb(pool, need, rows, 0, need, prob, A, b, prob->z0, &done);
-
-      if (done) {
-        break;
-      } else {
-        free(rows);        
-
-        /* set one variable to 0 */
-        if (count >= vars_to_zero->count) {
-          for (int c = 1; c <= A->columns; c++) {
-            insert_value_without_check(0, 1, c, new_row);          
-          }
-          /* insert this row for good */
-          insert_value_without_check(1, 1, vars_to_zero->data[0], new_row);          
-          insert_row_vector(A->rows-need, new_row, A);
-          insert_value_without_check(0, A->rows-need, 1, b);
-
-          /* insert next row */
-          insert_value_without_check(0, 1, vars_to_zero->data[0], new_row);
-          work_set_remove(vars_to_zero,vars_to_zero->data[0]);
-          count = 1;
-          need--;
-          insert_value_without_check(1, 1, vars_to_zero->data[0], new_row);
-          insert_row_vector(A->rows-need, new_row, A);
-          insert_value_without_check(0, A->rows-need, 1, b);
-
-        } else {
-          if (count == 0) {
-            need--;
-          }
-          for (int c = 1; c <= A->columns; c++) {
-            insert_value_without_check(0, 1, c, new_row);          
-          }
-          insert_value_without_check(1, 1, vars_to_zero->data[count], new_row);
-          insert_row_vector(A->rows-need, new_row, A);
-          insert_value_without_check(0, A->rows-need, 1, b);
-          count++;
-        }   
-
-        rows = malloc(need*sizeof(int));
-
-      }
-    }
-/*
-    print_matrix(A);
-    print_matrix(b);
-
-    printf("%s", done ? "true\n" : "false\n");*/
-
-    if (!done) {
-      //Shall use linear_solve here
-      //done = solve_linear(A, prob->z0, b);
-      least_square(A, prob->z0, b);
-      done = true;
-    }
-    
     free(rows);
+    free_matrix(row);
     free_matrix(A);
     free_matrix(b);
+    free_matrix(Er);
+    free_matrix(hr);
+    free_matrix(Fn);
+    free_matrix(gn);
+    work_set_free(leads);
+    work_set_free(vars_to_zero);
 
     return done;
   }else{
-    /* problem is unconstrained, any point is feasible */
+    /* Problem is unconstrained, any point is feasible */
     prob->z0 = get_zero_matrix(prob->z->rows, prob->z->columns);
     return true;
   }

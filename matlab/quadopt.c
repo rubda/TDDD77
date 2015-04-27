@@ -22,8 +22,8 @@ void mexFunction(int nlhs, mxArray* plhs[],
   matrix* lib_matrices[nrhs-1]; /* An array of all the matrices that should be sent to the solver. */
   
   /* Check for proper number of arguments */
-  if(nrhs != 7){
-    mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Seven inputs required.");
+  if(nrhs != 9){
+    mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Nine inputs required.");
   }
 
   /* Convert matlab matrises to library matrises */
@@ -39,7 +39,7 @@ void mexFunction(int nlhs, mxArray* plhs[],
     for(x = 0; x < columns; x++){
       int y;
       for(y = 0; y < rows; y++){
-  	insert_value(*element_ptr,y+1,x+1,lib_matrix);
+  	insert_value(*element_ptr, y+1, x+1, lib_matrix);
   	element_ptr++;
       }
     }
@@ -48,7 +48,7 @@ void mexFunction(int nlhs, mxArray* plhs[],
 
   /* Create problem from solver.h with library matrices */
   problem* problem = create_problem(lib_matrices[0], lib_matrices[1], lib_matrices[2], lib_matrices[3], 
-				    lib_matrices[4], lib_matrices[5], lib_matrices[6]);
+				    lib_matrices[4], lib_matrices[5], lib_matrices[6], prhs[7], prhs[8]);
 
   /* Solve problem */
   quadopt_solver(problem);

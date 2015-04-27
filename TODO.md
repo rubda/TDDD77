@@ -1,7 +1,9 @@
-**Saker som bör göras - 150421**
+**Saker som bör göras - 150427**
 
 Dokument generellt
-- Kandidatrapporten	(Dennis och Sebastian skriver denna, hur många sidor ska det vara?)
+- Kandidatrapporten	(Dennis skriver inledning, syfte, frågeställningar)
+- 			(Johan skriver teori (om active set, subproblem bl a))
+- 			(Ruben skriver metodik)
 - Individuell del 	(Överens om 50 timmar var på de individuella delarna.)
 - Teknisk dokumentation (Sebastian har koll på läget, får dirigera om vad som behövs göras i koden)
 	
