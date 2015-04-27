@@ -225,8 +225,8 @@ bool find_starting_point(problem* prob){
     }
 
     /* Create new pool of possible constraints */
-    matrix* Fn = create_matrix(prob->F->rows+vars_to_zero->count, prob->F->columns);
-    matrix* gn = create_matrix(prob->g->rows+vars_to_zero->count, prob->g->columns);
+    matrix* Fn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->Q->columns);
+    matrix* gn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->q->columns);
 
     /* copy all the old data */
     matrix* row;
@@ -242,7 +242,7 @@ bool find_starting_point(problem* prob){
     
 
     /* insert vars set to 0 */
-    row = get_zero_matrix(1, prob->F->columns);
+    row = get_zero_matrix(1, prob->Q->columns);
     for (int r = prob->inequality_count+1; r <= Fn->rows; r++) {
       insert_value_without_check(1, 1, vars_to_zero->data[r-prob->inequality_count-1], row);
       insert_row_vector(r, row, Fn);
@@ -270,7 +270,7 @@ bool find_starting_point(problem* prob){
     /* find a feasible point */
     comb(pool, need, rows, 0, need, prob, Fn, gn, A, b, prob->z0, &done);
 
-        
+
     free(rows);
     free_matrix(A);
     free_matrix(b);
