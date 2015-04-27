@@ -30,7 +30,8 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{ natbib}
+\usepackage{natbib}
+\usepackage[nottoc]{tocbibind}
 
 \usetikzlibrary{shapes, arrows}
 
@@ -41,8 +42,6 @@
 \begin{document}
 
 \LIPSTitelsida
-
-
 \newpage
 \tableofcontents	%Innehållsförteckning
 \newpage
@@ -54,8 +53,7 @@
 \input{ruben-tex/resultat}
 \input{ruben-tex/diskussion}
 \input{ruben-tex/slutsatser}
-
 \bibliographystyle{plain}
-\bibliography{ruben-tex/mybib}{}
+\bibliography{ruben-tex/mybib}
 
 \end{document}

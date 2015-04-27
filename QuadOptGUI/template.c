@@ -1,18 +1,38 @@
 #include <matLib.h>
 #include <solver.h>
+#include <stdio.h>
 
 int main(){
+  /* Matrices Q and q should be created and initialized */
+  matrix* Q = create_matrix(a, b);
+  value Q_data[nr_of_elements] = {elements};
+  insert_array(Q_data, Q);
+  
+  matrix* q = create_matrix(c, d);
+  value q_data[nr_of_elements] = {elements};
+  insert_array(q_data, q);
+
   /* For every summation value, their should be a matrix.
-     Insert these matrices into the ararys shown below */
+     Create and initalize the matrices like done above.
+     Insert these matrices into the arrays shown below.
+     
+     E stands for equality constraints.
+     h is a matrix for the right-hand side of the equality constraints.
+
+     F is a matrix of inequality constraints.
+     g is a matrix for the right-hand side of the inequality constraints.
+     
+     There can be n amount of matrices. 
+  */
   matrix* E1;
-  matrix* h1_rhs;
+  matrix* h1;
   matrix* EN;
-  matrix* hN_rhs;
+  matrix* hN;
 
   matrix* F1;
-  matrix* g1_rhs;
+  matrix* g1;
   matrix* FN;
-  matrix* gN_rhs;
+  matrix* gN;
 
   /* For summation sign */
   int upper_bound = value;
@@ -49,6 +69,7 @@ int main(){
     /* Summarize the solution values */
     summation_value += x->solution_value + u->solution_value;
 
+    /* Print solution for the n:th problem */
     printf("Solution for n = %i\n", lower_bound++);
     printf("x solution:\n");
     print_matrix(x->solution);
@@ -57,7 +78,6 @@ int main(){
     printf("x optimum value = %f\n", x->solution_value);
     printf("u optimum value = %f\n", u->solution_value);
   }
-
   printf("Total optimum value = %f\n", summation_value);  
 
   /* Free everything */
@@ -70,4 +90,6 @@ int main(){
     free_matrix(inequality_constraints[i]);
     free_matrix(inequality_constraints_rhs[i]);
   }
+
+  return 0;
 }
