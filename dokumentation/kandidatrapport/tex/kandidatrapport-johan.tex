@@ -42,13 +42,12 @@
 	
 	Ett modultest är ett integrationtest utav två eller fler enheter. Det går ut på att man kombinerar ett antal enheter och sedan testar dem tillsammans. Testen i sig kan var väldigt lika enhetstest men täcker nu en komplexare funktionalitet. Precis som enheter kan moduler vara svåra att definiera. Om allt för många enheter förs samman och modulen får mer funktionalitet kanske den till slut kan klassas som ett system, och då förlorar modultestningen sitt syfte. Om man har ett så litet projekt som detta så är moduldefinitionen ofta inte så svår, eftersom både komplexiteten och utvecklingsmöjligheterna är begränsade. \newline
 	
-	Ett systemtest är precis som modultest ett integrationstest, men nu utav ett antal moduler isället. 
+	Ett systemtest är precis som modultest ett integrationstest, men nu utav ett antal moduler isället. Testet inriktar sig nu också vanligtvis på hela produkten som har utvecklats. Detta för att säkerställa dess funktionalitet och för att hitta fel som uppstått vid kommunikation mellan moduler. Exempel på systemtest i vårt projekt är test av lösaren. Anledningen till att lösaren ses som ett eget system och inte är ihopbakad med GUI:t är att den ska kunna fungera separat. Givetvis är de båda ihopbakade också ett system. som också kräver systemtest. \newline	
 	
-	
-	Ett acceptanstest är ett test som har målet att testa om programmet är accepterbart. Med det menas att testen kollar ifall programmet uppfyller alla krav som ställs på det. I vårt projekt är det huvudsakligen prestandan som behöver acceptanstestas.
+	Ett acceptanstest är ett test som har målet att testa om programmet är accepterbart. Med det menas att testen kollar ifall programmet uppfyller alla krav som ställs på det, och nu inte endast funktionalitetskraven. I vårt projekt är det huvudsakligen prestandan som behöver acceptanstestas. Då det prestandakrav produkten har är relativt vagt ("Produkten ska ha likvärdig prestanda med gurobi") är inte testen av så stor prioritet. Men för att ha någon koll på produktens hastighet och för att garantera att kunden blir nöjd krävs ändå någon form utan test.  \newline
 	
 	I projektet har ett byggsystem använts som kompilerat all kod. Systemet har därefter även kört alla tester som skapats genom projektet.
-	Med hjälp av byggsystemet och Continuous Integration har all kod då kunnat testas direkt när någon har skrivit ny kod och därav har statistik kunnat tas fram. Denna statistik är dock inte så omfattande då byggsystemet inte körde alla test från början (nya test skrivs hela tiden). Men statistiken ger ändå en bra riktlinje att jämföra med mot det optimala fallet.
+	Med hjälp av byggsystemet och Continuous Integration har all kod då kunnat testas direkt när någon har skrivit ny kod och därav har det gått att se när och var feluppstått.
 	
 	Systemtest
 	Acceptanstest
@@ -56,11 +55,18 @@
 	
 	
 	\subsection{Resultat}	
-	resultat av efterforskning, \newline
-	Det finns otroligt mycket information om mjukvarutestning men samtidigt är ämnet ganska vagt då testning beror så mycket på just vad som ska testas. I vårt projekt visade det sig att ''Black box-testing'' var den metod som överlägset lämpade sig bäst då svar och resultat från funktioner oftast är kända. Ett exempel på detta är matrisaritmetiken där resultaten, av till exempel en multiplikation, går att räkna ut ganska enkelt på papper. \newline
+	Följande del beskriver hur arbetet med efterforskningen gick samt hur testen utfördes. \newline
+	\subsubsection{Efterforskning}
+	Det finns otroligt mycket information om mjukvarutestning men samtidigt är ämnet ganska vagt då testning beror så mycket på just vad som ska testas. I vårt projekt visade det sig att ''Black box-testing'' var den metod som överlägset lämpade sig bäst. Detta eftersom hela Quadopt är uppbyggd utav många små funktioner och svar och resultat från dem är oftast är kända på förhand. Ett exempel på detta är matrisaritmetiken där resultatet, av till exempel en multiplikation, går att räkna ut ganska enkelt på papper. Enligt (tAoST) ska dessa test utgå ifrån kravspecifikationen och andra dokumnet som beskriver vad produkten ska ha för funktionalitet. Boken beskriver också ''Black Box'' som en utmattande testteknik. Med menar de att man borde testa alla möjliga indata till den svarta låda och se så att svaren stämmer. Detta är precis som det står i boken i praktiken omöjligt. Speciellt i vårt projekt där det enda som begränsar antalet olika sätt en matris, bestående utav tal, kan se ut på är datorns minne. (IV\&V) säger att beroende på kundens behov så test skrivas redan innan koden skrivs för att ska kunna jobba mot ett mål \newline
+	
+	I the Art of Software Testing står det att acceptanstester borde skrivas redan efter
 	För att säkerställa projektets krav behövdes bara en testmetod till, och det var en metod för att mäta prestanda. Den som valdes var ''Load testing'' som innebär att man belastar programmet med mycket data och så kollar man på hur bra det fungerar. I vårt fall gav vi lösaren många problem och kollade på hur fort det gick i förhållande till andra lösare. \newline
+	
+	\subsubsection{Praktik}
+	För att kunna utföra ''Black Box''-testerna behövdes antalet testfall reduceras. Detta åstakoms genom att ha möten med kunden som klargjorde att indata till programmet alltid skulle vara giltig. Det reducerade antal testfall enormt mycket, men som beskrivet i resultatet av efterforskningen finns det även väldigt mycket giltig indata. Exempelvis för matrisaritmetiken. Dessa test gick också att reducera genom att de flesta operationer är triviala och endast kräver numeriska test såsom nolldivision och  
+	
 	Då varje testkörning tog 0.00 sekunder för alla lösarna förutom MATLAB behövdes testen köras många gånger för att se en tydlig skillnad. Anledningen till att MATLAB är långsammare är för att den är oerhört generell men förmodligen inte gjorts med fokus på att vara snabb. Gurobi är snabb eftersom dens enda uppgift är att lösa sådana här problem och har arbetats på under lång tid. Vår algoritm är snabb eftersom den inte är generell, alltså bryr vi oss inte om vissa specialfall som vi aldrig kommer stöta på. \newline
-	För att då testa deras prestanda fick lösarna lösa olika optimeringsproblem många gånger, ofta 1000 gånger, för att kunna skilja deras egentliga hastighet.
+	För att då testa deras prestanda fick lösarna lösa olika optimeringsproblem många gånger, ofta 1000 gånger, för att kunna skilja deras egentliga hastighet. Att köra testen på vår lösare och i matlab var enkelt då vi hade funktionalitet för att konvertera matriser från MATLABs definition till vår, och vice versa. Däremot så var det krångligare i gurobi eftersom tiden som var allokerad för utbildning av programmet var begränsad. Det tvingade gruppen till att mata in prblemet på ekvationsform vilket gjorde att vi var tvungna att köra testen med få variabler. Till exempel så skulle testfallet med 92 variabler ta väldigt lång tid att konvertera och mata in.
 		
 	Misstag: Det hände att vissa modul- och systemtester skedde innan de underliggande enheterna blivit testade. Ett exempel på det är lösaren som vi var ivriga att få igång och började testa tidigt. Då den inte fungreade korrekt gjorde detta att det tog lång tid att hitta felet som förmodligen hade upptäckts mycket snabbare om bara rätt testprocess hade använts. 
 	reslutat av testningen, \newline
@@ -78,6 +84,9 @@
 	
 	\subsubsection{Enhetstester}
 	Under projektet har många enhetstest skrivits (framförallt för matrisbiblioteket). Dessa test har skrivits innan och under kodningen och sedan utförts direkt efter att koden blivit klar. Det som var intressant med dessa test var mängden av fel som upptäcktes direkt. Det ledde till att utvecklingen blev mycket effektiv då fel kunde åtgärdas direkt.
+	
+	\subsection{Modultester}
+	
 	\subsubsection{Systemtester}
 	Systemtester är, som det hörs på namnet, tester av system. Testerna fungerar på samma som ett enhetstest men istället för på enskillda funktioner så sker testerna på en sammansättning av funktioner som bygger upp ett system. Det är kritiskt vid dessa test att underliggande funktioner redan är testade.
 	\subsubsection{Acceptanstester}
@@ -92,9 +101,12 @@
 	
 	\subsubsection{Metod}
 	Tanken var att genom hela projektet använda oss utav en ''Bottom-up''-strategi. Men eftersom organisationen i gruppen angående vem som skulle göra vad var dålig i början glömdes större delar av testningen bort. Detta ledde till att en ''Top-down''-strategi användes senare vilket inte fungerade så bra då majoriteten av fel hittades på låg nivå i koden.
+	Då projektet ändå var ganska entydigt, med att vi skulle implementera en algoritm som löser konvexa kvadratiska optimeringsproblem, så var det ett enkelt beslut att köra enhetstester och integrationstester. Det framgick tidigt att det var framförallt funktionalitet som behövde testas, och därför behövde planeringen av testningen endast göras grovt i början och sedan specificeras när testningen närmade sig.
+
 	annan lämpligare approach?	
 	
 	\subsection{Slutsatser}
+	Det som skulle kunna förbättras 
 	Vad ska man tänka på tills nästa gång
 	
 	\subsection{Referenser}
