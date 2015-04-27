@@ -42,7 +42,7 @@ bool is_feasible_point(matrix* z, problem* prob){
   return true;
 }
 
-void rref(matrix* M, matrix* N) {
+void rref(matrix* M, matrix* N){
   int lead = 1;
   int i = 1;
 
@@ -52,28 +52,28 @@ void rref(matrix* M, matrix* N) {
   matrix* row2;
   matrix* row3;
 
-  for (int r = 1; r <= M->rows; r++) {
-    if (M->columns+1 <= lead) {
+  for (int r = 1; r <= M->rows; r++){
+    if (M->columns+1 <= lead){
       return;
     }
     i = r;
-    while (compare_elements(get_value_without_check(i,lead,M),0) == 0) {
+    while (compare_elements(get_value_without_check(i,lead,M),0) == 0){
       i = i + 1;
-      if (M->rows+1 == i) {
+      if (M->rows+1 == i){
         i = r;
         lead = lead + 1;
-        if (M->columns+1 == lead) {
+        if (M->columns+1 == lead){
           return;
         }
       }
     }
     switch_rows(i,r,M);
     switch_rows(i,r,N);
-    if (compare_elements(get_value_without_check(r,lead,M),0) != 0) {
+    if (compare_elements(get_value_without_check(r,lead,M),0) != 0){
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,N);
     }
-    for (i = 1; i <= M->rows; i++) {
+    for (i = 1; i <= M->rows; i++){
       if (i != r) {
         row1 = get_row_vector_with_return(r,M);
         row2 = get_row_vector_with_return(i,M);
@@ -95,7 +95,6 @@ void rref(matrix* M, matrix* N) {
         free_matrix(row1);
         free_matrix(row2);
         free_matrix(row3);
-
       }
     }
     lead++;
@@ -112,20 +111,20 @@ void rref1(matrix* M) {
   matrix* row2 = create_matrix(1,M->columns);
   matrix* row3 = create_matrix(1,M->columns);
 
-  for (int r = 1; r <= M->rows; r++) {
-    if (M->columns+1 <= lead) {
+  for (int r = 1; r <= M->rows; r++){
+    if (M->columns+1 <= lead){
       free_matrix(row1);
       free_matrix(row2);
       free_matrix(row3);
       return;
     }
     i = r;
-    while (compare_elements(get_value_without_check(i,lead,M),0) == 0) {
+    while (compare_elements(get_value_without_check(i,lead,M),0) == 0){
       i = i + 1;
-      if (M->rows+1 == i) {
+      if (M->rows+1 == i){
         i = r;
         lead = lead + 1;
-        if (M->columns+1 == lead) {
+        if (M->columns+1 == lead){
           free_matrix(row1);
           free_matrix(row2);
           free_matrix(row3);
@@ -134,10 +133,10 @@ void rref1(matrix* M) {
       }
     }
     switch_rows(i,r,M);
-    if (compare_elements(get_value_without_check(r,lead,M),0) != 0) {
+    if (compare_elements(get_value_without_check(r,lead,M),0) != 0){
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
     }
-    for (i = 1; i <= M->rows; i++) {
+    for (i = 1; i <= M->rows; i++){
       if (i != r) {
         get_row_vector(r,M,row1);
         get_row_vector(i,M,row2);
@@ -202,14 +201,15 @@ bool find_starting_point(problem* prob){
     matrix* Er = matrix_copy(prob->E);
     matrix* hr = matrix_copy(prob->h);
 
-    /* reduce E so lead values can be retrieved */
-    rref(Er,hr);
+    /* Reduce E so lead values can be retrieved */
+    rref(Er, hr);
 
-    /* get leads */
+    /* Get leads */
     int curr = 1;
-    for (int r = 1; r <= Er->rows; r++) {
-      for (int c = curr; c <= Er->columns; c++) {
-        if (compare_elements(get_value_without_check(r, c, Er),1) == 0) {
+    int r, c;
+    for (r = 1; r <= Er->rows; r++){
+      for (c = curr; c <= Er->columns; c++){
+        if (compare_elements(get_value_without_check(r, c, Er),1) == 0){
           work_set_append(leads,c);
           curr = c+1;
           break;
@@ -217,9 +217,10 @@ bool find_starting_point(problem* prob){
       }
     }
 
-    /* get variables that can set to 0 later */
-    for (int v = 1; v <= prob->z->rows; v++) {
-      if (!work_set_contains(leads, v)) {
+    /* Get variables that can set to 0 later */
+    int v;
+    for (v = 1; v <= prob->z->rows; v++){
+      if (!work_set_contains(leads, v)){
         work_set_append(vars_to_zero,v);
       }
     }
@@ -228,9 +229,9 @@ bool find_starting_point(problem* prob){
     matrix* Fn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->Q->columns);
     matrix* gn = create_matrix(prob->inequality_count+vars_to_zero->count, prob->q->columns);
 
-    /* copy all the old data */
+    /* Copy all the old data */
     matrix* row;
-    for (int r = 1; r <= prob->inequality_count; r++) {
+    for (r = 1; r <= prob->inequality_count; r++){
       row = get_row_vector_with_return(r, prob->F);
       insert_row_vector(r, row, Fn);
       free_matrix(row);
@@ -239,20 +240,16 @@ bool find_starting_point(problem* prob){
       free_matrix(row);
     }
 
-    
-
-    /* insert vars set to 0 */
+    /* Insert vars set to 0 */
     row = get_zero_matrix(1, prob->Q->columns);
-    for (int r = prob->inequality_count+1; r <= Fn->rows; r++) {
+    for (r = prob->inequality_count+1; r <= Fn->rows; r++){
       insert_value_without_check(1, 1, vars_to_zero->data[r-prob->inequality_count-1], row);
       insert_row_vector(r, row, Fn);
       insert_value_without_check(0, 1, vars_to_zero->data[r-prob->inequality_count-1], row);
       insert_value_without_check(0, r, 1, gn);
     }
 
-
     /* Fill A and b with equality constraints */
-    int r;
     for (r = 1; r <= prob->equality_count; r++){
       tmp_A = get_row_vector_with_return(r, prob->E);
       insert_row_vector(r, tmp_A, A);
@@ -267,17 +264,23 @@ bool find_starting_point(problem* prob){
     int* rows = malloc(need*sizeof(int));
     bool done = false;
 
-    /* find a feasible point */
+    /* Find a feasible point */
     comb(pool, need, rows, 0, need, prob, Fn, gn, A, b, prob->z0, &done);
 
-
     free(rows);
+    free_matrix(row);
     free_matrix(A);
     free_matrix(b);
+    free_matrix(Er);
+    free_matrix(hr);
+    free_matrix(Fn);
+    free_matrix(gn);
+    work_set_free(leads);
+    work_set_free(vars_to_zero);
 
     return done;
   }else{
-    /* problem is unconstrained, any point is feasible */
+    /* Problem is unconstrained, any point is feasible */
     prob->z0 = get_zero_matrix(prob->z->rows, prob->z->columns);
     return true;
   }
