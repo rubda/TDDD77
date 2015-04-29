@@ -1135,7 +1135,6 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
     }
     switch_rows(j, pivot, A);
     switch_rows(j, pivot, B);
-
     for (int i=j+1;i<=A->columns;i++){
       multiplier=get_value_without_check(i,j,A)/get_value_without_check(j,j,A);
       for (int k=j+1;k<=A->columns;k++){
@@ -1143,9 +1142,11 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
         insert_value_without_check(temp,i,k,A);
       }
       temp=get_value_without_check(i,1,B)-multiplier*get_value_without_check(j,1,B);
+      insert_value_without_check(temp,i,1,B);
+      insert_value(0,i,j,A);
     }
-  }
 
+  }
   for (int i=A->rows;i>=1;i--){
     insert_value_without_check(get_value_without_check(i,1,B),i,1,x);
     for (int j=i+1;j<=A->columns;j++){

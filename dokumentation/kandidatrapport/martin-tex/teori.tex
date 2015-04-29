@@ -25,9 +25,39 @@ Invers (crout och sedan lösa n ekvationssystem): $\mathcal{O}(n^3)$\\
 
 \subsection{Algoritmiska förbättringar}
 Multiplikation:\\
-Istället för den naive algoritmen kan strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$ (källa). \\
+Istället för den naive algoritmen kan strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$ \cite{Strassen1969}. \\
 Inverse:\\
-Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$.
+Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$. Denna algoritm har dock en stor nackdel som beskrivs i sektion \ref{sec:inverse_nackdelar}.
 
 \subsection{Strukturella förbättringar}
 När ett linjärt ekvationssystem på formen $Ax=b $ löses så bryts A ned till två matriser L och U där L är en undre triangulär matris och U är en övre triangulär matris. I matris structen skulle dessa matriser kunna sparas tillsammans med en boolean som säger om matrisen har modifierats så skulle man kunna undvika att beräkna U och L flera gånger för samma matris. Samma sätt skulle kunna användas för inversen till matriser. 
+
+\subsection{Nackdelar med Strassen algoritmen för beräkning av inverser}
+Matrisen man ska invertera delas upp i fyra submatriser på följande sätt:
+$$A=\begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21}& A_{22}
+ \end{bmatrix}
+ $$
+ Där inversen till $A$ beräknas på följande sätt:
+ \begin{align}
+  R_1 & =A_{11}^{-1} \\
+  R_2 & =A_{21}R_1 \\
+  R_3 & =R_1A_{12} \\
+  R_4 & =A_{21}R_3 \\
+  R_5 & =R_4 -A_{22} \\
+  R_6 & =R_1^{-1} \\
+  X_{12} & =R_3R_6 \\
+  X_{21} & =R_6R_2 \\
+  R_7 & =R_3X_{21} \\
+  X_{11} & =R_1 -R7 \\
+  X_{22} & =-R_6 \\
+ A^{-1} & =\begin{bmatrix}
+X_{11} & X_{12} \\
+X_{21}& X_{22}
+ \end{bmatrix}
+ \end{align}
+ Här så kan $A_{11}^{-1}$ och $R_1^{-1}$
+
+ 
+\label{sec:inverse_nackdelar}
