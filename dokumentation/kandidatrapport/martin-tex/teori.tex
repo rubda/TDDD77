@@ -39,7 +39,7 @@ A_{11} & A_{12} \\
 A_{21}& A_{22}
  \end{bmatrix}
  $$
- Där inversen till $A$ beräknas på följande sätt:
+ Där inversen till $A$ beräknas på följande sätt\cite{Petkovic2013}:
  \begin{align}
   R_1 & =A_{11}^{-1} \\
   R_2 & =A_{21}R_1 \\
@@ -57,7 +57,46 @@ X_{11} & X_{12} \\
 X_{21}& X_{22}
  \end{bmatrix}
  \end{align}
- Här så kan $A_{11}^{-1}$ och $R_1^{-1}$
+ Här så kan $A_{11}^{-1}$ och $R_1^{-1}$ beräknas rekursivt med samma algoritm. Det stora problemet med denna algoritm är att samtliga submatriser måste vara inverterbara. Det vill säga följande måste vara uppfyllt:
+ \begin{align}
+   A_{11}A_{11}^{-1}= & I_n \\
+   A_{12}A_{12}^{-1}= & I_n \\
+   A_{21}A_{21}^{-1}= & I_n \\
+   A_{22}A_{22}^{-1}= & I_n \\
+ \end{align}
+ Ta till exempel identitetsmatrisen $I_n$ som är invertbar då den är sin egna invers. Om denna delas upp i submatriser enligt strassen algoritmen så får man följande:
+ 
+ $$ I_n =
+ \begin{bmatrix}
+   1 & 0 & 0 & \cdots & 0 \\
+  0 & 1 & 0 & \cdots & 0 \\
+  0 & 0 & 1 & \cdots & 0 \\
+  \vdots  & \vdots  & \vdots & \ddots  \\
+  0 & 0 & 0 & \cdots & 1
+ \end{bmatrix}
+ $$
+ $$I_nI_n=I_n$$
+ Anta att $n$ är ett jämnt tal så $I_n$ kan delas upp i fyra lika stora submatriser.
+ 
+  $$ I_{11}=I_{22} =
+ \begin{bmatrix}
+   1 & 0 & 0 & \cdots & 0 \\
+  0 & 1 & 0 & \cdots & 0 \\
+  0 & 0 & 1 & \cdots & 0 \\
+  \vdots  & \vdots  & \vdots & \ddots  \\
+  0 & 0 & 0 & \cdots & 1
+ \end{bmatrix}
+ I_{12}=I_{21}=
+  \begin{bmatrix}
+   0 & 0 & 0 & \cdots & 0 \\
+  0 & 0 & 0 & \cdots & 0 \\
+  0 & 0 & 0 & \cdots & 0 \\
+  \vdots  & \vdots  & \vdots & \ddots  \\
+  0 & 0 & 0 & \cdots & 0
+ \end{bmatrix}
+ $$
+ Då $I_{12}$ och $I_{21}$ är nollmatriser och inte inverterbara så kan strassen algoritmen ej tillämpas på alla matriser även om de är inverterbara. 
+ 
 
  
 \label{sec:inverse_nackdelar}
