@@ -645,7 +645,7 @@ int main(){
 
   problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
-  //quadopt_solver(problem);
+  quadopt_solver(problem);
 
   free_problem(problem);
 

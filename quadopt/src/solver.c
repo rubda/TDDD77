@@ -61,7 +61,7 @@ bool remove_constraint(problem* prob){
     free_matrix(ait);
   }
   
-  if (!solve_linear(LA, lagrange, prob->gk)){
+  if (!gauss_jordan_solver(LA, lagrange, prob->gk)){
     least_square(LA, lagrange, prob->gk);
   }
   
@@ -158,7 +158,7 @@ matrix* quadopt_solver(problem* prob){
   while (true){
     begin = clock();
     solve_subproblem(prob);
-    
+
     if (is_zero_matrix(prob->p)){
       if (prob->active_set->count == 0){
         break;
