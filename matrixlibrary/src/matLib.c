@@ -934,6 +934,34 @@ bool get_inverse(matrix* a, matrix* c) {
   return true;
 }
 
+matrix* get_inverse_of_2x2_with_return(matrix* a){
+  matrix* b=create_matrix(2,2);
+  if (get_inverse_of_2x2(a,b)){
+    return b;
+  }
+  else{
+    free_matrix(b);
+    return NULL;
+  }
+}
+
+bool get_inverse_of_2x2(matrix* a,matrix* b){
+  if (a->columns!=2||a->rows!=2||b->columns!=2||b->rows!=2){
+    return false;
+  }
+  insert_value(get_value(1,1,a),2,2,b);
+  insert_value(-get_value(1,2,a),1,2,b);
+  insert_value(-get_value(2,1,a),2,1,b);
+  insert_value(get_value(2,2,a),1,1,b);
+  value temp=get_value(1,1,a)*get_value(2,2,a)-get_value(2,1,a)*get_value(1,2,a);
+  if (temp==0){
+    return false;
+  }
+  temp=1/temp;
+  multiply_matrix_with_scalar(temp,b);
+  return true;
+}
+
 /* Solves Ax=B */
 bool solve_linear(matrix* a, matrix* x, matrix* b){
   matrix* u=create_matrix(a->rows,a->columns);
@@ -1082,6 +1110,52 @@ bool gauss_jordan(matrix* a) {
       insert_value(0,i,k,a);
     }
   }
+  return true;
+}
+
+/** Solves the system of linear equations using gauss jordan */
+bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
+  if (a->columns!=x->rows||a->rows!=b->rows||x->columns!=b->columns||a->columns!=a->rows){
+    return false;
+  }
+  matrix* A=matrix_copy(a);
+  matrix* B=matrix_copy(b);
+  value multiplier;
+  value temp;
+  for(int j=1;j<=A->columns-1;j++){
+
+    int pivot = largest_element_in_column_index(j,j, A);
+    if (get_value(pivot, j, A) == 0) {
+      pivot=smallest_element_in_column_index(j,j, A);
+      if (get_value(pivot, j, A) == 0){
+        return false;
+      }
+      multiply_row_with_scalar(-1,pivot,A);
+      multiply_row_with_scalar(-1,pivot,B);
+    }
+    switch_rows(j, pivot, A);
+    switch_rows(j, pivot, B);
+
+    for (int i=j+1;i<=A->columns;i++){
+      multiplier=get_value_without_check(i,j,A)/get_value_without_check(j,j,A);
+      for (int k=j+1;k<=A->columns;k++){
+        temp=get_value_without_check(i,k,A)-multiplier*get_value_without_check(j,k,A);
+        insert_value_without_check(temp,i,k,A);
+      }
+      temp=get_value_without_check(i,1,B)-multiplier*get_value_without_check(j,1,B);
+    }
+  }
+
+  for (int i=A->rows;i>=1;i--){
+    insert_value_without_check(get_value_without_check(i,1,B),i,1,x);
+    for (int j=i+1;j<=A->columns;j++){
+      temp=get_value_without_check(i,1,x)-get_value_without_check(i,j,A)*get_value_without_check(j,1,x);
+      insert_value_without_check(temp,i,1,x);
+    }
+    divide_row_with_scalar(get_value_without_check(i,i,A),i,x);
+  }
+  free_matrix(A);
+  free_matrix(B);
   return true;
 }
 
