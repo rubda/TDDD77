@@ -16,7 +16,7 @@ int main(void){
 
   matrix* X = create_matrix(2, 1);
 
-  solve_linear(A, X, B);
+  gauss_jordan_solver(A, X, B);
   
   /* X should be */
   matrix* solution = create_matrix(2, 1);
@@ -24,17 +24,7 @@ int main(void){
 			    5};
   insert_array(temp_solution, solution);
 
-  printf("What solve_linear returns:\n");
-  print_matrix(X);
-
-  printf("What solve_linear should return:\n");
-  print_matrix(solution);
-
-  //assert(compare_matrices(X, solution));
-
-  /* The problem is that the matrix does not pivot the matrix correct,
-     before trying to solve the system Ax = b? D
-  */
+  assert(compare_matrices(X, solution));
 
   free_matrix(A);
   free_matrix(B);

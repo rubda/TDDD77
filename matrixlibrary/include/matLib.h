@@ -207,6 +207,10 @@ value get_determinant(matrix* a);
 /** Calculates the inverse of a and puts it into c */
 bool get_inverse(matrix* a, matrix* c);
 
+matrix* get_inverse_of_2x2_with_return(matrix* a);
+
+bool get_inverse_of_2x2(matrix* a,matrix* b);
+
 /** Solves Ax=B */
 bool solve_linear(matrix* a,matrix* x, matrix *b);
 
@@ -224,6 +228,9 @@ void least_square(matrix* a, matrix* x, matrix* b);
 
 /** Gauss eliminates the matrix a */
 bool gauss_jordan(matrix* a);
+
+/** Solves the system of linear equations using gauss jordan */
+bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b);
 
 /** Returns a matrix with only pivots elements from a  */
 matrix* get_matrix_with_only_pivots(matrix* a);
