@@ -48,8 +48,8 @@ int main() {
   print_matrix(z);*/
 
 
-  //assert(find_starting_point(problem));
-  //assert(is_feasible_point(problem->z0, problem));
+  assert(find_starting_point(problem));
+  assert(is_feasible_point(problem->z0, problem));
 
   free_problem(problem);
 }

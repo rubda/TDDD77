@@ -1,11 +1,11 @@
 \section{Inledning}
-	Denna rapport går igenom eventuella optimeringar av en befintlig implementation av ett matrisbibliotek. I slutändan så implementerades optimeringarna och jämförelser gjordes mellan den gamla och den nya versionen av biblioteket. 
+	Denna rapport går igenom vilka optimeringar som kunde göras på att befintligt matrisbibliotek. I slutändan så implementerades optimeringarna och jämförelser gjordes mellan den gamla och den nya versionen av biblioteket. 
 	\subsection{Syfte}
-	Optimera  av ett matrisbibliotek som en lösare av kvadratiska konvexa optimeringsproblem ska använda. 
+	Optimera ett matrisbibliotek som en lösare av kvadratiska konvexa optimeringsproblem ska använda. 
 	\subsection{Frågeställning}
 	Finns det möjlighet till förbättringar vad gäller prestanda i den befintliga implementationen av matrisbiblioteket matLib som har tagits fram under kandidatprojektet?
 	\subsection{Avgränsningar}
-	Matrisbiblioteket kan körs på alla platformar som har en c kompilerare men i denna rapport så körs det endast x86-64. 
+	Matrisbiblioteket kan körs på alla platformar som har en c kompilator men i denna rapport så körs det endast x86-64. 
 	\\
 	Koden kompileras utan optimeringsflaggor så att alla optimeringar sker i koden. 
 	\\
@@ -15,4 +15,4 @@
 	\item double
 	\item quad
 	\end{itemize}
-	Det kan även användas med bara heltal men de flesta av funktionerna fungerar inte med heltal. 
+	Det kan även användas med bara heltal men de flesta av funktionerna fungerar inte med heltal. I denna rapport så göras alla jämförelser med precisionen satt till double. 

@@ -73,14 +73,14 @@ void solve_subproblem(problem* prob){
   matrix* h1 = subtract_matrices_with_return(AQg, c);  
 
   matrix* lambda = create_matrix(AQg->rows, AQg->columns);
-  solve_linear(AQAt, lambda, h1);  
+  gauss_jordan_solver(AQAt, lambda, h1);  
 
   matrix* ht = create_matrix(prob->p->rows, lambda->columns);
   matrix* h2 = create_matrix(ht->rows, ht->columns);
   multiply_matrices(At, lambda, ht);
   subtract_matrices(ht, prob->gk, h2);
 
-  solve_linear(prob->Q, prob->p, h2);
+  gauss_jordan_solver(prob->Q, prob->p, h2);
 
   #ifdef DEBUG
 

@@ -172,7 +172,7 @@ void comb(int pool, int need, int* rows, int at, int ri, problem* prob, matrix* 
     }
     
     /* If solution is feasible, return */
-    if (solve_linear(A, z, b)){
+    if (gauss_jordan_solver(A, z, b)){
       if (is_feasible_point(z, prob)){
         *done = true;
       }
