@@ -8,12 +8,26 @@ Tanken med vårt program är att vi ska äga det, men Saab AB ska ha rätten att
 \subsection{Algoritmer och metoder}
 Vår huvudsakliga källa för de algoritmer och metoder vi använt kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
 \\
-När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde att vi tillslut valde att gå vidare med den metoden. 
+När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att vi tillslut valde att gå vidare med just Active set. 
 \\
-För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner.     
+För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problem vi löste var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
+Något som vi märkte när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men att implementera metoden i kod var. 
 
 \subsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. 
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnade är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. 
+
+
+\subsection{Datastrukturer}
+\subsubsection{Matriser}
+\subsubsection{Working set}
+\subsubsection{Problem}
+
+\subsection{Startpunkt}
+Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. Det skulle förmodligen innebära stora  och onödiga förseningar, så ingen av metoderna valdes. Istället valdes ett mer lättimplementerad lösning som inte fanns med i någon bok (som lästs). Denna metod byggde på att lösa många linjära system och leta efter en punkt där ett subset av bivillkoren är aktiva och punkten uppfyller alla bivillkor.
+
+\subsection{Subproblem}
+Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfuntionens linjära termer skiljer sig också en aning då målfuntionens globala minimum har flyttats, relativt till position vi står i, för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg.
+Som beskrivet tidigare kändes det ganska trivialt att lösa subproblemet, men efter en tid in i implementeringen upptäcktes det hur svårt det var att få datorn att göra samma sak som man så smidigt gjorde på papper. Det som krånglade till det var att på papper löste man ut variabler genom att derivera målfunktionen och använda sig av de linjära utryck som då kvarstår. Efter mycket slit utan resultat gick vi bort från den lösningsmetoden och påbörjade en ny utbildningsfas för att hitta en annan metod. Ur Numerical Optimization hittades dessa fyra: ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' krävde att problemet var väldigt specifikt och såg ut på ett visst sätt, men de resterande tre var av intresse. Alla tre hade sina för- och nackdelar men alla uppfyllde i alla fall det som behövdes. Efter en del övervägningar landande till slut valet på ''Range-space'' som var överlägset lättaste att implementera. Nackdelen med metoden är dock att den kräver att man inverterar Q-matrisen (som innehåller de kvadratiska termerna i målfunktionen), vilket är en väldigt tung matematisk operation. Som tur är hade gruppen vetskap om att Q-matrisen alltid var symmetrisk samt att den oftast är näst intil diagonal. Detta gör att matrisen blir lättinverterbar, och det behövs endast göras en gång per algoritmkörning. Alltså blev kostnaden av valet av subproblemslösare inte så dyrt. Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
 
 \subsection{Vår lösning}
 I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
@@ -50,3 +64,6 @@ I figur 1 nedanför visas pseudokod för vår implementering av Active set metho
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+
+

@@ -33,6 +33,9 @@
 *.tdo
 *.swp
 *.pdf
+*.bcf
+*.glsdefs
+*.sbl
 
 #For bachelorrepor
 !dokumentation/kandidatrapport/pdf/*.pdf
@@ -53,3 +56,7 @@
 
 # Build directory
 */obj/*
+*.o
+
+# Matlab stuff
+*.mexmaci64
