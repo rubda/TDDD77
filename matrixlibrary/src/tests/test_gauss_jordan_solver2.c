@@ -11,7 +11,7 @@ int main(void){
   insert_array(temp_a, A);
 
   matrix* B = create_matrix(3, 1);
-  value temp_b[3] = { 5,
+  value temp_b[3] = { 0,
 		      4,
 		      3};
   insert_array(temp_b, B);
@@ -24,7 +24,7 @@ int main(void){
   matrix* solution = create_matrix(3, 1);
   value temp_solution[3] = {3,
 			    4,
-			    5};
+			    0};
   insert_array(temp_solution, solution);
 
   assert(compare_matrices(X, solution));
