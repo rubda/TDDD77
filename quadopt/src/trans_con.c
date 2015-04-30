@@ -18,7 +18,7 @@ bool insert_A_matrices(matrix* E, matrix* A);
 bool insert_B_matrices(matrix* E, matrix* B, size_t N);
 
 /** Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h).*/
-bool dyn_2_eq(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x, size_t card_u){
+bool trans_dyn_cons(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x, size_t card_u){
   if(!check_dim_k(k, card_x)) return false;
   if(!check_dim_h(h)) return false;
   size_t N = (h->rows - 2) / 2;
@@ -31,6 +31,16 @@ bool dyn_2_eq(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card
   multiply_matrix_with_scalar(-1, A);
   if(!insert_A_matrices(E, A)) return false;
   if(!insert_B_matrices(E, B, N)) return false;
+
+  return true;
+}
+
+bool trans_ineq_cons(matrix* Fx, matrix* Fu, matrix* gx, matrix* gu, matrix* F, matrix* g){
+  if(!insert_sub_matrix(1, Fx->rows, 1, Fx->columns, Fx, F)) return false;
+  if(!insert_sub_matrix(Fx->rows + 1, Fx->rows + Fu->rows, Fx->columns + 1,
+			Fx->columns + Fu->columns, Fu, F)) return false;
+  if(!insert_sub_matrix(1, gx->rows, 1, 1, gx, g)) return false;
+  if(!insert_sub_matrix(gx->rows + 1, gx->rows + gu->rows, 1, 1, gu, g)) return false;
 
   return true;
 }

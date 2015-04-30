@@ -13,6 +13,7 @@
 #include <stdbool.h>
 
 /** Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h).*/
-bool dyn_2_eq(matrix* A, matrix *B, matrix* K, matrix* E, matrix* h, size_t card_x, size_t card_u);
+bool trans_dyn_cons(matrix* A, matrix *B, matrix* K, matrix* E, matrix* h, size_t card_x, size_t card_u);
+bool trans_ineq_cons(matrix* Fx, matrix* Fu, matrix* gx, matrix* gu, matrix* F, matrix* g);
 
 #endif /* TRANS_CON_H */
