@@ -132,8 +132,10 @@ C_{21}& C_{22}
   C_{22} & = M_1-M_2+M_3+M_6
  \end{align}
  \\
-Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallel då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare pån x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
-
+Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallel då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare pån x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
+ \subsubsection{Nackdelar med strassen}
+ I den nuvarande implementationen så skapar det nya matriser i varje rekursivt anrop till strassen. Detta kan leda till att den använder mycket minne. Detta skulle kunna återgärdas med att inga nya matriser skapas utan varje rekursivt anrop får de ursprungliga matriserna och en mängd som de ska arbeta med. Alternativt sätta rekursionsdjupet beroende på storleken av matriserna och mängden tillgängligt ram-minne.
+ 
 
  
  
