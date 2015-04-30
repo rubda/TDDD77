@@ -5,7 +5,7 @@
 int main(){
   clock_t begin, end;
   double time_spent;
-  int n=4096;
+  int n=64;
   matrix* a = create_identity_matrix(n,n);
   matrix* b=  create_identity_matrix(n,n);
   begin = clock();
@@ -13,5 +13,7 @@ int main(){
   end = clock();
   time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf(" %f \n",time_spent);
+  free_matrix(a);
+  free_matrix(b);
   return 0;
 }
