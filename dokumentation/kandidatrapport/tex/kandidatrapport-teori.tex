@@ -23,7 +23,13 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \subsubsection{Problem}
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. Det skulle förmodligen innebära stora  och onödiga förseningar, så ingen av metoderna valdes. Istället valdes ett mer lättimplementerad lösning som inte fanns med i någon bok (som lästs). Denna metod byggde på att lösa många linjära system och leta efter en punkt där ett subset av bivillkoren är aktiva och punkten uppfyller alla bivillkor.
+Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. \\
+Till att börja med valdes en mer lättimplementerad lösning som inte fanns med i någon bok (som lästs). Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängnd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $E$ st ''$=$''-bivillkor, $F$ st ''$\leq$''-bivillkor och $n$ st variabler:
+$${F+(n-E) \choose (n-E)}, n>E $$
+Detta sågs som relativt effektivt då gruppen trodde att $E \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $F = 192, E = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
+$${222 \choose 30} \approx 1.19*10^{37}$$
+Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för. 
+
 
 \subsection{Subproblem}
 Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfuntionens linjära termer skiljer sig också en aning då målfuntionens globala minimum har flyttats, relativt till position vi står i, för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg.

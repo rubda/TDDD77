@@ -1,39 +1,32 @@
 \section{Johan Isaksson}
-	Följande billaga är EJ klar. Mycket kladd och stödord för framtida skrivning finns med.
+Mjukvarutestning
 	\subsection{Inledning}
 	Då jag (Johan Isaksson) är testledare i gruppen faller det naturligt att skriva om något testrelaterat. Därför ska denna del av rapporten handla om hur kod och andra aspekter av ett program ska testas. Även ett par olika sätt man kan testa på samt reflektioner över hur bra de fungerar i praktiken mot vad som står i böcker. Informationen som kommer att behandlas i denna del i denna del kommer att komma från läroböcker, internet och från egna erfarenheter under projektet. 
 	
 	
 	\subsubsection{Syfte}
-	Syftet med denna del av rapporten är att klargöra hur bra olika metodiker inom mjukvarutestning fungerar samt hur och när de ska användas. Även att visa hur lätt eller svår en metod kan vara samt vilka andra aspekter det finns som påverkar resultatet metoden.
+	Syftet med denna del av rapporten är att klargöra hur bra olika metodiker inom mjukvarutestning fungerar samt hur och när de ska användas. Även att visa hur lätt eller svår en metod kan vara i praktiken samt vilka andra aspekter det finns som påverkar resultatet av metoden.
 	
 	
 	\subsubsection{Frågeställning}
-	I denna del kommer följande frågor att besvaras:
+	I denna rapport kommer följande frågor att besvaras:
 	\begin{enumerate}
-	\item{Hur ska programmet testas?}
+	\item{Hur, när och varför ska programmet testas?}
 	\item{Gjorde vi på bästa sätt?}
 	\item{Vad kan göras bättre?}
-	\item{svårt att verifiera större tester?}
-	\item{Vad? Hur? När? Var? Varför?}	
 	\end{enumerate}
 	
 	\subsubsection{Avgränsningar}
 	De delar som valts att tas bort i detta avsnitt av rapporten är de testmetoder som inte använts under projektets gång. Detta för att tiden är begränsad och för att få så mycket förståelse som möjligt för just det som tas med. Huvudsakligen kommer det att handla om områdena Enhetstester, Integrationtester (Modultester och Systemtester) och Acceptanstester. \newline
-	Då mjukvarutestning är ett väldigt brett ämne måste vissa delar skippas för att hålla rapporten till en rimlig storlek. Dessutom så känns det mest relevant att diskutera de aspekter som har utövats under projektet, något man har erfarenhet utav.
+	Anledningen till att rapporten har denna inriktning är för att mjukvarutestning är ett väldigt brett ämne. Vissa delar måste skippas för att hålla rapporten till en rimlig storlek. Dessutom så känns det mest relevant att diskutera de aspekter som har utövats under projektet, något man har erfarenhet utav.
 	
-	\subsection{Bakgrund}
-	
-	Dagens datorsystem blir mer och mer avancerade och får hela tiden en allt större beräkningskapacitet. Därför öppnas dörrarna upp för att skapa komplexare applikationer som har betydligt mer funktionalitet än förut, och i och med detta krävs det en större del testning för att garantera funktionaliteten hos koden, och framförallt mer planering. \newline
-	Jag har valt att skriva om just testning av ett program eftersom det är sådan kritisk del av ett projekt. Dessutom så har erfarenheterna i detta projekt tydligt visat mig hur det kan underlätta arbetet och betydligt öka effektiviteten när man med säkerhet kan lita på de funktioner man använder. Samtidigt minskar man det området där buggar kan uppstå vilket gör att även debugtiden i senare skriven kod minskar. \newline
-	
-	varför valde jag detta ämne?
-	beskriv testningen genom projektet
-	
+	\subsection{Bakgrund}	
+	Dagens datorsystem blir mer och mer avancerade och får hela tiden en allt större beräkningskapacitet. Därför öppnas dörrarna upp för att skapa allt komplexare applikationer som har betydligt mer funktionalitet än förut. I och med detta krävs det en större del testning för att garantera funktionaliteten hos koden, och framförallt mer planering. \newline
+	Jag har valt att skriva om just testning av ett program eftersom det just är en sådan kritisk del av ett projekt. Dessutom så har erfarenheterna i detta projekt tydligt visat mig hur det kan underlätta arbetet och betydligt öka effektiviteten när man med säkerhet kan lita på de funktioner man använder. Samtidigt minskar man det området där buggar kan uppstå vilket gör att även debugtiden i senare skriven kod minskar. \newline	
 	
 	\subsection{Teori}
 	Eftersom testprocessen sträcker sig över hela projektet är det viktigt att tidigt tänka på vad som ska göras. Att veta hur testningen går till och information om när man ska använda en viss metod är kritiskt. Utan det skulle ingen som hade ett system gå säker. När som helst skulle ett fel kunna uppstå vilket skulle kunna leda till dyra skador beroende på användningsområdet. \newline
-	Som det står skrivet i The art of software testing (referens) så spenderas vanligen ca 50\% av den totala arbetstiden i ett projekt på testning av mjukvaran. 50\% är en väldigt stor del vilket gör att det är viktigt att veta hur man spenderar denna tid på bästa sätt. I följande del kommer det bekrivas hur man ska gå till väga för att kunna uppnå ett bra resultat för de motoder som denna del avgränsat sig till.
+	Som det står skrivet i The art of software testing (referens) så spenderas vanligen ca 50\% av den totala arbetstiden i ett projekt på testning av mjukvaran. 50\% är en väldigt stor del vilket gör att det är viktigt att veta hur man spenderar denna tid på bästa sätt. I följande del kommer det bekrivas hur man ska gå till väga för att kunna uppnå ett bra resultat för de metoder som denna del avgränsat sig till.
 	
 	\subsection{Metod}
 	För att ta reda på all information som behövs har ett flertal böcker tittats igenom. Ingen av dem har läst igenom till 100\%, utan endast de intressanta delarna har läst med mer nogrannhet. För att verifiera att det som lästs stämmer har vissa delar testats i praktiken, i detta fall på projketet. Till exempel så har enhetstester körts på matris bibliotekts funktioner såsom matrisaddition, sytemtester och modultester har körts på den kvadratiska problem-lösaren och acceptanstester har körts på alla delar i projektet för att se till att alla krav är uppfyllda. Mer om detta kan läsas i resultat.
@@ -53,15 +46,15 @@
 	\subsection{Resultat}	
 	Följande del beskriver hur arbetet med efterforskningen gick samt hur testen utfördes.
 	\subsubsection{Efterforskning}
-	Det finns otroligt mycket information om mjukvarutestning men samtidigt är ämnet ganska vagt då testning beror så mycket på just vad som ska testas. I vårt projekt visade det sig att ''Black box-testing'' var den metod som överlägset lämpade sig bäst. Detta eftersom hela Quadopt är uppbyggd utav många små funktioner och svar och resultat från dem är oftast är kända på förhand. Ett exempel på detta är matrisaritmetiken där resultatet, av till exempel en multiplikation, går att räkna ut ganska enkelt på papper. Enligt (tAoST) ska dessa test utgå ifrån kravspecifikationen och andra dokumnet som beskriver vad produkten ska ha för funktionalitet. Boken beskriver också ''Black Box'' som en utmattande testteknik. Med menar de att man borde testa alla möjliga indata till den svarta låda och se så att svaren stämmer. Detta är precis som det står i boken i praktiken omöjligt. Speciellt i vårt projekt där det enda som begränsar antalet olika sätt en matris, bestående utav tal, kan se ut på är datorns minne. (IV\&V) säger att beroende på kundens behov så test skrivas redan innan koden skrivs för att ska kunna jobba mot ett mål \newline
-	
-	I the Art of Software Testing står det att acceptanstester borde skrivas redan efter
-	För att säkerställa projektets krav behövdes bara en testmetod till, och det var en metod för att mäta prestanda. Den som valdes var ''Load testing'' som innebär att man belastar programmet med mycket data och så kollar man på hur bra det fungerar. I vårt fall gav vi lösaren många problem och kollade på hur fort det gick i förhållande till andra lösare. \newline
-	
-	Det skulle kunnat varit så att GUI:t hade haft högre prioritet än vad det hade. I det fallet hade olika typer av UX- användartest varit nödvändiga för att kvalitetsssäkra produkten. Men eftersom GUI:t beställdes utifrån kundens personliga behov, var det tydligt definierat redan från början att det var av låg prioritet. 
+	Det finns otroligt mycket information om mjukvarutestning men samtidigt är ämnet ganska vagt då testning beror så mycket på just vad som ska testas. I vårt projekt visade det sig att ''Black box-testing'' var den metod som överlägset lämpade sig bäst. Detta eftersom hela Quadopt är uppbyggd utav många små funktioner och resultateten som de ska ge tillbaka är oftast kända på förhand. Ett exempel på detta är matrisaritmetiken där resultatet, av till exempel en multiplikation, går att räkna ut ganska enkelt på papper. Enligt (tAoST) ska dessa test utgå ifrån kravspecifikationen och andra dokumnet som beskriver vad produkten ska ha för funktionalitet. Boken beskriver också ''Black Box'' som en utmattande testteknik. Med menar de att man borde testa alla möjliga indata till den svarta lådan och se så att svaren stämmer. Detta är precis som det står i boken i praktiken omöjligt. Speciellt i vårt projekt där det enda som begränsar antalet olika sätt en matris, bestående utav tal, kan se ut på är datorns minne. \newline
+	I projektet fanns dock ofta behovet av se en funktions lösningsgång, och då är ''Black Box'' en väldigt dålig metod. En metod som då lämpar sig bättre är ''White Box'' testning, som innebär att man kollar på den interna strukturen i en funktion. Därefter kan man kolla, efter vald indata, och lösningsgången är den väntade. i (tAoST) står det att även denna metod kan problematisk då antalet lösningsgångar kan vara väldigt många.
+ 	
+I the Art of Software Testing står det att acceptanstester borde skrivas redan efter
+För att säkerställa projektets krav behövdes bara en testmetod till, och det var en metod för att mäta prestanda. Den som valdes var ''Load testing'' som innebär att man belastar programmet med mycket data och så kollar man på hur bra det fungerar. I vårt fall gav vi lösaren många problem och kollade på hur fort det gick i förhållande till andra lösare. \newline	
+Det skulle kunnat varit så att GUI:t hade haft högre prioritet än vad det hade. I det fallet hade olika typer av UX- användartest varit nödvändiga för att kvalitetsssäkra produkten. Men eftersom GUI:t beställdes utifrån kundens personliga behov, var det tydligt definierat redan från början att det var av låg prioritet. 
 	
 	\subsubsection{Praktik}
-	Som beskrivet tidigare finns det i stort sett oändligt många kombinationer av in- och utdata.	För att då kunna utföra ''Black Box''-testerna behövdes antalet testfall reduceras. Detta åstakoms genom att ha möten med kunden som klargjorde att indata till programmet alltid skulle vara giltig. Det reducerade antal testfall enormt mycket, men som beskrivet i resultatet av efterforskningen finns det även väldigt mycket giltig indata. Exempelvis för matrisaritmetiken. Dessa test gick också att reducera genom att de flesta operationer är triviala och endast kräver numeriska test såsom nolldivision och flyttalsfel. \newline
+	Som beskrivet tidigare finns det i stort sett oändligt många kombinationer av in- och utdata.	För att då kunna utföra ''Black Box''-testerna behövdes antalet testfall reduceras. Detta åstakoms genom att ha möten med kunden som klargjorde att indata till programmet alltid skulle vara giltig. Det reducerade antal testfall enormt mycket, men som beskrivet i resultatet av efterforskningen finns det även väldigt mycket giltig indata. Exempelvis för matrisaritmetiken. Dessa test gick också att reducera genom att de flesta operationer är triviala och endast kräver numeriska test såsom nolldivision och flyttalsfel. Genom att även utnyttja ''White Box''-tekniken på mindre gick det att utforma olika ''Black Box''-test som tog olika vägar genom koden och på så sätt bara skapa ett test för varje väg. Denna teknik utnyttjades endast på mindre funktioner såsom moduler för att antalet olika fall skulle begränsas till något som var rimligt. \newline
 	För lösaren gick det att applicera samma metod, eftersom dess funktionalitet bygger mycket på underliggande funktioner. Det som skilde sig gentemot småfunktionerna var att nu behandlades oftast rader eller kolumner istället för enskillda element. Detta ledde till att de flesta test kollade på kanterna utav det tillåtna området. Alltså kunde ett test vara att försöka hämta ut en radvektor på rad -1 ur en matris, vilket skulle vara ogiltigt.\newline
 Vid granskning av testresultat från git, Travis (verktyg för Continuous integration) och gruppmedlemmar visade det sig att majoriteten fel av bestod utav två typer: ''Assertion''s som misslyckats och ''Segmentations fault''. En ''Assertion'' är ett test inuti koden som avbryter exekveringen om testet inte går bra. ''Seqmentation fault'' är ett programmeringsfel som resulterat i en ogiltig läsning eller till minnet. Felen som uppstod var väldigt utspridda och olika. Det som de flesta hade gemensamt var dock att de låg på en låg nivå, alltså i bottenfunktionerna. \newline	
 	För att testa algoritmens hastighet stötte gruppen på oväntade problem, lösarna var för snabba.	Då varje testkörning tog 0.00 sekunder för alla lösarna förutom MATLAB behövdes testen köras många gånger för att se en tydlig skillnad. Anledningen till att MATLAB är långsammare är för att den är oerhört generell men förmodligen inte gjorts med fokus på att vara snabb. Gurobi är snabb eftersom dens enda uppgift är att lösa sådana här problem och har arbetats på under lång tid. Vår algoritm är snabb eftersom den inte är generell, alltså bryr vi oss inte om vissa specialfall som vi aldrig kommer stöta på. \newline
@@ -96,7 +89,7 @@ Vid granskning av testresultat från git, Travis (verktyg för Continuous integr
 	Då projektet ändå var ganska entydigt, med att vi skulle implementera en algoritm som löser konvexa kvadratiska optimeringsproblem, så var det ett enkelt beslut att köra enhetstester och integrationstester. Det framgick tidigt att det var framförallt funktionalitet som behövde testas, och därför behövde planeringen av testningen endast göras grovt i början och sedan specificeras när testningen närmade sig. Det som skulle behövas göras tidigare är framförallt att organisera och schemalägga testning för att testare skall kunna veta vad de har för ansvar. 
 	
 	\subsection{Slutsatser}
-	Valet av strategi med ''Black Box''-test var utan tvivel rätt då ingen annan metodik passade lika bra in med vårt project. 
+	Valet av strategi med ''Black Box''-test var utan tvivel rätt då ingen annan metodik passade lika bra in med vårt project. Däremot
 	
 	Det som jag har lärt mig utav detta projekt angående testning är vikten av att tidigit definiera projektets omfång och syfte. Utan en tydlig förståelse av projektet blir testplannering en väldigt svår uppgift och en mindre lyckad plannering påverkar arbetet genom hela projekttiden på ett negativt sätt. Dock krävs det även en tydlig kravspecifikation och en idé om hur arkitekturen ser ut för att kunna definiera målen med testningen. Detta för att sedan kunna plannera och skapa de testfall som ska säkerställa mjukvarans funktionalitet.
 	
