@@ -31,6 +31,9 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{pdfpages}
+\usepackage[round]{natbib}
+
+\bibliographystyle{plainnat}
 
 \usetikzlibrary{shapes, arrows}
 
@@ -74,10 +77,15 @@
 \input{tex/kandidatrapport-diskussion}
 \input{tex/kandidatrapport-slutsatser}
 \input{tex/kandidatrapport-fortsatt-arbete}
-\input{tex/kandidatrapport-referenser}
+%\input{tex/kandidatrapport-referenser}
+
+\bibliography{tex/refs}{}
 
 \newpage
 \begin{appendices}
+	\section{Allmänt om uppgiften}
+	\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
+	\newpage
 	\input{tex/kandidatrapport-adam}
 	\newpage
 	\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
