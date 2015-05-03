@@ -488,7 +488,7 @@ bool simplex_phase_1(problem* prob) {
     insert_value_without_check(0, r, 1, prob->z0);
   }
 
-  print_matrix(tableau);
+  //print_matrix(tableau);
 
   /* solve */ 
   while (!is_neg_tableau_row(tableau->rows, tableau)) {
@@ -554,7 +554,8 @@ bool simplex_phase_1(problem* prob) {
       free_matrix(new_row);
     }    
 
-    print_matrix(tableau);
+    //print_matrix(tableau);
+    //work_set_print(basis);
 
   }
   
@@ -568,7 +569,7 @@ bool simplex_phase_1(problem* prob) {
     }
   }
 
-  print_matrix(prob->z0);
+  //print_matrix(prob->z0);
 
   return !error;
 }
