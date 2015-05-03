@@ -19,6 +19,8 @@ struct problem{
 
   matrix* q; /**< The matrix containing the linear optimization problem. */
 
+  int variable_count; /**< The number of variables in the problem. */
+
   /* Equality constraints */
   int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
   matrix* E; /**< Equality constraints left-hand side coefficient. */

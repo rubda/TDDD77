@@ -28,7 +28,9 @@ Till att börja med valdes en mer lättimplementerad lösning som inte fanns med
 $${F+(n-E) \choose (n-E)}, n>E $$
 Detta sågs som relativt effektivt då gruppen trodde att $E \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $F = 192, E = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
-Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för. 
+Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för. \\
+Efter ytterliggare utbildning bestämdes det att ''Phase I'' skulle implementeras då denna metod ansåg lättast. ''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal.  
+
 
 
 \subsection{Subproblem}

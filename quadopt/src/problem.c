@@ -21,6 +21,10 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
 
   prob->q = q;
 
+  prob->variable_count = Q->rows;
+
+
+
   /* Constraints */
 
   /* Equality constraints */

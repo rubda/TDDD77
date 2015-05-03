@@ -18,4 +18,6 @@ bool is_feasible_point(matrix* z, problem* prob);
 /** Calculates a feasible starting point for a problem */
 bool find_starting_point(problem* prob);
 
+bool simplex_phase_1(problem* prob);
+
 #endif /* FEASIBLE_POINT_H */
