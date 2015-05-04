@@ -47,7 +47,7 @@ typedef long double value;
 #endif
 
 /** Uncomment to allow parallel operations */
-//#define PARALLEL
+#define PARALLEL
 
 /** This is the core-struct in this library. All matrix-operations are based on this Struct. */
 struct matrix {
@@ -70,10 +70,9 @@ typedef struct matrix matrix;
 static const int number_of_cores=4;
 
 /** Used to protect the counter, remember to run initialize_parallelization */
-sem_t* mutex;
+pthread_mutex_t lock;
 
-pthread_mutex_t* count_mutex;
-
+int* thread_counter;
 
 /* Used in strassen parallel to pass matrices to target functions */
 struct matrices{

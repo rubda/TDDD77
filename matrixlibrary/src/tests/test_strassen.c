@@ -1,19 +1,27 @@
 #include <matLib.h>
 #include <assert.h>
-#include <assert.h>
 #include <time.h>
 int main(){
+  matrix* to_multiply;
+  matrix* multiplied;
   clock_t begin, end;
   double time_spent;
-  int n=64;
-  matrix* a = create_identity_matrix(n,n);
-  matrix* b=  create_identity_matrix(n,n);
-  begin = clock();
-  matrix* temp=strassen_matrices_with_return(a,b);
-  end = clock();
-  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf(" %f \n",time_spent);
-  free_matrix(a);
-  free_matrix(b);
+
+  int number_of_tests=1024;
+  for (int j=1;j<=1;j++){
+    printf("this is test %i strassen \n",j);
+  for (int i=5000;i<=number_of_tests;i*=2){
+    to_multiply=create_identity_matrix(i,i);
+    multiplied=create_identity_matrix(i,i);
+    begin = clock();
+    assert(strassen_matrices(to_multiply,to_multiply,multiplied));
+    end = clock();
+    time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    free_matrix(to_multiply);
+    free_matrix(multiplied);
+    printf(" %f \n",time_spent);
+  }}
+
+
   return 0;
 }

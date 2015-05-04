@@ -300,7 +300,7 @@ matrix* strassen_matrices_with_return(matrix* a, matrix* b) {
 
 /* Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices(matrix* a, matrix* b, matrix* c) {
-  if (a->rows<=512  && b->columns<=512){
+ if (a->rows<=512  && b->columns<=512){
     return multiply_matrices(a,b,c);
   }
   if ((a->columns != b->rows) || (a->rows != c->rows)
@@ -498,11 +498,29 @@ void *calculation_one(void* arg){
   matrix* a11a22=add_matrices_with_return(a11,a22);
   matrix* b11b22=add_matrices_with_return(b11,b22);
 
-  M1=strassen_matrices_parallel_with_return(a11a22,b11b22);
+  pthread_mutex_lock(&lock);
+  bool create_thread=true;
+  if (*thread_counter==number_of_cores){
+    create_thread=false;
+  }
+  if (!create_thread){
+    pthread_mutex_unlock(&lock);
+    M1=strassen_matrices_with_return(a11a22,b11b22);
+  }
+  else{
+    *thread_counter=*thread_counter+1;
+    pthread_mutex_unlock(&lock);
+    M1=strassen_matrices_parallel_with_return(a11a22,b11b22);
+    pthread_mutex_lock(&lock);
+    *thread_counter=*thread_counter-1;
+    pthread_mutex_unlock(&lock);
+  }
 
   free_matrix(a11a22);
   free_matrix(b11b22);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M1);
 }
 
@@ -516,10 +534,28 @@ void *calculation_two(void* arg){
   matrix* a21a22=add_matrices_with_return(a21,a22);
   matrix* M2;
 
-  M2=strassen_matrices_parallel_with_return(a21a22,b11);
+  pthread_mutex_lock(&lock);
+  bool create_thread=true;
+  if (*thread_counter==number_of_cores){
+    create_thread=false;
+  }
+  if (!create_thread){
+    pthread_mutex_unlock(&lock);
+    M2=strassen_matrices_with_return(a21a22,b11);
+  }
+  else{
+    *thread_counter=*thread_counter+1;
+    pthread_mutex_unlock(&lock);
+    M2=strassen_matrices_parallel_with_return(a21a22,b11);
+    pthread_mutex_lock(&lock);
+    *thread_counter=*thread_counter-1;
+    pthread_mutex_unlock(&lock);
+  }
 
   free_matrix(a21a22);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M2);
 }
 
@@ -532,10 +568,29 @@ void *calculation_three(void* arg){
 
   matrix* b12b22=subtract_matrices_with_return(b12,b22);
   matrix* M3;
-  M3=strassen_matrices_parallel_with_return(a11,b12b22);
+
+  pthread_mutex_lock(&lock);
+  bool create_thread=true;
+  if (*thread_counter==number_of_cores){
+    create_thread=false;
+  }
+  if (!create_thread){
+    pthread_mutex_unlock(&lock);
+    M3=strassen_matrices_with_return(a11,b12b22);
+  }
+  else{
+    *thread_counter=*thread_counter+1;
+    pthread_mutex_unlock(&lock);
+    M3=strassen_matrices_parallel_with_return(a11,b12b22);
+    pthread_mutex_lock(&lock);
+    *thread_counter=*thread_counter-1;
+    pthread_mutex_unlock(&lock);
+  }
 
   free_matrix(b12b22);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M3);
 }
 
@@ -548,10 +603,28 @@ void *calculation_four(void* arg){
   matrix* b21b11=subtract_matrices_with_return(b21,b11);
   matrix* M4;
 
-    M4=strassen_matrices_parallel_with_return(a22,b21b11);
+    pthread_mutex_lock(&lock);
+    bool create_thread=true;
+    if (*thread_counter==number_of_cores){
+      create_thread=false;
+    }
+    if (!create_thread){
+      pthread_mutex_unlock(&lock);
+      M4=strassen_matrices_with_return(a22,b21b11);
+    }
+    else{
+      *thread_counter=*thread_counter+1;
+      pthread_mutex_unlock(&lock);
+      M4=strassen_matrices_parallel_with_return(a22,b21b11);
+      pthread_mutex_lock(&lock);
+      *thread_counter=*thread_counter-1;
+      pthread_mutex_unlock(&lock);
+    }
 
   free_matrix(b21b11);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M4);
 }
 
@@ -565,10 +638,29 @@ void *calculation_five(void* arg){
   matrix* a11a12=add_matrices_with_return(a11,a12);
   matrix* M5;
 
-    M5=strassen_matrices_parallel_with_return(a11a12,b22);
+    pthread_mutex_lock(&lock);
+    bool create_thread=true;
+    if (*thread_counter==number_of_cores){
+      create_thread=false;
+    }
+    if (!create_thread){
+      pthread_mutex_unlock(&lock);
+      M5=strassen_matrices_with_return(a11a12,b22);
+    }
+    else{
+      *thread_counter=*thread_counter+1;
+      pthread_mutex_unlock(&lock);
+      M5=strassen_matrices_parallel_with_return(a11a12,b22);
+      pthread_mutex_lock(&lock);
+      *thread_counter=*thread_counter-1;
+      pthread_mutex_unlock(&lock);
+    }
+
 
   free_matrix(a11a12);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M5);
 }
 
@@ -583,11 +675,29 @@ void *calculation_six(void* arg){
   matrix* b11b12=add_matrices_with_return(b11,b12);
   matrix* M6;
 
-    M6=strassen_matrices_parallel_with_return(a21a11,b11b12);
+    pthread_mutex_lock(&lock);
+    bool create_thread=true;
+    if (*thread_counter==number_of_cores){
+      create_thread=false;
+    }
+    if (!create_thread){
+      pthread_mutex_unlock(&lock);
+      M6=strassen_matrices_with_return(a21a11,b11b12);
+    }
+    else{
+      *thread_counter=*thread_counter+1;
+      pthread_mutex_unlock(&lock);
+      M6=strassen_matrices_parallel_with_return(a21a11,b11b12);
+      pthread_mutex_lock(&lock);
+      *thread_counter=*thread_counter-1;
+      pthread_mutex_unlock(&lock);
+    }
 
   free_matrix(a21a11);
   free_matrix(b11b12);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M6);
 }
 
@@ -602,11 +712,29 @@ void *calculation_seven(void* arg){
   matrix* b21b22=add_matrices_with_return(b21,b22);
   matrix* M7;
 
-  M7=strassen_matrices_parallel_with_return(a12a22,b21b22);
+  pthread_mutex_lock(&lock);
+  bool create_thread=true;
+  if (*thread_counter==number_of_cores){
+    create_thread=false;
+  }
+  if (!create_thread){
+    pthread_mutex_unlock(&lock);
+    M7=strassen_matrices_with_return(a12a22,b21b22);
+  }
+  else{
+    *thread_counter=*thread_counter+1;
+    pthread_mutex_unlock(&lock);
+    M7=strassen_matrices_parallel_with_return(a12a22,b21b22);
+    pthread_mutex_lock(&lock);
+    *thread_counter=*thread_counter-1;
+    pthread_mutex_unlock(&lock);
+  }
 
   free_matrix(a12a22);
   free_matrix(b21b22);
-  exit_thread();
+  pthread_mutex_lock(&lock);
+  *thread_counter = *thread_counter - 1;
+  pthread_mutex_unlock(&lock);
   pthread_exit(M7);
 }
 
@@ -619,14 +747,6 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
       || (b->columns != c->columns)) {
     return false;
   }
-  pthread_mutex_lock(count_mutex);
-  int processes;
-  sem_getvalue(mutex, &processes);
-  pthread_mutex_unlock(count_mutex);
-  if (processes==0){
-    return strassen_matrices(a,b,c);
-  }
-
   matrix* a_corrected;
   matrix* b_corrected;
   matrix* c_corrected;
@@ -675,113 +795,248 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   get_sub_matrix(b_corrected->rows/2+1 ,b_corrected->rows,b_corrected->columns/2+1,b_corrected->columns,b_corrected,mover);
   matrix* b22=matrix_copy(mover);
 
-
   free_matrix(mover);
 
-  /* Execute thread one */
+  matrix* M1;
+  matrix* M2;
+  matrix* M3;
+  matrix* M4;
+  matrix* M5;
+  matrix* M6;
+  matrix* M7;
+
+  bool M1_wait;
+  bool M2_wait;
+  bool M3_wait;
+  bool M4_wait;
+  bool M5_wait;
+  bool M6_wait;
+  bool M7_wait;
   pthread_t thread1;
-  matrices* thread1_data= (matrices *) malloc(sizeof(matrices));
-  thread1_data->one=a11;
-  thread1_data->two=a22;
-  thread1_data->three=b11;
-  thread1_data->four=b22;
-
-  start_thread();
-  pthread_create (&thread1, NULL, calculation_one, (void *) thread1_data);
-
-  /* Execute thread two */
+  matrices* thread1_data;
   pthread_t thread2;
-  matrices* thread2_data= (matrices *) malloc(sizeof(matrices));
-  thread2_data->one=a21;
-  thread2_data->two=a22;
-  thread2_data->three=b11;
-
-  start_thread();
-  pthread_create (&thread2, NULL, calculation_two, (void *) thread2_data);
-
-  /* Execute thread three */
+  matrices* thread2_data;
   pthread_t thread3;
-  matrices* thread3_data= (matrices *) malloc(sizeof(matrices));
-  thread3_data->one=b12;
-  thread3_data->two=b22;
-  thread3_data->three=a11;
-
-  start_thread();
-  pthread_create (&thread3, NULL, calculation_three, (void *) thread3_data);
-
-
-  /* Execute thread four */
+  matrices* thread3_data;
   pthread_t thread4;
-  matrices* thread4_data= (matrices *) malloc(sizeof(matrices));
-  thread4_data->one=b21;
-  thread4_data->two=b11;
-  thread4_data->three=a22;
-
-  start_thread();
-  pthread_create (&thread4, NULL,calculation_four, (void *) thread4_data);
-
-  /* Execute thread five */
+  matrices* thread4_data;
   pthread_t thread5;
-  matrices* thread5_data= (matrices *) malloc(sizeof(matrices));
-  thread5_data->one=a11;
-  thread5_data->two=a12;
-  thread5_data->three=b22;
-
-  start_thread();
-  pthread_create (&thread5, NULL, calculation_five, (void *) thread5_data);
-
-  /* Execute thread six */
+  matrices* thread5_data;
   pthread_t thread6;
-  matrices* thread6_data= (matrices *) malloc(sizeof(matrices));
-  thread6_data->one=a21;
-  thread6_data->two=a11;
-  thread6_data->three=b11;
-  thread6_data->four=b12;
-
-  start_thread();
-  pthread_create (&thread6, NULL, calculation_six, (void *) thread6_data);
-
-  /* Execute thread seven */
+  matrices* thread6_data;
   pthread_t thread7;
-  matrices* thread7_data= (matrices *) malloc(sizeof(matrices));
-  thread7_data->one=a12;
-  thread7_data->two=a22;
-  thread7_data->three=b21;
-  thread7_data->four=b22;
+  matrices* thread7_data;
 
-  start_thread();
-  pthread_create (&thread7, NULL, calculation_seven, (void *) thread7_data);
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+    matrix* a11a22 = add_matrices_with_return(a11, a22);
+    matrix* b11b22 = add_matrices_with_return(b11, b22);
+    M1 = strassen_matrices_with_return(a11a22, b11b22);
+    free_matrix(a11a22);
+    free_matrix(b11b22);
+    M1_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
 
+    /* Execute thread one */
+    thread1_data = (matrices *) malloc(sizeof(matrices));
+    thread1_data->one = a11;
+    thread1_data->two = a22;
+    thread1_data->three = b11;
+    thread1_data->four = b22;
+
+    pthread_create(&thread1, NULL, calculation_one, (void *) thread1_data);
+    M1_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* a21a22 = add_matrices_with_return(a21, a22);
+
+    M2 = strassen_matrices_with_return(a21a22, b11);
+
+    free_matrix(a21a22);
+    M2_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread two */
+    thread2_data = (matrices *) malloc(sizeof(matrices));
+    thread2_data->one = a21;
+    thread2_data->two = a22;
+    thread2_data->three = b11;
+
+    pthread_create(&thread2, NULL, calculation_two, (void *) thread2_data);
+    M2_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* b12b22 = subtract_matrices_with_return(b12, b22);
+
+    M3 = strassen_matrices_with_return(a11, b12b22);
+
+    free_matrix(b12b22);
+    M3_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread three */
+    thread3_data = (matrices *) malloc(sizeof(matrices));
+    thread3_data->one = b12;
+    thread3_data->two = b22;
+    thread3_data->three = a11;
+
+    pthread_create(&thread3, NULL, calculation_three, (void *) thread3_data);
+    M3_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* b21b11 = subtract_matrices_with_return(b21, b11);
+
+    M4 = strassen_matrices_with_return(a22, b21b11);
+
+    free_matrix(b21b11);
+    M4_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread four */
+    thread4_data = (matrices *) malloc(sizeof(matrices));
+    thread4_data->one = b21;
+    thread4_data->two = b11;
+    thread4_data->three = a22;
+
+    pthread_create(&thread4, NULL, calculation_four, (void *) thread4_data);
+    M4_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* a11a12 = add_matrices_with_return(a11, a12);
+
+    M5 = strassen_matrices_with_return(a11a12, b22);
+
+    free_matrix(a11a12);
+    M5_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread five */
+    thread5_data = (matrices *) malloc(sizeof(matrices));
+    thread5_data->one = a11;
+    thread5_data->two = a12;
+    thread5_data->three = b22;
+
+    pthread_create(&thread5, NULL, calculation_five, (void *) thread5_data);
+    M5_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* a21a11 = subtract_matrices_with_return(a21, a11);
+    matrix* b11b12 = add_matrices_with_return(b11, b12);
+
+    M6 = strassen_matrices_with_return(a21a11, b11b12);
+
+    free_matrix(a21a11);
+    free_matrix(b11b12);
+    M6_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread six */
+    thread6_data = (matrices *) malloc(sizeof(matrices));
+    thread6_data->one = a21;
+    thread6_data->two = a11;
+    thread6_data->three = b11;
+    thread6_data->four = b12;
+
+    pthread_create(&thread6, NULL, calculation_six, (void *) thread6_data);
+    M6_wait = true;
+  }
+
+  pthread_mutex_lock(&lock);
+  if (*thread_counter == number_of_cores) {
+    pthread_mutex_unlock(&lock);
+
+    matrix* a12a22 = subtract_matrices_with_return(a12, a22);
+    matrix* b21b22 = add_matrices_with_return(b21, b22);
+
+    M7 = strassen_matrices_with_return(a12a22, b21b22);
+
+    free_matrix(a12a22);
+    free_matrix(b21b22);
+    M7_wait = false;
+  }
+  else {
+    *thread_counter = *thread_counter + 1;
+    pthread_mutex_unlock(&lock);
+
+    /* Execute thread seven */
+    thread7_data = (matrices *) malloc(sizeof(matrices));
+    thread7_data->one = a12;
+    thread7_data->two = a22;
+    thread7_data->three = b21;
+    thread7_data->four = b22;
+
+    pthread_create(&thread7, NULL, calculation_seven, (void *) thread7_data);
+    M7_wait = true;
+  }
 
   /* Wait for all threads free all memory */
-  matrix* M1;
+  if (M1_wait){
   pthread_join(thread1, &M1);
   free(thread1_data);
-
-  matrix* M2;
+  }
+  if (M2_wait){
   pthread_join(thread2, &M2);
   free(thread2_data);
-
-  matrix* M3;
+  }
+  if (M3_wait){
   pthread_join(thread3, &M3);
   free(thread3_data);
-
-  matrix* M4;
+  }
+  if (M4_wait){
   pthread_join(thread4, &M4);
   free(thread4_data);
-
-  matrix* M5;
+  }
+  if (M5_wait){
   pthread_join(thread5, &M5);
   free(thread5_data);
-
-  matrix* M6;
+  }
+  if (M6_wait){
   pthread_join(thread6, &M6);
   free(thread6_data);
-
-  matrix* M7;
+  }
+  if (M7_wait){
   pthread_join(thread7, &M7);
   free(thread7_data);
-
+  }
   matrix* M1M4=add_matrices_with_return(M1,M4);
   matrix* M1M4M5=subtract_matrices_with_return(M1M4,M5);
   matrix* C11=add_matrices_with_return(M1M4M5,M7);
@@ -841,27 +1096,15 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
 
 /** Initializes parallel variables */
 void initialize_parallelization(){
-  mutex=(sem_t*)malloc(sizeof(sem_t));
-  sem_init(mutex, 1, number_of_cores);
-  count_mutex=(pthread_mutex_t*)malloc(sizeof(pthread_mutex_t));
+  pthread_mutex_init(&lock, NULL);
+  thread_counter=(int*)malloc(sizeof(int));
+  *thread_counter=0;
 }
 
 /** Free parallel variables */
 void deinitialize_parallelization(){
-  free(mutex);
-  free(count_mutex);
-}
-
-/** Used to insure the number of processes */
-void start_thread(){
-  pthread_mutex_lock(count_mutex);
-  sem_wait(mutex);
-  pthread_mutex_unlock(count_mutex);
-}
-
-/** Used to insure the number of processes */
-void exit_thread(){
-  sem_post(mutex);
+  free(thread_counter);
+  pthread_mutex_destroy(&lock);
 }
 
 #endif

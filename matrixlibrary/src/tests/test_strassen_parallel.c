@@ -1,23 +1,25 @@
 #include <matLib.h>
 #include <assert.h>
-
-
+#include <time.h>
 int main(){
 #ifdef PARALLEL
-  initialize_parallelization();
-
+  matrix* to_multiply;
+  matrix* multiplied;
+  clock_t begin, end;
   double time_spent;
-  int n=4096;
-  matrix* a = create_identity_matrix(n,n);
-  matrix* b=  create_identity_matrix(n,n);
-  begin = clock();
-  matrix* temp=strassen_matrices_parallel_with_return(a,b);
-  end = clock();
-  time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-  printf(" %f \n",time_spent);
-  return 0;
-
+  initialize_parallelization();
+  int shit=4096;
+  int number_of_tests=shit;
+  for (int j=1;j<=1;j++){
+  for (int i=shit;i<=number_of_tests;i*=2){
+    to_multiply=create_identity_matrix(i,i);
+    multiplied=create_identity_matrix(i,i);
+    assert(strassen_matrices_parallel(to_multiply,to_multiply,multiplied));
+    free_matrix(to_multiply);
+    free_matrix(multiplied);
+  }}
   deinitialize_parallelization();
-#endif
+
   return 0;
+#endif
 }
