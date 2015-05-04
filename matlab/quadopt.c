@@ -28,7 +28,7 @@ void mexFunction(int nlhs, mxArray* plhs[],
 
   /* Convert matlab matrises to library matrises */
   int i;
-  for(i = 0; i < nrhs; i++){
+  for(i = 0; i < nrhs-2; i++){
     mat_matrix = prhs[i];
     int rows = (int)mxGetM(mat_matrix);
     int columns = (int)mxGetN(mat_matrix);
@@ -45,10 +45,12 @@ void mexFunction(int nlhs, mxArray* plhs[],
     }
     lib_matrices[i] = lib_matrix;
   }
+  int max_iter = (int)mxGetPr(prhs[7]);
+  int max_time = (int)mxGetPr(prhs[8]);
 
   /* Create problem from solver.h with library matrices */
   problem* problem = create_problem(lib_matrices[0], lib_matrices[1], lib_matrices[2], lib_matrices[3], 
-				    lib_matrices[4], lib_matrices[5], lib_matrices[6], prhs[7], prhs[8]);
+				    lib_matrices[4], lib_matrices[5], lib_matrices[6], max_iter, max_time);
 
   /* Solve problem */
   quadopt_solver(problem);
@@ -71,7 +73,7 @@ void mexFunction(int nlhs, mxArray* plhs[],
   }
   
   /* Free memory */
-  for(i = 0; i < nrhs; i++){
+  for(i = 0; i < nrhs-2; i++){
     free_matrix(lib_matrices[i]);
   }
   free_matrix(result_matrix);
