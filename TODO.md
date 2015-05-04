@@ -8,7 +8,6 @@ Dokument generellt
 - 			(Sebastian tar forskningsmetod)
 - 			(Martin tar datastrukturer)
 - 			(Yngve tar gruppens gemensamma erfarenheter)
-- 			
 - Individuell del 	(Överens om 50 timmar var på de individuella delarna.)
 - Teknisk dokumentation (Sebastian har koll på läget, får dirigera om vad som behövs göras i koden)
 	
