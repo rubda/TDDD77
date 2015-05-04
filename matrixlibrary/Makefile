@@ -13,9 +13,14 @@ TEST_SRCS = $(wildcard $(SRC_DIR)/tests/*.c)
 TEST_OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(TEST_SRCS)))
 TEST_BINS = $(basename $(TEST_OBJS))
 
-
+ifndef DONT_RUN_TESTS
 .PHONY: all
 all: $(LIB) test
+else
+.PHONY: all
+all: $(LIB) $(TEST_BINS)
+endif
+
 
 .PHONY: clean
 clean:
