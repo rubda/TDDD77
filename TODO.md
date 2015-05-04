@@ -4,6 +4,10 @@ Dokument generellt
 - Kandidatrapporten	(Dennis skriver inledning, syfte, frågeställningar)
 - 			(Johan skriver teori (om active set, subproblem bl a))
 - 			(Ruben skriver metodik)
+- 			(Adam tar fortsatt arbete)
+- 			(Sebastian tar forskningsmetod)
+- 			(Martin tar datastrukturer)
+- 			(Yngve tar gruppens gemensamma erfarenheter)
 - Individuell del 	(Överens om 50 timmar var på de individuella delarna.)
 - Teknisk dokumentation (Sebastian har koll på läget, får dirigera om vad som behövs göras i koden)
 	
