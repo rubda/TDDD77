@@ -11,6 +11,7 @@
 #include <feasible_point.h>
 #include <subproblem.h>
 #include <time.h>
+#include <simplex.h>
 
 bool fill_active_set(problem* prob);
 
@@ -147,7 +148,7 @@ matrix* quadopt_solver(problem* prob){
 
   /* Calculate starting point if no one is provide or the one provided is infeasible */
   if (!prob->has_start_point || !is_feasible_point(prob->z0, prob)){
-    if (!find_starting_point(prob)){
+    if (!simplex_phase_1(prob)){
       printf("No feasible point\n");
       return NULL;
     }
