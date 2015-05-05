@@ -44,7 +44,7 @@ int main() {
 
 
   assert(simplex_phase_1(problem));
-  //assert(is_feasible_point(problem->z0, problem));
+  assert(is_feasible_point(problem->z0, problem));
 
   free_problem(problem);
 }
