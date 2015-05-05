@@ -613,7 +613,7 @@ bool simplex_phase_1(problem* prob) {
 
   }
   
-  work_set_print(basis);
+  //work_set_print(basis);
 
   value val;
   if (!error) {
@@ -629,7 +629,7 @@ bool simplex_phase_1(problem* prob) {
     }
   }
 
-  print_matrix(prob->z0);
+  //print_matrix(prob->z0);
 
   return !error;
 }
