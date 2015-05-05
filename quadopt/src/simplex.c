@@ -71,7 +71,7 @@ bool simplex_phase_1(problem* prob) {
     matrix* temp = matrix_copy(prob->E);
     insert_sub_matrix(1, prob->equality_count, 1, prob->variable_count, temp, Et);
     multiply_matrix_with_scalar(-1, temp);
-    insert_sub_matrix(1, prob->equality_count, prob->variable_count+1, Ft->columns, temp, Et);
+    insert_sub_matrix(1, prob->equality_count, prob->variable_count+1, Et->columns, temp, Et);
 
     free_matrix(temp);
     //print_matrix(Et);
