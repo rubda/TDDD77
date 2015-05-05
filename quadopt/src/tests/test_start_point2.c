@@ -1,8 +1,9 @@
 #include <solver.h>
 #include <assert.h>
 #include <feasible_point.h>
+#include <simplex.h>
 
-int main() {
+int main(){
 
   matrix* Q = create_matrix(4,4);
   value Q_arr[4] = {	2, 0,
@@ -47,6 +48,7 @@ int main() {
 
   print_matrix(z);*/
 
+  
 
   assert(simplex_phase_1(problem));
   assert(is_feasible_point(problem->z0, problem));
