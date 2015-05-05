@@ -741,16 +741,13 @@ int main(){
   };
   insert_array(opt_arr, optimum);
 
-  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
+  problem* problem = create_problem(Q, q, E, h, F, g, optimum, 0, 0);
 
-  assert(simplex_phase_1(problem));
+  /* assert(simplex_phase_1(problem)); */
   /* assert(is_feasible_point(problem->z0, problem)); */
-
   quadopt_solver(problem);
-
   assert(compare_matrices(problem->solution, optimum));
-
-  print_matrix(problem->z0);
+  /* print_matrix(problem->z0); */
 
   free_problem(problem);
 
