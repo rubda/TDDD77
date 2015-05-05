@@ -1,24 +1,33 @@
 parameters
-    Q(4,4)
-    q(1,4)
-    A(4,3)
-    b(1,3)
-    F(4,20)
-    g(1,20)
+    A (2,2)
+    B (2)
+    F (12,2)
+    g (12)
+    P (2,2)
+    Q (2,2)
+    x[0] (2)
+    x_max (2)
+    x_min (2)
+end
+
+constants
+    N = 30  
+    R = 8
+    u_max = 25
+    u_min = -25
 end
 
 variables
-    z(4,1)
+    x[t] (2), t=1..N+1
+    u[t] (1), t=0..N
 end
 
-limits
-  max_iterations=0
-  max_ms=1
-end
-
-minimize
-    sum[t=0..10](z'Qz + q'z)
+minimize 
+    sum[k=0..N-1](x[k]’*Q*x[k] + u[k]’*R*u[k]) + x[N]’*P*x[N]
 subject to
-    Az == b 
-    Fz <= g
+    x[0] = x0
+    x[k+1] = A*x[k] + B*u[k], k = 0..N-1
+    x_min <= x{[k] <= x_max , k = 0..N-1
+    u_min <= u[k] <= u_max, k= 0..N-1
+    F*x[N] <= g
 end
