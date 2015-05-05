@@ -35,8 +35,8 @@ int main() {
 
   matrix* g = create_matrix(3, 1);
   value g_arr[3] = { -8, 
-         0, 
-         0};
+         1, 
+         1};
   insert_array(g_arr, g);
 
 

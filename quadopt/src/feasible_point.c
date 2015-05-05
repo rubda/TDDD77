@@ -299,8 +299,6 @@ bool find_starting_point(problem* prob){
 
 
 
-
-
 /* checks if all the elements in a row in the simplex tableau is negative or zero */
 bool is_neg_tableau_row(int row, matrix* tableau) {
   for (int c = 1; c <= tableau->columns-1; c++) {
@@ -318,7 +316,7 @@ int min_test(int column, matrix* tableau) {
   int min_row = -1;
   for (int r = 1; r < tableau->rows; r++) {
     temp = get_value_without_check(r, column, tableau);
-    if (compare_elements(temp,0) != -1) {
+    if (compare_elements(temp,0) == 1) {
       temp = get_value_without_check(r, tableau->columns, tableau)/temp;
       if (first) {
         min_row = r;
@@ -367,12 +365,15 @@ bool simplex_phase_1(problem* prob) {
 
     /* find last virtual variable */
     for (int r = 1; r <= prob->inequality_count; r++) {
+      //print_matrix(gr);
       if (compare_elements(get_value_without_check(r, 1, gr), 0) == -1) {
+        //printf("row: %d\n", r);
         work_set_append(virtual_vars, r+prob->equality_count);
-        break;
       }
     }
   }
+
+  //work_set_print(virtual_vars);
 
   /* initial tableau structure example
   *
@@ -432,15 +433,25 @@ bool simplex_phase_1(problem* prob) {
     insert_sub_matrix(prob->equality_count + 1, prob->equality_count + prob->inequality_count, tableau->columns, tableau->columns, gr, tableau);
   }
 
+  //print_matrix(tableau);
+
 
   /* insert virtual variables */
-  for (int r = 1; r <= prob->equality_count; r++) {
+  /*for (int r = 1; r <= prob->equality_count; r++) {
     insert_value_without_check(1, r, prob->variable_count + prob->inequality_count + r, tableau);
-  }
-  for (int r = prob->equality_count+1; r < tableau->rows; r++) {
-    if (compare_elements(get_value_without_check(r, tableau->rows, tableau), 0) == -1) {
-      insert_value_without_check(-1, r, tableau->rows-1, tableau);
-    }    
+  }*/
+  //for (int r = prob->equality_count+1; r < tableau->rows; r++) {
+
+  //printf("eqc: %d\n", prob->equality_count);
+  //printf("virvar: %d\n", virtual_vars->count);
+
+  for (int r = 1; r <= virtual_vars->count; r++) {
+    //printf("row: %d\n", r);
+    if (virtual_vars->data[r-1] > prob->equality_count) {
+      insert_value_without_check(-1, virtual_vars->data[r-1], prob->variable_count + prob->inequality_count + r, tableau);
+    } else {
+      insert_value_without_check(1, virtual_vars->data[r-1], prob->variable_count + prob->inequality_count + r, tableau);
+    }  
   }
 
   /* insert slack variables */
@@ -448,36 +459,48 @@ bool simplex_phase_1(problem* prob) {
     insert_value_without_check(1, r, prob->variable_count + (r-prob->equality_count), tableau);
   }
 
+  //print_matrix(tableau);
 
   /* insert objective function: min sum of virtual variables */
   for (int c = prob->variable_count + prob->inequality_count + 1; c < tableau->columns; c++) {
     insert_value_without_check(-1, tableau->rows, c, tableau);
   }
+
+  //print_matrix(tableau);
   
 
   /* adjust objective so it does not contain any virtual variables */
+  /* remove vars from equality constraints */
   for (int r = 1; r <= prob->equality_count; r++) {
     add_rows(r, tableau->rows, tableau);
   }
+  
+  /* remove vars from inequality constraints */
   int temp = tableau->columns-1;
+  int temp_col = prob->variable_count + prob->inequality_count + prob->equality_count + 1;
+
 
   for (int r = prob->equality_count+1; r <= tableau->rows-1; r++) {
-    if (compare_elements(get_value_without_check(r, temp, tableau), 0) != 0) {
-
-      /* removes last virtual variable from objective function */
-      matrix* temp_row = get_row_vector_with_return(r, tableau);
-      multiply_matrix_with_scalar(-1, temp_row);
-      matrix* temp_obj = get_row_vector_with_return(tableau->rows, tableau);
-      matrix* new_obj = add_matrices_with_return(temp_row, temp_obj);
-      insert_row_vector(tableau->rows, new_obj, tableau);
-
-      /* free help matrices */
-      free_matrix(temp_row);
-      free_matrix(temp_obj);
-      free_matrix(new_obj);
-      break;
+    if (compare_elements(get_value_without_check(r, temp_col, tableau), 0) == 0) {
+      continue;
     }
+    /* removes virtual variable from objective function */
+    matrix* temp_row = get_row_vector_with_return(r, tableau);
+    multiply_matrix_with_scalar(-1, temp_row);
+    matrix* temp_obj = get_row_vector_with_return(tableau->rows, tableau);
+    matrix* new_obj = add_matrices_with_return(temp_row, temp_obj);
+    insert_row_vector(tableau->rows, new_obj, tableau);
+
+    /* free help matrices */
+    free_matrix(temp_row);
+    free_matrix(temp_obj);
+    free_matrix(new_obj);
+
+    /* next var */
+    temp_col++;
   }
+
+  //print_matrix(tableau);
 
   int column, row;
   value cur, last;
@@ -573,4 +596,5 @@ bool simplex_phase_1(problem* prob) {
 
   return !error;
 }
+
 
