@@ -23,13 +23,37 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \subsubsection{Problem}
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. \\
+Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
+
+\subsubsection{Metod 1}
 Till att börja med valdes en mer lättimplementerad lösning som inte fanns med i någon bok (som lästs). Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängnd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $E$ st ''$=$''-bivillkor, $F$ st ''$\leq$''-bivillkor och $n$ st variabler:
 $${F+(n-E) \choose (n-E)}, n>E $$
 Detta sågs som relativt effektivt då gruppen trodde att $E \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $F = 192, E = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
-Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för. \\
-Efter ytterliggare utbildning bestämdes det att ''Phase I'' skulle implementeras då denna metod ansåg lättast. ''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal.  
+Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för.
+
+\subsubsection{Phase I}
+Efter ytterliggare utbildning bestämdes det att ''Phase I'' skulle implementeras då denna metod ansågs lättast. ''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. I vårt fall väljs punkten alltid till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, låter en gissa på en startpunkt och låter en sedan utgå från den. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. Detta är givetvis inte nödvändigt och har därför inte implementerats. \\
+Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
+$$Ex = h, \quad Fx \leq h$$
+\raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
+Vår kvadratiska problemlösare hanterar problem på formen:
+$$Ex = h, \quad Fx \geq h$$
+vilket innebär att både $F$ och $g$ måste multipliceras med $-1$ för att de ska vara på rätt form. För att uppfylla att $h$ är positiv måste de element däri som är negativa, och motsvarande rad i $E$-matrisen, multipliceras med $-1$.
+När problemet sedan är på rätt form kan simplex-delen börja. \\
+Först adderas en slackvariabel till varje ''$\leq$''-bivillkor för göra om dessa till ''$=$''-bivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s_i$ som slack. Bivillkoren till problemet ser nu ut på följande form:
+$$Ex = h, \quad -Fx+Ds = -g$$
+Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
+Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett ''$=$''-bivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var ''$\leq$''-bivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
+$$Ex+Ca = h, \quad -Fx + Ds - Bv = g$$
+Där $C$ och $B$ innehåller de virtuella variablernas koefficienter. \\ 
+Simplexmetoden kräver också att alla variabler måste vara större/lika med noll, vilket är något inte speciellt ofta är uppfyllt i vårt fall. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
+$$x_i = x_{i_1} - x_{i_2}$$
+där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
+Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är som sagt relaxationen av problemet, men om vi på något sätt kan stega oss fram med hjälp av simplexmetoden så att relaxationen försvinner så är punkten vi står i en giltig punkt för originalproblemet. Därför sätts målfunktionen till att minimera relaxationen, alltså minimera summan av de virtuella variablerna.
+$$min z = \sum^i {v_i}, \quad  \Leftrightarrow \quad min z - \sum^i {v_i} = 0$$
+Efter att ha satt in alla bivillkor i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktion. Detta görs med hjälp av radoperationer i tablån, till exempel genom att addera en rad innehållande en virtuell variabel till målfunktionen. \\
+Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa, Ta ut den mest positiva columnen i målfunktionen, och raden där kvoten av högerledet och elementet i vald kolumn är som minst. 
 
 
 
