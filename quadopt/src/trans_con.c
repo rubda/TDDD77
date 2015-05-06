@@ -19,12 +19,12 @@ bool insert_B_matrices(matrix* E, matrix* B, size_t N);
 
 /** Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h).*/
 bool trans_dyn_cons(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x, size_t card_u){
-  if(!check_dim_k(k, card_x)) return false;
-  if(!check_dim_h(h)) return false;
+  /* if(!check_dim_k(k, card_x)) return false; */
+  /* if(!check_dim_h(h)) return false; */
   size_t N = (h->rows - 2) / 2;
-  if(!check_dim_E(E, card_x, card_u, N)) return false;
-  if(!check_dim_A(A, card_x)) return false;
-  if(!check_dim_B(B, card_x, card_u)) return false;
+  /* if(!check_dim_E(E, card_x, card_u, N)) return false; */
+  /* if(!check_dim_A(A, card_x)) return false; */
+  /* if(!check_dim_B(B, card_x, card_u)) return false; */
 
   if(!insert_sub_matrix(1, k->rows, 1, 1, k, h)) return false;
   if(!insert_identity_matrices(E, card_x)) return false;
@@ -102,7 +102,7 @@ bool check_dim_h(matrix* h){
 }
 
 bool check_dim_E(matrix* E, size_t card_x, size_t card_u, size_t N){
-  if(E->rows != (int)(2*N+2)) return false;
+  if(E->rows != (int)(2*N+card_x)) return false;
   if(E->columns != (int)((card_x + card_u)*N + 2)) return false;
   return true;
 }

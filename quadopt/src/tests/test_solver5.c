@@ -4,6 +4,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <feasible_point.h>
+#include <simplex.h>
 
 int main(){
   clock_t begin, end;
@@ -742,9 +743,11 @@ int main(){
 
   problem* problem = create_problem(Q, q, E, h, F, g, optimum, 0, 0);
 
+  /* assert(simplex_phase_1(problem)); */
+  /* assert(is_feasible_point(problem->z0, problem)); */
   quadopt_solver(problem);
-
   assert(compare_matrices(problem->solution, optimum));
+  /* print_matrix(problem->z0); */
 
   free_problem(problem);
 
