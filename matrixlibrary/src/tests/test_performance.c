@@ -8,7 +8,7 @@ int main(){
   double time_spent;
 
   int number_of_tests=4096;
-  for (int j=2;j<=1;j++){
+  for (int j=1;j<=1;j++){
     printf("this is test %i regular \n",j);
   for (int i=4096;i<=number_of_tests;i*=2){
     to_multiply=create_identity_matrix(i,i);

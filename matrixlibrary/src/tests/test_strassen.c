@@ -7,10 +7,10 @@ int main(){
   clock_t begin, end;
   double time_spent;
 
-  int number_of_tests=1024;
+  int number_of_tests=4096;
   for (int j=1;j<=1;j++){
     printf("this is test %i strassen \n",j);
-  for (int i=5000;i<=number_of_tests;i*=2){
+  for (int i=4096;i<=number_of_tests;i*=2){
     to_multiply=create_identity_matrix(i,i);
     multiplied=create_identity_matrix(i,i);
     begin = clock();

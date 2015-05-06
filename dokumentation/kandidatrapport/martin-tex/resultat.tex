@@ -1,1 +1,5 @@
 \section{Resultat}
+Den enda förbättringen som gjordes i matrisbiblioteket var att för matrismultiplikation där storleken på den resulterande matrisen överstiger 512x512 element så används Strassen algoritmen istället för beräkningen. Det leder till att beräkningen utförs med tidskomplexitet $\mathcal{O}(n^{2.807})$ istället för $\mathcal{O}(n^{3})$. I praktiken så gör detta stor skillnad vad gäller prestande. Redan vid 512*512 element så är Strassen 5 gånger snabbare. Den är snabbare redan vid 128 element men inte så mycket så att det väger upp för det extra minnet den kräver. Vid multiplikation av två matriser med 4096*4096 element så tog Strassen 582 sekunder medan den naiva algoritmen tog 2689 sekunder. Påverkan på lösaren som utnyttjar detta bibliotek blir dock minimal då det troligtvis inte kommer använda matriser som är större än 512x512 men om man vill göra det i framtiden så blir körtiden troligvis mindre med denna implementation.
+\\
+\\
+Den parallel versionen av Strassen är snabbare än den vanliga Strassen när man överstiger 2048 element. För att verkligen testa detta skulle man behöva en dator med lika många kärnor som trådar man testar. 

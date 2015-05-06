@@ -8,7 +8,7 @@ int main(){
   clock_t begin, end;
   double time_spent;
   initialize_parallelization();
-  int shit=2048;
+  int shit=4096;
   int number_of_tests=shit;
   for (int j=1;j<=1;j++){
   for (int i=shit;i<=number_of_tests;i*=2){
