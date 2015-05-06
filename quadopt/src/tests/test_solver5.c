@@ -743,14 +743,14 @@ int main(){
 
   problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
-  printf("Before simplex\n");
+  //printf("Before simplex\n");
   assert(simplex_phase_1(problem));
   assert(is_feasible_point(problem->z0, problem));
-  printf("After simplex\n");
+  //printf("After simplex\n");
 
-  printf("Before solver\n");
+  //printf("Before solver\n");
   quadopt_solver(problem);
-  printf("After solver\n");
+  //printf("After solver\n");
   assert(compare_matrices(problem->solution, optimum));
   /* print_matrix(problem->z0); */
 
