@@ -14,7 +14,7 @@ int main(void) {
       19, 85, };
   insert_array(temp_a, a);
   value temp = get_determinant(a);
-  assert(temp==-7329227.000000);
+  assert(compare_elements(temp, -7329227.000000));
   matrix* d = create_matrix(4, 4);
   get_inverse(a, d);
   matrix* c = create_matrix(4, 4);
