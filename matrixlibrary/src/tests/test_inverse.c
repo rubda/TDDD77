@@ -5,7 +5,16 @@
 
 /*make sure typedef float value*/
 
+#ifdef FLOAT
+value determinant_ref = -7329227.000000;
+#endif /* FLOAT */
+#ifndef FLOAT
+value determinant_ref = -7329228.000000
+#endif /* !FLOAT */
+
 int main(void) {
+#ifndef INT
+  /* This test is not valid for only integers. */
   clock_t begin, end;
   double time_spent;
   begin = clock();
@@ -14,7 +23,7 @@ int main(void) {
       19, 85, };
   insert_array(temp_a, a);
   value temp = get_determinant(a);
-  assert(compare_elements(temp, -7329227.000000));
+  assert(compare_elements(temp, determinant_ref) == 0);
   matrix* d = create_matrix(4, 4);
   get_inverse(a, d);
   matrix* c = create_matrix(4, 4);
@@ -35,5 +44,6 @@ int main(void) {
   end = clock();
   time_spent = (double) (end - begin) / CLOCKS_PER_SEC;
   printf("time taken was: %f \n", time_spent);
+#endif /* !INT */
   return 0;
 }
