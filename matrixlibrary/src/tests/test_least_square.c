@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main(void){
-
+#ifndef INT
   matrix* A = create_matrix(4, 3);
   value temp_a[12] = { 1,  0,  1,
 		       0,  1, -1,
@@ -28,41 +28,9 @@ int main(void){
   assert(abs(get_value_without_check(2, 1, X) - 1) < 0.0001);
   assert(abs(get_value_without_check(3, 1, X) - 1) < 0.0001);
 
-  /*
-  matrix* C = create_matrix(3, 2);
-  value temp_c[6] = { 0,  1,
-		      2,  0,
-		      0,  2};
-  insert_array(temp_c, C);
-
-
-  matrix* D = create_matrix(3, 1);
-  value temp_d[3] = { 0,
-		     -2,
-		      5};
-  insert_array(temp_d, D);
-
-  matrix* solved = create_matrix(2, 1);
-
-  print_matrix(C);
-
-  print_matrix(D);
-  
-  if (!solve_linear(C, solved, D)){
-    printf("Can't be solved, using least_square.\n");
-    least_square(C, solved, D);
-  }
-
-  print_matrix(solved);
-
-  free_matrix(C);
-  free_matrix(D);
-  free_matrix(solved);
-
-  */
-
   free_matrix(A);
   free_matrix(B);
   free_matrix(X);
+#endif /* !INT */
   return 0;
 }

@@ -9,7 +9,7 @@
 value determinant_ref = -7329227.000000;
 #endif /* FLOAT */
 #ifndef FLOAT
-value determinant_ref = -7329228.000000
+value determinant_ref = -7329228.000000;
 #endif /* !FLOAT */
 
 int main(void) {

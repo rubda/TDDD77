@@ -2,6 +2,7 @@
 #include <assert.h>
 
 int main(){
+#ifndef INT
   matrix* a = create_matrix(4, 4);
   value a_values[16] = {
       -0.916300, -0.196700 ,-0.012300, 0.675200,
@@ -32,6 +33,6 @@ int main(){
   print_matrix(x);
   print_matrix(temp);
   print_matrix(b);
-
-
+#endif /* !INT */
+  return 0;
 }
