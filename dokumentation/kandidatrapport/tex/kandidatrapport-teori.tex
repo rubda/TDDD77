@@ -16,9 +16,6 @@ Något som vi märkte när problemet löstes för hand var att definitionen av h
 \subsection{Active set method}   
 Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnade är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. 
 
-
-\subsection{Datastrukturer}
-\subsubsection{Matriser}
 \subsubsection{Working set}
 \subsubsection{Problem}
 
@@ -96,6 +93,6 @@ I figur 1 nedanför visas pseudokod för vår implementering av Active set metho
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-
+\input{tex/kandidatrapport-matrisbibliotek}
 
 

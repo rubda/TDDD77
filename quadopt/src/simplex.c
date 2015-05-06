@@ -244,9 +244,11 @@ bool simplex_phase_1(problem* prob) {
 
     /* run min test on choosen column */
     row = min_test(column, tableau);
+    //printf("row: %d \n,row");
 
     /* infeasible problem */
-    if (column == -1) {
+    if (row == -1) {
+
       error = true;
       break;
     }   
@@ -311,7 +313,7 @@ bool simplex_phase_1(problem* prob) {
 
 /* checks if all the elements in a row in the simplex tableau is negative or zero */
 bool is_neg_tableau_row(int row, matrix* tableau) {
-  for (int c = 1; c <= tableau->columns-1; c++) {
+  for (int c = 1; c <= tableau->columns; c++) {
     if (compare_elements(get_value_without_check(row, c, tableau),0) == 1) {
       return false;
     }

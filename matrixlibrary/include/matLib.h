@@ -16,10 +16,10 @@
 
 
 /** Uncomment which mode you want the library to run in */
-/*#define INT*/
-#define FLOAT
-/*#define DOUBLE*/
-/*#define QUAD*/
+/* #define INT */
+/* #define FLOAT */
+#define DOUBLE
+/* #define QUAD */
 
 /** Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -67,7 +67,7 @@ typedef struct matrix matrix;
 #include <semaphore.h>
 
 /** Sets on how many cores calculations can run on */
-static const int number_of_cores=4;
+static const int number_of_cores=32;
 
 /** Used to protect the counter, remember to run initialize_parallelization */
 pthread_mutex_t lock;

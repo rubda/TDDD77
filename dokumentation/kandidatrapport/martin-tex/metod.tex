@@ -23,6 +23,18 @@ I figur~\ref{fig:comparison} kan man se jämförelsen mellan Strassen och naive.
 \end{figure}
 
 \subsection{Implementation av Strassen paralelliserad}
-Implementation använder algoritmen beskriven i \ref{sec:strassen}. Dock så skapas i varje rekursivt anrop sju trådar som vardera utför beräkningen av $M_{1-7}$. Den finns en global räknare som är skyddad med en semaphore som alla trådar har tillgång till. I matLib.h kan man sätta variabel number\_of\_cores till så många trådar som man vill använda. När en tråd kommer till en situation där det finns möjlighet att starta fler trådar så jämförs den globala räknaren med number\_of\_cores för att se om det finns en ledig plats. Finns det inte så utförs beräkningen med vanliga strassen\_matrices. 
+Implementation använder algoritmen beskriven i \ref{sec:strassen}. Det som sker nu är att varje gång någon av matriserna $M_{1-7}$ ska beräknas och om det finns en ledig tråd så körs detta i den. Annars beräknas den i den nuvarande tråden. För att hålla koll på antalet trådar som körs så finns den globala räknaren thread\_counter som skyddas av ett lås för att försäkra ömsesidig uteslutning. Maximala antalet trådar sätts i den statiska variabeln number\_of\_cores. När någon nuvarande tråd kommer till ett tillfälle den den ska beräkna någon av 
+$M_{1-7}$ så låser den thread\_counter och jämför denna med number\_of\_cores och om dessa är olika så beräknas multiplikationen med strassen\_matrices\_parallel. Detta skapar en ny tråd för beräkningen. Annars så utförs beräkning med strassen\_matrices som då sker i den nuvarande tråden.
+
+\subsection{Jämförelse mellan paralleliserad och oparalleliserad Strassen}
+Jämförelsen är svår att göra då man kan variera båda antalet element och antalet trådar som processen använder. När tidigare tidsmätningar har gjorts så har c-bibliotket time.h användts men detta mäter den effektiva cpu-tiden. När man använder fler trådar så är detta missvisande då det intressanta är reela tiden det tar. För att lösa detta så används bash kommandot time för att mäta tiden istället. Resultatet från jämförelsen kan ses i figur~\ref{fig:threads}. Detta test utfördes på en bärbar dator med en tvåkärning I7 processor med Hyper threading vilket gör att det kan jämföras med en fyrakärnig processor. Helst skulle testet utförts på en dator med fler kärnor. I figur~\ref{fig:threads} kan man se en tydlig prestande ökning från vanliga algoritmen till algoritmen när den använder en extra tråd. Därefter avtar prestandeökning. Att multiplicera 2 matriser som var 4096x4096 tog 582 sekunder med den vanliga och som bäst 343 sekunder när den använda 16 trådar. Samma beräkning med den naiva algoritmen tog 2688.527 sekunder. 
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.6]{martin-tex/threads_test.eps}
+	\end{center}
+	\caption{Jämförelse mellan vanliga Strassen och parallel version.}
+	\label{fig:threads}
+\end{figure}
 
 

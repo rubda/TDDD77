@@ -127,7 +127,7 @@ bool compare_matrices(matrix* a, matrix* b) {
     for(int j = 1; j <= a->columns; j++){
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
-      if(!(matlib_fabs(a_val - b_val) < PRECISION)){
+      if(!(matlib_fabs(a_val - b_val) <= PRECISION)){
 	return false;
       }
     }
