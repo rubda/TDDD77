@@ -20,9 +20,11 @@ bool simplex_phase_1(problem* prob){
   matrix* Ft;
   matrix* Et;
 
+  int r, i, c;
+
   /* Negatate all equality constraints where rhs is negative */
   if (prob->equality_count > 0){  
-    for (int r = 1; r <= prob->equality_count; r++){
+    for (r = 1; r <= prob->equality_count; r++){
       if (compare_elements(get_value_without_check(r, 1, prob->h), 0) == -1){
         multiply_row_with_scalar(-1, r, prob->E);
         multiply_row_with_scalar(-1, r, prob->h);
@@ -41,7 +43,7 @@ bool simplex_phase_1(problem* prob){
     multiply_matrix_with_scalar(-1, gr);
 
     /* Find last virtual variable */
-    for (int r = 1; r <= prob->inequality_count; r++){
+    for (r = 1; r <= prob->inequality_count; r++){
       if (compare_elements(get_value_without_check(r, 1, gr), 0) == -1){
         work_set_append(virtual_vars, r+prob->equality_count);
       }
@@ -61,7 +63,7 @@ bool simplex_phase_1(problem* prob){
   }
 
   /* Split variables to allow negative values */
-  if (prob->equality_count > 0) {
+  if (prob->equality_count > 0){
     Et = create_matrix(prob->equality_count, prob->variable_count * 2);
     matrix* temp = matrix_copy(prob->E);
     insert_sub_matrix(1, prob->equality_count, 1, prob->variable_count, temp, Et);
@@ -108,11 +110,12 @@ bool simplex_phase_1(problem* prob){
   /* Intial basis */
   work_set* basis = work_set_create(prob->equality_count+prob->inequality_count);
   /* insert virtual vars first */
-  for (int i = 1; i <= prob->equality_count; i++){
+  for (i = 1; i <= prob->equality_count; i++){
     work_set_append(basis, i+prob->variable_count*2+prob->inequality_count);
   }
+
   /* Insert slack vars */
-  for (int i = 1; i <= prob->inequality_count; i++){
+  for (i = 1; i <= prob->inequality_count; i++){
     work_set_append(basis, i+prob->variable_count*2);
   }
 
@@ -126,15 +129,18 @@ bool simplex_phase_1(problem* prob){
 
   /* Insert inequality constraints */
   if (prob->inequality_count > 0){
-    insert_sub_matrix(prob->equality_count + 1, prob->equality_count + prob->inequality_count, 1, prob->variable_count*2, Ft, tableau);
-    insert_sub_matrix(prob->equality_count + 1, prob->equality_count + prob->inequality_count, tableau->columns, tableau->columns, gr, tableau);
+    insert_sub_matrix(prob->equality_count + 1, prob->equality_count + prob->inequality_count, 
+		      1, prob->variable_count*2, Ft, tableau);
+
+    insert_sub_matrix(prob->equality_count + 1, prob->equality_count + prob->inequality_count,
+		      tableau->columns, tableau->columns, gr, tableau);
    
     free_matrix(Ft);
     free_matrix(gr);
   }
 
   /* Insert virtual variables */
-  for (int r = 1; r <= virtual_vars->count; r++){
+  for (r = 1; r <= virtual_vars->count; r++){
     if (virtual_vars->data[r-1] > prob->equality_count){
       insert_value_without_check(-1, virtual_vars->data[r-1], prob->variable_count*2 + prob->inequality_count + r, tableau);
     }else{
@@ -144,25 +150,25 @@ bool simplex_phase_1(problem* prob){
   work_set_free(virtual_vars);
 
   /* Insert slack variables */
-  for (int r = prob->equality_count+1; r < tableau->rows; r++){
+  for (r = prob->equality_count+1; r < tableau->rows; r++){
     insert_value_without_check(1, r, prob->variable_count*2 + (r-prob->equality_count), tableau);
   }
 
   /* Insert objective function: min sum of virtual variables */
-  for (int c = prob->variable_count*2 + prob->inequality_count + 1; c < tableau->columns; c++){
+  for (c = prob->variable_count*2 + prob->inequality_count + 1; c < tableau->columns; c++){
     insert_value_without_check(-1, tableau->rows, c, tableau);
   }
   
   /* Adjust objective so it does not contain any virtual variables */
   /* Remove vars from equality constraints */
-  for (int r = 1; r <= prob->equality_count; r++){
+  for (r = 1; r <= prob->equality_count; r++){
     add_rows(r, tableau->rows, tableau);
   }
   
   /* Remove vars from inequality constraints */
   int temp_col = prob->variable_count*2 + prob->inequality_count + prob->equality_count + 1;
 
-  for (int r = prob->equality_count+1; r <= tableau->rows-1; r++){
+  for (r = prob->equality_count+1; r <= tableau->rows-1; r++){
     if (temp_col >= tableau->columns){
       break;
     } else if (compare_elements(get_value_without_check(r, temp_col, tableau), 0) == 0){
@@ -189,7 +195,7 @@ bool simplex_phase_1(problem* prob){
   bool error = false;
 
   /* Set z0 to 0 */
-  for (int r = 1; r <= prob->variable_count; r++){
+  for (r = 1; r <= prob->variable_count; r++){
     insert_value_without_check(0, r, 1, prob->z0);
   }
 
@@ -201,7 +207,7 @@ bool simplex_phase_1(problem* prob){
     last = 0;
 
     /* Find most positive element in objective */
-    for (int c = 1; c <= tableau->columns-1; c++){
+    for (c = 1; c <= tableau->columns-1; c++){
       cur = get_value_without_check(tableau->rows, c, tableau);
       if (compare_elements(cur,last) == 1){        
         column = c;
@@ -237,7 +243,7 @@ bool simplex_phase_1(problem* prob){
     matrix* old_row;
     matrix* new_row;
 
-    for (int r = 1; r <= tableau->rows; r++){
+    for (r = 1; r <= tableau->rows; r++){
       if (r == row){
         continue;
       }
@@ -261,7 +267,7 @@ bool simplex_phase_1(problem* prob){
   value val;
   if (!error) {
     /* Loop through basis to set variables */
-    for (int r = 1; r <= basis->count; r++) {
+    for (r = 1; r <= basis->count; r++) {
       if (basis->data[r-1] <= prob->variable_count) {
         val = get_value_without_check(basis->data[r-1], 1, prob->z0) + get_value_without_check(r, tableau->columns, tableau);
         insert_value_without_check(val, basis->data[r-1], 1, prob->z0);
@@ -279,7 +285,8 @@ bool simplex_phase_1(problem* prob){
 
 /* Checks if all the elements in a row in the simplex tableau is negative or zero */
 bool is_neg_tableau_row(int row, matrix* tableau){
-  for (int c = 1; c <= tableau->columns; c++){
+  int c;
+  for (c = 1; c <= tableau->columns; c++){
     if (compare_elements(get_value_without_check(row, c, tableau), 0) == 1){
       return false;
     }
@@ -292,9 +299,10 @@ int min_test(int column, matrix* tableau){
   value temp, cur;
   bool first = true;
   int min_row = -1;
-  for (int r = 1; r < tableau->rows; r++){
+  int r;
+  for (r = 1; r < tableau->rows; r++){
     temp = get_value_without_check(r, column, tableau);
-    if (compare_elements(temp,0) == 1){
+    if (compare_elements(temp, 0) == 1){
       temp = get_value_without_check(r, tableau->columns, tableau)/temp;
       if (first){
         min_row = r;
