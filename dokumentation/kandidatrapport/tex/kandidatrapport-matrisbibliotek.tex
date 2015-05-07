@@ -1,0 +1,67 @@
+\subsection{Matrisbibliotek}
+För att kunna utföra projeket så behövdes det ett matrisbibliotek för att kunna hantera alla matrisoperationer som lösaren behövde göra. Dessa operationer var:
+\begin{itemize}
+
+\item addition
+\item subtraktion
+\item multiplikation
+\item beräkna determinat
+\item beräkna invers
+\item lösa linjära ekvationssystem
+\item gausselimination
+\item transponering
+\item skalärmultiplikation
+\item radoperationer
+\item kolumnoperationer
+
+\end{itemize}
+
+
+\subsubsection{Befintliga matrisbibliotek}
+Det fanns många bibliotek som hade dessa operationer dock så uppfyllde inget alla krav vi ställde. Vi vill att biblioteket skulle:
+\begin{enumerate}
+\item ha lättanvänt api
+\item prestera bra
+\item vara platformsoberoende
+\item vara lätt att kompilera
+\item ta upp lite minne
+\item ha bra dokumenterad kod så man själv kan implementera förbättringar
+\end{enumerate} 
+De bibliotek som vi undersökte var:
+\begin{itemize}
+
+\item GNU Scientific library
+\item LAPACK
+\item ATLAS
+\item NAG
+
+\end{itemize}
+GNU gick bort för det krävde att man installera det som ett extern paket vilket vi inte vill att vår kund ska behöva göra. Bortsett från detta så var detta det bibliotek som var mest lovande. 
+LAPACK krävde en FORTRAN kompilator för att kunna kompileras och eftersom det var skrivet i FORTRAN så var alla funktionsnamn endast 6 karaktärer vilket inte kan klassas som ett lättanvändt api.
+ATLAS bygger på LAPACK så det har ärvt mycket av alla funktionsnamn.
+NAG är det modernaste av bibliotekten men även det använder funktionsnamn med 6 karaktärer samt så var dokumentationen sparsam. 
+\newline
+\newline
+Först så övervägdes att göra att API till något av biblioteken för att göra det mer lättanvänt men sedan så bestämdes det att vi skulle göra att eget biblioteket. Anledning till detta var att man då kunde bygga allting på standard c-bibliotek så man inte krävde några externa bibliotek. Detta leder till att biblioteket kunde användas på alla platformar så länge det hade en c-kompilator. 
+
+
+\subsubsection{matLib}
+Namnet på biblioteket valdes till matLib från \textbf{mat}rix \textbf{Lib}rary. Grundtanken med det hela skulle vara att det bara bygger på standard c-bibliotek för att göra det platform oberoendo. Detta har lett till att det även kan användas på till exempel microkontrollers såsom Atmega 2560 eller liknande.
+Det var även krav på att det skulle vara ett lättanvänt API så funktionsnamnen var tvugna att vara självförklarade vad funktionen gör. Här är namnen på ett urval av funktionerna:
+\lstinputlisting[language=C]{tex/functions.c}
+Kombinerat med förklarande funktionsnamn så är all kod väldokumenterad så det är enkelt att sätta sig in i den och göra eventuella förbättringar i framtiden.
+\newline
+\newline
+Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svårt att konkurrera med etablerade matrisbibliotek såsom ATLAS som använder hårdvaruoptimerad kod. Genom att hålla koden lättviktig och använda funktioner för direkt datamanipulation så hålls prestandad rätt hög. Det som kräver mer arbete i framtiden är arbete på funktionerna som innehåller algoritmer som tar $\mathcal{O}(n^3)$ såsom matrismultiplikation och lösning av linjära system.
+
+
+\subsubsection{Implementation}
+
+
+\subsubsection{Datastrukturer}
+Hela biblioteket bygger på en c-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. 
+\begin{figure}[H]
+\lstinputlisting[language=C]{tex/matrix_struct.c}
+\caption{Matrix struct}
+\label{fig:matrix_struct}
+\end{figure}

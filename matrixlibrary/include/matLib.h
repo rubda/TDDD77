@@ -16,10 +16,10 @@
 
 
 /** Uncomment which mode you want the library to run in */
-/*#define INT*/
-#define FLOAT
-/*#define DOUBLE*/
-/*#define QUAD*/
+/* #define INT */
+/* #define FLOAT */
+#define DOUBLE
+/* #define QUAD */
 
 /** Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -47,7 +47,7 @@ typedef long double value;
 #endif
 
 /** Uncomment to allow parallel operations */
-#define PARALLEL
+/* #define PARALLEL */
 
 /** This is the core-struct in this library. All matrix-operations are based on this Struct. */
 struct matrix {
@@ -67,7 +67,7 @@ typedef struct matrix matrix;
 #include <semaphore.h>
 
 /** Sets on how many cores calculations can run on */
-static const int number_of_cores=4;
+static const int number_of_cores=32;
 
 /** Used to protect the counter, remember to run initialize_parallelization */
 pthread_mutex_t lock;
@@ -144,6 +144,9 @@ matrix* subtract_matrices_with_return(matrix* a, matrix* b);
 
 /** Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
+
+/* Multiply a and b into c using the naive algorithm. c=a*b */
+bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c);
 
 /* Multiply a and b into c. Uses row-major optimization. c=a*b */
 bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c);

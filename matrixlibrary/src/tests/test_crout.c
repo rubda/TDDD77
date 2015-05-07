@@ -57,9 +57,17 @@ int main(void) {
   /* print_matrix(diff); */
   /* printf("size of value is %li \n",sizeof(value)); */
 
+#ifndef INT
+  /* Standard case for float, double and quad. */
+  double tolerance = PRECISION;
+#endif /* !INT */
+#ifdef INT
+  /* This test is invalid when only working with integers. */
+  double tolerance = 100;
+#endif /* INT */
+
   for(int i = 0; i < diff->rows; i++){
     double d = fabs((double)diff->start[i]);
-    double tolerance = 0.001;
    if(d > tolerance){
      printf("solve_linear failed! Difference between answer and expected is greater than %f: %f\n", tolerance, d);
       return 1;

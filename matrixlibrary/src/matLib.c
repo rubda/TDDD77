@@ -127,7 +127,7 @@ bool compare_matrices(matrix* a, matrix* b) {
     for(int j = 1; j <= a->columns; j++){
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
-      if(!(matlib_fabs(a_val - b_val) < PRECISION)){
+      if(!(matlib_fabs(a_val - b_val) <= PRECISION)){
 	return false;
       }
     }
@@ -237,6 +237,12 @@ matrix* subtract_matrices_with_return(matrix* a, matrix* b) {
 
 /* Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
+  return  multiply_matrices_naive(a,b,c);
+}
+
+
+/* Multiply a and b into c using the naive algorithm. c=a*b */
+bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c) {
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
     return false;
@@ -251,7 +257,7 @@ bool multiply_matrices(matrix* a, matrix* b, matrix* c) {
       sum = 0;
       j = 1;
       for (; j <= b->rows; j++) {
-	sum += get_value_without_check(i, j, a)* get_value_without_check(j, k, b);
+  sum += get_value_without_check(i, j, a)* get_value_without_check(j, k, b);
       }
       insert_value_without_check(sum, i, k, c);
     }
@@ -301,7 +307,7 @@ matrix* strassen_matrices_with_return(matrix* a, matrix* b) {
 /* Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices(matrix* a, matrix* b, matrix* c) {
  if (a->rows<=512  && b->columns<=512){
-    return multiply_matrices(a,b,c);
+    return multiply_matrices_naive(a,b,c);
   }
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
@@ -741,7 +747,7 @@ void *calculation_seven(void* arg){
 /* Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   if (a->rows<=512  && b->columns<=512){
-    return multiply_matrices(a,b,c);
+    return multiply_matrices_naive(a,b,c);
   }
   if ((a->columns != b->rows) || (a->rows != c->rows)
       || (b->columns != c->columns)) {
