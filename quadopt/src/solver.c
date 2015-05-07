@@ -19,17 +19,20 @@ bool take_step(problem* prob);
 
 void copy_solution(problem* prob);
 
+
+void prefill_set(problem* prob){
+  for (int i = 1; i <= prob->equality_count; i++) {
+    work_set_append(prob->active_set, i);
+  }
+}
+
 /* Fills the active set according to the current position */
 bool fill_active_set(problem* prob){
-  work_set_clear(prob->active_set);
+  prob->active_set->count = prob->equality_count;
 
   /* Fill */
   int i;
-  for (i = 1; i <= prob->A->rows; i++){
-    if (i <= prob->equality_count){
-      work_set_append(prob->active_set, i);
-      continue;
-    }
+  for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     value ans = 0;
 
     int j;
@@ -107,8 +110,16 @@ bool take_step(problem* prob){
 
   /* Only go through the inequality constraints */
   int i;
-  for (i = 1; i <= prob->A->rows; i++){
-    if (work_set_contains(prob->active_set, i)){
+  bool cont;
+  for (i = prob->equality_count+1; i <= prob->A->rows; i++){
+    cont = false;
+    for (int j = prob->equality_count; j < prob->active_set->count; j++) {
+      if (prob->active_set->data[j] == i) {
+        cont = true;
+        break;
+      }
+    }
+    if (cont) {
       continue;
     }
     get_row_vector(i, prob->A, ai);
@@ -153,7 +164,10 @@ matrix* quadopt_solver(problem* prob){
       return NULL;
     }
   }
+
   matrix_copy_data(prob->z0, prob->z);
+
+  prefill_set(prob);
   fill_active_set(prob);
 
   while (true){

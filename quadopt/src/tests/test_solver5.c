@@ -743,8 +743,6 @@ int main(){
 
   problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
-  assert(simplex_phase_1(problem));
-  assert(is_feasible_point(problem->z0, problem));
   quadopt_solver(problem);
 
   assert(compare_matrices(problem->solution, optimum));
