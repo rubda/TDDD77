@@ -47,7 +47,7 @@ typedef long double value;
 #endif
 
 /** Uncomment to allow parallel operations */
-#define PARALLEL
+/* #define PARALLEL */
 
 /** This is the core-struct in this library. All matrix-operations are based on this Struct. */
 struct matrix {

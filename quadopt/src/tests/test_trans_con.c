@@ -129,4 +129,6 @@ void test_inequality_constraints(){
   free_matrix(gu);
   free_matrix(F);
   free_matrix(g);
+  free_matrix(expected_F);
+  free_matrix(expected_g);
 }

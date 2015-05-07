@@ -1,5 +1,7 @@
 %% Massive exempel data from Daniel Simon
-q = zeros(92);
+
+
+q = zeros(92, 1);
 load('MPCdata.mat');
 
 options = optimoptions(@quadprog, 'Algorithm', 'active-set');
