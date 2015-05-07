@@ -145,6 +145,9 @@ matrix* subtract_matrices_with_return(matrix* a, matrix* b);
 /** Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
+/* Multiply a and b into c using the naive algorithm. c=a*b */
+bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c);
+
 /* Multiply a and b into c. Uses row-major optimization. c=a*b */
 bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c);
 
