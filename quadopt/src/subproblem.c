@@ -2,9 +2,7 @@
 #include <matLib.h>
 #include <solver.h>
 
-
-
-void range_space(matrix* A,problem* prob) {
+void range_space(matrix* A, problem* prob){
   matrix* At = transpose_matrix_with_return(A);  
 
   matrix* AQ = create_matrix(A->rows, prob->Q_inv->columns);
@@ -44,7 +42,7 @@ void range_space(matrix* A,problem* prob) {
     }
   }
 
-  //free_matrix(A);
+  free_matrix(A);
   free_matrix(At);
   free_matrix(AQ);
   free_matrix(AQAt);
@@ -59,27 +57,25 @@ void range_space(matrix* A,problem* prob) {
   free_matrix(c);
 }
 
-void KKT_sub(matrix* A, problem* prob) {
+void KKT_sub(matrix* A, problem* prob){
 
   matrix* At = transpose_matrix_with_return(A);
 
-  /* lhs */
+  /* Lhs */
   matrix* K = create_zero_matrix(prob->Q->rows+A->rows, prob->Q->columns+At->columns);
 
-  /* fill lhs */
+  /* Fill lhs */
   insert_sub_matrix(1, prob->Q->rows, 1, prob->Q->columns, prob->Q, K);
   insert_sub_matrix(prob->Q->rows+1, K->rows, 1, A->columns, A, K);
   insert_sub_matrix(1, At->rows, prob->Q->columns+1, K->columns, At, K);
 
-
-  /* vars */
+  /* Vars */
   matrix* pl = create_matrix(prob->variable_count+A->rows, 1);
 
-
-  /* rhs */
+  /* Rhs */
   matrix* gc = create_matrix(pl->rows,1);
 
-  /* fill rhs */
+  /* Fill rhs */
   matrix* Az = create_matrix(A->rows ,prob->z->columns);
   multiply_matrices(A, prob->z, Az);  
 
@@ -89,14 +85,25 @@ void KKT_sub(matrix* A, problem* prob) {
   insert_sub_matrix(1, prob->gk->rows, 1, 1, prob->gk, gc);
   insert_sub_matrix(prob->gk->rows+1, gc->rows, 1, 1, c, gc);
 
-  /* solve kkt system */
+  /* Solve kkt system */
   gauss_jordan_solver(K, pl, gc);
 
-  /* retrieve p */
-  for (int i = 1; i <= prob->p->rows; i++) {
+  /* Retrieve p */
+  int i;
+  for (i = 1; i <= prob->p->rows; i++){
     insert_value_without_check(-get_value_without_check(i, 1, pl), i, 1, prob->p);
   }
 
+  /* Ska detta frigöras? */
+   
+  free_matrix(A);
+  free_matrix(At);
+  free_matrix(K);
+  free_matrix(pl);
+  free_matrix(gc);
+  free_matrix(Az);
+  free_matrix(b);
+  free_matrix(c);
 }
 
 
@@ -153,7 +160,7 @@ void solve_subproblem(problem* prob){
 
   /* Use range-space to get p */
 
-  //range_space(A, prob);
+  /* range_space(A, prob); */
 
   KKT_sub(A, prob);
 
