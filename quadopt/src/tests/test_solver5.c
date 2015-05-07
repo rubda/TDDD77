@@ -746,6 +746,7 @@ int main(){
   assert(simplex_phase_1(problem));
   assert(is_feasible_point(problem->z0, problem));
   quadopt_solver(problem);
+
   assert(compare_matrices(problem->solution, optimum));
   free_problem(problem);
 
