@@ -744,8 +744,8 @@ int main(){
   problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
   //printf("Before simplex\n");
-  assert(simplex_phase_1(problem));
-  assert(is_feasible_point(problem->z0, problem));
+  //assert(simplex_phase_1(problem));
+  //assert(is_feasible_point(problem->z0, problem));
   //printf("After simplex\n");
 
   //printf("Before solver\n");
