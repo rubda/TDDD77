@@ -33,6 +33,11 @@ int main(){
   print_matrix(x);
   print_matrix(temp);
   print_matrix(b);
+
+  free_matrix(a);
+  free_matrix(b);
+  free_matrix(x);
+  free_matrix(temp);
 #endif /* !INT */
   return 0;
 }

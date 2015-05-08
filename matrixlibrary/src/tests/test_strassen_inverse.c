@@ -36,7 +36,10 @@ bool strassen_linear_solve(matrix* a,matrix* x,matrix* b){
     b_corrected=b;
     x_corrected=x;
   }
-return true;
+  free_matrix(a_corrected);
+  free_matrix(b_corrected);
+  free_matrix(x_corrected);
+  return true;
 }
 
 bool strassen_inverse(matrix* a,matrix* b){
@@ -95,8 +98,21 @@ bool strassen_inverse(matrix* a,matrix* b){
 
   insert_sub_matrix(b->rows/2+1,b->rows,b->columns/2+1,b->columns,c22,b);
 
-
-
+  free_matrix(a11);
+  free_matrix(a21);
+  free_matrix(a12);
+  free_matrix(a22);
+  free_matrix(R1);
+  free_matrix(R2);
+  free_matrix(R3);
+  free_matrix(R4);
+  free_matrix(R5);
+  free_matrix(R6);
+  free_matrix(c12);
+  free_matrix(c21);
+  free_matrix(R7);
+  free_matrix(c11);
+  free_matrix(c22);
 
 return true;
 }
