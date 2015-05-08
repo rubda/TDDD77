@@ -160,8 +160,8 @@ void solve_subproblem(problem* prob){
 
   /* Use range-space to get p */
 
-  /* range_space(A, prob); */
+  range_space(A, prob);
 
-  KKT_sub(A, prob);
+  /* KKT_sub(A, prob); */
 
 }
