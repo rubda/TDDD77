@@ -59,9 +59,10 @@ Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svår
 
 
 \subsubsection{Datastrukturer}
-Hela biblioteket bygger på en c-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. 
+Hela biblioteket bygger på en c-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. Columns säger hur många kolumner matrisen har, rows säger hur många rader den har, size säger hur många element den har och start är en pekare till första elementet i matrisen. För att komma åt ett element på rad x och i kolumn y så använder man ekvationen $start+columns(x-1)+y-1$ vilket ger pekaren till elementet. Alla operationer för att sätta in och hämta element tar $\mathcal{O}(1)$
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 \caption{Matrix struct}
 \label{fig:matrix_struct}
 \end{figure}
+
