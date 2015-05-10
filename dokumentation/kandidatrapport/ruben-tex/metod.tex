@@ -1,2 +1,41 @@
 \section{Metod}
-I kandidatprojektet ''Prediktionsreglering'' följdes ingen av de metoderna som nämns i kapitel 3 till minsta detalj, utan inspiration togs från dem. Ett eget sätt att ta f
+
+I kandidatprojektet ''Prediktionsreglering'' följdes ingen konkret metod för att uppnå en högkvalitativ produkt, utan all energi lades ner på att fullfölja de krav som hade listats i en kravspecifikation.
+\newline
+\newline
+Kandidatprojektet ''Prediktionsreglering'' är något av ett ovanligt projekt då huvudsyftet är att skapa en algoritm och inget övergripande system av komponenter. Detta medföljer att huvudsyftet är att kvalitetssäkra en algoritm.
+\newline
+\newline
+Innan kandidatgruppen gick in i första iteration av projektet skrevs en kvalitetsplan av kvalitetssamordnaren Ruben Das, dvs författaren av detta dokument. Detta dokument gav riktlinjer samt procedurer som bör följas av kandidatgruppen för att leverera en produkt av tillräckligt hög kvalitet till kunden. Daniel Simon som är kontaktpersonen för Saab specifierade tydligt att all kod gällande algoritmen ska vara väldokumenterad och skriven i C samtidigt uppfylla de krav som finns med i kravspecfikationen. Med detta sagt visste kandidatgruppen vad som krävdes för att leverera en algoritm till rätt kvalitativ nivå. Kvalitetsplanen specifierar en kodstandard som innehåller de riktlinjer som skall följas när man skriver C-kod. Detta var första steget med att få in ett sorts kvalitetsmoment i projektet. Kodstandarden kan hittas under bilaga A och är skriven av Ruben Das samt Alexander Yngve som har varit utvecklingsansvarig under kandidatprojektet. Kodstandarden har baserats på vad som anses vara ''snygg'' och läsbar kod. All C-kod som skrivs ska också kompileras med diverse olika flaggor, kompilatoranropet kan hittas nedan.
+\begin{tcolorbox}[boxrule=1pt,leftrule=5pt,arc=0pt,auto outer arc]
+gcc -Wall -Werror -Wextra -pedantic -std=c99 -o namn namn.c
+\end{tcolorbox}
+\noindent Flaggorna benämner att ta hänsyn till alla varningar, behandla alla varningar som fel, ta hänsyn till extra varningsfall och att rätta koden ''strängare'' än vanligt. Det ska också noteras att koden kompilerar efter c99 standarden. Med hjälp av dessa flaggor höll koden god nivå.
+\newline
+\newline
+När kandidatprojektet väl gick in i iterationerna och kod hade skrivits togs ett beslut om att centrala funktioner i koden skall ha minst ett testfall som de klarar. Testerna kördes varje gång man kompilerade koden, detta genom ett byggsystem som hade utvecklats i språket Make. Byggsystemet kompilerade koden med kompilatorsträngen som har nämnts tidigare och samtidigt körde den alla testfiler som fanns i biblioteket. Om ett testfall inte lyckats kommer kompilatorn ge ett felmeddelande i form av en ''assertion failed'', dvs resultatet blev inte som väntat. Även en byggserver användes för att se till att all kod var körbar och klarade alla tester varje gång någon hade skrivit ny kod och lagt upp det på kandidatgruppens versionshanteringssystem. En  byggserver är precis som det låter, en server som bygger upp kod och kör den. Servern som användes i detta kandidatprojekt var ''Travis CI'', där ''Travis'' bara är ett namn och ''CI'' översatt till svenska står för kontinuerlig integration. Om någon invidivid i kandidatgruppen skrev kod som inte var körbar eller inte klara något testfall skrev ''Travis'' ett mail till denna individ att koden inte är accepterbar och uppdaterade statusen på koden från ''build passing'' till ''build failing' se figur \ref{fig:travisstatus}, dessa bilder kunde ses på kandidatgruppens versionshanteringssystems hemsida.
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.8]{ruben-tex/graphic/travisstatus}}
+\caption{Travis status}
+\label{fig:travisstatus}
+\end{figure}
+\newline
+Såhär långt in i projektet kvalitetssäkras algoritmen med hjälp av att kod skrivs efter viss standard och att koden går igenom ett antal moment för att se till att den är körbar, varningsfri och gör det den ska. Nästa steg som togs för att se till att koden höll god kvalité var ett moment som kallas refaktorering. Refaktorering innebär att man förbättrar kodens läsbarhet samt reducerar kodens komplexitet. Detta gjordes av ett antal individer ett flertal gånger med jämna mellanrum. Under refaktorering utvärderades också koden om den följde kodstandarden eller inte, om den inte följdes fördes en dialog med personen som skrev koden.
+\newline
+\newline
+Det sista steget av kvalitetsäkringen för algoritmen var en kravinspektion. Den kravinspektionen som genomfördes var en nerbantad version av den som nämns under teoridelen i kapitel 3. Kravinspektionen som genomfördes var att bocka av den kravspecfikation som skapades under förstudien av kandidatprojektet och ett möte med kunden bokades in för att se om kunden hade några synpunkter eller problem med vad som hade skapats.
+\newline
+\newline
+När all kod väl var färdigskriven och kravinspekterad behövdes en teknisk dokumentation framställas. Som tidigare nämnt var ett av kundens huvudkrav att koden var väldokumenterad. Kodstandarden kräver att alla funktioner samt filer kommenteras om varför de behövs. Med hjälp av att allting har blivit kommenterad i koden kunde en teknisk dokumentation genereras av ett program kallat ''Doxygen''. De programmet gör är att skapa en PDF (Portable Document Format) som innehåller en överblick på de filer och funktioner som finns samt vad de gör med hjälp av kommentarerna som redan finns i koden.
+\newline
+\newline
+Sammanfattningvis kan man säga att det följdes fem steg för att algoritmen som har skapats ska ha hög nivå gällande kvalité. Dessa steg är:
+
+\begin{enumerate}
+\item{Utformning av en kvalitetsplan.}
+\item{Skapande av ett byggsystem och tester.}
+\item{Refaktorering av kod.}
+\item{Kravinspektion med kund.}
+\item{Generering av teknisk dokumentation.}
+\end{enumerate}
+ 
