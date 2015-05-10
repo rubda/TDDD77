@@ -17,7 +17,7 @@
 %\newcommand{\LIPSgruppadress}{\todo{Ta bort}}
 \newcommand{\LIPSartaltermin}{VT, 2015}
 \newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
-\newcommand{\LIPSkund}{SAAB}
+\newcommand{\LIPSkund}{Saab}
 \newcommand{\LIPSkundkontakt}{Daniel Simon}
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
 \newcommand{\LIPShandledare}{Andreas Runfalk}
@@ -33,6 +33,8 @@
 \usepackage{natbib}
 \usepackage[nottoc]{tocbibind}
 \usepackage{tcolorbox}
+\usepackage{listings}
+
 
 
 \usetikzlibrary{shapes, arrows}
@@ -58,5 +60,10 @@
 \input{ruben-tex/slutsatser}
 \bibliographystyle{plain}
 \bibliography{ruben-tex/mybib}
+\newpage
+\begin{appendices}
+\input{ruben-tex/kodstandard}
+\end{appendices}
+
 
 \end{document}
