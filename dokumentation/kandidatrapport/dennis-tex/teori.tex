@@ -1,17 +1,80 @@
 \section{Teori}
-Lite om {\TeX}
+I detta kapitel ska det förklaras hur {\LaTeX} används för att 
+
+\subsection{Språket {\LaTeX}} 
+{\LaTeX} är ett  
+\newline
+\newline
+{\LaTeX} är ett programmeringsspråk vilket betyder att olika programmeringstekniker kan tillämpas. Ett exempel är top-down design där abstrakta funktioner kan defineras först för att sedan delas upp i mindre konkreta funktioner. I ett dokument kan det handla om att definiera strukturen först innan någon text är skriven. 
+\newline
+\newline
+Det är ett Turing-komplett språk vilket låter användaren definera sina egna kommandon. Dessa kommandon kan användas för att göra riktig programmering och ge full kontrol över innehållet och den slutliga visuella presentationen. 
+\newline
+\newline
+Se Figur~\ref{fig:latexexempel}
+  
+\begin{figure}[ht]
+	\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
+	\textbackslash documentclass[titlepage, a4paper]\{article\}
+	\newline
+	\newline
+	\% Använda paket för ytterligare matematik stöd
+	\newline
+	\textbackslash usepackage\{amsmath\}
+	\newline
+	\% Använda paket för att kunna skriva algoritmer
+	\newline
+	\textbackslash usepackage\{algorithm\}
+	\newline
+	\% Använda paket för att kunna skriva pseudokod
+	\newline
+	\textbackslash usepackage\{algpseudocode\}
+	\newline
+	\newline
+	\textbackslash author\{Dennis Ljung\}
+	\newline
+	\textbackslash title\{Ett {\LaTeX} exempel\}
+	\newline
+	\newline
+	\textbackslash begin\{document\}
+	\newline
+	\textbackslash maketitle
+	\newline
+	\textbackslash section\{Inledning\}
+	\newline
+	Din text bla bla
+	\newline
+	\textbackslash section\{Slutsats\}
+	\newline
+	Din text bla bla
+	\newline
+	\textbackslash end\{document\}
+	\newline
+	\noindent\makebox[\linewidth]{\rule{\textwidth}{0.4pt}}
+\caption{Ett typiskt {\LaTeX} program.}
+\label{fig:latexexempel}
+\end{figure} 
+
+\subsubsection{Paket}
+
+\subsubsection{Kommandon}
+Allt i {\LaTeX} styrs med kommandon som skrivs på formen "\textbackslash kommando\{argument\}". Till exempel om en författare för dokumentet ska specifieras skrivs "\textbackslash author\{författarens namn\}" \hspace{0.2mm} eller om datumet för idag ska finnas i dokumentet skrivs "\textbackslash date\{\textbackslash today \}" \hspace{0.2mm} (\textbackslash today är ett kommando utan argument). Ett typiskt användbart kommando är "\textbackslash begin\{vald miljö\}" \hspace{0.2mm} som sedan avslutas med "\textbackslash end\{vald miljö\}" \hspace{0.2mm} vilket används för att sätta upp olika miljöer i dokumentet. En viktig miljö är ''document''  då det är där den huvudsakliga texten kommer ligga. Här tillåts specifika kommandon för den miljön, till exempel för att göra rubriker (\textbackslash section\{namn på rubrik\}) .
+\newline
+\newline
+För att göra egna kommandon 
+
+\subsubsection{Matematik och algoritmer}
+I {\LaTeX} finns stöd för matematiska formler och variabler, om än något begränsad. För ökat stöd kan paketet ''amsmath'' från American Mathematical Society installeras vilket förfinar några existerande kommandon och introducerar nya. För att kunna skriva matematiska formler används operatorn "\$" \hspace{0.2mm} vilket säger åt {\LaTeX} att ändra från vanligt textläge till matematikläge och tillbaka, till exempel ''\$a = b\$'' resulterar i $a = b$. Det finns en rad kommandon att använda i matematik läget, både för olika uttryck och symboler. En mer avancerad formel kan skrivas ''\$\textbackslash sum\^ \,\{n\}\_\{i = 0\}\textbackslash binom\{n\}\{i\} a\^ \,\{i\} b\^ \,\{n - i\} = (a + b)\^ \,\{n\}\$'' vilket resultar i $\sum^{n}_{i=0}\binom{n}{i}a^{i}b^{n-i} = (a + b)^{n}$. 
+\newline
+\newline
+Ytterligare funktionalitet finns att uttnyttja om olika miljöer används till matematikläget. En av dessa miljöer är ''equation'' och används för att typsätta endast en numrerad ekvation.     
+\newline
+\newline
 
 
-{\LaTeX} är ett programmeringsspråk 
+\subsubsection{Grafik}
+För att infoga bilder, diagram och grafer till exempel, används med fördel miljön ''figure''.
 
 
 
-språket
-
-syntax
-
-göra egna kommandon
-
-Finns många paket att ladda ner
-
-editorprogram
+\subsection{Texthanteraren Word}
