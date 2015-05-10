@@ -19,12 +19,7 @@ libmatrix:
 quadopt:
 	cd quadopt ; make all
 
-.PHONY: libsupermatrix
-libmatrix:
-	cd matrixsuperlibrary ; make all
-
 .PHONY: test
 test:
 	cd matrixlibrary ; make test
 	cd quadopt ; make test
-	cd matrixsuperlibrary ; make test
