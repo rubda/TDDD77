@@ -1,23 +1,23 @@
 \documentclass[titlepage, a4paper]{article}
 
-\input{../mall/layout.tex}	% Importera generella layout-strukturer
+% Importera generella layout-strukturer
+\input{../mall/layout.tex}
 
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Ruben Das}
+\newcommand{\LIPSredaktor}{Alexander Yngve}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Kvalitetssäkring}
+\newcommand{\LIPSdokument}{Utvärdering av byggsystem}
 \newcommand{\LIPSdokumenttyp}{Kandidatrapport}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Ruben Das}
+\newcommand{\LIPSgranskare}{Alexander Yngve}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
 \newcommand{\LIPSprojektnamn}{Prediktionsreglering}
 \newcommand{\LIPSprojektgrupp}{Grupp 2}
-%\newcommand{\LIPSgruppadress}{\todo{Ta bort}}
 \newcommand{\LIPSartaltermin}{VT, 2015}
 \newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
-\newcommand{\LIPSkund}{Saab}
+\newcommand{\LIPSkund}{SAAB}
 \newcommand{\LIPSkundkontakt}{Daniel Simon}
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
 \newcommand{\LIPShandledare}{Andreas Runfalk}
@@ -33,8 +33,6 @@
 \usepackage{natbib}
 \usepackage[nottoc]{tocbibind}
 \usepackage{tcolorbox}
-\usepackage{listings}
-
 
 
 \usetikzlibrary{shapes, arrows}
@@ -51,19 +49,14 @@
 \tableofcontents	%Innehållsförteckning
 \newpage
 \pagenumbering{arabic}
-\input{ruben-tex/inledning}
-\input{ruben-tex/bakgrund}
-\input{ruben-tex/teori}
-\input{ruben-tex/metod}
-\input{ruben-tex/resultat}
-\input{ruben-tex/diskussion}
-\input{ruben-tex/slutsatser}
+\input{yngve-tex/inledning}
+\input{yngve-tex/bakgrund}
+\input{yngve-tex/teori}
+\input{yngve-tex/metod}
+\input{yngve-tex/resultat}
+\input{yngve-tex/diskussion}
+\input{yngve-tex/slutsatser}
 \bibliographystyle{plain}
-\bibliography{ruben-tex/mybib}
-\newpage
-\begin{appendices}
-\input{ruben-tex/kodstandard}
-\end{appendices}
-
+\bibliography{yngve-tex/mybib}
 
 \end{document}

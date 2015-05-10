@@ -1,23 +1,26 @@
 \section{Teori}
-Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det vi har gjort är att ha jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som vi har testat varierar i hastighet beroende på hur stora matriserna som ska lösas är samt hur de är strukturerade, även vilket programmeringsspråk och plattform som algoritmen är implementerade på spelar roll.
+Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det som har gjort är att gruppen har jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som testats varierar i hastighet beroende på hur stora matriserna som ska lösas är, samt hur de är strukturerade. Även vilket programmeringsspråk och plattform som algoritmen är implementerade på spelar roll.
 
 \subsection{Liknande problem}
-Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att vi gör ett nytt är för att de som redan finns antingen är breda och riktar in sig på många olika problem, vilket gör dem långsammare eftersom de är sämre optimerade för just vårt problem. Ett annat är att de oftast inte är öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett annat problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
-Tanken med vårt program är att vi ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt.
+Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att gruppen gör ett nytt är för att de som redan finns antingen är breda och riktar in sig på många olika problem, vilket gör dem långsammare eftersom de är sämre optimerade för just vårt problem. En annan anledning är att de oftast inte har öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
+Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt.
 
 \subsection{Algoritmer och metoder}
-Vår huvudsakliga källa för de algoritmer och metoder vi använt kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
 \\
-När vi skulle välja lösningsalgoritm för konvexa kvadratiska problem fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att vi tillslut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att gruppen tillslut valde att gå vidare med just Active set. 
 \\
-För att förstå hur vi skulle gå tillväga med att implementera Active set method, löste vi först problemet tillsammans för hand. Detta gjorde att vi fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problem vi löste var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
-Något som vi märkte när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men att implementera metoden i kod var. 
+För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problem som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
+Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
 
 \subsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. 
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är noll eller positiva.
 
 \subsubsection{Working set}
+''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva. Strukturen är egentligen endast en mängd utav tal där varje tal representeras bivilkorets postion i den toatala uppsättningen av bivillkor. Till den den struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'', ''remove'' och ''clear''.
+
 \subsubsection{Problem}
+''Problem''-strukturen är en som namnet säger en struktur för att lagra alla problemet parametrar. Dessa parametrar är bland annat problemet bivillkor, målfunktion och aktiva mängden bivillkor.
 
 \subsection{Startpunkt}
 Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
@@ -38,13 +41,13 @@ Vår kvadratiska problemlösare hanterar problem på formen:
 $$Ex = h, \quad Fx \geq h$$
 vilket innebär att både $F$ och $g$ måste multipliceras med $-1$ för att de ska vara på rätt form. För att uppfylla att $h$ är positiv måste de element däri som är negativa, och motsvarande rad i $E$-matrisen, multipliceras med $-1$.
 När problemet sedan är på rätt form kan simplex-delen börja. \\
-Först adderas en slackvariabel till varje ''$\leq$''-bivillkor för göra om dessa till ''$=$''-bivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s_i$ som slack. Bivillkoren till problemet ser nu ut på följande form:
+Först adderas en slackvariabel till varje ''$\leq$''-bivillkor för göra om dessa till ''$=$''-bivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
 $$Ex = h, \quad -Fx+Ds = -g$$
 Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
 Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett ''$=$''-bivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var ''$\leq$''-bivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
-$$Ex+Ca = h, \quad -Fx + Ds - Bv = g$$
-Där $C$ och $B$ innehåller de virtuella variablernas koefficienter. \\ 
-Simplexmetoden kräver också att alla variabler måste vara större/lika med noll, vilket är något inte speciellt ofta är uppfyllt i vårt fall. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
+$$Ex+Ca = h, \quad -Fx + Ds - Ba = g$$
+Där $C$ och $B$ innehåller de virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
+Simplexmetoden kräver också att alla variabler måste vara större/lika med noll, vilket är något som inte speciellt ofta är uppfyllt i vårt fall. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
 $$x_i = x_{i_1} - x_{i_2}$$
 där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
 Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är som sagt relaxationen av problemet, men om man på något sätt kan stega sig fram med hjälp av simplexmetoden så att relaxationen försvinner så är punkten man står i en giltig punkt för originalproblemet. Därför sätts målfunktionen till att minimera relaxationen, alltså minimera summan av de virtuella variablerna.
@@ -53,10 +56,24 @@ Efter att ha satt in alla bivillkor i tablån är det sista som måste göras (i
 Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa. Varje iteration börjar med att man tar ut koloumnen där det mest positiva elementet i målfunktionen ligger. Denna kolumn representerar inkommande variabel. Efter det väljs den rad där kvoten, av högerledet och elementet i den valda kolumnen, är som minst. Dock så måste elementet i raden vara positivt. Om det inte är det måste raden hoppas över, annars fungerar inte metoden. Den utvalda raden representerar utgående variabel. Därefter fortsätter man som vanligt i simplex och eliminerar alla element i den valda kolumnen med hjälp utav den valda raden och fortsätter till nästa iteration. Om det visar sig att det finns positiva element i målfunktionen och ingen rad kan väljas ut i tablån (eftersom elementen är negativa), innebär det att bivillkoren inte spänner upp ett tillåtet område. Med andra ord finns det inte någon tillåten startpunkt.
 
 \subsection{Subproblem}
-Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfuntionens linjära termer skiljer sig också en aning då målfuntionens globala minimum har flyttats, relativt till position vi står i, för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg.
-Som beskrivet tidigare kändes det ganska trivialt att lösa subproblemet, men efter en tid in i implementeringen upptäcktes det hur svårt det var att få datorn att göra samma sak som man så smidigt gjorde på papper. Det som krånglade till det var att på papper löste man ut variabler genom att derivera målfunktionen och använda sig av de linjära utryck som då kvarstår. Efter mycket slit utan resultat gick vi bort från den lösningsmetoden och påbörjade en ny utbildningsfas för att hitta en annan metod. Ur Numerical Optimization hittades dessa fyra: ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' krävde att problemet var väldigt specifikt och såg ut på ett visst sätt, men de resterande tre var av intresse. Alla tre hade sina för- och nackdelar men alla uppfyllde i alla fall det som behövdes. Efter en del övervägningar landande till slut valet på ''Range-space'' som var överlägset lättaste att implementera. Nackdelen med metoden är dock att den kräver att man inverterar Q-matrisen (som innehåller de kvadratiska termerna i målfunktionen), vilket är en väldigt tung matematisk operation. Som tur är hade gruppen vetskap om att Q-matrisen alltid var symmetrisk samt att den oftast är näst intil diagonal. Detta gör att matrisen blir lättinverterbar, och det behövs endast göras en gång per algoritmkörning. Alltså blev kostnaden av valet av subproblemslösare inte så dyrt. 
+Subproblemet är det problem som uppstår när man ska hitta en riktingen att ta nästa steg i. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfuntionens linjära termer skiljer sig också en aning då målfuntionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor).
+Som beskrivet tidigare kändes det ganska trivialt att lösa subproblemet, men efter en tid in i implementeringen upptäcktes det hur svårt det var att få datorn att göra samma sak som man så smidigt gjorde på papper. Det som krånglade till det var att på papper löste man ut variabler genom att derivera målfunktionen och använda sig av de linjära utryck som då kvarstår. Efter mycket slit utan resultat avbröts implementationen av den lösningsmetoden och en ny utbildningsfas påbörjade för att hitta en annan metod. Ur Numerical Optimization hittades dessa fyra: ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' krävde att problemet var väldigt specifikt och såg ut på ett visst sätt, men de resterande tre var av intresse. Alla tre hade sina för- och nackdelar men alla uppfyllde i alla fall det som behövdes. Efter en del övervägningar landande till slut valet på ''Range-space'' som var överlägset lättaste att implementera. Nackdelen med metoden är dock att den kräver att man inverterar Q-matrisen (som innehåller de kvadratiska termerna i målfunktionen), vilket är en väldigt tung matematisk operation. Som tur är hade gruppen vetskap om att Q-matrisen alltid var symmetrisk samt att den oftast är näst intil diagonal. Detta gör att matrisen blir lättinverterbar, och det behövs endast göras en gång per algoritmkörning. Alltså blev kostnaden av valet av subproblemslösare inte så dyrt. ''Range-sapce'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
+$$({A_k}Q^{-1}A_k^T)\lambda^* = ({A_k}Q^{-1}g-c)$$
+där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikarorer. Förövrigt så är
+$g = Qz+q$ och $c = A_kz - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegrikningen $p$:
+$$Qp = A^T\lambda^* - q$$
+Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplikationer, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen symmetri uttnyttjas. 
 
-Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. Med en ''enkel version'' menas att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
+
+Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. Metoden löser följande system:
+
+\begin{matrix}
+$Q$ & $A_k^T$ \\
+$A_k$ & $0$
+\end{matrix}
+
+
+Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
 
 
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
@@ -73,12 +90,12 @@ I figur 1 nedanför visas pseudokod för vår implementering av Active set metho
 \EndIf	
 \State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
 \While{$\textbf{true}$}
-	\State Solve subproblem to find vector $p$ pointing towards the global minimum;
+	\State Solve subproblem to find step direction $p$;
 	\If{$p$ is zero vector}
 		\If{$activeSet$ has zero constraints}
 			\State \textbf{break};
 		\EndIf		
-		\If{Could not remove constraints from $P$}
+		\If{Could not remove constraints from $activeSet$}
 			\State \textbf{break};
 		\EndIf
 	\Else

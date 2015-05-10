@@ -257,7 +257,7 @@ bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c) {
       sum = 0;
       j = 1;
       for (; j <= b->rows; j++) {
-  sum += get_value_without_check(i, j, a)* get_value_without_check(j, k, b);
+	sum += get_value_without_check(i, j, a)* get_value_without_check(j, k, b);
       }
       insert_value_without_check(sum, i, k, c);
     }

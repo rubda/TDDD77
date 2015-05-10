@@ -1,0 +1,14 @@
+\section{Teori}
+\todo{Förklara vad ett byggsystem är osv}
+\todo{Bild}
+
+\subsection{Make}
+Make är ett gammalt verktyg som skapades av Stuart Feldman 1976. Den variant som är vanligast idag är GNU Make och det är den som kommer att behandlas i rapporten.
+
+Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i samma katalog som källkoden. I filen skrivs en uppsättning direktiv som berättar för Make vad och hur allt ska byggas. Språket kallas för Make och är ett deklarativt programspråk. Make använder sig av skalkommandon vilket medför att hela skalmiljön är åtkomlig för Make.
+
+\todo{Nämn att flera makefiler ofta används}
+\todo{Förklara hur make körs från kommandoraden}
+
+\subsection{SCons}
+SCons är ett nyare verktyg som skapades Steven Knight år 2000. SCons används på liknande sätt som Make men istället för en Makefile skapas en fil kallad SConstruct. Till skillnad från Make används Python som språk för att beskriva hur och vad som ska byggas. Dessutom är skalmiljön normalt sett inte åtkomlig för SCons.

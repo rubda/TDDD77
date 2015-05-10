@@ -2,12 +2,8 @@
 #include <matLib.h>
 #include <solver.h>
 
-
-
-
-
 /* solves Ax = b, x should be set to 0 */
-bool conjugate_gradient(matrix* A, matrix* x, matrix* b) {
+bool conjugate_gradient(matrix* A, matrix* x, matrix* b){
   /* variables */
   value alpha, beta;
 
@@ -21,7 +17,7 @@ bool conjugate_gradient(matrix* A, matrix* x, matrix* b) {
   value rs_old = dot_product(r, r);
   value rs_new;
 
-  while (true) {
+  while (true){
 
     pt = transpose_matrix_with_return(p);
 
@@ -53,7 +49,6 @@ bool conjugate_gradient(matrix* A, matrix* x, matrix* b) {
     add_matrices(r, p, p);
 
     free_matrix(pt);
-
   }
 
   free_matrix(p);
@@ -68,20 +63,15 @@ bool conjugate_gradient(matrix* A, matrix* x, matrix* b) {
 
 void range_space(matrix* A, problem* prob){
 
-
   matrix* At = transpose_matrix_with_return(A);  
 
-  matrix* AQ = create_matrix(A->rows, prob->Q_inv->columns);
-  multiply_matrices(A,prob->Q_inv, AQ);  
+  matrix* AQ = multiply_matrices_with_return(A, prob->Q_inv);
 
-  matrix* AQAt = create_matrix(AQ->rows, At->columns);
-  multiply_matrices(AQ, At, AQAt);  
+  matrix* AQAt = multiply_matrices_with_return(AQ, At);
 
-  matrix* AQg = create_matrix(AQ->rows, prob->gk->columns);
-  multiply_matrices(AQ, prob->gk, AQg);  
-
-  matrix* Az = create_matrix(A->rows ,prob->z->columns);
-  multiply_matrices(A, prob->z, Az);  
+  matrix* AQg = multiply_matrices_with_return(AQ, prob->gk);
+  
+  matrix* Az = multiply_matrices_with_return(A, prob->z);
 
   matrix* b = get_active_conditions_rhs(prob);
   matrix* c = subtract_matrices_with_return(Az, b);
@@ -91,16 +81,13 @@ void range_space(matrix* A, problem* prob){
   matrix* lambda = create_matrix(AQg->rows, AQg->columns);
   gauss_jordan_solver(AQAt, lambda, h1);  
 
-  matrix* ht = create_matrix(prob->p->rows, lambda->columns);
-  matrix* h2 = create_matrix(ht->rows, ht->columns);
-  multiply_matrices(At, lambda, ht);
-  subtract_matrices(ht, prob->gk, h2);
+  matrix* ht = multiply_matrices_with_return(At, lambda);
+  matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
   gauss_jordan_solver(prob->Q, prob->p, h2);
   //conjugate_gradient(prob->Q, prob->p, h2);
 
-  matrix* Qp = create_matrix(prob->gk->rows, prob->gk->columns);
-  multiply_matrices(prob->Q, prob->p, Qp);
+  matrix* Qp = multiply_matrices_with_return(prob->Q, prob->p);
   
   if(compare_matrices(Qp, prob->gk)){
     int i;
@@ -161,8 +148,6 @@ void KKT_sub(matrix* A, problem* prob){
   for (i = 1; i <= prob->p->rows; i++){
     insert_value_without_check(-get_value_without_check(i, 1, pl), i, 1, prob->p);
   }
-
-  /* Ska detta frigöras? */
    
   free_matrix(A);
   free_matrix(At);
@@ -173,8 +158,6 @@ void KKT_sub(matrix* A, problem* prob){
   free_matrix(b);
   free_matrix(c);
 }
-
-
 
 
 /* Solves the subproblem for active set */
