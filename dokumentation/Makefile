@@ -15,6 +15,7 @@ all: $(PDFS)
 clean:
 	rm -rf $(dir $(PDFS))
 	rm -rf $(subst /$(OUTDIR)/,/$(BUILDDIR)/,$(dir $(PDFS)))
+	rm $(subst /$(OUTDIR),,$(PDFS))
 
 $(PDFS): $(subst /$(OUTDIR),,$(PDFS))
 
