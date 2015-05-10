@@ -2,7 +2,73 @@
 #include <matLib.h>
 #include <solver.h>
 
+
+
+
+
+/* solves Ax = b, x should be set to 0 */
+bool conjugate_gradient(matrix* A, matrix* x, matrix* b) {
+  /* variables */
+  value alpha, beta;
+
+  matrix* nom = create_matrix(1, 1);
+  matrix* Ap = create_matrix(A->rows, 1);
+  matrix* r = matrix_copy(b);
+  matrix* p = matrix_copy(r);    
+  matrix* pt;
+
+  /* solve */
+  value rs_old = dot_product(r, r);
+  value rs_new;
+
+  while (true) {
+
+    pt = transpose_matrix_with_return(p);
+
+    /* calculate alpha */
+    multiply_matrices(A, p, Ap);
+    multiply_matrices(pt, Ap, nom);
+    alpha = rs_old/get_value_without_check(1, 1, nom);
+
+    /* calculate next x */
+    multiply_matrix_with_scalar(alpha, p);
+    add_matrices(x, p, x);
+
+    /* calculate next r */
+    multiply_matrix_with_scalar(alpha, Ap);
+    subtract_matrices(r, Ap, r);
+
+    rs_new = dot_product(r, r);
+
+    /* check if approx. done */
+    if (compare_elements(rs_new, 0) == 0) {
+      break;
+    }
+
+    /* calculate beta */
+    beta = rs_new/rs_old;
+
+    /* calculate next p */
+    multiply_matrix_with_scalar(beta, p);
+    add_matrices(r, p, p);
+
+    free_matrix(pt);
+
+  }
+
+  free_matrix(p);
+  free_matrix(r);
+  free_matrix(Ap);
+  free_matrix(nom);
+
+  return true;
+}
+
+
+
 void range_space(matrix* A, problem* prob){
+
+
   matrix* At = transpose_matrix_with_return(A);  
 
   matrix* AQ = create_matrix(A->rows, prob->Q_inv->columns);
@@ -31,6 +97,7 @@ void range_space(matrix* A, problem* prob){
   subtract_matrices(ht, prob->gk, h2);
 
   gauss_jordan_solver(prob->Q, prob->p, h2);
+  //conjugate_gradient(prob->Q, prob->p, h2);
 
   matrix* Qp = create_matrix(prob->gk->rows, prob->gk->columns);
   multiply_matrices(prob->Q, prob->p, Qp);
@@ -87,6 +154,7 @@ void KKT_sub(matrix* A, problem* prob){
 
   /* Solve kkt system */
   gauss_jordan_solver(K, pl, gc);
+  //conjugate_gradient(K, pl, gc);
 
   /* Retrieve p */
   int i;
