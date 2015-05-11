@@ -186,6 +186,10 @@ codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
 
+# FIX, RUN CURRENTLY CALLS GENERATE_C. SHOULD CALL MAKE OR SOMETHING!
+runButton = Button(sideBar, text="Run code", width=15, command=generate_c)
+runButton.pack()
+
 exitButton = Button(sideBar, text="Exit", width=15, command=quit)
 exitButton.pack(side=BOTTOM)
 
