@@ -5,7 +5,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic --std=c99
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
-LIB = $(SRC_DIR)/libmatrix.a
+LIB = $(SRC_DIR)/libmatLib.a
 
 TEST_SRCS = $(wildcard $(SRC_DIR)/tests/*.c)
 TEST_BINS = $(subst .c,,$(TEST_SRCS))
@@ -14,7 +14,7 @@ TEST_BINS = $(subst .c,,$(TEST_SRCS))
 all: $(LIB) $(TEST_BINS)
 
 $(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
-	$(CC) $(CFLAGS)  $< -o $@ -I $(INCLUDE_DIR) -L $(SRC_DIR) -lmatrix
+	$(CC) $(CFLAGS)  $< -o $@ -I $(INCLUDE_DIR) -L $(SRC_DIR) -lmatLib
 
 $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 	$(CC) $(CFLAGS) -c $< -o $(subst .c,.o, $<) -fPIC -I $(INCLUDE_DIR) 
@@ -24,3 +24,4 @@ $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 clean:
 	rm -f $(TEST_BINS)
 	rm -f $(LIB)
+	rm -f $(subst .a,.o,$(LIB))

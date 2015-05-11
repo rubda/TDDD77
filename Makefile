@@ -1,15 +1,15 @@
 .PHONY: all
-all: docs libmatrix quadopt
+all: libmatrix quadopt
 
 .PHONY: clean
 clean:
-	cd matrixlibrary ; make clean
-	cd quadopt ; make clean
+	cd matrixlibrary ; $(MAKE) clean
+	cd quadopt ; $(MAKE) clean
 
 .PHONY: libmatrix
 libmatrix:
-	cd matrixlibrary ; make all
+	cd matrixlibrary ; $(MAKE)
 
 .PHONY: quadopt
 quadopt:
-	cd quadopt ; make all
+	cd quadopt ; $(MAKE)

@@ -3,7 +3,9 @@ INCLUDE_DIR = include
 
 LIBMATRIX_DIR = ../matrixlibrary/src
 LIBMATRIX_INCLUDE = ../matrixlibrary/include
-LIBMATRIX = $(LIBMATRIX_DIR)/libmatrix.a
+LIBMATRIX_NAME = matLib
+LIBMATRIX_LIB = lib$(LIBMATRIX_NAME).a
+LIBMATRIX = $(LIBMATRIX_DIR)/$(LIBMATRIX_LIB)
 
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic --std=c99
@@ -21,11 +23,11 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	$(CC) $(CFLAGS) -c $< -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR)
 
 $(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(OBJS) $(LIBMATRIX)
-	$(CC) $(CFLAGS) $^ -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR) -L $(LIBMATRIX_DIR) -lmatrix
+	$(CC) $(CFLAGS) $^ -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR) -L $(LIBMATRIX_DIR) -l$(LIBMATRIX_NAME)
 
 .PHONY: $(LIBMATRIX)
 $(LIBMATRIX):
-	cd ../matrixlibrary ; $(MAKE) src/libmatrix.a
+	cd ../matrixlibrary ; $(MAKE) src/$(LIBMATRIX_LIB)
 
 .PHONY: clean
 clean:
