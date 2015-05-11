@@ -36,7 +36,7 @@ typedef float value;
 
 #ifdef DOUBLE
 typedef double value;
-#define FORMAT_STRING "%lf "
+#define FORMAT_STRING "%f "
 #define PRECISION 0.0001
 #endif
 

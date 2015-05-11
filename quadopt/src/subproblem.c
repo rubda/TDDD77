@@ -59,9 +59,63 @@ bool conjugate_gradient(matrix* A, matrix* x, matrix* b){
   return true;
 }
 
+void range_space_sparse(matrix* A, problem* prob){
+
+  sparse_matrix* s_A = create_sparse_matrix(A, -1);
+
+  matrix* At = transpose_matrix_with_return(A);  
+
+  matrix* QAt = multiply_sparse_matrix_matrix(prob->sparse_Q_inv, At);
+  matrix* AQAt = multiply_sparse_matrix_matrix(s_A, QAt);
+
+
+  matrix* Qg = multiply_sparse_matrix_matrix(prob->sparse_Q_inv, prob->gk);
+  matrix* AQg = multiply_sparse_matrix_matrix(s_A, Qg);
+  
+  matrix* Az = multiply_sparse_matrix_matrix(s_A, prob->z);
+
+
+  matrix* b = get_active_conditions_rhs(prob);
+  matrix* c = subtract_matrices_with_return(Az, b);
+
+  matrix* h1 = subtract_matrices_with_return(AQg, c);  
+
+  matrix* lambda = create_matrix(AQg->rows, AQg->columns);
+  gauss_jordan_solver(AQAt, lambda, h1);  
+
+  matrix* ht = multiply_matrices_with_return(At, lambda);
+  matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
+
+  gauss_jordan_solver(prob->Q, prob->p, h2);
+  //conjugate_gradient(prob->Q, prob->p, h2);
+
+  matrix* Qp = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->p);
+  
+  if(compare_matrices(Qp, prob->gk)){
+    int i;
+    for(i = 1; i <= prob->p->rows; i++){
+      insert_value_without_check(0, i, 1, prob->p);
+    }
+  }
+
+  free_sparse_matrix(s_A);
+  free_matrix(At);
+  free_matrix(Qg);
+  free_matrix(AQAt);
+  free_matrix(AQg);
+  free_matrix(Az);
+  free_matrix(h1);
+  free_matrix(lambda);
+  free_matrix(ht);
+  free_matrix(h2);
+  free_matrix(Qp);
+  free_matrix(b);
+  free_matrix(c);
+}
 
 
 void range_space(matrix* A, problem* prob){
+
 
   matrix* At = transpose_matrix_with_return(A);  
 
@@ -210,6 +264,8 @@ void solve_subproblem(problem* prob){
   } while(success);
 
   /* Use range-space to get p */
+
+  /* range_space_sparse(A, prob); */
 
   range_space(A, prob);
 

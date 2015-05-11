@@ -33,7 +33,6 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
       val = get_value_without_check(r, c, Ain);
       if (compare_elements(val, 0) != 0) {
         S->A[i] = val;
-        printf("val: %d\n", val);
         S->rA[i] = r;
         S->cA[i] = c;
         i++;
@@ -42,6 +41,21 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
   }
 
   return S;
+}
+
+/* return number of elements != 0 */
+int matrix_sparsity(matrix* A) {
+  int r, c, n = 0;
+  value val;
+  for (r = 1; r <= A->rows; r++) {
+    for (c = 1; c <= A->columns; c++) {
+      val = get_value_without_check(r, c, A);
+      if (compare_elements(val, 0) != 0) {
+        n++;
+      }
+    }
+  }
+  return n;
 }
 
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax) {
@@ -68,14 +82,14 @@ matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B) {
     for (i = 0; i < A->size; i++) {
       temp1 = get_value_without_check(A->cA[i], c, B);
       temp1 *= A->A[i];
-      temp2 = temp1 + get_value_without_check(A->rA[i], c, AB);
-      insert_value_without_check(temp2, A->rA[i], c, AB);
-      
+      temp2 = get_value_without_check(A->rA[i], c, AB) + temp1;
+      insert_value_without_check(temp2, A->rA[i], c, AB);      
     }
   }
 
   return AB;
 }
+
 
 sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain) {
   sparse_matrix* S = malloc(sizeof(sparse_matrix));
@@ -115,9 +129,14 @@ print_sparse_matrix(sparse_matrix* S) {
 
   for (i = 0; i < S->size; i++) {
     insert_value_without_check(S->A[i], S->rA[i], S->cA[i], M);
-    printf("v: %d\n", S->A[i]);
   }
 
   print_matrix(M);
   free_matrix(M);
+}
+
+void free_sparse_matrix(sparse_matrix* S) {
+  free(S->A);
+  free(S->rA);
+  free(S->cA);
 }
