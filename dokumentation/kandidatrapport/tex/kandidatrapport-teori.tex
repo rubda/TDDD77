@@ -55,6 +55,10 @@ $$min z = \sum^i {v_i}, \quad  \Leftrightarrow \quad min z - \sum^i {v_i} = 0$$
 Efter att ha satt in alla bivillkor i tablån är det sista som måste göras (innan simplexlösningen kan börja) att eliminera alla virtuella variabler i målfunktionen. Detta görs med hjälp av radoperationer i tablån, till exempel genom att addera en rad innehållande en virtuell variabel till målfunktionen. \\
 Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa. Varje iteration börjar med att man tar ut koloumnen där det mest positiva elementet i målfunktionen ligger. Denna kolumn representerar inkommande variabel. Efter det väljs den rad där kvoten, av högerledet och elementet i den valda kolumnen, är som minst. Dock så måste elementet i raden vara positivt. Om det inte är det måste raden hoppas över, annars fungerar inte metoden. Den utvalda raden representerar utgående variabel. Därefter fortsätter man som vanligt i simplex och eliminerar alla element i den valda kolumnen med hjälp utav den valda raden och fortsätter till nästa iteration. Om det visar sig att det finns positiva element i målfunktionen och ingen rad kan väljas ut i tablån (eftersom elementen är negativa), innebär det att bivillkoren inte spänner upp ett tillåtet område. Med andra ord finns det inte någon tillåten startpunkt.
 
+\subsubsection{diskussion}
+Antagandet om att antalet bivilkor var ungefär lika med antalet variabler - 1, som ledde till att metod 1 implementerades, kan man säga var taget ur luften. Antagandet kom ifrån den första testdatan som gruppen fick ifrån kunden, där detta var uppfyllt. Om gruppen istället inte hade antagit något sådant hade man istället kunnat tidigare utbilda sig i simplexmetoden. När det dessutom visade sig att metoden faktiskt var relativt enkel att både förstå sig på och implementera kändes metod 1 riktigt omdömeslös. \\
+Ett problem med vår implementation ''Phase I'' utav simplexmetoden är att vi antar att alla variabler kan vara negativa, vilket leder till att alla variabler subtitueras. En möjlig optimering till detta skulle vara att kolla ifall något av bivillkoren säger att en variabel är större än/lika med noll. I så fall skulle detta bivillkor kunna tas bort, och variabeln skulle inte behövas subtitueras. Detta skulle leda till att simplextablån blir mindre och därav går det både snabbare att hitta en punkt, och risken till numeriska fel vid hantering av flyttal skulle minska. 
+
 \subsection{Subproblem}
 Subproblemet är det problem som uppstår när man ska hitta en riktingen att ta nästa steg i. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfuntionens linjära termer skiljer sig också en aning då målfuntionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor).
 Som beskrivet tidigare kändes det ganska trivialt att lösa subproblemet, men efter en tid in i implementeringen upptäcktes det hur svårt det var att få datorn att göra samma sak som man så smidigt gjorde på papper. Det som krånglade till det var att på papper löste man ut variabler genom att derivera målfunktionen och använda sig av de linjära utryck som då kvarstår. Efter mycket slit utan resultat avbröts implementationen av den lösningsmetoden och en ny utbildningsfas påbörjade för att hitta en annan metod. Ur Numerical Optimization hittades dessa fyra: ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' krävde att problemet var väldigt specifikt och såg ut på ett visst sätt, men de resterande tre var av intresse. Alla tre hade sina för- och nackdelar men alla uppfyllde i alla fall det som behövdes. Efter en del övervägningar landande till slut valet på ''Range-space'' som var överlägset lättaste att implementera. Nackdelen med metoden är dock att den kräver att man inverterar Q-matrisen (som innehåller de kvadratiska termerna i målfunktionen), vilket är en väldigt tung matematisk operation. Som tur är hade gruppen vetskap om att Q-matrisen alltid var symmetrisk samt att den oftast är näst intil diagonal. Detta gör att matrisen blir lättinverterbar, och det behövs endast göras en gång per algoritmkörning. Alltså blev kostnaden av valet av subproblemslösare inte så dyrt. ''Range-sapce'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
@@ -67,14 +71,15 @@ Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplika
 
 Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. Metoden löser följande system:
 
-$$
-\begin{matrix}
-  Q   & A_k^T \\
-  A_k & 0
-\end{matrix}
-$$
+$\begin{matrix}
+Q & A_k^T \\
+A_k & 0
+\end{matrix}$
 
 Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
-
-
+\newline
+\newline
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
+
+\subsection{Programspråket C}
+Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och addresser. Det innehåller inga sammansatta datatyper som strängar, listor eller matriser eller funktioner för att hantera dessa. Dock ingår allt det i standarbiblioteket vilket finns med samtliga versioner. Eftersom det varken finns objekt, automatisk minneshantering eller ''overhead-kod'' gör C till ett mycket snabbt språk. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
