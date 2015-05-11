@@ -53,4 +53,24 @@ Den utvecklingsmetodik som växte fram för kandidatgruppen kan efterlikna utvec
 Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
 
 \subsection{Forskningsmetod}
+Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
+\newline
+\newline
+De tre algoritmerna som fanns var \emph{Active-set method}, \emph{Gradient Projection method} och \emph{Interior-point method}. Dessa algoritmer hade sina egna styrkor och svagheter, och det var just dessa som behövde jämföras utifrån prediktionsregleringsproblemets behov.
 
+\subsubsection{Faktorer}
+För att kunna avgöra vilken av algoritmerna som var den bäst lämpade för optimeringsproblemet, så behövdes det ett antal faktorer att jämgöra dem emot.
+
+\paragraph{Implementerbarhet}
+Olika faktorer som spelade in var bland annat och möjligen det viktigaste implementerbarhet, mest eftersom projektet är väldigt tidsbegränsat och det finns ingen möjlighet till att överskrida tidsbudgeten. Eftersom det även var ett krav att lösaren skulle implementeras i C så var man tvungen att kolla vilka olika möjligheter för implementering som fanns där.
+
+\paragraph{Hastighet}
+Hastighet var även en väldigt viktig faktor, just på grund av att ett av de få krav som vi faktiskt hade var att programmet skulle vara lika snabbt eller snabbare än det kommersiella programmet Gurobi som används för att lösa alla möjliga sorters optimeringsproblem. En fördel vi hade gentemot Gurobi var att vår lösaren kunde optimeras för just detta problem och behövde inte vara lika generell som Gurobi.
+
+\paragraph{Skalbarhet}
+En annan viktig faktor som var avgörande var skalbarhet. Matrisernas storlekar på problemet som ska lösas kan vara uppemot flera hundra element i båda dimensionerna, därför var det väldigt viktigt att algoritmen hade en tidskomplexitet som inte var allt för stor. Just i början kan detta vara väldigt svårt att veta eftersom det inte finns så stora möjligheter till att testa större problem, utan dessa kan endast testas i ett senare skede när lösaren verkligen kommit så långt att den kan hantera dem.
+
+\paragraph{Komplexitet}
+Algoritmerna i sig kan verka vara väldigt snabba och skalbara men kan kräva en massa andra extra förkunskapar för att man ska kunna förstå sig på, och som skulle ta alldeles för lång tid för att läsa in inom projektets tidsbudget. Detta hänger möjligtvis ihop en del med implementerbarheten.
+
+\subsubsection{Algoritmerna gemtemot varandra}
