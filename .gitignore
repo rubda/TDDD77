@@ -63,3 +63,6 @@
 
 # McShit
 .DS_Store
+
+# SConsShit
+.sconsign.dblite
