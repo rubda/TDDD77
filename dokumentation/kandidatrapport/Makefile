@@ -21,6 +21,12 @@ NAMES = $(KAND_NAME) $(ADAM_NAME) $(DENNIS_NAME) $(MARTIN_NAME) $(RUBEN_NAME) $(
 
 PDFS = $(addprefix $(BUILDDIR)/, $(addsuffix .pdf,$(NAMES)))
 
+ifndef OUTPUT
+OUT = 1>/dev/null
+else
+OUT = 
+endif
+
 
 .PHONY: all
 all: $(PDFS)
@@ -34,8 +40,8 @@ $(BUILDDIR)/$(YNGVE_NAME).pdf: $(YNGVE_NAME).tex $(wildcard $(YNGVE_DIR)/*) $(wi
 
 $(PDFS):
 	cd $(dir $<) ; mkdir -p $(BUILDDIR)
-	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) 1>/dev/null
-	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) 1>/dev/null
+	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) $(OUT)
+	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) $(OUT)
 
 .PHONY: clean
 clean:
