@@ -1,5 +1,5 @@
-INCLUDE_DIR = include
 SRC_DIR = src
+INCLUDE_DIR = include
 
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic --std=c99
@@ -13,11 +13,11 @@ TEST_BINS = $(subst .c,,$(TEST_SRCS))
 .PHONY: all
 all: $(LIB) $(TEST_BINS)
 
-$(SRC_DIR)/tests/%: src/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
-	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) $< -o $@ -L$(SRC_DIR) -lmatrix
+$(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
+	$(CC) $(CFLAGS)  $< -o $@ -I $(INCLUDE_DIR) -L $(SRC_DIR) -lmatrix
 
 $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
-	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $(subst .c,.o, $<)
+	$(CC) $(CFLAGS) -c $< -o $(subst .c,.o, $<) -fPIC -I $(INCLUDE_DIR) 
 	ar rcs $@ $(subst .c,.o, $<)
 
 .PHONY: clean
