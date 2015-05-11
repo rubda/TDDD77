@@ -1,7 +1,13 @@
 language: c
 script: 
-  - echo "Running unit tests"
+  - echo "Running SCons"
   - scons
+  - echo "Cleaning with SCons"
+  - scons -c
+  - echo "Running Make"
+  - make
+  - echo "Cleaning with Make"
+  - make clean
 notifications:
   email:
     on_success: never
