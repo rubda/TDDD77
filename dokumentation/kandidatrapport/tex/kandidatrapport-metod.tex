@@ -2,10 +2,11 @@
 Nedan beskrivs hur vi arbetar i gruppen samt hur vi kom fram till vald lösningsmetod. 
 
 \subsection{Vår lösning}
-I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
+I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
 \begin{algorithm}[H]
 \caption{Quadopt-solver}
+\label{alg:quadoptsolver}
 \begin{algorithmic}
 \Procedure{Quadopt-solver}{$problem$ $P$}
 \If{$P$ has not feasible starting point $z_0$}
@@ -38,6 +39,20 @@ I figur 1 nedanför visas pseudokod för vår implementering av Active set metho
 \end{algorithm}
 \input{tex/kandidatrapport-matrisbibliotek}
 
+\subsection{GUI och parser}
+Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
+\begin{figure}
+\centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
+\caption{QuadOpt GUI}
+\label{fig:quadoptgui}
+\end{figure}
+GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att språket Python användes var för att alla i kandidatgruppen har erfarenhet av språket samt att språket är plattformsoberoende. Visserligen är Java också ett plattformsoberoende språk som det diskuterades om att använda, men alla i kandidatgruppen hade inte erfarenhet av språket och valet föll på Python.
+\newline
+\newline
+Tkinter är ett programvarubibliotek, dvs ett bibliotek som hjälper till att forma ett GUI med hjälp av lätt Python kod. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python. Vissa kallar användningen av tkinter en tradition i Python-världen.
+\newline
+\newline
+HÄR SKA DET STÅ LITE SAKER OM PARSERN. 
 
 \subsection{Utvecklingsmetod}
 Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i underkapitlet ''Resterande iterationer''.
@@ -59,13 +74,13 @@ Planen var att inte att använda sig av alla attribut som ''Scrum'' har att erbj
   \item "Under arbete"
   \item "Klart"
 \end{itemize}
-Under varje kategori skulle sedan ett antal aktiviteter finnas med. Dessa aktiviteter skulle känneteckna det som behövdes göras för att projektet skulle bli klart. Varje aktivitet hade en tidsstämpel som antydde hur lång tid det bör ta att utföra aktivteten. Ett exempel kan vara att en person ser att aktiviteten ''Implementera matrisaritmetik'' finns under kategorien ''Ej påbörjade''. Den aktiviteten har en tidsstämpel på 20 timmar, dvs det beräknas ta 20 timmar att implementera matrisaritmetik. Om personen vill arbeta med denna aktivitet skulle han/hon flytta denna aktiviteten till kategorien ''Under arbete'' för att sedan flytta den till ''Klart'' när aktiviteten är klar. Antalet timmar för varje aktivitet bestämdes genom diskussion, men främst gissningar då gruppen inte hade tidigare erfarenhet av någon av dessa aktiviteter sen tidigare.
+Under varje kategori skulle sedan ett antal aktiviteter finnas med. Dessa aktiviteter skulle känneteckna det som behövdes göras för att projektet skulle bli klart. Varje aktivitet hade en tidsstämpel som antydde hur lång tid det bör ta att utföra aktiviteten. Ett exempel kan vara att en person ser att aktiviteten ''Implementera matrisaritmetik'' finns under kategorien ''Ej påbörjade''. Den aktiviteten har en tidsstämpel på 20 timmar, dvs det beräknas ta 20 timmar att implementera matrisaritmetik. Om personen vill arbeta med denna aktivitet skulle han/hon flytta denna aktiviteten till kategorien ''Under arbete'' för att sedan flytta den till ''Klart'' när aktiviteten är klar. Antalet timmar för varje aktivitet bestämdes genom diskussion, men främst gissningar då gruppen inte hade tidigare erfarenhet av någon av dessa aktiviteter sen tidigare.
 \newline
 \newline
 Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''Burn down chart'', dvs en graf som visar hur mycket jobb som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. Detta är lätt att implementera då tavlan nämnd tidigare skulle hålla kolla på timmar på ett strukturerat sätt. 
 \newline
 \newline
-Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldelles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
+Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.3]{grafik/trello}}
@@ -94,41 +109,51 @@ Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna 
 De verktygen som användes under detta kandidatprojekt var främst
 \newline
 \newline
-\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av en kalender och nyttiga länkar.
+\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
 \newline
 \newline 
-\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och håller koll på versioner av ens projekt i linjär tid.
+\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
 \newline
 \newline 
-\textbf{Github.} Github är ett webbhotell som använder Git. Här kan man lagra alla versioner av sin kod.
+\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och håller koll på versioner av ens projekt i linjär tid. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt har individer som har velat jobba med något experimentellt kunnat gå sin egen väg genom att skapa en branch och jobba på den branchen. Det brukar finns en master branch, dvs där det huvudsakliga arbetet görs och sen kan man skapa andra branches för kod annat. 
 \newline
 \newline 
-\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med Github. Det Travis gör är att kompilera all kod och kör alla tester som finns i biblioteket via ett byggsystem som har utvecklats av kandidatgruppen. Travis säger till om alla tester gick igenom eller inte.
+\textbf{Github.} Github är ett webbhotell som använder Git. Här kan man lagra alla versioner av sin kod. Kandidatgruppen lagrar alla väsentligt dokumentation för projektet på Github, dvs alla dokument som skrivs och all kod. Kandidatgruppens Github är dessutom privat så bara folk som ska ha med dokumentationen att göra har tillgång till sidan.
 \newline
 \newline
-\textbf{Valgrind.} För att hitta minnesläckor i C-koden användes Valgrind.
+\textbf{Byggsystem.} Ett byggsystem av kandidatgruppen har skapats och gruppen klassar det som ett utvecklingsverktyg. Byggsystemet kompilerar all kod och kör alla tester som finns i biblioteket. Detta har underlättat arbetsprocessen enormt, då efter man har skrivit kod kan man helt enkelt skriva in make i terminalen och då kompileras allt och alla tester. Byggsystem är utvecklat i språket Make.
+\newline
+\newline 
+\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med Github. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. Travis säger till om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och säger till om testerna lyckades eller inte. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens Github-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej.
 \newline
 \newline
-\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var Emacs som är en textredigerare skapad Richard 	Stallman.
+\textbf{Valgrind.} Då väldigt mycket kod skrevs som allokerade mycket minne var kandidatgruppen tvungna att frigöra de minnet som vart allokerat. Förstås så glömdes det bort att frigöra minne ibland av vissa individer och därför var kandidatgruppen tvungen att hinna dessa minnesläckor och åtgärda dem. Genom Valgrind kunde minnesläckor hittas genom att analysera de testfiler som hade skapats. 
 \newline
 \newline
-\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen ansåg vara bättre än Emacs.
+\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var Emacs som är en textredigerare skapad Richard 	Stallman. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer.
 \newline
 \newline
-\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger.
+\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen använde. Det som är utmärkande drag för Sublime är att redigeraren har en rätt så unik syntax-highlighting, dvs hur den belyser text. Detta uppskattades samt att inlärningsprocessen var enkel.s
 \newline
 \newline
-\textbf{Matlab.} Eftersom optimeringsalgoritmen som skrevs skulle kunna användas i Matlab har Matlab varit ett viktigt verktyg för kandidatgruppen. Även Matlabs matrisoperationer har varit till stor nytta för kandidatgruppen.
+\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger. De som använde Eclipse tyckte att debuggern kom tillhands väldigt ofta och därför använde de Eclipse.
 \newline
 \newline
-\textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp.
+\textbf{Matlab.} Matlab är ett datorprogram och programspråk som främst används för tekniska beräkningar och matematiska. Eftersom optimeringsalgoritmen som skrevs skulle kunna användas i Matlab har Matlab varit ett viktigt verktyg för kandidatgruppen. Tester av gruppens optimeringsalgoritm har gjorts i Matlab många gånger. Även Matlabs matrisoperationer har varit till stor nytta för kandidatgruppen för att underlätta räkning av uppgifter. Matlab har även en egen optimeringslösare som liknar kandidatgruppens, jämförelser har gjorts med den vid ett flertal tillfällen.
 \newline
 \newline
-\textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system.
+\textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp. Anledning till att många i kandidatgruppen har använt Texmaker är för att de funkar på individernas operativsystem.
 \newline
-\newline
+<<<<<<< HEAD
 \textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Apple-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. 
 
+=======
+\newline
+\textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system. Gummi kan anses vara ett lättviktigare program än Texmaker som är lite tyngre och har funktioner som inte har varit så nödvändiga.
+\newline
+\newline
+\textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
+>>>>>>> 6444836e4b6e1404bec43623d82713a1954be4ff
 \subsection{Forskningsmetod}
 Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
 \newline
@@ -136,7 +161,7 @@ Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet
 De tre algoritmerna som fanns var \emph{Active set method}, \emph{Gradient Projection method} och \emph{Interior point method}. Dessa algoritmer hade sina egna styrkor och svagheter, och det var just dessa som behövde jämföras utifrån prediktionsregleringsproblemets behov.
 
 \subsubsection{Faktorer}
-För att kunna avgöra vilken av algoritmerna som var den bäst lämpade för optimeringsproblemet, så behövdes det ett antal faktorer att jämgöra dem emot.
+För att kunna avgöra vilken av algoritmerna som var den bäst lämpade för optimeringsproblemet, så behövdes det ett antal faktorer att jämföra dem emot.
 
 \paragraph{Implementerbarhet}
 Olika faktorer som spelade in var bland annat och möjligen det viktigaste implementerbarhet, mest eftersom projektet är väldigt tidsbegränsat och det finns ingen möjlighet till att överskrida tidsbudgeten. Eftersom det även var ett krav att lösaren skulle implementeras i C så var man tvungen att kolla vilka olika möjligheter för implementering som fanns där.
