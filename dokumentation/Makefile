@@ -42,7 +42,11 @@ PDFS += $(UT1_DIR)/$(BUILDDIR)/$(UT1_NAME).pdf
 PDFS += $(UT2_DIR)/$(BUILDDIR)/$(UT2_NAME).pdf
 
 .PHONY: all
-all: $(PDFS)
+all: $(PDFS) kandidatrapport
+
+.PHONY: kandidatrapport
+kandidatrapport:
+	cd kandidatrapport ; make all
 
 $(ASM_DIR)/$(BUILDDIR)/$(ASM_NAME).pdf: $(ASM_DIR)/$(ASM_NAME).tex $(wildcard $(ASM_DIR)/tex/*) $(wildcard $(ASM_DIR)/grafik/*)
 $(ARK_DIR)/$(BUILDDIR)/$(ARK_NAME).pdf: $(ARK_DIR)/$(ARK_NAME).tex $(wildcard $(ARK_DIR)/tex/*) $(wildcard $(ARK_DIR)/bilder/*)

@@ -60,3 +60,6 @@
 
 # Matlab stuff
 *.mexmaci64
+
+# McShit
+.DS_Store

@@ -746,6 +746,7 @@ int main(){
   quadopt_solver(problem);
 
   assert(compare_matrices(problem->solution, optimum));
+  free_matrix(optimum);
   free_problem(problem);
 
   end = clock(); 

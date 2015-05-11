@@ -72,47 +72,7 @@ Q & A_k^T \\
 A_k & 0
 \end{matrix}$
 
-
 Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
 
 
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
-
-\subsection{Vår lösning}
-I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
-
-\begin{algorithm}[H]
-\caption{Quadopt-solver}
-\begin{algorithmic}
-\Procedure{Quadopt-solver}{$problem$ $P$}
-\If{$P$ has not feasible starting point $z_0$}
-	\State Compute a feasible starting point $z_0$;
-\EndIf	
-\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
-\While{$\textbf{true}$}
-	\State Solve subproblem to find step direction $p$;
-	\If{$p$ is zero vector}
-		\If{$activeSet$ has zero constraints}
-			\State \textbf{break};
-		\EndIf		
-		\If{Could not remove constraints from $activeSet$}
-			\State \textbf{break};
-		\EndIf
-	\Else
-		\State Take step to better feasible point $z$ in $P$;
-		\If{Could not step}
-			\State \textbf{break};
-		\EndIf
-		\State Set $activeSet$ with new active constraints at $z$;	
-	\EndIf
-\EndWhile
-\State  $solution$ in $P\gets z$;
-
-\State \textbf{return} $solution$ in $P$;
-	
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-\input{tex/kandidatrapport-matrisbibliotek}
-
-
