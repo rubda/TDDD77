@@ -6,21 +6,59 @@ Det finns sedan tidigare redan många andra program som löser liknande optimeri
 Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt.
 
 \subsection{Algoritmer och metoder}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan vårt jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för vårt problem.
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan gruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var vår beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att gruppen tillslut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att gruppen tillslut valde att gå vidare med just Active set. 
 \\
-För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problem som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
+För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
 Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
 
 \subsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är noll eller positiva.
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll.
 
-\subsubsection{Working set}
-''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva. Strukturen är egentligen endast en mängd utav tal där varje tal representeras bivilkorets postion i den toatala uppsättningen av bivillkor. Till den den struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'', ''remove'' och ''clear''.
+\subsection{Vår lösning}
+I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
+
+\begin{algorithm}[H]
+\caption{Quadopt-solver}
+\begin{algorithmic}
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break};
+		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
+	\EndIf
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+Som man ser i pseudokoden ovan är vissa delar relativt vaga. Till exempel ''Compute feasible point'' och ''Solve subproblem''. Dessa delar kommer att beskrivas mer i detalj senare, men först tas några av grundstenarna upp.
 
 \subsubsection{Problem}
-''Problem''-strukturen är en som namnet säger en struktur för att lagra alla problemet parametrar. Dessa parametrar är bland annat problemet bivillkor, målfunktion och aktiva mängden bivillkor.
+''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
+
+\subsubsection{Working set}
+''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivilkorets postion i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
 
 \subsection{Startpunkt}
 Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
@@ -67,52 +105,13 @@ Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplika
 
 Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. Metoden löser följande system:
 
-\begin{matrix}
-$Q$ & $A_k^T$ \\
-$A_k$ & $0$
-\end{matrix}
-
 
 Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
 
 
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
 
-\subsection{Vår lösning}
-I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
-\begin{algorithm}[H]
-\caption{Quadopt-solver}
-\begin{algorithmic}
-\Procedure{Quadopt-solver}{$problem$ $P$}
-\If{$P$ has not feasible starting point $z_0$}
-	\State Compute a feasible starting point $z_0$;
-\EndIf	
-\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
-\While{$\textbf{true}$}
-	\State Solve subproblem to find step direction $p$;
-	\If{$p$ is zero vector}
-		\If{$activeSet$ has zero constraints}
-			\State \textbf{break};
-		\EndIf		
-		\If{Could not remove constraints from $activeSet$}
-			\State \textbf{break};
-		\EndIf
-	\Else
-		\State Take step to better feasible point $z$ in $P$;
-		\If{Could not step}
-			\State \textbf{break};
-		\EndIf
-		\State Set $activeSet$ with new active constraints at $z$;	
-	\EndIf
-\EndWhile
-\State  $solution$ in $P\gets z$;
-
-\State \textbf{return} $solution$ in $P$;
-	
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
 \input{tex/kandidatrapport-matrisbibliotek}
 
 
