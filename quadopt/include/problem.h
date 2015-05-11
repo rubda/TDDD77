@@ -21,6 +21,8 @@ struct problem{
   sparse_matrix* sparse_Q;
   sparse_matrix* sparse_Q_inv;
 
+  bool is_sparse;
+
 
   matrix* q; /**< The matrix containing the linear optimization problem. */
 

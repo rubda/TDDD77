@@ -2,62 +2,7 @@
 #include <matLib.h>
 #include <solver.h>
 
-/* solves Ax = b, x should be set to 0 */
-bool conjugate_gradient(matrix* A, matrix* x, matrix* b){
-  /* variables */
-  value alpha, beta;
 
-  matrix* nom = create_matrix(1, 1);
-  matrix* Ap = create_matrix(A->rows, 1);
-  matrix* r = matrix_copy(b);
-  matrix* p = matrix_copy(r);    
-  matrix* pt;
-
-  /* solve */
-  value rs_old = dot_product(r, r);
-  value rs_new;
-
-  while (true){
-
-    pt = transpose_matrix_with_return(p);
-
-    /* calculate alpha */
-    multiply_matrices(A, p, Ap);
-    multiply_matrices(pt, Ap, nom);
-    alpha = rs_old/get_value_without_check(1, 1, nom);
-
-    /* calculate next x */
-    multiply_matrix_with_scalar(alpha, p);
-    add_matrices(x, p, x);
-
-    /* calculate next r */
-    multiply_matrix_with_scalar(alpha, Ap);
-    subtract_matrices(r, Ap, r);
-
-    rs_new = dot_product(r, r);
-
-    /* check if approx. done */
-    if (compare_elements(rs_new, 0) == 0) {
-      break;
-    }
-
-    /* calculate beta */
-    beta = rs_new/rs_old;
-
-    /* calculate next p */
-    multiply_matrix_with_scalar(beta, p);
-    add_matrices(r, p, p);
-
-    free_matrix(pt);
-  }
-
-  free_matrix(p);
-  free_matrix(r);
-  free_matrix(Ap);
-  free_matrix(nom);
-
-  return true;
-}
 
 void range_space_sparse(matrix* A, problem* prob){
 
@@ -86,8 +31,21 @@ void range_space_sparse(matrix* A, problem* prob){
   matrix* ht = multiply_matrices_with_return(At, lambda);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
+  /* clear p */
+  //printf("---------------------------------------\n");
+/*
+  int r;
+  for (r = 1; r <= prob->p->rows; r++) {
+    insert_value_without_check(0, r, 1, prob->p);
+  }
+  conjugate_gradient(prob->sparse_Q, prob->p, h2);
+  print_matrix(prob->p);*/
+
   gauss_jordan_solver(prob->Q, prob->p, h2);
-  //conjugate_gradient(prob->Q, prob->p, h2);
+  /*print_matrix(prob->p);
+
+  printf("---------------------------------------\n\n\n\n")*/
+  
 
   matrix* Qp = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->p);
   
@@ -138,8 +96,7 @@ void range_space(matrix* A, problem* prob){
   matrix* ht = multiply_matrices_with_return(At, lambda);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
-  gauss_jordan_solver(prob->Q, prob->p, h2);
-  //conjugate_gradient(prob->Q, prob->p, h2);
+  gauss_jordan_solver(prob->Q, prob->p, h2);  
 
   matrix* Qp = multiply_matrices_with_return(prob->Q, prob->p);
   
@@ -265,9 +222,14 @@ void solve_subproblem(problem* prob){
 
   /* Use range-space to get p */
 
-  /* range_space_sparse(A, prob); */
+  if (prob->is_sparse) {
+    range_space_sparse(A, prob);
+  } else {
+    range_space(A, prob);
+  }
+  
 
-  range_space(A, prob);
+  
 
   /* KKT_sub(A, prob); */
 

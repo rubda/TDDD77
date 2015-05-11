@@ -1,16 +1,9 @@
 \section{Diskussion}
-Under denna del kommer en diskussion angående om resultaten ske samt metoderna som användes.
-\subsection{Resultat}
-Resultaten för alla tre punkter måste anses vara rimligt. Den första punkten angående vad som är rätt nivå är en väldigt diffus fråga och kan bara svaras genom att båda parter, dvs leverantör och kund har ett enhetligt svar. Eftersom det man kommer överens om i en eventuell kravspecifikation måste räcka att fullfölja för att det ska klassas som rätt nivå gällande kvalité. Sen om kunden hade velat haft några andra funktioner med produkten eller tjänsten så borde kunden ha specificerat detta. Leverantörer har också skyldighet att försöka uppfylla alla krav som har specificerats på ett snyggt sätt och inte bara slänga ihop något som fungerar, små detaljer kan utmärka ett arbete.
-\newline
-\newline
-Den andra punkten finns det inte mycket att diskutera om, som allt annat i livet krävs det struktur för att man ska uppnå något. Under teoridelen i kapitel 3 kan man konstatera att planera, utföra och granska antagligen kommer generera en produkt eller tjänst av tillräckligt god kvalité.
-\newline
-\newline
-Angående den sista punkten kan man säkert byta svaret från ett nej till ett ja via en kravdiskussion med kunden. Det kravet som sades att kandidatgruppens optimeringsalgoritm skulle vara likvärdig med ''Gurobis'' skulle möjligtvis kunna förhandlas bort och då uppfyller optimeringsalgoritmen alla krav och detta ger i sin tur en kvalitativ produkt. Däremot tycker inte jag att man skapar en kvalitativ produkt om man förhandlar bort ett krav man var överens om i början, speciellt ett krav av denna magnitud. 
-
-\subsection{Metod}
-Efter slutförandet av projektet och analys av hur det hela gick finns det många saker man hade kunnat gjort annorlunda. Ett återkommande problem som stöttes på under projektets gång var att inte många respekterade kodstandarden som hade satts från början, inte förens den sista iterationen började folk ta den på allvar. Detta resulterade i att mycket tid lades ner på att refaktorera kod. Kodstandarden innehöll inte heller allt som bör ta hänsyns till, men som bör vara uppenbara för en programmerare. Ett exempel är att frigöra minne, det gjordes knappt och det resultera i att vissa var tvungna att hitta minnesläckorna och åtgärda dem. Kandidatgruppen hade ett krav på att skriva pålitlig kod och minnesläckor i koden är inte pålitligt.
-\newline
-\newline
-Jag tror att slutprodukten skulle ha sett annorlunda ut om kodstandarden täckte fler områden i hur man ska skriva kod samt om man tryckte på hur viktigt det är att följa kodstandarden. Eftersom kandidatgruppen är en grupp av klasskamrater är det inga seriösa arbetsförhållanden mellan individerna. Detta leder till att kod bara slängs ihop och man tar inte kodstandarden seriös, jag som kvalitetssamordnare hade kunnat trycka mer på att kodstandarden skall följas för att en produkt av bättre kvalité skulle skapats.
+	Denna sektion kommer att förklara varför resultatet blev som det blev och vad som kan förbättras.	
+	
+	\subsection{Resultat}
+	Då detta är första gången som gruppen jobbar med testning som en aktiv del av ett projektet var planering och utförandet ganska svårt att ta sig in i. I början testades precis som planerat små enheter men på grund utav bristfällig utbildning påbörjades sytem- och modultesterna för tidigt. Gruppen ville tidigt testa lösaren då dens funktionalitet var av högsta prioritet, men eftersom subproblemslösaren var bristfälligt testad (ty den bristfälliga utbildningen) och i själva verket inte fungerade, även om den klarade de test som var skrivna, så var stora delar av koden tvungen att testas om. Detta hade lätt undvikts om vi hade lagt mer tidigt på utbildningen. Eftersom det var i slutet av iteration 2 som subproblemslösaren först blev färdigställd gjordes många test i onödan, men dock berodde inte det på något testrelaterat utan snarare på de beslut som togs. 
+	
+	\subsection{Metod}
+	Tanken var att genom hela projektet använda oss utav en ''Bottom-up''-strategi. Men eftersom organisationen i gruppen angående vem som skulle göra vad var dålig i början glömdes större delar av testningen bort. Detta ledde till att vissa funktioner felaktigt antogs fungera och att en ''Top-down''-strategi användes senare vilket inte fungerade så bra då majoriteten av fel hittades på låg nivå i koden.
+	Då projektet ändå var ganska entydigt, med att vi skulle implementera en algoritm som löser konvexa kvadratiska optimeringsproblem, så var det ett enkelt beslut att köra enhetstester och integrationstester. Det framgick tidigt att det var framförallt funktionalitet som behövde testas, och därför behövde planeringen av testningen endast göras grovt i början och sedan specificeras när testningen närmade sig. Det som skulle behövas göras tidigare är framförallt att organisera och schemalägga testning för att testare skall kunna veta vad de har för ansvar.
