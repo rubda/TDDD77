@@ -2,10 +2,11 @@
 Nedan beskrivs hur vi arbetar i gruppen samt hur vi kom fram till vald lösningsmetod. 
 
 \subsection{Vår lösning}
-I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
+I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
 \begin{algorithm}[H]
 \caption{Quadopt-solver}
+\label{alg:quadoptsolver}
 \begin{algorithmic}
 \Procedure{Quadopt-solver}{$problem$ $P$}
 \If{$P$ has not feasible starting point $z_0$}
