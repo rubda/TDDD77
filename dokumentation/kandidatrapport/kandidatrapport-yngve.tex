@@ -1,0 +1,62 @@
+\documentclass[titlepage, a4paper]{article}
+
+% Importera generella layout-strukturer
+\input{../mall/layout.tex}
+
+% Information nödvändig för generella layout-strukturer
+\newcommand{\LIPSredaktor}{Alexander Yngve}
+\newcommand{\LIPSversion}{0.1}
+\newcommand{\LIPSdokument}{Utvärdering av byggsystem}
+\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
+\newcommand{\LIPSgranskatdatum}{-}
+\newcommand{\LIPSgranskare}{Alexander Yngve}
+\newcommand{\LIPSgodkannare}{Andreas Runfalk}
+\newcommand{\LIPSgodkantdatum}{-}
+\newcommand{\LIPSkursnamn}{TDDD77}
+\newcommand{\LIPSprojektnamn}{Prediktionsreglering}
+\newcommand{\LIPSprojektgrupp}{Grupp 2}
+\newcommand{\LIPSartaltermin}{VT, 2015}
+\newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
+\newcommand{\LIPSkund}{SAAB}
+\newcommand{\LIPSkundkontakt}{Daniel Simon}
+\newcommand{\LIPSkursansvarig}{Kristian Sandahl}
+\newcommand{\LIPShandledare}{Andreas Runfalk}
+
+% Dokument-specifika paket
+\usepackage{tabularx}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{natbib}
+\usepackage[nottoc]{tocbibind}
+\usepackage{tcolorbox}
+
+\usetikzlibrary{shapes, arrows}
+
+\pagenumbering{roman}
+
+\DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
+
+
+\begin{document}
+
+\LIPSTitelsida
+\newpage
+\tableofcontents	%Innehållsförteckning
+\newpage
+\pagenumbering{arabic}
+\input{yngve-tex/inledning}
+\input{yngve-tex/bakgrund}
+\input{yngve-tex/teori}
+\input{yngve-tex/metod}
+\input{yngve-tex/resultat}
+\input{yngve-tex/diskussion}
+\input{yngve-tex/slutsatser}
+\bibliographystyle{plain}
+\bibliography{yngve-tex/mybib}
+
+\end{document}
