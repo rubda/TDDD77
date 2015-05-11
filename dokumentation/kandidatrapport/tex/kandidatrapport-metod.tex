@@ -1,6 +1,44 @@
 \section{Metod}
 Nedan beskrivs hur vi arbetar i gruppen samt hur vi kom fram till vald lösningsmetod. 
 
+\subsection{Vår lösning}
+I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
+
+\begin{algorithm}[H]
+\caption{Quadopt-solver}
+\begin{algorithmic}
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break};
+		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
+	\EndIf
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\input{tex/kandidatrapport-matrisbibliotek}
+
+
 \subsection{Utvecklingsmetod}
 Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektetsgång och detta tas upp i underkapitlet ''Resterande iterationer''.
 \newline

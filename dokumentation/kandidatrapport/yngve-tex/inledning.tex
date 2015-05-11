@@ -1,0 +1,19 @@
+\section{Inledning}
+Byggsystem är en viktig men ofta förbisedd komponent i en utvecklares verktygslåda. Byggsystemet ansvarar för att automatiskt göra om källkoden till körbara filer utan att utvecklaren ska behöva komma ihåg långa kompilatorkommandon, sökvägar till programbibliotek och liknande. Ett bra byggsystem medför en rad fördelar, ökad produktivitet och förbättrade möjligheter till testning för att nämna några.
+
+I den här rapporten kommer två olika byggsystem att jämföras med projektet ''Prediktionsreglering'' som utgångspunkt. Projektets befintliga byggsystem implementerat i Make kommer att ställas mot ett nytt implementerat i SCons. 
+
+\subsection{Syfte}
+Då min roll i projektet är utvecklingsledare tog jag beslutet om att använda Make som byggsystem tidigt i projektets gång. Detta då Make finns förinstallerat på både Mac och de flesta Linuxdistributioner. Syftet med den här rapporten är att utreda ett alternativ till Make och om några fördelar för projektet finns.
+
+\subsection{Frågeställning}
+
+\begin{enumerate}
+\item Vilket av de två byggsystemen har bäst prestanda?
+\item Finns det någon anledning att välja Make framför SCons eller vice versa?
+\item Vilket byggsystem är lättast att använda och utveckla?
+\item Hur hade projektet påverkats av ett annat val av byggsystem?
+\end{enumerate}
+
+\subsection{Avgränsningar}
+Rapporten kommer återspegla resultat för projektet ''Prediktionsreglering'' som består av \todo{?} källkodsfiler och \todo{?} dokumentfiler. Projektets kod ska kunna byggas och exekveras på både Linux, Mac och Windows. Resultaten skulle kunna se annorlunda ut med ett projekt av annan storlek och andra krav.
