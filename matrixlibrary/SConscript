@@ -1,4 +1,5 @@
-env = Environment(CPPPATH="include")
+env = Environment(CPPPATH="include",
+                  CFLAGS=["-Wall", "-Wextra", "-pedantic", "--std=c99"])
 
 matLib = env.StaticLibrary("src/matLib.c")
 

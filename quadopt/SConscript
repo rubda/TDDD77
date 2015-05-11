@@ -1,6 +1,7 @@
 Import("matLib")
 
-env = Environment(CPPPATH=["include", "#matrixlibrary/include"])
+env = Environment(CPPPATH=["include", "#matrixlibrary/include"],
+                  CFLAGS=["-Wall", "-Wextra", "-pedantic", "--std=c99"])
 
 objs = []
 
