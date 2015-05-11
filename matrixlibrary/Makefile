@@ -13,7 +13,7 @@ TEST_BINS = $(subst .c,,$(TEST_SRCS))
 .PHONY: all
 all: $(LIB) $(TEST_BINS)
 
-src/tests/%: src/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
+$(SRC_DIR)/tests/%: src/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 	$(CC) $(CFLAGS) -I $(INCLUDE_DIR) $< -o $@ -L$(SRC_DIR) -lmatrix
 
 $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
