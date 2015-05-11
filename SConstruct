@@ -1,2 +1,4 @@
-SConscript("quadopt/SConscript")
-SConscript("matrixlibrary/SConscript")
+matLib = SConscript("matrixlibrary/SConscript")
+
+SConscript("quadopt/SConscript", exports="matLib")
+

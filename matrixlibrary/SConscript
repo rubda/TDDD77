@@ -1,1 +1,10 @@
-print "HELLO from matrixlibrary"
+env = Environment(CPPPATH="include")
+
+matLib = env.StaticLibrary("src/matLib.c")
+
+tests = []
+
+for test in Glob("src/tests/*.c"):
+    tests.append(env.Program(test, LIBS = matLib))
+     
+Return("matLib")
