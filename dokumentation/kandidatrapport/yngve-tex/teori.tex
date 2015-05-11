@@ -25,17 +25,35 @@ Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i s
 
 Normal praxis är att använda flera Makefiler, till exempel en för varje delkomponent i programmet, och att ha en huvudfil som anropar de andra filerna.
 
-För att få Make att bygga programmet i figur \ref{fig:beroendegraf} skrivs en Makefile och följande kommando körs i terminalen.
+För att få Make att bygga programmet i figur \ref{fig:beroendegraf} används Makefilen från figur \ref{fig:makefile}. Kommandot i figur \ref{fig:makekommando} används sedan för att bygga programmet.
 
-\lstinputlisting[language=make]{yngve-tex/Makefile_exempel.mk}
-\lstinputlisting[language=sh]{yngve-tex/make_exempel.sh}
+\begin{figure}[h!]
+  \lstinputlisting[language=make]{yngve-tex/Makefile_exempel.mk}
+  \caption{Makefile för exemplet i figur \ref{fig:beroendegraf}.}
+  \label{fig:makefile}
+\end{figure}
+
+\begin{figure}[h!]
+  \lstinputlisting[language=sh]{yngve-tex/make_exempel.sh}
+  \caption{Kommando för att bygga med Make.}
+  \label{fig:makekommando}
+\end{figure}
 
 \subsection{SCons}
 SCons är ett nyare verktyg som skapades Steven Knight år 2000. SCons används på liknande sätt som Make men istället för en Makefile skapas en fil kallad SConstruct. Till skillnad från Make används Python som språk för att beskriva hur och vad som ska byggas. Dessutom är skalmiljön normalt sett inte åtkomlig för SCons.
 
 Även SCons-byggsystem brukar delas upp i flera filer. Här kallas huvudfilen SConstruct och underfilerna SConscript.
 
-SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}.
+SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}. Figur \ref{fig:sconstruct} visar ett exempel på en SConstruct-fil som gör samma sak som Makefilen i figur \ref{fig:makefile}. Kommandot i figur \ref{fig:sconskommando} används för att bygga programmet med SCons.
 
-\lstinputlisting[language=python]{yngve-tex/SConstruct_exempel.py}
-\lstinputlisting[language=sh]{yngve-tex/scons_exempel.sh}
+\begin{figure}[h!]
+  \lstinputlisting[language=python]{yngve-tex/SConstruct_exempel.py}
+  \caption{SConstruct för exemplet i figur \ref{fig:beroendegraf}.}
+  \label{fig:sconstruct}
+\end{figure}
+
+\begin{figure}[h!]
+  \lstinputlisting[language=sh]{yngve-tex/scons_exempel.sh}
+  \caption{Kommando för att bygga med SCons.}
+  \label{fig:sconskommando}
+\end{figure}
