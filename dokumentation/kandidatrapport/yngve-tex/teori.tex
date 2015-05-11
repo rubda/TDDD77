@@ -25,14 +25,17 @@ Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i s
 
 Normal praxis är att använda flera Makefiler, till exempel en för varje delkomponent i programmet, och att ha en huvudfil som anropar de andra filerna.
 
-För att få Make att bygga programmet i figur \ref{fig:beroendegraf} körs följande kommando i terminalen. \todo{Ta med en exempel Makefile?}
-\lstinputlisting[language=sh]{yngve-tex/make_example.sh}
+För att få Make att bygga programmet i figur \ref{fig:beroendegraf} skrivs en Makefile och följande kommando körs i terminalen.
+
+\lstinputlisting[language=make]{yngve-tex/Makefile_exempel.mk}
+\lstinputlisting[language=sh]{yngve-tex/make_exempel.sh}
 
 \subsection{SCons}
 SCons är ett nyare verktyg som skapades Steven Knight år 2000. SCons används på liknande sätt som Make men istället för en Makefile skapas en fil kallad SConstruct. Till skillnad från Make används Python som språk för att beskriva hur och vad som ska byggas. Dessutom är skalmiljön normalt sett inte åtkomlig för SCons.
 
 Även SCons-byggsystem brukar delas upp i flera filer. Här kallas huvudfilen SConstruct och underfilerna SConscript.
 
-SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}. \todo{Ta med en exempel SConstruct?}
+SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}.
 
-\lstinputlisting[language=sh]{yngve-tex/scons_example.sh}
+\lstinputlisting[language=python]{yngve-tex/SConstruct_exempel.py}
+\lstinputlisting[language=sh]{yngve-tex/scons_exempel.sh}

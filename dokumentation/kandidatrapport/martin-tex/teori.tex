@@ -5,7 +5,7 @@ Alla operationer på matriser och vektorer bygger i grunden på matris structen 
 \lstinputlisting[language=C]{martin-tex/matrix_struct.c}
 När en matris skapas så används följande funktion:
 \lstinputlisting[language=C]{martin-tex/create_matrix.c}
-Som skapar en $row \ x \ column$ stor matris. \\ \\
+Som skapar en $row \ \text{x} \ column$ stor matris. \\ \\
 För att sätt in ett värde i matris används följande funktion:
 \lstinputlisting[language=C]{martin-tex/insert_value.c}
 Matriserna lagras row major så datan ligger lagrad enligt figur 1. 
@@ -30,11 +30,11 @@ Inverse:\\
 Istället för crout så kan inversen beräknas med strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$. Denna algoritm har dock en stor nackdel som beskrivs i sektion \ref{sec:inverse_nackdelar}.
 
 \subsection{Strukturella förbättringar}
-När ett linjärt ekvationssystem på formen $Ax=b $ löses så bryts A ned till två matriser L och U där L är en undre triangulär matris och U är en övre triangulär matris. I matris structen skulle dessa matriser kunna sparas tillsammans med en boolean som säger om matrisen har modifierats så skulle man kunna undvika att beräkna U och L flera gånger för samma matris. Samma sätt skulle kunna användas för inversen till matriser. 
+När ett linjärt ekvationssystem på formen $Ax=b $ löses så bryts A ned till två matriser L och U där L är en undre triangulär matris och U är en övre triangulär matris\cite{Ching}. I matris structen skulle dessa matriser kunna sparas tillsammans med en boolean som säger om matrisen har modifierats så skulle man kunna undvika att beräkna U och L flera gånger för samma matris. Samma sätt skulle kunna användas för inversen till matriser. 
 
 \subsection{Strassen algoritmen för beräkning av inverser}
 \label{sec:inverse_nackdelar}
-Matrisen man ska invertera delas upp i fyra submatriser på följande sätt:
+Matrisen som ska invertera delas upp i fyra submatriser på följande sätt:
 $$A=\begin{bmatrix}
 A_{11} & A_{12} \\
 A_{21}& A_{22}
@@ -96,7 +96,7 @@ X_{21}& X_{22}
   0 & 0 & 0 & \cdots & 0
  \end{bmatrix}
  $$
- Då $I_{12}$ och $I_{21}$ är nollmatriser och inte inverterbara så kan strassen algoritmen ej tillämpas på alla matriser även om de är inverterbara. 
+ Då $I_{12}$ och $I_{21}$ är nollmatriser och inte inverterbara så kan strassen algoritmen ej tillämpas på alla matriser även om de är inverterbara. Detta kan bevisas med att att determinanten för nollmatrisen är noll vilket går emot teoremet för invertebara matriser \cite{Setyadi} 
  
 \subsection{Strassen algoritmen för matrismultiplikation}
 \label{sec:strassen}
@@ -135,7 +135,7 @@ C_{21}& C_{22}
  \\
 Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallel då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare pån x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
  \subsubsection{Nackdelar med strassen}
- I den nuvarande implementationen så skapar det nya matriser i varje rekursivt anrop till strassen. Detta kan leda till att den använder mycket minne. Detta skulle kunna återgärdas med att inga nya matriser skapas utan varje rekursivt anrop får de ursprungliga matriserna och en mängd som de ska arbeta med. Alternativt sätta rekursionsdjupet beroende på storleken av matriserna och mängden tillgängligt ram-minne.
+ I den nuvarande implementationen av matrisbibliotektet så skapas en ny matris varje gång man går en operation. Detta kan leda till att den använder mycket minne.
  
 
  
