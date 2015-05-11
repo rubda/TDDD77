@@ -1,4 +1,5 @@
 #include <sparse_lib.h>
+#include <math.h>
 
 /* creates a sparse matrix out of a normal matrix */
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
