@@ -10,12 +10,17 @@
 
 #include <matLib.h>
 #include <work_set.h>
+#include <sparse_lib.h>
 
 /** Allocates the problem and sets all necessary variables */
 struct problem{
   /* Optimization function */
   matrix* Q; /**< The matrix containing the quadratic optimization problem. */
   matrix* Q_inv; /**< Q inverse. */
+
+  sparse_matrix* sparse_Q;
+  sparse_matrix* sparse_Q_inv;
+
 
   matrix* q; /**< The matrix containing the linear optimization problem. */
 
@@ -24,15 +29,21 @@ struct problem{
   /* Equality constraints */
   int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
   matrix* E; /**< Equality constraints left-hand side coefficient. */
+  sparse_matrix* sparse_E;
+
   matrix* h; /**< Equality constraints right-hand side constraint. */
 
   /* Larger-than constraints */
   int inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
   matrix* F; /**< Larger-than constraints left-hand side coefficient. */
+  sparse_matrix* sparse_F;
+
   matrix* g; /**< Larger-than constraints right-hand side constraint. */
 
   /* All constraints */
   matrix* A; /**< All constraints left-hand side coefficients. */
+  sparse_matrix* sparse_A;
+
   matrix* b; /**< All constraints right-hand side constraints. */
   int constraints_count; /**< Total number of constraints. */
 

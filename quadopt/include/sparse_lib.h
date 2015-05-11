@@ -15,6 +15,8 @@ typedef struct sparse_matrix sparse_matrix;
 /* creates a sparse matrix out of a normal matrix */
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size);
 
+int matrix_sparsity(matrix* A);
+
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax);
 
 matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B);
@@ -26,3 +28,5 @@ bool transpose_sparse_matrix(sparse_matrix* Ain);
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain);
 
 print_sparse_matrix(sparse_matrix* S);
+
+void free_sparse_matrix(sparse_matrix* S);
