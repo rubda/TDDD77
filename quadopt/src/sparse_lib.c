@@ -70,6 +70,7 @@ bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax) {
     temp2 = temp1 + get_value_without_check(A->rA[i], 1, Ax);
     insert_value_without_check(temp2, A->rA[i], 1, Ax);    
   }
+  return true;
 }
 
 matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B) {
@@ -123,7 +124,7 @@ sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain) {
   return S;
 }
 
-print_sparse_matrix(sparse_matrix* S) {
+void print_sparse_matrix(sparse_matrix* S) {
   matrix* M = create_zero_matrix(S->rows, S->columns);
   int i;
 
@@ -139,4 +140,66 @@ void free_sparse_matrix(sparse_matrix* S) {
   free(S->A);
   free(S->rA);
   free(S->cA);
+}
+
+
+/* solves Ax = b, x should be set to 0 */
+bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
+  /* variables */
+  value alpha, beta;
+  int i;
+
+  matrix* nom = create_matrix(1, 1);
+  matrix* Ap = create_zero_matrix(A->rows, 1);
+  matrix* r = matrix_copy(b);
+  matrix* p = matrix_copy(r);    
+  matrix* pt;
+
+  /* solve */
+  value rs_old = dot_product(r, r);
+
+  value rs_new;
+
+  while (true){
+
+    /* clear Ap */
+    for (i = 1; i <= Ap->rows; i++) {
+      insert_value_without_check(0, i, 1, Ap);
+    }
+
+    /* calculate alpha */
+    multiply_sparse_matrix_vector(A, p, Ap);
+    alpha = rs_old/dot_product(p, Ap); //  get_value_without_check(1, 1, nom);
+
+    /* calculate next x */
+    multiply_matrix_with_scalar(alpha, p);
+    add_matrices(x, p, x);
+
+    /* calculate next r */
+    multiply_matrix_with_scalar(alpha, Ap);
+    subtract_matrices(r, Ap, r);
+
+    rs_new = dot_product(r, r);
+
+    /* check if approx. done */
+    if (sqrt(rs_new) < 0.00001) { //compare_elements(rs_new, 0) == 0) {
+      break;
+    }
+
+    /* calculate beta */
+    beta = rs_new/rs_old;
+
+    /* calculate next p */
+    multiply_matrix_with_scalar(beta, p);
+    add_matrices(r, p, p);
+
+    rs_old = rs_new;
+  }
+
+  free_matrix(p);
+  free_matrix(r);
+  free_matrix(Ap);
+  free_matrix(nom);
+
+  return true;
 }

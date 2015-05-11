@@ -27,6 +27,9 @@ bool transpose_sparse_matrix(sparse_matrix* Ain);
 
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain);
 
-print_sparse_matrix(sparse_matrix* S);
+void print_sparse_matrix(sparse_matrix* S);
 
 void free_sparse_matrix(sparse_matrix* S);
+
+/* solves Ax = b, x should be set to 0 */
+bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b);
