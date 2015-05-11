@@ -1,20 +1,20 @@
 \documentclass[titlepage, a4paper]{article}
 
-\input{../mall/layout.tex}	% Importera generella layout-strukturer
+% Importera generella layout-strukturer
+\input{../mall/layout.tex}
 
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Dennis Ljung}
+\newcommand{\LIPSredaktor}{Alexander Yngve}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{{\LaTeX} för teknisk dokumentation}
+\newcommand{\LIPSdokument}{Utvärdering av byggsystem}
 \newcommand{\LIPSdokumenttyp}{Kandidatrapport}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Dennis Ljung}
+\newcommand{\LIPSgranskare}{Alexander Yngve}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
-\newcommand{\LIPSprojektnamn}{{\LaTeX} för teknisk dokumentation}
-\newcommand{\LIPSprojektgrupp}{Dennis Ljung}
-%\newcommand{\LIPSgruppadress}{\todo{Ta bort}}
+\newcommand{\LIPSprojektnamn}{Prediktionsreglering}
+\newcommand{\LIPSprojektgrupp}{Grupp 2}
 \newcommand{\LIPSartaltermin}{VT, 2015}
 \newcommand{\LIPSgrupphemsida}{http://pum-2.ida.liu.se/}
 \newcommand{\LIPSkund}{SAAB}
@@ -30,8 +30,11 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage[round]{natbib}
-\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{natbib}
+\usepackage[nottoc]{tocbibind}
+\usepackage{tcolorbox}
+
 
 \usetikzlibrary{shapes, arrows}
 
@@ -39,24 +42,22 @@
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
+
 \begin{document}
 
 \LIPSTitelsida
-
-
 \newpage
 \tableofcontents	%Innehållsförteckning
 \newpage
 \pagenumbering{arabic}
-\input{dennis-tex/inledning}
-\input{dennis-tex/bakgrund}
-\input{dennis-tex/teori}
-\input{dennis-tex/metod}
-\input{dennis-tex/resultat}
-\input{dennis-tex/diskussion}
-\input{dennis-tex/slutsatser}
-
-\bibliographystyle{plainnat}
-\bibliography{dennis-tex/dennisrefs}{}
+\input{yngve-tex/inledning}
+\input{yngve-tex/bakgrund}
+\input{yngve-tex/teori}
+\input{yngve-tex/metod}
+\input{yngve-tex/resultat}
+\input{yngve-tex/diskussion}
+\input{yngve-tex/slutsatser}
+\bibliographystyle{plain}
+\bibliography{yngve-tex/mybib}
 
 \end{document}
