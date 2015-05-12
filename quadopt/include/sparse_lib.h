@@ -15,6 +15,8 @@ typedef struct sparse_matrix sparse_matrix;
 /* creates a sparse matrix out of a normal matrix */
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size);
 
+sparse_matrix* create_empty_sparse_matrix(int size);
+
 int matrix_sparsity(matrix* A);
 
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax);

@@ -44,6 +44,18 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
   return S;
 }
 
+/* creates an empty sparse matrix */
+sparse_matrix* create_empty_sparse_matrix(int size) {
+  /* create sparse matrix */
+  sparse_matrix* S = malloc(sizeof(sparse_matrix));
+  S->size = size;
+  S->A = malloc(size*sizeof(value));
+  S->rA = malloc(size*sizeof(int));
+  S->cA = malloc(size*sizeof(int));
+
+  return S;
+}
+
 /* return number of elements != 0 */
 int matrix_sparsity(matrix* A) {
   int r, c, n = 0;
@@ -113,6 +125,10 @@ bool transpose_sparse_matrix(sparse_matrix* Ain) {
   int* temp = Ain->rA;
   Ain->rA = Ain->cA;
   Ain->cA = temp;
+
+  int t = Ain->rows;
+  Ain->rows = Ain->columns;
+  Ain->columns = t;
 }
 
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain) {
