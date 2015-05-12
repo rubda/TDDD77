@@ -5,7 +5,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -pedantic --std=c99
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
-LIB = $(SRC_DIR)/libmatLib.a
+LIB_NAME = matLib
+LIB = $(SRC_DIR)/lib$(LIB_NAME).a
 
 TEST_SRCS = $(wildcard $(SRC_DIR)/tests/*.c)
 TEST_BINS = $(subst .c,,$(TEST_SRCS))
@@ -13,7 +14,7 @@ TEST_BINS = $(subst .c,,$(TEST_SRCS))
 .PHONY: all
 all: $(LIB) $(TEST_BINS)
 
-$(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h)
+$(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(wildcard $(INCLUDE_DIR)/*.h) $(LIB)
 	$(CC) $(CFLAGS)  $< -o $@ -I $(INCLUDE_DIR) -L $(SRC_DIR) -lmatLib
 
 $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
@@ -24,4 +25,4 @@ $(LIB): $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 clean:
 	rm -f $(TEST_BINS)
 	rm -f $(LIB)
-	rm -f $(subst .a,.o,$(LIB))
+	rm -f $(SRC_DIR)/$(LIB_NAME).o

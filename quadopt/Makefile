@@ -25,9 +25,8 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(wildcard $(INCLUDE_DIR)/*.h)
 $(SRC_DIR)/tests/%: $(SRC_DIR)/tests/%.c $(OBJS) $(LIBMATRIX)
 	$(CC) $(CFLAGS) $^ -o $@ -I $(LIBMATRIX_INCLUDE) -I $(INCLUDE_DIR) -L $(LIBMATRIX_DIR) -l$(LIBMATRIX_NAME)
 
-.PHONY: $(LIBMATRIX)
 $(LIBMATRIX):
-	cd ../matrixlibrary ; $(MAKE) src/$(LIBMATRIX_LIB)
+	cd ../matrixlibrary ; $(MAKE) all
 
 .PHONY: clean
 clean:

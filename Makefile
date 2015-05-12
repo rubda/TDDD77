@@ -11,5 +11,5 @@ libmatrix:
 	cd matrixlibrary ; $(MAKE)
 
 .PHONY: quadopt
-quadopt:
+quadopt: libmatrix
 	cd quadopt ; $(MAKE)
