@@ -53,7 +53,7 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
 
 \subsubsection{Metod 1}
-Till att börja med valdes en mer lättimplementerad lösning som inte fanns med i någon bok (som lästs). Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängnd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $E$ st ''$=$''-bivillkor, $F$ st ''$\leq$''-bivillkor och $n$ st variabler:
+Till att börja med valdes en mer lättimplementerad lösning som gruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängnd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $E$ st ''$=$''-bivillkor, $F$ st ''$\leq$''-bivillkor och $n$ st variabler:
 $${F+(n-E) \choose (n-E)}, n>E $$
 Detta sågs som relativt effektivt då gruppen trodde att $E \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $F = 192, E = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
@@ -103,11 +103,6 @@ Där submatriserna är som beskriva i ''Range-space''. Det som menas med att det
 \newline
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
 
-
-
-\subsection{Programspråket C}
-Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och addresser. Det innehåller inga sammansatta datatyper som strängar, listor eller matriser eller funktioner för att hantera dessa. Dock ingår allt det i standarbiblioteket vilket finns med samtliga versioner. Eftersom det varken finns objekt, automatisk minneshantering eller ''overhead-kod'' gör C till ett mycket snabbt språk. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
-
 \subsection{MEX}
 MEX är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen, se figur~\ref{fig:mex}. 
 
@@ -124,4 +119,4 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 \item mxCreateDoubleMatrix(rader, kolumner, mxREAL) - returnerar en mxArray
 \end{itemize}
 
-
+Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och addresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standarbiblioteket vilket finns med samtliga versioner. Eftersom det varken finns objekt, automatisk minneshantering eller ''overhead-kod'' gör C till ett mycket snabbt språk. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
