@@ -65,7 +65,7 @@ X_{21}& X_{22}
    A_{21}A_{21}^{-1}= & I_n \\
    A_{22}A_{22}^{-1}= & I_n \\
  \end{align}
- Ta till exempel identitetsmatrisen $I_n$ som är invertbar då den är sin egna invers. Om denna delas upp i submatriser enligt strassen algoritmen så får man följande:
+ Ta till exempel identitetsmatrisen $I_n$ som är inverterbar då den är sin egna invers. Om denna delas upp i submatriser enligt strassen algoritmen så får man följande:
  
  $$ I_n =
  \begin{bmatrix}
@@ -96,7 +96,7 @@ X_{21}& X_{22}
   0 & 0 & 0 & \cdots & 0
  \end{bmatrix}
  $$
- Då $I_{12}$ och $I_{21}$ är nollmatriser och inte inverterbara så kan strassen algoritmen ej tillämpas på alla matriser även om de är inverterbara. Detta kan bevisas med att att determinanten för nollmatrisen är noll vilket går emot teoremet för invertebara matriser \cite{Setyadi} 
+ Då $I_{12}$ och $I_{21}$ är nollmatriser och inte inverterbara så kan strassen algoritmen ej tillämpas på alla matriser även om de är inverterbara. Detta kan bevisas med att att determinanten för nollmatrisen är noll vilket går emot teoremet för inverterbara matriser \cite{Setyadi} 
  
 \subsection{Strassen algoritmen för matrismultiplikation}
 \label{sec:strassen}
@@ -133,9 +133,9 @@ C_{21}& C_{22}
   C_{22} & = M_1-M_2+M_3+M_6
  \end{align}
  \\
-Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallel då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare pån x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
+Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallell då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare på x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
  \subsubsection{Nackdelar med strassen}
- I den nuvarande implementationen av matrisbibliotektet så skapas en ny matris varje gång man går en operation. Detta kan leda till att den använder mycket minne.
+ I den nuvarande implementationen av matrisbiblioteket så skapas en ny matris varje gång man går en operation. Detta kan leda till att den använder mycket minne.
  
 
  
