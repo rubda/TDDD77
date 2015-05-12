@@ -8,7 +8,5 @@ objs = []
 for obj in Glob("src/*.c"):
     objs.append(env.Object(obj))
 
-tests = []
-
 for test in Glob("src/tests/*.c"):
-    tests.append(env.Program([test] + objs, LIBS = matLib))
+    env.Program([test] + objs, LIBS = matLib)
