@@ -1,3 +1,6 @@
+#ifndef SPARSE_LIB_H
+#define SPARSE_LIB_H
+
 #include <matLib.h>
 
 /* store sparse matrix using COO */
@@ -15,7 +18,9 @@ typedef struct sparse_matrix sparse_matrix;
 /* creates a sparse matrix out of a normal matrix */
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size);
 
-int matrix_sparsity(matrix* A);
+sparse_matrix* create_empty_sparse_matrix(int size);
+
+size_t matrix_sparsity(matrix* A);
 
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax);
 
@@ -33,3 +38,5 @@ void free_sparse_matrix(sparse_matrix* S);
 
 /* solves Ax = b, x should be set to 0 */
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b);
+
+#endif /* SPARSE_LIB_H */

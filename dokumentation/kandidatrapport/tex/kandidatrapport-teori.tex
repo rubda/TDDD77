@@ -1,14 +1,47 @@
 \section{Teori}
 Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det som har gjort är att gruppen har jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som testats varierar i hastighet beroende på hur stora matriserna som ska lösas är, samt hur de är strukturerade. Även vilket programmeringsspråk och plattform som algoritmen är implementerade på spelar roll.
 
+\subsection{Matematiska defintioner}
+\begin{equation*}
+\begin{aligned}
+&x  \quad \text{Vektor med alla variabler}\\
+&G  \quad \text{Matris med målfunktionens alla kvadratiska termer}\\
+&d  \quad \text{Matris med målfunktionens alla linjära termer}\\
+&F  \quad \text{Matris med alla olikhetsbivillkoren}\\
+&d  \quad \text{Vektor med olikhetsbivillkorens högerled}\\
+&E  \quad \text{Matris med alla likhetsbivillkoren}\\
+&h  \quad \text{Vektor med likhetsbivillkorens högerled}
+\end{aligned}
+\end{equation*}
+
+\subsection{Kvadratiska konvexa optimeringsproblem}
+Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är definierade i figur~\ref{fig:qp_def}. Dessa problem har målfunktioner med kvadratiska termer och linjära bivillkor.
+\begin{figure}[H]
+\begin{equation*}
+\begin{aligned}
+& \underset{x}{\text{minimize}} \quad \frac{1}{2} x^{T}Gx+d^{T}x \\
+& \text{subject to} \quad Fx\geq g \\
+\end{aligned}
+\end{equation*}
+\begin{equation*}
+\begin{aligned}
+	\quad \quad \quad \quad \quad Ex &= h \\
+		x &\in \mathbb{R}^N \\
+		A &\in \mathbb{R}^{m*N}
+\end{aligned}
+\end{equation*}
+\caption{Definition av ett kvadratiskt konvext optimeringsproblem}
+\label{fig:qp_def}
+\end{figure}
 \subsection{Liknande problem}
-Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att gruppen gör ett nytt är för att de som redan finns antingen är breda och riktar in sig på många olika problem, vilket gör dem långsammare eftersom de är sämre optimerade för just vårt problem. En annan anledning är att de oftast inte har öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
+Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att gruppen gör ett nytt är för att de som redan finns är breda och riktar in sig på många olika problem, vilket gör dem komplexa och svåra att modifiera för att passa sitt egna problem. En annan anledning är att de oftast inte har öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
 Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt.
 
-\subsection{Algoritmer och metoder}
+\subsection{Algoritmer och metoder} 
+\label{sec:algmet}
 Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan gruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta och med tanke på att det fanns pseudokod för Active set-metoden i boken gjorde att gruppen tillslut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde så att gruppen till slut valde att gå vidare med just Active set. 
 \\
 För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
 Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
@@ -70,8 +103,6 @@ Där submatriserna är som beskriva i ''Range-space''. Det som menas med att det
 \newline
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
 
-
-\input{tex/kandidatrapport-matrisbibliotek}
 
 
 \subsection{Programspråket C}

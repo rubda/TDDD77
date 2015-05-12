@@ -1,15 +1,12 @@
-
 \documentclass[titlepage, a4paper]{article}
-
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
-
 % Information nödvändig för generella layout-strukturer
-\newcommand{\LIPSredaktor}{Dennis Ljung}
+\newcommand{\LIPSredaktor}{Sebastian Fast}
 \newcommand{\LIPSversion}{0.1}
-\newcommand{\LIPSdokument}{Kandidatrapport}
-\newcommand{\LIPSdokumenttyp}{Kandidatrapport}
+\newcommand{\LIPSdokument}{Användarhandledning}
+\newcommand{\LIPSdokumenttyp}{Användarhandledning}
 \newcommand{\LIPSgranskatdatum}{-}
-\newcommand{\LIPSgranskare}{Dennis Ljung}
+\newcommand{\LIPSgranskare}{}
 \newcommand{\LIPSgodkannare}{Andreas Runfalk}
 \newcommand{\LIPSgodkantdatum}{-}
 \newcommand{\LIPSkursnamn}{TDDD77}
@@ -27,24 +24,13 @@
 \usepackage{tabularx}
 \usepackage{pdfpages}
 \usepackage{tikz}
-\usepackage{float}
-\usepackage{graphicx}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{pdfpages}
-\usepackage[round]{natbib}
-\usepackage{listings}
-\usepackage{float}
-\usepackage{lipsum}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-%\usepackage{mathtools}
-
-\bibliographystyle{plainnat}
-
 \usetikzlibrary{shapes, arrows}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
 
 \pagenumbering{roman}
+
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
@@ -53,7 +39,7 @@
 \LIPSTitelsida
 
 \begin{LIPSprojektidentitet}
-	\LIPSgruppmedlem{Adam Sestorp}{Teamledare}{070 9987270}{adase035@student.liu.se}
+	\LIPSgruppmedlem{Adam Sestorp}{Team leader}{070 9987270}{adase035@student.liu.se}
 	\LIPSgruppmedlem{Dennis Ljung}{Dokumentansvarig}{070 8568148}{denlj069@student.liu.se}
 	\LIPSgruppmedlem{Alexander Yngve}{Utvecklingsansvarig}{076 2749762}{aleyn573@student.liu.se}
 	\LIPSgruppmedlem{Martin Söderén}{Analysansvarig}{070 8163241}{marso329@student.liu.se}
@@ -70,48 +56,18 @@
 \newpage
 
 \begin{LIPSdokumenthistorik}
-\LIPSversionsinfo{0.1}{2015-03-05}{Första utkast}{Dennis Ljung}{}
+\LIPSversionsinfo{0.1}{2015-05-05}{Första utkast}{Sebastian Fast}{}
 \end{LIPSdokumenthistorik}
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
 
-\input{tex/kandidatrapport-inledning}
-\input{tex/kandidatrapport-bakgrund}
-\input{tex/kandidatrapport-teori}
-\input{tex/kandidatrapport-metod}
-\input{tex/kandidatrapport-resultat}
-\input{tex/kandidatrapport-diskussion}
-\input{tex/kandidatrapport-slutsatser}
-\input{tex/kandidatrapport-fortsatt-arbete}
-%\input{tex/kandidatrapport-referenser}
 
-\bibliography{tex/refs}{}
+\input{tex/anvandarhandledning-inledning.tex}
 
-\newpage
-\begin{appendices}
-	\section{Allmänt om uppgiften}
-	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-adam.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
-	\newpage
-	%\input{tex/kandidatrapport-yngve}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-martin.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
-	\newpage
-	%\input{tex/kandidatrapport-sebastian}
-	\newpage
-	%\input{tex/kandidatrapport-johan}
+\input{tex/anvandarhandledning-matlab.tex}
 
-		
-\end{appendices}
-
-
-
+\input{tex/anvandarhandledning-gui.tex}
 
 
 \end{document}

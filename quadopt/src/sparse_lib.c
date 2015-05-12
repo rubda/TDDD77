@@ -44,9 +44,22 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
   return S;
 }
 
+/* creates an empty sparse matrix */
+sparse_matrix* create_empty_sparse_matrix(int size) {
+  /* create sparse matrix */
+  sparse_matrix* S = malloc(sizeof(sparse_matrix));
+  S->size = size;
+  S->A = malloc(size*sizeof(value));
+  S->rA = malloc(size*sizeof(int));
+  S->cA = malloc(size*sizeof(int));
+
+  return S;
+}
+
 /* return number of elements != 0 */
-int matrix_sparsity(matrix* A) {
-  int r, c, n = 0;
+size_t matrix_sparsity(matrix* A) {
+  int r, c;
+  size_t n = 0;
   value val;
   for (r = 1; r <= A->rows; r++) {
     for (c = 1; c <= A->columns; c++) {
@@ -113,6 +126,10 @@ bool transpose_sparse_matrix(sparse_matrix* Ain) {
   int* temp = Ain->rA;
   Ain->rA = Ain->cA;
   Ain->cA = temp;
+
+  int t = Ain->rows;
+  Ain->rows = Ain->columns;
+  Ain->columns = t;
 }
 
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain) {
@@ -141,20 +158,24 @@ void free_sparse_matrix(sparse_matrix* S) {
   free(S->A);
   free(S->rA);
   free(S->cA);
+  free(S);
 }
 
 
-/* solves Ax = b, x should be set to 0 */
+/* solves Ax = b */
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   /* variables */
   value alpha, beta;
-  int i;
+  int i, k = 1;
 
-  matrix* nom = create_matrix(1, 1);
-  matrix* Ap = create_zero_matrix(A->rows, 1);
-  matrix* r = matrix_copy(b);
-  matrix* p = matrix_copy(r);    
-  matrix* pt;
+  /* r0 = b - Ax0 */
+  matrix* Ap = multiply_sparse_matrix_matrix(A, x);
+  matrix* r = create_matrix(b->rows, b->columns);
+  subtract_matrices(b, Ap, r);
+
+  /* p0 = r0 */
+  matrix* p = matrix_copy(r);
+  matrix* p_temp = matrix_copy(p);
 
   /* solve */
   value rs_old = dot_product(r, r);
@@ -170,11 +191,11 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
 
     /* calculate alpha */
     multiply_sparse_matrix_vector(A, p, Ap);
-    alpha = rs_old/dot_product(p, Ap); //  get_value_without_check(1, 1, nom);
+    alpha = rs_old/dot_product(p, Ap);
 
     /* calculate next x */
-    multiply_matrix_with_scalar(alpha, p);
-    add_matrices(x, p, x);
+    multiply_matrix_with_scalar(alpha, p_temp);
+    add_matrices(x, p_temp, x);
 
     /* calculate next r */
     multiply_matrix_with_scalar(alpha, Ap);
@@ -183,7 +204,7 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
     rs_new = dot_product(r, r);
 
     /* check if approx. done */
-    if (sqrt(rs_new) < 0.00001) { //compare_elements(rs_new, 0) == 0) {
+    if (sqrt(rs_new) < 0.000001) { //compare_elements(rs_new, 0) == 0) {
       break;
     }
 
@@ -192,15 +213,16 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
 
     /* calculate next p */
     multiply_matrix_with_scalar(beta, p);
-    add_matrices(r, p, p);
+    add_matrices(p, r, p);
+    matrix_copy_data(p, p_temp);
 
     rs_old = rs_new;
   }
 
   free_matrix(p);
+  free_matrix(p_temp);
   free_matrix(r);
   free_matrix(Ap);
-  free_matrix(nom);
 
   return true;
 }

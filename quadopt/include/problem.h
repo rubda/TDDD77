@@ -23,7 +23,6 @@ struct problem{
 
   bool is_sparse;
 
-
   matrix* q; /**< The matrix containing the linear optimization problem. */
 
   int variable_count; /**< The number of variables in the problem. */

@@ -30,19 +30,18 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \usepackage[nottoc]{tocbibind}
 \usepackage{tcolorbox}
 \usepackage{listings}
-
-
+\usepackage{url}
 
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
+\renewcommand*{\thepage}{D-\roman{page}}
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
-
 
 \begin{document}
 
@@ -51,6 +50,7 @@
 \tableofcontents	%Innehållsförteckning
 \newpage
 \pagenumbering{arabic}
+\renewcommand*{\thepage}{D-\arabic{page}}
 \input{ruben-tex/inledning}
 \input{ruben-tex/bakgrund}
 \input{ruben-tex/teori}
@@ -58,8 +58,8 @@
 \input{ruben-tex/resultat}
 \input{ruben-tex/diskussion}
 \input{ruben-tex/slutsatser}
-\bibliographystyle{plain}
-\bibliography{ruben-tex/mybib}
+\bibliographystyle{plainnat}
+\bibliography{tex/refs}{}
 \newpage
 \begin{appendices}
 \input{ruben-tex/kodstandard}
