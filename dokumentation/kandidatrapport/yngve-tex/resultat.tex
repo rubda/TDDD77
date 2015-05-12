@@ -7,9 +7,11 @@ I avsnitt \ref{avsnitt:fragestallning} framfördes frågeställningarna:
 \item Hur hade projektet påverkats av ett annat val av byggsystem?
 \end{enumerate}
 
-\noindent Efter undersökningen beskriven i \ref{avsnitt:metod} kan svaren på dessa ges här.
+\noindent Efter undersökningen beskriven i avsnitt \ref{avsnitt:metod} kan svaren på dessa frågor ges här.
 
 \subsection{Prestanda}
+Resultatet från prestandamätningarna syns i tabell \ref{tabell:prestanda} och i figur \ref{fig:prestanda}.
+
 \begin{table}[h!]
   \centering
   \begin{tabular}{|l|l|l|}
@@ -25,11 +27,24 @@ I avsnitt \ref{avsnitt:fragestallning} framfördes frågeställningarna:
   \label{tabell:prestanda}
 \end{table}
 
-\todo{Graf}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[scale=0.6]{yngve-tex/grafik/prestanda.pdf}
+  \caption{Resultat från prestandatester.}
+  \label{fig:prestanda}
+\end{figure}
+
+\FloatBarrier
 
 \subsection{Användning och vidareutveckling}
-\todo{Användning skiljer sig inget, bara olika kommandon, make är dock mer känt och behöver ingen vidare förklaring (ingen i gruppen visste om scons)} \\
-\todo{SCons skulle varit lättare, då alla tyckte sconsfilerna var mer förståeliga och dessutom hade alla erfarenhet av python}
+Kandidatgruppen framförde ett flertal synpunkter som sammanfattas i följande lista:
+
+\begin{itemize}
+  \item Användningen är densamma, bara olika kommandon.
+  \item Alla känner till Make, ingen visste om SCons sen innan.
+  \item SCons-filerna är mer lättförståeliga än Makefilerna.
+  \item \todo{Mer...}
+\end{itemize}
 
 \subsection{Byggsystemets påverkan på projektet}
-\todo{Hänvisa till att liten prestandaskillnad -> ingen större påverkan}
+Då prestandaskillnaden för ett projekt av den här storleken är så pass liten så påverkar valet av byggsystem inte utvecklarens dagliga arbetsrutiner nämnvärt. Det som påverkas är istället möjligheten till underhåll och vidareutveckling av byggsystemet i takt med att projektet växer. 
