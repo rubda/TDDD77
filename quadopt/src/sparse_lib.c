@@ -157,6 +157,7 @@ void free_sparse_matrix(sparse_matrix* S) {
   free(S->A);
   free(S->rA);
   free(S->cA);
+  free(S);
 }
 
 
