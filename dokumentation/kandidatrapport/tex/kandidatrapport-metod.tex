@@ -168,7 +168,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
 
 \subsection{Forskningsmetod}
-Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
+Som tidigare nämnt i avsnitt \ref{sec:algmet}, var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
 \newline
 \newline
 De tre algoritmerna som fanns var \emph{Active set method}, \emph{Gradient Projection method} och \emph{Interior point method}. Dessa algoritmer hade sina egna styrkor och svagheter, och det var just dessa som behövde jämföras utifrån prediktionsregleringsproblemets behov.
@@ -195,11 +195,13 @@ Klarar algoritmen alla olika fall av indata. Vad händer vid till exempel nollfa
 De tre algoritmerna är specialiseade på kvadratisk optimering. Men skiljer sig en del emot hur snabba de är för olika storlekar på problemen.
 
 \paragraph{Active set method}
+Det är den äldsta och standardmetoden, den är inte den snabbaste av algoritmerna, men den är lättast att implementera. Numerical Optimization boken hade även ett exempel i pseudokod för implementation av algoritmen. Den är relativt snabb upp till medelstora problem och en pålitlig algoritm.
 
 \paragraph{Gradient Projection method}
-
+Fungerar som Active set metoden, men istället för att bara kunna byta ett villkor åt gången till et aktiva mängden, så kan denna algoritmen byta ett flertal på en gång för att öka hastigheten. Denna algoritm är dock svårare att implementera och kräver mer förkunskaper.
 
 \paragraph{Interior point method}
+Interior point är en ganska modern algoritm och även en utav de snabbaste, den är dock mycket svårare att förstå sig på än t.ex. Active set och boken saknade implementations exempel för denna. Har man dock mer tid på sig och ska lösa större problem är det den här algoritmen man bör välja.
 
-
-\subsubsection{Algoritmerna gemtemot varandra}
+\subsubsection{Slutsats}
+Just på grund av det problemet som vi skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som vi kunde utgå ifrån .
