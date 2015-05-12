@@ -50,7 +50,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   }
 
   /* create sparse matrices */
-  int n = matrix_sparsity(Q);
+  size_t n = matrix_sparsity(Q);
   if (n < Q->size/4) {
     prob->is_sparse = true;
     prob->sparse_Q = create_sparse_matrix(Q, n);

@@ -8,22 +8,20 @@ int main(){
   double time_spent;
   begin = clock();
 
-	matrix* Q = create_matrix(4, 4);
+  matrix* Q = create_matrix(4, 4);
   value Q_arr[16] = {1, 0, 1, 0,
-								     0, 2, 0, 1,
-								     1, 0, 2, 0,
-								     0, 1, 0, 1};
+		     0, 2, 0, 1,
+		     1, 0, 2, 0,
+		     0, 1, 0, 1};
   insert_array(Q_arr, Q);
 
   sparse_matrix* s_Q = create_sparse_matrix(Q, 8);
 
-
-
   matrix* q = create_matrix(4, 1);
   value q_arr[4] = {3,
-								    20,
-								    5,
-								    15};
+		    20,
+		    5,
+		    15};
   insert_array(q_arr, q);
 
   matrix* expected = create_matrix(4, 1);
