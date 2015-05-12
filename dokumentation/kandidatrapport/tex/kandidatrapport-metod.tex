@@ -39,6 +39,16 @@ I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implement
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+Som man ser i pseudokoden ovan är vissa delar relativt vaga. Till exempel ''Compute feasible point'' och ''Solve subproblem''. Dessa delar kommer att beskrivas mer i detalj senare, men först tas några av grundstenarna upp.
+
+\subsubsection{Problem}
+''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
+
+\subsubsection{Working set}
+''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivilkorets postion i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
+
+
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}

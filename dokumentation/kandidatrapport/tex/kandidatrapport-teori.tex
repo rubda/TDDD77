@@ -49,50 +49,6 @@ Något som upptäcktes när problemet löstes för hand var att definitionen av 
 \subsection{Active set method}   
 Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll.
 
-\subsection{Vår lösning}
-I figur 1 nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
-
-\begin{algorithm}[H]
-\caption{Quadopt-solver}
-\begin{algorithmic}
-\Procedure{Quadopt-solver}{$problem$ $P$}
-\If{$P$ has not feasible starting point $z_0$}
-	\State Compute a feasible starting point $z_0$;
-\EndIf	
-\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
-\While{$\textbf{true}$}
-	\State Solve subproblem to find step direction $p$;
-	\If{$p$ is zero vector}
-		\If{$activeSet$ has zero constraints}
-			\State \textbf{break};
-		\EndIf		
-		\If{Could not remove constraints from $activeSet$}
-			\State \textbf{break};
-		\EndIf
-	\Else
-		\State Take step to better feasible point $z$ in $P$;
-		\If{Could not step}
-			\State \textbf{break};
-		\EndIf
-		\State Set $activeSet$ with new active constraints at $z$;	
-	\EndIf
-\EndWhile
-\State  $solution$ in $P\gets z$;
-
-\State \textbf{return} $solution$ in $P$;
-	
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-
-Som man ser i pseudokoden ovan är vissa delar relativt vaga. Till exempel ''Compute feasible point'' och ''Solve subproblem''. Dessa delar kommer att beskrivas mer i detalj senare, men först tas några av grundstenarna upp.
-
-\subsubsection{Problem}
-''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
-
-\subsubsection{Working set}
-''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivilkorets postion i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
-
 \subsection{Startpunkt}
 Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
 
