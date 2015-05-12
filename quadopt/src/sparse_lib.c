@@ -144,17 +144,20 @@ void free_sparse_matrix(sparse_matrix* S) {
 }
 
 
-/* solves Ax = b, x should be set to 0 */
+/* solves Ax = b */
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   /* variables */
   value alpha, beta;
-  int i;
+  int i, k = 1;
 
-  matrix* nom = create_matrix(1, 1);
-  matrix* Ap = create_zero_matrix(A->rows, 1);
-  matrix* r = matrix_copy(b);
-  matrix* p = matrix_copy(r);    
-  matrix* pt;
+  /* r0 = b - Ax0 */
+  matrix* Ap = multiply_sparse_matrix_matrix(A, x);
+  matrix* r = create_matrix(b->rows, b->columns);
+  subtract_matrices(b, Ap, r);
+
+  /* p0 = r0 */
+  matrix* p = matrix_copy(r);
+  matrix* p_temp = matrix_copy(p);
 
   /* solve */
   value rs_old = dot_product(r, r);
@@ -170,11 +173,11 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
 
     /* calculate alpha */
     multiply_sparse_matrix_vector(A, p, Ap);
-    alpha = rs_old/dot_product(p, Ap); //  get_value_without_check(1, 1, nom);
+    alpha = rs_old/dot_product(p, Ap);
 
     /* calculate next x */
-    multiply_matrix_with_scalar(alpha, p);
-    add_matrices(x, p, x);
+    multiply_matrix_with_scalar(alpha, p_temp);
+    add_matrices(x, p_temp, x);
 
     /* calculate next r */
     multiply_matrix_with_scalar(alpha, Ap);
@@ -183,7 +186,7 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
     rs_new = dot_product(r, r);
 
     /* check if approx. done */
-    if (sqrt(rs_new) < 0.00001) { //compare_elements(rs_new, 0) == 0) {
+    if (sqrt(rs_new) < 0.000001) { //compare_elements(rs_new, 0) == 0) {
       break;
     }
 
@@ -192,7 +195,8 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
 
     /* calculate next p */
     multiply_matrix_with_scalar(beta, p);
-    add_matrices(r, p, p);
+    add_matrices(p, r, p);
+    matrix_copy_data(p, p_temp);
 
     rs_old = rs_new;
   }
@@ -200,7 +204,6 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   free_matrix(p);
   free_matrix(r);
   free_matrix(Ap);
-  free_matrix(nom);
 
   return true;
 }

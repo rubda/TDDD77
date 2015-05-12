@@ -25,8 +25,8 @@ int main()
 
   matrix* b = multiply_sparse_matrix_matrix(sparse_Q, x);
 
-  print_matrix(b);
-  print_sparse_matrix(sparse_Qt);
+  //print_matrix(b);
+  //print_sparse_matrix(sparse_Qt);
 
   free_matrix(Q);
   free_matrix(b);

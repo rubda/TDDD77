@@ -1,6 +1,7 @@
 #include <subproblem.h>
 #include <matLib.h>
 #include <solver.h>
+#include <assert.h>
 
 
 
@@ -37,14 +38,16 @@ void range_space_sparse(matrix* A, problem* prob){
   int r;
   for (r = 1; r <= prob->p->rows; r++) {
     insert_value_without_check(0, r, 1, prob->p);
-  }
+  }*/
   conjugate_gradient(prob->sparse_Q, prob->p, h2);
-  print_matrix(prob->p);*/
+  //print_matrix(prob->p);
 
-  gauss_jordan_solver(prob->Q, prob->p, h2);
-  /*print_matrix(prob->p);
+  //gauss_jordan_solver(prob->Q, prob->p, h2);
+  //print_matrix(prob->p);
 
-  printf("---------------------------------------\n\n\n\n")*/
+ // assert(false);
+
+  //printf("---------------------------------------\n\n\n\n");
   
 
   matrix* Qp = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->p);
