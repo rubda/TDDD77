@@ -41,7 +41,7 @@ $(BUILDDIR)/$(YNGVE_NAME).pdf: $(YNGVE_NAME).tex $(wildcard $(YNGVE_DIR)/*) $(wi
 $(PDFS):
 	cd $(dir $<) ; mkdir -p $(BUILDDIR)
 	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) $(OUT)
-#	cd $(dir $<) ; bibtex $(BUILDDIR)/$(basename $(notdir $<)).aux
+	cd $(dir $<) ; bibtex $(BUILDDIR)/$(basename $(notdir $<)).aux
 	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) $(OUT)
 	cd $(dir $<) ; pdflatex -halt-on-error -output-directory=$(BUILDDIR) $(notdir $<) $(OUT)
 
