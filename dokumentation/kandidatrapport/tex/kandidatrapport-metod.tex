@@ -42,11 +42,14 @@ I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implement
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. 
+Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. Vi hade därefter flera möten bara för att förstå vad kunden hade för krav på oss. Någon som var bra var att han hade väldigt bra koll på vad han ville få av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projeketet ville han inte ha del utav. Vi iterarade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter så hade vi inte så mycket kontakt tills dess att vi kom till en punkt där vi behövde hans hjälp för att lösa en del problem. Sedan så tog det ett tag till innan vi hade möten igen för det det var mycket jobb innan vi hade fått ihop något som kunde visas upp. 
+\newline
+\newline
+Ett av kraven som vi hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta in skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde vi förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
 
 \subsection{GUI och parser}
 Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
-\begin{figure}
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
 \caption{QuadOpt GUI}
 \label{fig:quadoptgui}
