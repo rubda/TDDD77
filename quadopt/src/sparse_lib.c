@@ -154,7 +154,7 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   matrix* Ap = create_zero_matrix(A->rows, 1);
   matrix* r = matrix_copy(b);
   matrix* p = matrix_copy(r);    
-  matrix* pt;
+  // matrix* pt;
 
   /* solve */
   value rs_old = dot_product(r, r);

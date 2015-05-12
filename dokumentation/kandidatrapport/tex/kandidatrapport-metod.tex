@@ -1,6 +1,8 @@
 \section{Metod}
 Nedan beskrivs hur vi arbetar i gruppen samt hur vi kom fram till vald lösningsmetod. 
 
+
+
 \subsection{Vår lösning}
 I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
@@ -39,9 +41,12 @@ I algoritm~\ref{alg:quadoptsolver} nedanför visas pseudokod för vår implement
 \end{algorithm}
 \input{tex/kandidatrapport-matrisbibliotek}
 
+\subsection{Kundkontakt}
+Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. 
+
 \subsection{GUI och parser}
 Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
-\begin{figure}
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
 \caption{QuadOpt GUI}
 \label{fig:quadoptgui}
@@ -52,7 +57,7 @@ GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att s
 Tkinter är ett programvarubibliotek, dvs ett bibliotek som hjälper till att forma ett GUI med hjälp av lätt Python kod. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python. Vissa kallar användningen av tkinter en tradition i Python-världen.
 \newline
 \newline
-HÄR SKA DET STÅ LITE SAKER OM PARSERN. 
+Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. 
 
 \subsection{Utvecklingsmetod}
 Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i underkapitlet ''Resterande iterationer''.
@@ -82,7 +87,7 @@ Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''B
 \newline
 Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.3]{grafik/trello}}
 \caption{Scrum table i Trello}
 \label{fig:trello}
@@ -104,6 +109,15 @@ Den utvecklingsmetodik som växte fram för kandidatgruppen kan efterlikna utvec
   \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och säger till om testerna misslyckas eller inte. CI står för kontinuerlig integration.
 \end{itemize}
 Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
+
+\subsubsection{SEMAT Kernel}
+SEMAT står för Software Engineering Method and Theory och är ett iniativ för att förbättra mjukvaruutvecklingsindustrin. Med olika verktyg är det tänkt att ledare och managers ska kunna ge sina utvecklare bättre förutsättningar för att bli bättre, snabbare, billigare och gladare. \citep{semat} 
+\newline
+\newline
+Ivar Jacobson, som är en av grundarna till SEMAT, har utvecklat ett verktyg kallat Alpha State. Alpha States representerar olika faser ett mjukvaruprojekt kan gå igenom.
+\newline
+\newline 
+Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. På korten finns alla faser och de krav som ska vara uppfyllda för just den fasen. Genom att checka av vilka krav som är uppfyllda för vilken fas kan gruppen få ökad förståelse för vilket tillstånd projektet befinner sig i.  
 
 \subsubsection{Utvecklingsverktyg}
 De verktygen som användes under detta kandidatprojekt var främst
@@ -144,16 +158,12 @@ De verktygen som användes under detta kandidatprojekt var främst
 \newline
 \textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp. Anledning till att många i kandidatgruppen har använt Texmaker är för att de funkar på individernas operativsystem.
 \newline
-<<<<<<< HEAD
-\textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Apple-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. 
-
-=======
 \newline
 \textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system. Gummi kan anses vara ett lättviktigare program än Texmaker som är lite tyngre och har funktioner som inte har varit så nödvändiga.
 \newline
 \newline
 \textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
->>>>>>> 6444836e4b6e1404bec43623d82713a1954be4ff
+
 \subsection{Forskningsmetod}
 Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
 \newline
@@ -173,7 +183,7 @@ Hastighet var även en väldigt viktig faktor, just på grund av att ett av de f
 En annan viktig faktor som var avgörande var skalbarhet. Matrisernas storlekar på problemet som ska lösas kan vara uppemot flera hundra element i båda dimensionerna, därför var det väldigt viktigt att algoritmen hade en tidskomplexitet som inte var allt för stor. Just i början kan detta vara väldigt svårt att veta eftersom det inte finns så stora möjligheter till att testa större problem, utan dessa kan endast testas i ett senare skede när lösaren verkligen kommit så långt att den kan hantera dem.
 
 \paragraph{Komplexitet}
-Algoritmerna i sig kan verka vara väldigt snabba och skalbara men kan kräva en massa andra extra förkunskapar för att man ska kunna förstå sig på dem, och som skulle ta alldeles för lång tid för att läsa in inom projektets tidsbudget. Detta hänger delvis ihop med implementerbarhet, eftersom båda har med algoritmens svårighetsgrad att göra.
+Algoritmerna i sig kan verka vara väldigt snabba och skalbara men kan kräva en massa andra extra förkunskaper för att man ska kunna förstå sig på dem, och som skulle ta alldeles för lång tid för att läsa in inom projektets tidsbudget. Detta hänger delvis ihop med implementerbarhet, eftersom båda har med algoritmens svårighetsgrad att göra.
 
 \paragraph{Stabilitet}
 Klarar algoritmen alla olika fall av indata. Vad händer vid till exempel nollfall? Kan man lita på att algoritmen alltid kommer fram till en lösning inom rimlig tid. Hur mycket minne förbrukar algoritmen i förhållande till problemets storlek? %Behöver algoritmen någon data som räknas ut på annat vis för att fungera som den ska?
