@@ -18,19 +18,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   matrix* Q_inv = create_matrix(Q->rows, Q->columns);
   get_inverse(Q, Q_inv);
   prob->Q_inv = Q_inv;
-
-
-  /* sparsity variables */
-  int n = 0, n1 = 0, n2 = 0;
-  prob->is_sparse = true;
-
-  n = matrix_sparsity(Q);  
-  if (n < Q->size/4) {
-    prob->sparse_Q = create_sparse_matrix(Q, n);
-    prob->sparse_Q_inv = create_sparse_matrix(Q_inv, n);
-  } else {
-    prob->is_sparse = false;
-  }
+ 
 
   prob->q = q;
 
@@ -53,12 +41,6 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
     prob->equality_count = 0;
   }else{
     prob->equality_count = E->rows;
-    if (prob->is_sparse) {      
-      n1 = matrix_sparsity(E);
-      if (n1 >= E->size/4) {
-        prob->is_sparse = false;
-      }
-    }
   }
   
   if (F == NULL){
@@ -67,13 +49,23 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
     prob->inequality_count = F->rows;
   }
 
+  /* create sparse matrices */
+  int n = matrix_sparsity(Q);
+  if (n < Q->size/4) {
+    prob->is_sparse = true;
+    prob->sparse_Q = create_sparse_matrix(Q, n);
+    prob->sparse_Q_inv = create_sparse_matrix(Q_inv, n);
+  }
+
+
   prob->constraints_count = prob->equality_count + prob->inequality_count;
 
-  /* All constrains */
-  prob->A = create_matrix(prob->constraints_count, q->rows);
-  /* Right hand side of b */
-  prob->b = create_matrix(prob->constraints_count, 1);
-  
+  if (prob->constraints_count != 0) {
+    /* All constrains */
+    prob->A = create_matrix(prob->constraints_count, prob->variable_count);
+    /* Right hand side of b */
+    prob->b = create_matrix(prob->constraints_count, 1);    
+  }
   /* Insert equality constraints */
   matrix* temp_row;
   int r;
@@ -95,19 +87,21 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   /* Points and vectors */  
   if (z0 == NULL){
     prob->has_start_point = false;
-    prob->z0 = create_matrix(q->rows, 1);
+    prob->z0 = create_matrix(prob->variable_count, 1);
   }else{
     prob->has_start_point = true;
     prob->z0 = z0;
   }  
 
-  prob->z = create_matrix(q->rows, 1);
+  prob->z = create_matrix(prob->variable_count, 1);
   prob->has_solution = false;
-  prob->solution = create_matrix(q->rows, 1);
+  prob->solution = create_matrix(prob->variable_count, 1);
 
-  prob->lagrange = create_matrix(prob->A->rows, 1);
-  prob->p = create_matrix(q->rows, 1);
-  prob->gk = create_matrix(q->rows, 1);
+  if (prob->constraints_count != 0) {
+    prob->lagrange = create_matrix(prob->constraints_count, 1);
+  }
+  prob->p = create_matrix(prob->variable_count, 1);
+  prob->gk = create_matrix(prob->variable_count, 1);
 
   /* Work set */
   prob->active_set = work_set_create(prob->A->rows);
@@ -209,11 +203,11 @@ void free_problem(problem* prob){
   free_matrix(prob->lagrange);
 
   if (prob->is_sparse){
-    free_matrix(prob->sparse_Q);
-    free_matrix(prob->sparse_Q_inv);
-    free_matrix(prob->sparse_E);
-    free_matrix(prob->sparse_F);
-    free_matrix(prob->sparse_A);
+    free_sparse_matrix(prob->sparse_Q);
+    free_sparse_matrix(prob->sparse_Q_inv);
+    //free_sparse_matrix(prob->sparse_E);
+    //free_sparse_matrix(prob->sparse_F);
+    //free_sparse_matrix(prob->sparse_A);
   }
 
   work_set_free(prob->active_set);
