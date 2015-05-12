@@ -40,6 +40,7 @@
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
+\renewcommand*{\thepage}{A-\roman{page}}
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
@@ -51,7 +52,7 @@
 \tableofcontents	%Innehållsförteckning
 \newpage
 \pagenumbering{arabic}
-\renewcommand*{\thepage}{A\arabic{page}}
+\renewcommand*{\thepage}{A-\arabic{page}}
 \input{johan-tex/inledning}
 \input{johan-tex/bakgrund}
 \input{johan-tex/teori}

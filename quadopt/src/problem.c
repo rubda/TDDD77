@@ -60,11 +60,12 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
 
   prob->constraints_count = prob->equality_count + prob->inequality_count;
 
-  /* All constrains */
-  prob->A = create_matrix(prob->constraints_count, q->rows);
-  /* Right hand side of b */
-  prob->b = create_matrix(prob->constraints_count, 1);
-  
+  if (prob->constraints_count != 0) {
+    /* All constrains */
+    prob->A = create_matrix(prob->constraints_count, prob->variable_count);
+    /* Right hand side of b */
+    prob->b = create_matrix(prob->constraints_count, 1);    
+  }
   /* Insert equality constraints */
   matrix* temp_row;
   int r;
@@ -86,19 +87,21 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   /* Points and vectors */  
   if (z0 == NULL){
     prob->has_start_point = false;
-    prob->z0 = create_matrix(q->rows, 1);
+    prob->z0 = create_matrix(prob->variable_count, 1);
   }else{
     prob->has_start_point = true;
     prob->z0 = z0;
   }  
 
-  prob->z = create_matrix(q->rows, 1);
+  prob->z = create_matrix(prob->variable_count, 1);
   prob->has_solution = false;
-  prob->solution = create_matrix(q->rows, 1);
+  prob->solution = create_matrix(prob->variable_count, 1);
 
-  prob->lagrange = create_matrix(prob->A->rows, 1);
-  prob->p = create_matrix(q->rows, 1);
-  prob->gk = create_matrix(q->rows, 1);
+  if (prob->constraints_count != 0) {
+    prob->lagrange = create_matrix(prob->constraints_count, 1);
+  }
+  prob->p = create_matrix(prob->variable_count, 1);
+  prob->gk = create_matrix(prob->variable_count, 1);
 
   /* Work set */
   prob->active_set = work_set_create(prob->A->rows);
