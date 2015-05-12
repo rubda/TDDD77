@@ -47,15 +47,13 @@ Först så övervägdes att göra att API till något av biblioteken för att g�
 
 \subsubsection{matLib}
 Namnet på biblioteket valdes till matLib från \textbf{mat}rix \textbf{Lib}rary. Grundtanken med det hela skulle vara att det bara bygger på standard c-bibliotek för att göra det platformsoberoende. Detta har lett till att det även kan användas på till exempel microkontrollers såsom Atmega 2560 eller liknande.
-Det var även krav på att det skulle vara ett lättanvänt API så funktionsnamnen var tvugna att vara självförklarade vad funktionen gör. Här är namnen på ett urval av funktionerna:
+Det var även krav på att det skulle vara ett lättanvänt API så funktionsnamnen var tvungna att vara självförklarade. Här är namnen på ett urval av funktionerna:
 \lstinputlisting[language=C]{tex/functions.c}
 Kombinerat med förklarande funktionsnamn så är all kod väldokumenterad så det är enkelt att sätta sig in i den och göra eventuella förbättringar i framtiden.
 \newline
 \newline
 Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svårt att konkurrera med etablerade matrisbibliotek såsom ATLAS som använder hårdvaruoptimerad kod. Genom att hålla koden lättviktig och använda funktioner för direkt datamanipulation så hålls prestandan rätt hög. Det som kräver mer arbete i framtiden är arbete på funktionerna som innehåller algoritmer som tar $\mathcal{O}(n^3)$ såsom matrismultiplikation och lösning av linjära system.
 
-
-\subsubsection{Implementation}
 
 
 \subsubsection{Datastrukturer}

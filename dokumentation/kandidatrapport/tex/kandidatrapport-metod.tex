@@ -52,7 +52,7 @@ Som man ser i pseudokoden ovan är vissa delar relativt vaga. Till exempel ''Com
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. Vi hade därefter flera möten bara för att förstå vad kunden hade för krav på oss. Någon som var bra var att han hade väldigt bra koll på vad han ville få av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projeketet ville han inte ha del utav. Vi iterarade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter så hade vi inte så mycket kontakt tills dess att vi kom till en punkt där vi behövde hans hjälp för att lösa en del problem. Sedan så tog det ett tag till innan vi hade möten igen för det det var mycket jobb innan vi hade fått ihop något som kunde visas upp. 
+Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. Vi hade därefter flera möten bara för att förstå vad kunden hade för krav på oss. Någon som var bra var att han hade väldigt bra koll på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projeketet ville han inte ha del utav. Vi iterarade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter så hade vi inte så mycket kontakt tills dess att vi kom till en punkt där vi behövde hans hjälp för att lösa en del problem. Sedan så tog det ett tag till innan vi hade möten igen för det det var mycket jobb innan vi hade fått ihop något som kunde visas upp. 
 \newline
 \newline
 Ett av kraven som vi hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta in skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde vi förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
@@ -67,7 +67,7 @@ Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och par
 GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att språket Python användes var för att alla i kandidatgruppen har erfarenhet av språket samt att språket är plattformsoberoende. Visserligen är Java också ett plattformsoberoende språk som det diskuterades om att använda, men alla i kandidatgruppen hade inte erfarenhet av språket och valet föll på Python.
 \newline
 \newline
-Tkinter är ett programvarubibliotek, dvs ett bibliotek som hjälper till att forma ett GUI med hjälp av lätt Python kod. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python. Vissa kallar användningen av tkinter en tradition i Python-världen.
+Tkinter är ett grafiskt bibliotek, dvs ett bibliotek som hjälper till att forma ett GUI. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python.
 \newline
 \newline
 Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. 
@@ -107,6 +107,7 @@ Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattr
 \end{figure}
 
 \noindent Efter dessa försök med ''Trac'' och ''Trello'' gav kandidatgruppen upp med tanken av att använda utvecklingsmetodiken ''Scrum'' och inledde första iterationen av projektet utan någon specifik utvecklingsmetodik.
+\textcolor{red}{ hade det funkat med en whiteboardtavla?}.
 
 \subsubsection{Resterande iterationer}
 Som nämnt gick kandidatgruppen in i första iterationen utan någon specifik utvecklingsmetodik, men under arbetetsgången växte en sorts utvecklingsmetodik fram.
@@ -139,9 +140,6 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
 \newline
 \newline 
-\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
-\newline
-\newline 
 \textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och håller koll på versioner av ens projekt i linjär tid. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt har individer som har velat jobba med något experimentellt kunnat gå sin egen väg genom att skapa en branch och jobba på den branchen. Det brukar finns en master branch, dvs där det huvudsakliga arbetet görs och sen kan man skapa andra branches för kod annat. 
 \newline
 \newline 
@@ -154,7 +152,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med Github. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. Travis säger till om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och säger till om testerna lyckades eller inte. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens Github-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej.
 \newline
 \newline
-\textbf{Valgrind.} Då väldigt mycket kod skrevs som allokerade mycket minne var kandidatgruppen tvungna att frigöra de minnet som vart allokerat. Förstås så glömdes det bort att frigöra minne ibland av vissa individer och därför var kandidatgruppen tvungen att hinna dessa minnesläckor och åtgärda dem. Genom Valgrind kunde minnesläckor hittas genom att analysera de testfiler som hade skapats. 
+\textbf{Valgrind.} Lösaren allokerar mycket minne och d denna är implementerad i C så måste man själv se till att frigöra allt minne. För att vara säkra på att det inte fanns några minnesläckor så användes Valgrind. Hittades några minnesläckor så ǻtergärdades dessa.  
 \newline
 \newline
 \textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var Emacs som är en textredigerare skapad Richard 	Stallman. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer.
