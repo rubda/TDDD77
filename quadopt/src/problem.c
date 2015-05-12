@@ -208,6 +208,12 @@ void free_problem(problem* prob){
   free_matrix(prob->gk);
   free_matrix(prob->lagrange);
 
+  free_matrix(prob->sparse_Q);
+  free_matrix(prob->sparse_Q_inv);
+  free_matrix(prob->sparse_E);
+  free_matrix(prob->sparse_F);
+  free_matrix(prob->sparse_A);
+
   work_set_free(prob->active_set);
 
   free(prob);

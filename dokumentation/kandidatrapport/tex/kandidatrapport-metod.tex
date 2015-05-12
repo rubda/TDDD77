@@ -60,7 +60,7 @@ GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att s
 Tkinter är ett programvarubibliotek, dvs ett bibliotek som hjälper till att forma ett GUI med hjälp av lätt Python kod. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python. Vissa kallar användningen av tkinter en tradition i Python-världen.
 \newline
 \newline
-HÄR SKA DET STÅ LITE SAKER OM PARSERN. 
+Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. 
 
 \subsection{Utvecklingsmetod}
 Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i underkapitlet ''Resterande iterationer''.
@@ -90,7 +90,7 @@ Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''B
 \newline
 Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.3]{grafik/trello}}
 \caption{Scrum table i Trello}
 \label{fig:trello}
@@ -112,6 +112,15 @@ Den utvecklingsmetodik som växte fram för kandidatgruppen kan efterlikna utvec
   \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och säger till om testerna misslyckas eller inte. CI står för kontinuerlig integration\textcolor{red}{ nej det gör det inte}.
 \end{itemize}
 Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
+
+\subsubsection{SEMAT Kernel}
+SEMAT står för Software Engineering Method and Theory och är ett iniativ för att förbättra mjukvaruutvecklingsindustrin. Med olika verktyg är det tänkt att ledare och managers ska kunna ge sina utvecklare bättre förutsättningar för att bli bättre, snabbare, billigare och gladare. \citep{semat} 
+\newline
+\newline
+Ivar Jacobson, som är en av grundarna till SEMAT, har utvecklat ett verktyg kallat Alpha State. Alpha States representerar olika faser ett mjukvaruprojekt kan gå igenom.
+\newline
+\newline 
+Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. På korten finns alla faser och de krav som ska vara uppfyllda för just den fasen. Genom att checka av vilka krav som är uppfyllda för vilken fas kan gruppen få ökad förståelse för vilket tillstånd projektet befinner sig i.  
 
 \subsubsection{Utvecklingsverktyg}
 De verktygen som användes under detta kandidatprojekt var främst
