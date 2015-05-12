@@ -18,8 +18,8 @@
 /** Uncomment which mode you want the library to run in */
 /* #define INT */
 /* #define FLOAT */
+/* #define DOUBLE */
 #define DOUBLE
-/* #define QUAD */
 
 /** Setup for the preprocessor depending on mode */
 #ifdef INT
