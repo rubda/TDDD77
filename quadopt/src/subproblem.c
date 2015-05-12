@@ -49,6 +49,8 @@ void range_space_sparse(matrix* A, problem* prob){
   }
 
   free_sparse_matrix(s_A);
+  free_sparse_matrix(s_AQAt);
+  free_matrix(A);
   free_matrix(At);
   free_matrix(Qg);
   free_matrix(AQAt);
