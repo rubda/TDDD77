@@ -57,8 +57,9 @@ sparse_matrix* create_empty_sparse_matrix(int size) {
 }
 
 /* return number of elements != 0 */
-int matrix_sparsity(matrix* A) {
-  int r, c, n = 0;
+size_t matrix_sparsity(matrix* A) {
+  int r, c;
+  size_t n = 0;
   value val;
   for (r = 1; r <= A->rows; r++) {
     for (c = 1; c <= A->columns; c++) {
@@ -219,6 +220,7 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   }
 
   free_matrix(p);
+  free_matrix(p_temp);
   free_matrix(r);
   free_matrix(Ap);
 

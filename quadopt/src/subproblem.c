@@ -3,12 +3,9 @@
 #include <solver.h>
 #include <assert.h>
 
-
-
 void range_space_sparse(matrix* A, problem* prob){
 
   sparse_matrix* s_A = create_sparse_matrix(A, -1);
-
   matrix* At = transpose_matrix_with_return(A);  
 
   matrix* QAt = multiply_sparse_matrix_matrix(prob->sparse_Q_inv, At);
@@ -50,7 +47,7 @@ void range_space_sparse(matrix* A, problem* prob){
 
   free_sparse_matrix(s_A);
   free_sparse_matrix(s_AQAt);
-  free_matrix(A);
+  free_matrix(QAt);
   free_matrix(At);
   free_matrix(Qg);
   free_matrix(AQAt);
@@ -100,7 +97,6 @@ void range_space(matrix* A, problem* prob){
     }
   }
 
-  free_matrix(A);
   free_matrix(At);
   free_matrix(AQ);
   free_matrix(AQAt);
@@ -178,7 +174,6 @@ void KKT_sub_sparse(matrix* A, problem* prob){
     insert_value_without_check(-get_value_without_check(i, 1, pl), i, 1, prob->p);
   }
    
-  free_matrix(A);
   free_matrix(pl);
   free_matrix(gc);
   free_matrix(Az);
@@ -226,7 +221,6 @@ void KKT_sub(matrix* A, problem* prob){
     insert_value_without_check(-get_value_without_check(i, 1, pl), i, 1, prob->p);
   }
    
-  free_matrix(A);
   free_matrix(At);
   free_matrix(K);
   free_matrix(pl);
@@ -290,16 +284,14 @@ void solve_subproblem(problem* prob){
 
   if (prob->is_sparse) {
     range_space_sparse(A, prob);
+    //range_space(A, prob);
     /* KKT_sub_sparse(A, prob); */
 
   } else {
     range_space(A, prob);
     /* KKT_sub(A, prob); */
   }
-  
-
-  
-
-  
+ 
+  free_matrix(A);
 
 }
