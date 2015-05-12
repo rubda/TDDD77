@@ -1,1 +1,6 @@
 \section{Diskussion}
+Resultaten från undersökningen är inte särskilt förvånande. Vad gäller prestanda så är det förväntat att Make är snabbare än SCons då det senare är skrivet i Python vilket innebär att en Python-tolk måste startas vid körning. Dessutom är Python ett språk med många fler finesser än Make vilket antagligen gör det betydligt svårare att tolka.
+
+Vad som däremot inte framgår är vad den här skillnaden beror på. För att jämföra det måste antagligen ett större projekt användas som utgångspunkt. Om skillnaden skalar linjärt med antalet filer som ska byggas tyder tyder det på att SCons är långsammare för att Python är ett svårare språk eller helt enkelt att SCons i sig har hög körtidskostnad. Om skillnaden istället skulle vara konstant så tyder det på att den extra tiden beror på uppstart av Python-tolken.
+
+Kandidatgruppens synpunkter kan i stort sett sammanfattas till att SCons verkar enklare än Make vad gäller vidareutveckling. Detta resultat verkar också rimligt då SCons-filerna har betydligt färre rader kod samt är skrivna i ett välkänt språk.
