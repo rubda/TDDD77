@@ -1,5 +1,5 @@
 \section{Metod}
-Då projektet redan har ett byggsystem implementerat i Make behövs ett likvärdigt byggsystem i SCons implementeras parallellt. Detta görs på en separat gren i versionshanteringssystemet för att undvika eventuella konflikter. På grund av begränsningarna nämnda i avsnitt \ref{avsnitt:avgransningar} kommer endast kompilering och länkning implementeras i SCons och det är endast på dessa områden prestandan för de två byggsystem kommer att mätas.
+Då projektet redan har ett byggsystem implementerat i Make behövs ett likvärdigt byggsystem i SCons implementeras parallellt. På grund av begränsningarna nämnda i avsnitt \ref{avsnitt:avgransningar} kommer endast kompilering och länkning implementeras i SCons och det är endast på dessa områden prestandan för de två byggsystem kommer att mätas. Då det befintiliga Make-systemet innefattade extra funktionalitet för att köra till exempel enhetstester, skapades även ett nytt minimalistiskt Make-system baserat på det befintliga som enbart kompilerade och länkade kod. De nya byggsystemen implementeras på en separat gren i versionshanteringssystemet för att undvika eventuella konflikter.
 
 All prestandatestning kommer att ske på konfigurationen i tabell \ref{tabell:konfig}.
 
