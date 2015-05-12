@@ -1,3 +1,20 @@
 \section{Metod}
-\todo{Beskriv att ett nytt byggsysten implementerades parallellt med det gamla så de kunde jämföras} \\
-\todo{Hårdvara, mjukvara (make, scons, gcc etc) och OS}
+Då projektet redan har ett byggsystem implementerat i Make behövs ett likvärdigt byggsystem i SCons implementeras parallellt. Detta görs på en separat gren i versionshanteringssystemet för att undvika eventuella konflikter. På grund av begränsningarna nämnda i avsnitt \ref{avsnitt:avgransningar} kommer endast kompilering och länkning implementeras i SCons och det är endast på dessa områden prestandan för de två byggsystem kommer att mätas.
+
+All prestandatestning kommer att ske på konfigurationen i tabell \ref{tabell:konfig}.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Hårdvara} & \textbf{Version} \\ \hline
+    MacBook Air & Early 2015 \\ \hline
+    \textbf{Mjukvara} & \textbf{Version} \\ \hline
+    OS X & Yosemite 10.10 \\ \hline
+    GNU Make & 3.81 \\ \hline
+    SCons & 2.3.4 \\ \hline
+    gcc & 4.8.4 \\ \hline
+  \end{tabular}
+  \caption{Hård- och mjukvarukonfiguration för prestandatesterna.}
+  \label{tabell:konfig}
+\end{table}

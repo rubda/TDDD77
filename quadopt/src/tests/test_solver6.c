@@ -47,7 +47,7 @@ int main(){
 
   problem* problem = create_problem(Q,q,E,h,F,g,NULL, 0, 0);
 
-  quadopt_solver(problem);
+  /*quadopt_solver(problem);
 
   matrix* expected = create_matrix(2, 1);
   value e_arr[2] = {-1.5,
@@ -56,7 +56,7 @@ int main(){
 
   assert(compare_matrices(problem->solution, expected));
 
-  free_matrix(expected);
+  free_matrix(expected);*/
   free_problem(problem);
 
   end = clock();

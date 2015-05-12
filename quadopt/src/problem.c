@@ -19,16 +19,28 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   get_inverse(Q, Q_inv);
   prob->Q_inv = Q_inv;
 
+
+  /* sparsity variables */
+  int n = 0, n1 = 0, n2 = 0;
+  prob->is_sparse = true;
+
+  n = matrix_sparsity(Q);  
+  if (n < Q->size/4) {
+    prob->sparse_Q = create_sparse_matrix(Q, n);
+    prob->sparse_Q_inv = create_sparse_matrix(Q_inv, n);
+  } else {
+    prob->is_sparse = false;
+  }
+
   prob->q = q;
 
   prob->variable_count = Q->rows;
-
-
 
   /* Constraints */
 
   /* Equality constraints */
   prob->E = E;
+
   /* Right hand side for E */
   prob->h = h;
 
@@ -41,6 +53,12 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
     prob->equality_count = 0;
   }else{
     prob->equality_count = E->rows;
+    if (prob->is_sparse) {      
+      n1 = matrix_sparsity(E);
+      if (n1 >= E->size/4) {
+        prob->is_sparse = false;
+      }
+    }
   }
   
   if (F == NULL){

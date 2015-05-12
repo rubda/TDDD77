@@ -18,8 +18,8 @@
 /** Uncomment which mode you want the library to run in */
 /* #define INT */
 /* #define FLOAT */
+/* #define DOUBLE */
 #define DOUBLE
-/* #define QUAD */
 
 /** Setup for the preprocessor depending on mode */
 #ifdef INT
@@ -36,7 +36,7 @@ typedef float value;
 
 #ifdef DOUBLE
 typedef double value;
-#define FORMAT_STRING "%lf "
+#define FORMAT_STRING "%f "
 #define PRECISION 0.0001
 #endif
 

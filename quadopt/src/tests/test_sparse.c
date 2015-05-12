@@ -9,15 +9,31 @@ int main()
   										1, 0, 0, 2};
   insert_array(Q_arr, Q);
 
-  print_matrix(Q);
+  matrix* x = create_matrix(4, 2);
+  value x_arr[8] = {	2, 1, 
+  										0, 1, 
+  										0, 1,
+  										0, 1};
+  insert_array(x_arr, x);
 
-  //sparse_matrix* sparse_Q = create_sparse_matrix(Q, -1);
+  //matrix* b = create_zero_matrix(4, 2);
 
-  //printf("Size: %d \n", sparse_Q->size);
 
-  //print_sparse_matrix(sparse_Q);
+  sparse_matrix* sparse_Q = create_sparse_matrix(Q, -1);
+
+  sparse_matrix* sparse_Qt = transpose_sparse_matrix_with_return(sparse_Q);
+
+  matrix* b = multiply_sparse_matrix_matrix(sparse_Q, x);
+
+  print_matrix(b);
+  print_sparse_matrix(sparse_Qt);
 
   free_matrix(Q);
+  free_matrix(b);
+  free_matrix(x);
+
+  free_sparse_matrix(sparse_Q);
+  free_sparse_matrix(sparse_Qt);
 
 
 
