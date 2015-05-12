@@ -151,15 +151,6 @@ void KKT_sub_sparse(matrix* A, problem* prob){
 
   s_K->rows = prob->Q->rows + A->rows;
   s_K->columns = prob->Q->columns + A->rows; /* transpose columns */
-/*
-
-  printf("---------------------------------------\n");
-  printf("A size: %d, %d \n", s_A->size, A->size);
-  printf("Q size: %d, %d \n", prob->sparse_Q->size, prob->Q->size);
-  printf("K size: %d, %d \n", s_K->size, s_K->rows*s_K->columns);
-  printf("---------------------------------------\n\n\n\n");
-*/
-
 
   /* Vars */
   matrix* pl = create_zero_matrix(prob->variable_count+A->rows, 1);
@@ -296,8 +287,8 @@ void solve_subproblem(problem* prob){
   /* Use range-space to get p */
 
   if (prob->is_sparse) {
-    //range_space_sparse(A, prob);
-    KKT_sub_sparse(A, prob);
+    range_space_sparse(A, prob);
+    /* KKT_sub_sparse(A, prob); */
 
   } else {
     range_space(A, prob);

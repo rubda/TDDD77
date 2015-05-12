@@ -30,13 +30,16 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\usepackage{natbib}
-\usepackage[nottoc]{tocbibind}
+\usepackage[round]{natbib}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{url}
 
 \usetikzlibrary{shapes, arrows}
 
 \pagenumbering{roman}
+\renewcommand*{\thepage}{B-\roman{page}}
 
 \DeclareGraphicsRule{.0.pdf}{pdf}{*}{}
 
@@ -47,7 +50,8 @@
 \tableofcontents	%Innehållsförteckning
 \newpage
 \pagenumbering{arabic}
-\renewcommand*{\thepage}{B\arabic{page}}
+\renewcommand*{\thepage}{B-\arabic{page}}
+
 \input{adam-tex/inledning}
 \input{adam-tex/bakgrund}
 \input{adam-tex/teori}
@@ -55,7 +59,8 @@
 \input{adam-tex/resultat}
 \input{adam-tex/diskussion}
 \input{adam-tex/slutsatser}
-\bibliographystyle{plain}
-\bibliography{adam-tex/mybib}
+
+\bibliographystyle{plainnat}
+\bibliography{tex/refs}{}
 
 \end{document}
