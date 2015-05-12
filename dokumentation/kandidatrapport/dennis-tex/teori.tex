@@ -59,7 +59,7 @@ Se Figur~\ref{fig:latexexempel}
 Allt i {\LaTeX} styrs med kommandon som skrivs på formen "\textbackslash kommando\{argument\}". Till exempel om en författare för dokumentet ska specifieras skrivs "\textbackslash author\{författarens namn\}" \hspace{0.2mm} eller om datumet för idag ska finnas i dokumentet skrivs "\textbackslash date\{\textbackslash today \}" \hspace{0.2mm} (\textbackslash today är ett kommando utan argument). Ett typiskt användbart kommando är "\textbackslash begin\{vald miljö\}" \hspace{0.2mm} som sedan avslutas med "\textbackslash end\{vald miljö\}" \hspace{0.2mm} vilket används för att sätta upp olika miljöer i dokumentet. En viktig miljö är ''document''  då det är där den huvudsakliga texten kommer ligga. Här tillåts specifika kommandon för den miljön, till exempel för att göra rubriker (\textbackslash section\{namn på rubrik\}) .
 \newline
 \newline
-För att göra egna kommandon 
+För att göra egna kommandon används kommandot ''\textbackslash newcommand'' 
 
 \subsubsection{Paket}
 Paketen i {\LaTeX} kan ses som bibliotek med användbara kommandon. Dessa paket importeras typiskt i början på dokumentet med kommandot ''\textbackslash usepackage\{paketnamn\}'' och ger användaren tillgång till innehållet under hela dokumentet. Det existerar redan inbyggt stöd för en mängd paket i {\LaTeX} och det finns många mer att hämta från internet. Med fler kommandon kan annars svåra uppgifter göras lättare och mer automatiserade.  
@@ -75,6 +75,9 @@ Ytterligare funktionalitet finns att uttnyttja om olika miljöer används till m
 \newline
 \newline
 I {\LaTeX} finns inget inbyggt stöd för algoritmer och pseudokod utan ett paket måste installeras, förslagsvis paketen ''algorithm'' och ''algpseudocode''. Dessa ger tillgång till kommandon för att definiera algoritmer och skriva pseudokod. För att beskriva en algoritm med pseudokod börjas först miljön ''algorithm'' med ''\textbackslash begin\{algorithm\}''. Detta låter användaren namge algoritmen och referera till den. Sedan för att börja skriva själva pseudokoden börjas miljön ''algorithmic'' och här kan olika kommandon användas. Till exempel för att skriva villkorssatser som ''if'' skrivs ''\textbackslash If\{villkoret\}'' följt av koden som ska vara i if-satsen och avslutas sedan med ''\textbackslash EndIf''. Det finns även kommandon för olika loopar och andra satser. Se figur bla bla för exempel 
+\newline
+\newline
+Det går även med paket ''listings'' skriva programmeringskod direkt i texten och importera befintliga kodfiler. Paketet stödjer markering av de vanligaste programmeringsspråken och detta görs genom att skriva ''\textbackslash lsinputlisting[language = valt programmeringsspråk]\{dinfil\}''.  
 
 \subsection{Texthanteraren Word}
 Microsoft Word är ett texthanteringsprogram för operativsystemen Windows och Mac. Den senaste versionen är Microsoft Word 2013 som släpptes år 2013. Programmet består utav ett grafiskt gränssnitt där olika menyer, inställningar och verktyg kan användas, se figur~\ref{fig:word2}. 
