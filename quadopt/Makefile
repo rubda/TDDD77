@@ -48,5 +48,5 @@ test: $(TEST_BINS)
 	@$(foreach test_bin, $(TEST_BINS), echo Running: $(test_bin) && $(test_bin) &&) true
 
 $(TEST_BINS): $(TEST_OBJS) $(OBJS) $(LIBMATRIX)
-	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -l matrix -pthread
+	$(CC) $(CFLAGS) $@.o $(OBJS) -o $@ -L $(LIBMATRIX_DIR) -lmatrix -lm -pthread
 	chmod 755 $@
