@@ -1,17 +1,26 @@
 \section{Diskussion}
-Nedan följer analys av hur projektet har gått och arbetet ur ett vidare perspektiv.  
+Under denna del kommer en diskussion angående om resultaten ske samt metoderna som användes.
 
 \subsection{Resultat}
-Att vi kunde implementera en optimeringslösare i programspråket C var inte förvånande då det inte är språket som sätter begränsningar. Det som hade kunnat gjorts var att skriva kod som är lättare att läsa och lättare att underhålla. Till exempel kunde funktioner för matematiska operationer skrivits för att framhäva den matematiska funktionaliteten mer för ökad läsbarhet. 
+Resultaten måste anses vara rimliga. Den första frågeställningen ställer frågan om det går att implementera en kvadratiska optimeringslösare i programspråket C. Resultatet visar att det går att implementera en sådan lösare i språket C. Anledningen till att det går är för att C är ett turingkomplett språk, dvs ett språk som kan beräkna samtliga beräkningsbara problem i det, givet tillräcklig tid och tillräckligt minnesutrymme. Språket C jobbar också väldigt nära hårdvara, vilket i sin tur gör att koden som har skrivits av kandidatgruppen kan exekvera snabbare än vad den skulle göra i andra språk. Det enda kandidatgruppen saknade i språket C var att kunna överlagra operatorer. Med hjälp av att kunna överlagra operatorer skulle t.ex. matrismultiplikationer ske med ett enkelt gånger-tecken istället för att göra ett funktionsanrop. Detta skulle ha kunnat medföra enklare kod, som i sin tur kan vara lättare att underhålla. 
 \newline
 \newline
-Anledningen till att kandidatgruppens optimeringslösare inte kunde bli snabbare än Gurobis är kort sagt att Gurobi är en kommersiell programvara. Det är sedan lång tid byggt och underhållet av många välbetalda utvecklare och konsulter. 
+Den andra frågeställningen kandidatgruppen hade var om QuadOpt skulle kunna lösa kvadratiska optimeringsproblem snabbare än Gurobi. Svaret vart nej. Anledningen till detta är att Gurobi är en kommersiell programvara som har arbetats med under en väldigt lång tid av välbetalda utvecklare och konsulter. Medan QuadOpt inte har haft samma förutsättningar. Kandidatgruppen skulle förutom att skapa en optimeringsalgoritm också skapa ett GUI och en parser i Python. Dessutom skulle kandidatgruppen även delta i diverse olika entreprenörskapskurser, förbereda opponeringar och skriva en massa dokument. Det ska också tilläggas att kandidatgruppen gjorde ett eget matrisbibliotek. Detta tog upp mycket av tiden som fanns för kandidatprojektet. Om några av dessa moment inte fanns med skulle kandidatgruppen kunna lagt dessa timmar på optimeringsalgoritmen och möjligtvis kunna matcha Gurobis hastighet.
 \newline
 \newline
-Jao
+Den sista frågeställningen kandidatgruppen hade var om man kunde utföra projektet utan någon speciell utvecklingsmetodik. Denna frågeställning är nog den svåraste att ge ett konkret svar på. Kandidatgruppen svarade ja, det går att utföra ett projekt utan någon speciell utvecklingsmetodik. Däremot så anser vissa individer i kandidatgruppen att en utvecklingsmetodik alltid finns där, även om man inte vet om det. Det som vill få sagts är att oavsett hur man jobbar, så jobbar man på ett speciellt sätt och detta är en sorts utvecklingsmetodik, men inte en officiell sådan.
 
 \subsection{Metod}
-Valet av kvadratisk optimeringsalgoritm kan ses som aningen naiv. Hade vi dock haft mer kunskap om ämnet hade vi kunnat resonerat mer kring vilken algoritm som skulle använts och vägt för- och nackdelar mellan dessa. 
+Valet av kvadratisk optimeringsalgoritm kan ses som aningen naiv. Hade vi dock haft mer kunskap om ämnet hade vi kunnat resonerat mer kring vilken algoritm som skulle använts och vägt för- och nackdelar mellan dessa. Huvudanledning till att valet föll för Active-set metoden är för att kandidatgruppens kontaktperson rekommenderade den, men han sa också åt kandidatgruppen att undersöka de andra algoritmerna. I efterhand tror kandidatgruppen att Interior point metoden skulle varit lättare att utföra i C-kod och dessutom lösa problemet snabbare än vad Active-set metoden gör. \textcolor{red}{SKREV MASSA SKIT HÄR, HAR INGEN ANING.}
+\newline
+\newline
+Att implementera ett matrisbibliotek är något som kandidatgruppen valde att göra för att de biblioteken som fanns tillhands var alldeles för svåra att begripa. Valet av att implementera ett matrisbibliotek var inget som var planerat under förstudien och detta tog väldigt många timmar att implementera samt att testa. Kandidatgruppen är nöjda med valet av att implementera ett eget matrisbibliotek, mycket på grund av att man vet vad som finns och hur det funkar, sen kan de som tar över projektet utvidga biblioteket hur mycket de vill. \textcolor{red}{Martin kanske vill tillägga något}
+\newline
+\newline
+Kandidatgruppen hade kontakt med kunden främst genom e-mail och träffades vid enstaka möten. Relationen mellan kandidatgruppen och kunden har varit bra och inga problem har dykt upp. Kandidatgruppen skulle möjligtvis kunnat ha visat kunden arbetet som har gjort vid flera tillfällen och har det i åtanke.
+\newline
+\newline
+Valet av att gå in i iterationer utan en utvecklingsmetodik är inget kandidatgruppen ångrar. Som tidigare nämnt kan en kandidatgrupp jobba på ett visst sätt som liknar en utvecklingsmetodik utan att veta om det. I detta fall ledde ledde arbetssättet till en variant av utvecklingsmetodiken eXtreme programming.
 
 \subsection{Arbetet i ett vidare sammanhang}
 Utöver att projektet har bidragit till vår egen och Saabs nytta kan projektet ha påverkat och ha framtida påverkan på samhället och miljön vi lever i. Mycket av informationen nedanför är hämtad direkt från Saabs hemsida och kan vara vinklad.   
