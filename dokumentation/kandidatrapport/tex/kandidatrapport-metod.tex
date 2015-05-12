@@ -52,14 +52,11 @@ Som man ser i pseudokoden ovan är vissa delar relativt vaga. Till exempel ''Com
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. Vi hade därefter flera möten bara för att förstå vad kunden hade för krav på oss. Någon som var bra var att han hade väldigt bra koll på vad han ville få av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projeketet ville han inte ha del utav. Vi iterarade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter så hade vi inte så mycket kontakt tills dess att vi kom till en punkt där vi behövde hans hjälp för att lösa en del problem. Sedan så tog det ett tag till innan vi hade möten igen för det det var mycket jobb innan vi hade fått ihop något som kunde visas upp. 
-\newline
-\newline
-Ett av kraven som vi hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta in skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde vi förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
+Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings Universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. 
 
 \subsection{GUI och parser}
 Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
-\begin{figure}[H]
+\begin{figure}
 \centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
 \caption{QuadOpt GUI}
 \label{fig:quadoptgui}
@@ -70,7 +67,10 @@ GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att s
 Tkinter är ett programvarubibliotek, dvs ett bibliotek som hjälper till att forma ett GUI med hjälp av lätt Python kod. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python. Vissa kallar användningen av tkinter en tradition i Python-världen.
 \newline
 \newline
-Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. 
+HÄR SKA DET STÅ LITE SAKER OM PARSERN. 
+
+\subsection{Lösaren i MATLAB}
+För att kalla på lösaren från MATLAB användes MEX. Mexfunktionen från figur~\ref{fig:mex} användes i en C fil som döptes till ''quadopt''. I denna fil fanns matrisbiblioteket och våran lösare importerad. Först görs alla inskickade MATLAB matriser om till matriser från matrisbiblioteket genom att iterera över ''prhs[]'' och skicka MATLAB matrisernas rader och kolumner till ''create\_matrix''. De konverterade matriserna läggs i problem strukten och skickas till lösaren. Den resulterande matrisen konverteras till en MATLAB matris och läggs i ''plhs[0]''.
 
 \subsection{Utvecklingsmetod}
 Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i underkapitlet ''Resterande iterationer''.
@@ -100,7 +100,7 @@ Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''B
 \newline
 Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
 
-\begin{figure}[H]
+\begin{figure}[h]
 \centerline{\includegraphics[scale=0.3]{grafik/trello}}
 \caption{Scrum table i Trello}
 \label{fig:trello}
@@ -119,7 +119,7 @@ Den utvecklingsmetodik som växte fram för kandidatgruppen kan efterlikna utvec
 \begin{itemize}
   \item \textbf{Pairprogramming} - I kandidatgruppen har vissa medlemmar parprogrammerat. Detta innebär att två stycken personer ska utföra en uppgift, en skriver kod och den andra granskar. Ett byte av roller sker också emellanåt. Genom att parprogrammera kan man diskutera om vad som skulle ge upphov till den bästa lösningen.
   \item \textbf{Refactoring} - ''Refactoring'' är något som har dykt upp väldigt mycket under arbetsgången. Poängen med ''Refactoring'' är att förbättra kods läsbarhets samt reducera komplexiteten utan att ändra kodens syfte. Detta har varit en stor del av projektet då kunden har tryckt på att kod ska vara väldokumenterad och strukturerad.
-  \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och säger till om testerna misslyckas eller inte. CI står för kontinuerlig integration\textcolor{red}{ nej det gör det inte}.
+  \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och säger till om testerna misslyckas eller inte. CI står för kontinuerlig integration.
 \end{itemize}
 Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
 
@@ -178,7 +178,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
 
 \subsection{Forskningsmetod}
-Som tidigare nämnt i avsnitt \ref{sec:algmet}, var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
+Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
 \newline
 \newline
 De tre algoritmerna som fanns var \emph{Active set method}, \emph{Gradient Projection method} och \emph{Interior point method}. Dessa algoritmer hade sina egna styrkor och svagheter, och det var just dessa som behövde jämföras utifrån prediktionsregleringsproblemets behov.
@@ -205,13 +205,11 @@ Klarar algoritmen alla olika fall av indata. Vad händer vid till exempel nollfa
 De tre algoritmerna är specialiseade på kvadratisk optimering. Men skiljer sig en del emot hur snabba de är för olika storlekar på problemen.
 
 \paragraph{Active set method}
-Det är den äldsta och standardmetoden, den är inte den snabbaste av algoritmerna, men den är lättast att implementera. Numerical Optimization boken hade även ett exempel i pseudokod för implementation av algoritmen. Den är relativt snabb upp till medelstora problem och en pålitlig algoritm.
 
 \paragraph{Gradient Projection method}
-Fungerar som Active set metoden, men istället för att bara kunna byta ett villkor åt gången till den aktiva mängden, så kan denna algoritmen byta ett flertal på en gång för att öka hastigheten. Denna algoritm är dock svårare att implementera och kräver mer förkunskaper.
+
 
 \paragraph{Interior point method}
-Interior point är en ganska modern algoritm och även en utav de snabbaste, den är dock mycket svårare att förstå sig på än t.ex. Active set och boken saknade implementations exempel för denna. Har man dock mer tid på sig och ska lösa större problem är det den här algoritmen man bör välja.
 
-\subsubsection{Slutsats}
-Just på grund av det problemet som vi skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som vi kunde utgå ifrån.
+
+\subsubsection{Algoritmerna gemtemot varandra}
