@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdio.h>
 
-
 int main(){
   clock_t begin, end;
   double time_spent;
