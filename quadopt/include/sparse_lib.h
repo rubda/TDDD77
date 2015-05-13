@@ -28,7 +28,7 @@ matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B);
 
 sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain);
 
-bool transpose_sparse_matrix(sparse_matrix* Ain);
+void transpose_sparse_matrix(sparse_matrix* Ain);
 
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain);
 

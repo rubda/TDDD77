@@ -13,7 +13,10 @@
 work_set* work_set_create(int ws_max) {
   /*TODO validate indata*/
   work_set* ws = (work_set*)malloc(sizeof(work_set));
-  ws->data = malloc(ws_max*sizeof(int));
+  if (ws_max > 0) {
+    ws->data = malloc(ws_max*sizeof(int));
+  }
+  ws->max_count = ws_max;
   ws->count = 0;
   return ws;
 }
@@ -48,8 +51,10 @@ bool work_set_remove(work_set* ws, int val) {
 
 /* Removes and deallocates the set */
 bool work_set_free(work_set* ws) {
-  free(ws->data);
-  ws->data = NULL;
+  if (ws != NULL && ws->max_count != 0) {
+    free(ws->data);
+    ws->data = NULL;
+  }
   free(ws);
   ws = NULL;
   return true;
