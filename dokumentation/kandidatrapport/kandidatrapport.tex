@@ -38,6 +38,9 @@
 \usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage[hidelinks]{hyperref}
+
+\hypersetup{breaklinks=true}
 
 \bibliographystyle{plainnat}
 
@@ -73,7 +76,7 @@
 \end{LIPSdokumenthistorik}
 
 \newpage
-\pagenumbering{arabic}	%Påbörja sidnumrering
+\pagenumbering{arabic}	%Påbörja sidnumrering	
 
 \input{tex/kandidatrapport-inledning}
 \input{tex/kandidatrapport-bakgrund}
@@ -84,7 +87,7 @@
 \input{tex/kandidatrapport-slutsatser}
 \input{tex/kandidatrapport-fortsatt-arbete}
 %\input{tex/kandidatrapport-referenser}
-
+\newpage
 \bibliography{tex/refs}{}
 
 \newpage
