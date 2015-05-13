@@ -49,6 +49,34 @@
 \newpage
 }
 
+
+%% Titelsida Adam
+\newcommand{\LIPSTitelsidaadam}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Best practices}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Adam Sestorp}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+
 %% Titelsida ruben
 \newcommand{\LIPSTitelsidaruben}{%
 {\ }\vspace{45mm}
@@ -75,6 +103,7 @@
 \newpage
 }
 
+<<<<<<< HEAD
 %% Titelsida dennis
 \newcommand{\LIPSTitelsidadennis}{%
 {\ }\vspace{45mm}
@@ -83,6 +112,16 @@
 \end{center}
 \begin{center}
   {\Large Redaktör: Dennis Ljung}
+=======
+%% Titelsida johan
+\newcommand{\LIPSTitelsidajohan}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Mjukvarutestning}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Johan Isaksson}
+>>>>>>> 368b9b6e7a55497c2b9b4dd19d8d426f71dcb23a
 \end{center}
 \begin{center}
   {\Large \textbf{Version \LIPSversion}}
@@ -117,9 +156,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{url}
-\usepackage{mathtools}
+%\usepackage{mathtools}
 \usepackage{titletoc}
 \usepackage{tcolorbox}
+\usepackage{epstopdf}
+
 
 
 
@@ -178,15 +219,25 @@
 %\appendixpage
 %\addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
-	\section{Allmänt om uppgiften}
-	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-adam.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
-	\newpage
-	%\input{tex/kandidatrapport-yngve}
-	\newpage
+\section{Allmänt om uppgiften}
+%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
+\newpage
+%\includepdf[pages={-}]{pdf/kandidatrapport-adam.pdf}
+\newpage
+%\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
+\newpage
+%\input{tex/kandidatrapport-yngve}
+\newpage
+
+%Adams report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaadam
+\setcounter{section}{0} 
+\printcontents[sections]{ }{2}{}
+\newpage
+\input{adam_input}
+\newpage
 
 %Martins report
 \stopcontents
@@ -210,6 +261,17 @@
 \input{dennis_input}
 \newpage
 
+%Johans report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidajohan
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{johan_input}
+\newpage
+
 %Rubens report
 \stopcontents
 \startcontents[sections]
@@ -218,7 +280,6 @@
 \printcontents[sections]{ }{1}{}
 \newpage
 \input{ruben_input}
-\newpage
 
 
 \end{document}
