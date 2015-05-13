@@ -5,8 +5,8 @@ Tidigare så föreslogs att matrisernas L och U matriser kunde sparas i matrix-s
 
 \subsection{Algoritmiska förbättringar}
 Den förbättringen som valdes till den bästa för biblioteket var att använda strassen istället för den naiva algoritmen när man utförde matrismultiplikationer. Först så implementerades algoritmen och sedan så gjordes tester för att bestämma när det blev mer optimerat att använda den istället för den naiva. I den nuvarande implementation så används funktionen multiply\_matrices som innehåller den naiva algoritmen. Detta gjordes om så att den funktionen kallar på multiply\_matrices\_naive om storleken på den resulterande matrisen understiger gränsvärdet som mättes upp, annars kallar funktionen på strassen\_matrices för matrismultiplikation. 
-\\
-\\
+\newline
+\newline
 För att sedan testa om biblioteket kunde utnyttja en parallelliserad version av Strassen så implementerades  strassen\_matrices\_parallel. Dock för att bibehålla kompatibiliteten med alla plattformen så kan all denna kod tas bort av preprocessorn genom att inte sätta PARALLELL flaggen i matLib.h
 \subsection{Implementation av Strassen algoritmen}
 Implementationen använder algoritmen beskriven i \ref{sec:strassen}. Dock beroende på utformning av biblioteket så måste en ny matris skapas för varje operation man gör. Detta leder till att under en multiplikation utan rekursivt anrop så skapas och frigörs 38 matriser. 
