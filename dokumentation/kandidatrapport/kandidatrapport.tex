@@ -49,6 +49,7 @@
 \newpage
 }
 
+
 %% Titelsida Adam
 \newcommand{\LIPSTitelsidayngve}{%
 {\ }\vspace{45mm}
@@ -106,7 +107,7 @@
 \newcommand{\LIPSTitelsidaruben}{%
 {\ }\vspace{45mm}
 \begin{center}
-  \textbf{\Huge Kvalitetsäkring}
+  \textbf{\Huge Kvalitetssäkring}
 \end{center}
 \begin{center}
   {\Large Redaktör: Ruben Das}
@@ -181,6 +182,32 @@
 \newpage
 }
 
+%% Titelsida Sebastian
+\newcommand{\LIPSTitelsidasebastian}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Uppbyggnad av stabila arkitekturer}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Sebastian Fast}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -199,9 +226,11 @@
 \usepackage{url}
 \usepackage{mathtools}
 \usepackage{titletoc}
+\usepackage{refcount}
 \usepackage{tcolorbox}
 \usepackage{epstopdf}
 \usepackage{placeins}
+
 
 
 
@@ -228,10 +257,8 @@
 \end{LIPSprojektidentitet}
 
 \newpage
-\tableofcontents	%Innehållsförteckning
-%\listoffigures
-%\listoftables
-
+\startcontents
+\printcontents{}{1}{}
 \newpage
 
 \begin{LIPSdokumenthistorik}
@@ -240,8 +267,6 @@
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
-\startcontents
-
 \input{tex/kandidatrapport-inledning}
 \input{tex/kandidatrapport-bakgrund}
 \input{tex/kandidatrapport-teori}
@@ -254,6 +279,15 @@
 \newpage
 %start the appendix
 \appendix
+
+\newcounter{store}
+\setcounter{store}{\value{page}}
+\setcounterref{page}{pageref{martins}}
+    \addcontentsline{toc}{section}{Bilagor}
+    \addcontentsline{toc}{section}{\protect\numberline{A}Optimering av Matrisbibliotek}
+    \bigskip\noindent% Optional
+\setcounter{page}{\value{store}}
+
 %\appendixpage
 %\addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
@@ -283,10 +317,12 @@
 \startcontents[sections]
 \LIPSTitelsidamartin
 \setcounter{section}{0} 
-\newpage
 \printcontents[sections]{ }{1}{}
 \newpage
+\label{martins}
 \input{martin_input}
+
+\stopcontents[sections]
 \newpage
 
 %Dennis report
@@ -311,6 +347,18 @@
 \input{johan_input}
 \newpage
 
+
+%Sebastian report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidasebastian
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{sebastian_input}
+\newpage
+
 %Rubens report
 \stopcontents
 \startcontents[sections]
@@ -320,6 +368,7 @@
 \newpage
 \input{ruben_input}
 \newpage
+
 
 \bibliography{tex/refs}{}
 \end{document}

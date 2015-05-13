@@ -1,8 +1,10 @@
 \section{Metod} \label{avsnitt:metod}
 Då projektet redan har ett byggsystem implementerat i Make behövs ett likvärdigt byggsystem i SCons implementeras parallellt. På grund av begränsningarna nämnda i avsnitt \ref{avsnitt:avgransningar} kommer endast kompilering och länkning implementeras i SCons och det är endast på dessa områden prestandan för de två byggsystem kommer att mätas. Då det befintiliga Make-systemet innefattade extra funktionalitet för att köra till exempel enhetstester, skapades även ett nytt minimalistiskt Make-system baserat på det befintliga som enbart kompilerade och länkade kod. De nya byggsystemen implementeras på en separat gren i versionshanteringssystemet för att undvika eventuella konflikter.
-
+\newline
+\newline
 Tiden det tar för byggsystemen att bygga all kod i projektet mäts med hjälp av UNIX-kommandot time och den slutgiltiga resultatet tas som medelvärdet av fem mätningar. Byggsystemens förmåga att bygga parallellt kommer att testas med körningar på en, två, fyra, åtta och 16 trådar.
-
+\newline
+\newline
 All prestandatestning kommer att ske på konfigurationen i tabell \ref{tabell:konfig}.
 
 \begin{table}[h!]
