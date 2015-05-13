@@ -62,10 +62,15 @@ Det går att göra egna kommandon, antingen med eller utan argument i {\LaTeX}.
 Paketen i {\LaTeX} kan ses som bibliotek med användbara kommandon. Dessa paket importeras typiskt i början på dokumentet med kommandot ''\textbackslash usepackage\{paketnamn\}'' och ger användaren tillgång till innehållet under hela dokumentet. Det existerar redan inbyggt stöd för en mängd paket i {\LaTeX} och det finns många mer att hämta från internet. Med fler kommandon kan annars svåra uppgifter göras lättare och mer automatiserade.  
 
 \subsubsection{Grafik}
-För att infoga bilder, diagram och grafer till exempel, används med fördel miljön ''figure''. Miljön skapar en ''flytande'' miljö. ''Flytande'' miljöer tillåter inga sidbrytningar och kan ''flyta'' till en passande plats i dokumentet. Detta ger {\LaTeX} mer frihet att göra bättre sidbrytningar för återstående text. 
-\newline
-\newline
-Figuren blir numrerad och kan refereras till med kommandot ''\textbackslash label\{fig:namn figuren\}'' 
+För att infoga bilder, diagram och grafer till exempel, används med fördel miljön ''figure''. Miljön skapar en ''flytande'' miljö. ''Flytande'' miljöer tillåter inga sidbrytningar och kan ''flyta'' till en passande plats i dokumentet. Detta ger {\LaTeX} mer frihet att göra bättre sidbrytningar för återstående text. Till miljön kan olika parametrar skickas in för styra placeringen av figuren. Det finns fem parametrar: 
+\begin{itemize}
+	\item \textbf{t} Placerar figuren överst på sidan.
+	\item \textbf{b} Placerar figuren nederst på sidan.
+	\item \textbf{p} Placerar figuren på en egen sida. 
+	\item \textbf{h} Placerar figuren ungefär på aktuell position (här). Detta beror på om det finns plats kvar på sidan. 
+	\item \textbf{H} Placerar figuren på aktuell position (här). 
+\end{itemize}
+Figuren blir numrerad och kan refereras till med kommandot ''\textbackslash label\{fig:namn figuren\}''. Sedan när figuren ska refereras i texten används kommandot ''\textbackslash ref\{fig:namn figuren\}''. 
 
 \subsubsection{Matematik och algoritmer}
 I {\LaTeX} finns stöd för matematiska formler och variabler, om än något begränsad. För ökat stöd kan paketet ''amsmath'' från American Mathematical Society installeras vilket förfinar några existerande kommandon och introducerar nya. För att kunna skriva matematiska formler används operatorn "\$" \hspace{0.2mm} vilket säger åt {\LaTeX} att ändra från vanligt textläge till matematikläge och tillbaka, till exempel ''\$a = b\$'' resulterar i $a = b$. Det finns en rad kommandon att använda i matematik läget, både för olika uttryck och symboler. En mer avancerad formel kan skrivas ''\$\textbackslash sum\^ \,\{n\}\_\{i = 0\}\textbackslash binom\{n\}\{i\} a\^ \,\{i\} b\^ \,\{n - i\} = (a + b)\^ \,\{n\}\$'' vilket resultar i $\sum^{n}_{i=0}\binom{n}{i}a^{i}b^{n-i} = (a + b)^{n}$. 
