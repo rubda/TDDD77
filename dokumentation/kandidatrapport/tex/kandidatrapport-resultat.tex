@@ -9,7 +9,13 @@ De frågeställningar som ställdes i början av dokumentet var:
 
 Svaren på dessa frågor:
 \begin{enumerate}
-\item Ja, det går att implementera en kvadratisk optimeringslösare i programspråket C. Detta eftersom kandidatgruppen har lyckats med att göra det. Den kvadratiska optimeringslösaren som skrevs i programspråket C var active-set metoden. 
+\item Ja, det går att implementera en kvadratisk optimeringslösare i programspråket C. Detta eftersom kandidatgruppen har lyckats med att göra det. Den kvadratiska optimeringslösaren som skrevs i programspråket C var active-set metoden. I figur \ref{fig:arkitektur} visas en överblick hur hela systemet såg ut. Där problem.c skapar en struct innehållande de matriser som problemet består av och sedan löser solvern detta problem.
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.5]{grafik/arkitektur}}
+\caption{Grafisk representation av lösningen}
+\label{fig:arkitektur}
+\end{figure}
 
 \item Nej, ett system som kan lösa kvadratiska optimeringsproblem snabbare än Gurobi kan inte utvecklas med den tid som har funnits till hands. Kandidatgruppens sju medlemmar hade 270 timmar var att fördela projektet på, varav många timmar lades ner på dokumentation och diverse seminarier. Utan dokumentation och seminarier skulle optimeringsalgoritmen kunnat blivit bättre.
 
@@ -40,4 +46,4 @@ I de individuella utredningarna har vi rapporter som behandlar:
 	\item Hur man tar fram en bra arkitektur. 
 	\item Kvalitetssäkring i ett projekt.  
 \end{itemize}
-Dessa idividuella delar bygger på antingen författarens roll eller ett område författaren ägnat mycket av sin tid åt under projektets gång. I de fall där den individuella delen baseras på en roll har författaren valt att rikta in sig på en specifik del av rollen som är kopplad till projektet. De resterande områden som skrivits om har inte enbart varit ett område där författaren lagt mycket utav sin tid utan det är även områden som projektet har gynnats mycket av.
+Dessa individuella delar bygger på antingen författarens roll eller ett område författaren ägnat mycket av sin tid åt under projektets gång. I de fall där den individuella delen baseras på en roll har författaren valt att rikta in sig på en specifik del av rollen som är kopplad till projektet. De resterande områden som skrivits om har inte enbart varit ett område där författaren lagt mycket utav sin tid utan det är även områden som projektet har gynnats mycket av.
