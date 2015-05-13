@@ -59,7 +59,7 @@ Ett av kraven som vi hade satt upp var att lösaren skulle kunna hantera felakti
 
 \subsection{GUI och parser}
 Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
-\begin{figure}
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
 \caption{QuadOpt GUI}
 \label{fig:quadoptgui}
@@ -70,8 +70,8 @@ GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att s
 Tkinter är ett grafiskt bibliotek, dvs ett bibliotek som hjälper till att forma ett GUI. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python.
 \newline
 \newline
-HÄR SKA DET STÅ LITE SAKER OM PARSERN. 
-
+Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. Anledningen till att denna syntax har valts är för att kontaktpersonen Daniel Simon har erfarenhet av den.
+ 
 \subsection{Lösaren i MATLAB}
 För att kalla på lösaren från MATLAB användes MEX. Mexfunktionen från figur~\ref{fig:mex} användes i en C fil som döptes till ''quadopt''. I denna fil fanns matrisbiblioteket och våran lösare importerad. Först görs alla inskickade MATLAB matriser om till matriser från matrisbiblioteket genom att iterera över ''prhs[]'' och skicka MATLAB matrisernas rader och kolumner till ''create\_matrix''. De konverterade matriserna läggs i problem strukten och skickas till lösaren. Den resulterande matrisen konverteras till en MATLAB matris och läggs i ''plhs[0]''.
 
@@ -100,16 +100,15 @@ Under varje kategori skulle sedan ett antal aktiviteter finnas med. Dessa aktivi
 Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''Burn down chart'', dvs en graf som visar hur mycket jobb som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. Detta är lätt att implementera då tavlan nämnd tidigare skulle hålla kolla på timmar på ett strukturerat sätt. 
 \newline
 \newline
-Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen.
+Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen. Under en period diskuterade även kandidatgruppen om en vanlig whiteboard-tavla skulle funka, men kandidatgruppen hade inte tillgång till en sådan tavla.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centerline{\includegraphics[scale=0.3]{grafik/trello}}
 \caption{Scrum table i Trello}
 \label{fig:trello}
 \end{figure}
 
 \noindent Efter dessa försök med ''Trac'' och ''Trello'' gav kandidatgruppen upp med tanken av att använda utvecklingsmetodiken ''Scrum'' och inledde första iterationen av projektet utan någon specifik utvecklingsmetodik.
-\textcolor{red}{ hade det funkat med en whiteboardtavla?}.
 
 \subsubsection{Resterande iterationer}
 Som nämnt gick kandidatgruppen in i första iterationen utan någon specifik utvecklingsmetodik, men under arbetetsgången växte en sorts utvecklingsmetodik fram.
@@ -224,4 +223,4 @@ De tre algoritmerna är specialiserade på kvadratisk optimering. Men skiljer si
 \paragraph{Interior point method}
 
 
-\subsubsection{Algoritmerna gemtemot varandra}
+\subsubsection{Algoritmerna gentemot varandra}
