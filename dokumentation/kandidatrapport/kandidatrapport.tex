@@ -23,6 +23,34 @@
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
 \newcommand{\LIPShandledare}{Andreas Runfalk}
 
+%% Titelsida martins
+\newcommand{\LIPSTitelsidamartin}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Optimering av matrisbibliotek}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Martin Söderén}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -38,7 +66,9 @@
 \usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amsfonts}
-
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage{titletoc}
 \bibliographystyle{plainnat}
 
 \usetikzlibrary{shapes, arrows}
@@ -74,7 +104,7 @@
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
-
+\startcontents
 \input{tex/kandidatrapport-inledning}
 \input{tex/kandidatrapport-bakgrund}
 \input{tex/kandidatrapport-teori}
@@ -88,7 +118,12 @@
 \bibliography{tex/refs}{}
 
 \newpage
-\begin{appendices}
+\appendix
+\appendixpage
+\addappheadtotoc
+%\renewcommand{\thesubsection}{\arabic{subsection}}
+\renewcommand{\thesection}{\arabic{section}}
+
 	\section{Allmänt om uppgiften}
 	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
 	\newpage
@@ -98,16 +133,20 @@
 	\newpage
 	%\input{tex/kandidatrapport-yngve}
 	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-martin.pdf}
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidamartin
+\setcounter{section}{0} 
+\printcontents[sections]{ }{2}{}
+\newpage
+	\input{martin_input}
+	\section{hej}
 	\newpage
 	%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
 	\newpage
 	%\input{tex/kandidatrapport-sebastian}
 	\newpage
 	%\input{tex/kandidatrapport-johan}
-
-		
-\end{appendices}
 
 
 
