@@ -31,10 +31,11 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{listings}
-\usepackage{natbib}
+\usepackage[round]{natbib}
 \usepackage[nottoc]{tocbibind}
 \usepackage{tcolorbox}
 \usepackage{placeins}
+\usepackage{url}
 
 \usetikzlibrary{shapes, arrows}
 
@@ -57,8 +58,7 @@
 \input{yngve-tex/resultat}
 \input{yngve-tex/diskussion}
 \input{yngve-tex/slutsatser}
-\bibliographystyle{plain}
-\nocite{*}
-\bibliography{yngve-tex/mybib}
+\bibliographystyle{plainnat}
+\bibliography{tex/refs}{}
 
 \end{document}

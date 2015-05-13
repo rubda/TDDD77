@@ -49,6 +49,165 @@
 \newpage
 }
 
+
+%% Titelsida Adam
+\newcommand{\LIPSTitelsidayngve}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Utvärdering av byggsystem}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Alexander Yngve}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+%% Titelsida Adam
+\newcommand{\LIPSTitelsidaadam}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Best practices}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Adam Sestorp}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+
+%% Titelsida ruben
+\newcommand{\LIPSTitelsidaruben}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Kvalitetssäkring}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Ruben Das}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+%% Titelsida dennis
+\newcommand{\LIPSTitelsidadennis}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge {\LaTeX} för teknisk dokumentation}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Dennis Ljung}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+
+%% Titelsida johan
+\newcommand{\LIPSTitelsidajohan}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Mjukvarutestning}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Johan Isaksson}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+%% Titelsida Sebastian
+\newcommand{\LIPSTitelsidasebastian}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Uppbyggnad av stabila arkitekturer}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Sebastian Fast}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -68,6 +227,12 @@
 \usepackage{mathtools}
 \usepackage{titletoc}
 \usepackage{refcount}
+\usepackage{tcolorbox}
+\usepackage{epstopdf}
+\usepackage{placeins}
+
+
+
 
 \bibliographystyle{plainnat}
 
@@ -110,8 +275,11 @@
 \input{tex/kandidatrapport-diskussion}
 \input{tex/kandidatrapport-slutsatser}
 \input{tex/kandidatrapport-fortsatt-arbete}
+<<<<<<< HEAD
 \newpage
 \bibliography{tex/refs}{}
+=======
+
 \newpage
 %start the appendix
 \appendix
@@ -119,7 +287,6 @@
 \newcounter{store}
 \setcounter{store}{\value{page}}
 \setcounterref{page}{pageref{martins}}
-%\section{Optimering av matrisbibliotek}
     \addcontentsline{toc}{section}{Bilagor}
     \addcontentsline{toc}{section}{\protect\numberline{A}Optimering av Matrisbibliotek}
     \bigskip\noindent% Optional
@@ -129,6 +296,25 @@
 %\addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
 
+%Yngves report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidayngve
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{yngve_input}
+\newpage
+
+%Adams report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaadam
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{adam_input}
+\newpage
 
 %Martins report
 \stopcontents
@@ -139,6 +325,54 @@
 \newpage
 \label{martins}
 \input{martin_input}
-\stopcontents[sections]
 
+\stopcontents[sections]
+\newpage
+
+%Dennis report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidadennis
+\setcounter{section}{0} 
+\newpage
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{dennis_input}
+\newpage
+
+%Johans report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidajohan
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{johan_input}
+\newpage
+
+
+%Sebastian report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidasebastian
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{sebastian_input}
+\newpage
+
+%Rubens report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaruben
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{ruben_input}
+\newpage
+
+
+\bibliography{tex/refs}{}
 \end{document}

@@ -23,7 +23,7 @@ Make är ett gammalt verktyg som skapades av Stuart Feldman 1976. Den variant so
 
 Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i samma katalog som källkoden. I filen skrivs en uppsättning direktiv som berättar för Make vad och hur allt ska byggas. Språket kallas för Make och är ett deklarativt programspråk. Make använder sig av skalkommandon vilket medför att hela skalmiljön är åtkomlig för Make.
 
-Normal praxis är att använda flera Makefiler, till exempel en för varje delkomponent i programmet, och att ha en huvudfil som anropar de andra filerna.
+Normal praxis är att använda flera Makefiler, till exempel en för varje delkomponent i programmet, och att ha en huvudfil som anropar de andra filerna. Detta kan dock bli väldigt förvirrande och leda till att byggsystemet måste uppdateras ofta när koden ändras \citep{recursivemake}.
 
 För att få Make att bygga programmet i figur \ref{fig:beroendegraf} används Makefilen från figur \ref{fig:makefile}. Kommandot i figur \ref{fig:makekommando} används sedan för att bygga programmet.
 
