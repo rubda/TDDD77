@@ -49,6 +49,7 @@
 \newpage
 }
 
+
 %% Titelsida Adam
 \newcommand{\LIPSTitelsidaadam}{%
 {\ }\vspace{45mm}
@@ -57,6 +58,33 @@
 \end{center}
 \begin{center}
   {\Large Redaktör: Adam Sestorp}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+
+%% Titelsida ruben
+\newcommand{\LIPSTitelsidaruben}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Kvalitetsäkring}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Ruben Das}
 \end{center}
 \begin{center}
   {\Large \textbf{Version \LIPSversion}}
@@ -93,7 +121,7 @@
 \usepackage{url}
 \usepackage{mathtools}
 \usepackage{titletoc}
-
+\usepackage{tcolorbox}
 
 
 
@@ -149,8 +177,8 @@
 
 %start the appendix
 \appendix
-\appendixpage
-\addappheadtotoc
+%\appendixpage
+%\addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
 \section{Allmänt om uppgiften}
 %\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
@@ -178,16 +206,21 @@
 \startcontents[sections]
 \LIPSTitelsidamartin
 \setcounter{section}{0} 
-\printcontents[sections]{ }{2}{}
+\newpage
+\printcontents[sections]{ }{1}{}
 \newpage
 \input{martin_input}
 
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaruben
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{ruben_input}
+\newpage
 
-\newpage
-%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
-\newpage
-%\input{tex/kandidatrapport-sebastian}
-\newpage
-%\input{tex/kandidatrapport-johan}
+
 
 \end{document}
