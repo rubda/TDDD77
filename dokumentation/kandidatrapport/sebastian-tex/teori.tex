@@ -9,7 +9,17 @@ Det kommer även krävas någon typ av kravdokumentation från kunden som beskri
 \newline
 \newline
 %Beroende på vad det är för typ av system som ska byggas så kan arkitekturen skapas på olika vis. T.ex.
-Arkitekturen beror på vad det är för typ av system som ska byggas. Är det t.ex. ett väldigt litet system så är det inte alls säkert att det behövs en arkitektur, utan det kan vara möjligt att gå direkt från specifikation till design av datastrukturer och algoritmer. Men är det istället ett väldigt stort system man ska bygga, så vill man gärna dela upp det i mindre moduler och komponenter, och det är just detta som arkitekturen gör. Så arkitekturen kan beskrivas som uppdelningen av ett system till flera mindre delar.
+Arkitekturen beror på vad det är för typ av system som ska byggas. Är det t.ex. ett väldigt litet system så är det inte alls säkert att det behövs en arkitektur, utan det kan vara möjligt att gå direkt från specifiktation till design av datastrukturer och algoritmer. Men är det istället ett väldigt stort system man ska bygga, så vill man gärna dela upp det i mindre moduler och komponenter, och det är just detta som arkitekturen gör. Så arkitekturen kan beskrivas som uppdelningen av ett system till flera mindre delar.
+\newline
+\newline
+Mjukvaruarkitekturer kan också liknas mycket med byggnadsarkitekturer, de har en del saker gemensamt t.ex. 
+\begin{enumerate}
+	\item Flera vyer
+	\item Arkitektoniska stilar
+	\item Stil och ingenjörskonst
+	\item Stil och material
+\end{enumerate}
+En byggnadesarkitekt arbetar med kunden i fråga om olika vyer när han vill betona en speciell del på byggnaden. Till exempel finns det förhöjningar och våningar som ger det yttre en ''top-down'' vy. \citep{perry92}
 
 \subsection{Design och Arkitektur}
 %Det finns många likheter mellan designen och arkitekturen, men det är viktigt att förstå skillnaden.
@@ -25,14 +35,19 @@ Det svåra med designen av arkitekturen är att hålla koll på och tänka ut al
 Med detta taget i beaktning så finns det ingen specifik instruktion eller formel som man kan följa för att skapa en bra arkitektur. Det som krävs istället är kreativitet, att man är smart och tidigare erfarenheter, samt att man har tillgång till experterutlåtanden gällande olika val.
 \newline
 \newline
-Ett bra sätt att träna på hur man ska göra smarta designbeslut är att man studerar redan existerande exempel på hur bra arkitekturer ser ut, och sedan återanvända lösningar från dessa till liknande problem. T.ex. så hittar erfarna utvecklare sällan på nya lösningar från grunden, utan lånar idéer från redan existerande lösningar och gör om dem för att de ska passa just deras design.
+Ett bra sätt att träna på hur man ska göra smarta designbeslut är att man studerar redan existerande exempel på hur bra arkitekturer ser ut, och sedan återanvända lösningar från dessa till liknande problem. T.ex. så hittar erfarna utvecklare sällan på nya lösningar från grunden, utan lånar idéer från redan existerande lösningar och gör om dem för att de ska passa just deras design. Exempel på vad man kan ta in för källor för en bra design syns i figur \ref{fig:des}.
 \newline
 \newline
 Det finns flera olika sätt som man kan använda andras lösningar på. Ett är t.ex. att man lånar hela designen inklusive koden och gör mindre förändringar för att det ska passa ens egna problem. Detta kan dock vara lite väl extremt och det finns risk att de strider mot upphovsrätt och annat, men det finns bättre lösningar för att göra ett liknande system med mindre variationer. Ett exempel är att göra designen utifrån en referensmodell, som är snarare en generell lösning för arkitekturen som beskriver hur systemet bör delas upp i de mindre delarna och hur dessa sedan interagerar med varandra. Sedan hur varje komponent ska se ut på detaljnivå och hur kommunikationen ska fungera mellan dem mer detaljerat beror mer på vad det är för typ av program och hur det ska fungera i praktiken.
-HA EN BILD HÄR HUR REFERENCE MODEL FUNGER S. 227
+
+\begin{figure}[h]
+\centerline{\includegraphics[scale=0.6]{sebastian-tex/grafik/designadvice.png}}
+\caption{Källor till arkitekturdesignen.}
+\label{fig:des}
+\end{figure}
 
 \paragraph{Processen}
-Att ta fram en fungerande arkitektur är inget som blir klart direkt. Man måste gå fram och tillbaka och göra ändringar när man upptäcker nya problem eller möjligheter. Man vill kontrollera att det fortfarande är genomförbart, upptäcker man nya bättre lösningar kan man presentera dessa för kunden och se om man borde gå på den nya lösningen istället. Det som är allra viktigast är att hela tiden jämföra arkitekturen mot kravspecifikationen så man hela tiden uppfyller alla krav så att inget av dem blir omöjligt att genomföra. Ett exempel på hur denna process går till syns i figur SIFFRA. HA EN FIGUR HÄR S. 229
+Att ta fram en fungerande arkitektur är inget som blir klart direkt. Man måste gå fram och tillbaka och göra ändringar när man upptäcker nya problem eller möjligheter. Man vill kontrollera att det fortfarande är genomförbart, upptäcker man nya bättre lösningar kan man presentera dessa för kunden och se om man borde gå på den nya lösningen istället. Det som är allra viktigast är att hela tiden jämföra arkitekturen mot kravspecifikationen så man hela tiden uppfyller alla krav så att inget av dem blir omöjligt att genomföra. %Ett exempel på hur denna process går till syns i figur SIFFRA. HA EN FIGUR HÄR S. 229
 
 \subsection{Arkitektoniska mönster}
 Precis som det finns designmönster när man skriver kod, så finns det arkitektoniska mönster som beskriver hur man bör dela upp sitt system i mindre delar och hur de delarna ska interagera med varandra. Dessa fungerar inte direkt som referensmodeller som beskrevs i tidigare avsnitt, utan de beskriver mer generellt hur man bör möta olika design problem istället för att fokusera på vissa typer av problem.
