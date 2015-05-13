@@ -25,9 +25,11 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size) {
   S->size = n;
   S->rows = Ain->rows;
   S->columns = Ain->columns;
-  S->A = malloc(n*sizeof(value));
-  S->rA = malloc(n*sizeof(int));
-  S->cA = malloc(n*sizeof(int));
+  if (n > 0) {
+    S->A = malloc(n*sizeof(value));
+    S->rA = malloc(n*sizeof(int));
+    S->cA = malloc(n*sizeof(int));
+  }
 
   for (r = 1; r <= Ain->rows; r++) {
     for (c = 1; c <= Ain->columns; c++) {
@@ -122,7 +124,7 @@ sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain) {
   return S;
 }
 
-bool transpose_sparse_matrix(sparse_matrix* Ain) {
+void transpose_sparse_matrix(sparse_matrix* Ain) {
   int* temp = Ain->rA;
   Ain->rA = Ain->cA;
   Ain->cA = temp;
@@ -155,10 +157,14 @@ void print_sparse_matrix(sparse_matrix* S) {
 }
 
 void free_sparse_matrix(sparse_matrix* S) {
-  free(S->A);
-  free(S->rA);
-  free(S->cA);
-  free(S);
+  if (S != NULL) {
+    if (S->size > 0) {
+      free(S->A);
+      free(S->rA);
+      free(S->cA);
+    }
+    free(S);
+  }
 }
 
 
@@ -166,7 +172,7 @@ void free_sparse_matrix(sparse_matrix* S) {
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   /* variables */
   value alpha, beta;
-  int i, k = 1;
+  int i;
 
   /* r0 = b - Ax0 */
   matrix* Ap = multiply_sparse_matrix_matrix(A, x);

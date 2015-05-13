@@ -12,6 +12,7 @@
 
 /** Structure for storing different sets */
 struct work_set{
+	int max_count; /**< Maximum number of elements in the work set */
   int count; /**< Number of elements in the work set. */
   int* data; /**< Array of elements in the work set. */
 };
