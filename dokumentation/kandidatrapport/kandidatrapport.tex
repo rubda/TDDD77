@@ -75,6 +75,32 @@
 \newpage
 }
 
+%% Titelsida johan
+\newcommand{\LIPSTitelsidajohan}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Mjukvarutestning}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Johan Isaksson}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -91,9 +117,11 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{url}
-\usepackage{mathtools}
+%\usepackage{mathtools}
 \usepackage{titletoc}
 \usepackage{tcolorbox}
+\usepackage{epstopdf}
+
 
 
 
@@ -171,20 +199,26 @@
 \printcontents[sections]{ }{1}{}
 \newpage
 \input{martin_input}
+
+%Rubens report
 \newpage
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidaruben
 \setcounter{section}{0} 
 \printcontents[sections]{ }{1}{}
-\newpage\input{ruben_input}
-	\newpage
-	%\input{tex/kandidatrapport-sebastian}
-	\newpage
-	%\input{tex/kandidatrapport-johan}
+\newpage
+\input{ruben_input}
 
-
-
+%Johans report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidajohan
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{johan_input}
 
 
 \end{document}
