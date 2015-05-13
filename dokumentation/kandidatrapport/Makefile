@@ -17,7 +17,7 @@ RUBEN_DIR = ruben-tex
 YNGVE_NAME = kandidatrapport-yngve
 YNGVE_DIR = yngve-tex
 
-NAMES = $(KAND_NAME) $(ADAM_NAME) $(DENNIS_NAME) $(MARTIN_NAME) $(YNGVE_NAME) #$(RUBEN_NAME)
+NAMES = $(KAND_NAME) #$(ADAM_NAME) $(DENNIS_NAME) $(MARTIN_NAME) $(YNGVE_NAME) #$(RUBEN_NAME)
 
 PDFS = $(addprefix $(BUILDDIR)/, $(addsuffix .pdf,$(NAMES)))
 
@@ -31,7 +31,7 @@ endif
 .PHONY: all
 all: $(PDFS)
 
-$(BUILDDIR)/$(KAND_NAME).pdf: $(KAND_NAME).tex $(wildcard tex/*) $(wildcard grafik/*)
+$(BUILDDIR)/$(KAND_NAME).pdf: $(KAND_NAME).tex $(wildcard tex/*) $(wildcard grafik/*) $(ADAM_NAME).tex $(wildcard $(ADAM_DIR)/*) $(DENNIS_NAME).tex $(wildcard $(DENNIS_DIR)/*) $(MARTIN_NAME).tex $(wildcard $(MARTIN_DIR)/*) $(RUBEN_NAME).tex $(wildcard $(RUBEN_DIR)/*) $(wildcard $(RUBEN_DIR)/graphic/*) $(YNGVE_NAME).tex $(wildcard $(YNGVE_DIR)/*) $(wildcard $(YNGVE_DIR)/grafik/*)
 $(BUILDDIR)/$(ADAM_NAME).pdf: $(ADAM_NAME).tex $(wildcard $(ADAM_DIR)/*)
 $(BUILDDIR)/$(DENNIS_NAME).pdf: $(DENNIS_NAME).tex $(wildcard $(DENNIS_DIR)/*)
 $(BUILDDIR)/$(MARTIN_NAME).pdf: $(MARTIN_NAME).tex $(wildcard $(MARTIN_DIR)/*)
