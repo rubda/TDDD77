@@ -65,11 +65,6 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
 
   prob->constraints_count = prob->equality_count + prob->inequality_count;
 
-  printf("count: %d, %d, %d, %d \n", prob->equality_count, prob->inequality_count, prob->constraints_count, prob->variable_count);
-  printf("sparse: %s\n", prob->is_sparse ? "true" : "false");
-  printf("n: %d \n", n);
-  printf("Qs: %d \n", Q->size);
-
 
   if (prob->constraints_count != 0) {
     /* All constrains */

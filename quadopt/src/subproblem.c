@@ -283,8 +283,8 @@ void solve_subproblem(problem* prob){
   /* Use range-space to get p */
 
   if (prob->is_sparse) {
-    /* range_space_sparse(A, prob); */
-    range_space(A, prob);
+    range_space_sparse(A, prob);
+    /* range_space(A, prob); */
     /* KKT_sub_sparse(A, prob); */
 
   } else {
