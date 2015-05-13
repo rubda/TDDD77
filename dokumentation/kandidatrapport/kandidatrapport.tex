@@ -280,19 +280,13 @@
 %start the appendix
 \appendix
 
-\newcounter{store}
-\setcounter{store}{\value{page}}
-\setcounterref{page}{pageref{martins}}
-    \addcontentsline{toc}{section}{Bilagor}
-    \addcontentsline{toc}{section}{\protect\numberline{A}Optimering av Matrisbibliotek}
-    \bigskip\noindent% Optional
-\setcounter{page}{\value{store}}
-
 %\appendixpage
 %\addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
 
 %Yngves report
+\addcontentsline{toc}{section}{Bilagor}
+\addcontentsline{toc}{section}{\protect\numberline{A} Utvärdering av byggsystem}
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidayngve
@@ -304,6 +298,9 @@
 
 %Adams report
 \stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{B} Best practices}
+\stopcontents
 \startcontents[sections]
 \LIPSTitelsidaadam
 \setcounter{section}{0} 
@@ -313,6 +310,9 @@
 \newpage
 
 %Martins report
+\stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{C} Optimering av matrisbibliotek}
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidamartin
@@ -327,6 +327,9 @@
 
 %Dennis report
 \stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{D} \LaTeX \ för teknisk dokumentation}
+\stopcontents
 \startcontents[sections]
 \LIPSTitelsidadennis
 \setcounter{section}{0} 
@@ -338,6 +341,9 @@
 
 %Johans report
 \newpage
+\stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{E} Mjukvarutestning}
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidajohan
@@ -351,6 +357,9 @@
 %Sebastian report
 \newpage
 \stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{F} Uppbyggnad av stabila arkitekturer }
+\stopcontents
 \startcontents[sections]
 \LIPSTitelsidasebastian
 \setcounter{section}{0} 
@@ -360,6 +369,9 @@
 \newpage
 
 %Rubens report
+\stopcontents
+\resumecontents[default]
+\addcontentsline{toc}{section}{\protect\numberline{G} Kvalitetssäkring}
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidaruben
