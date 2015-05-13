@@ -53,25 +53,25 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
 
 \subsubsection{Metod 1}
-Till att börja med valdes en mer lättimplementerad lösning som gruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $E$ st ''$=$''-bivillkor, $F$ st ''$\leq$''-bivillkor och $n$ st variabler:
-$${F+(n-E) \choose (n-E)}, n>E $$
-Detta sågs som relativt effektivt då gruppen trodde att $E \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $F = 192, E = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
+Till att börja med valdes en mer lättimplementerad lösning som gruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
+$${f+(n-e) \choose (n-e)}, n>E $$
+Detta sågs som relativt effektivt då gruppen trodde att $e \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $f = 192, e = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
 Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för.
 
 \subsubsection{Phase I}
 Efter ytterliggare utbildning bestämdes det att ''Phase I'' skulle implementeras då denna metod ansågs lättast. ''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. I vårt fall väljs punkten alltid till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, låter en gissa på en startpunkt och låter en sedan utgå från den. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. Detta är givetvis inte nödvändigt och har därför inte implementerats. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
-$$Ex = h, \quad Fx \leq h$$
+$$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
 Vår kvadratiska problemlösare hanterar problem på formen:
-$$Ex = h, \quad Fx \geq h$$
+$$Ex = h, \quad Fx \geq g$$
 vilket innebär att både $F$ och $g$ måste multipliceras med $-1$ för att de ska vara på rätt form. För att uppfylla att $h$ är positiv måste de element däri som är negativa, och motsvarande rad i $E$-matrisen, multipliceras med $-1$.
 När problemet sedan är på rätt form kan simplex-delen börja. \\
-Först adderas en slackvariabel till varje ''$\leq$''-bivillkor för göra om dessa till ''$=$''-bivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
+Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
 $$Ex = h, \quad -Fx+Ds = -g$$
 Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
-Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett ''$=$''-bivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var ''$\leq$''-bivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
+Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
 $$Ex+Ca = h, \quad -Fx + Ds - Ba = g$$
 Där $C$ och $B$ innehåller de virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
 Simplexmetoden kräver också att alla variabler måste vara större/lika med noll, vilket är något som inte speciellt ofta är uppfyllt i vårt fall. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
@@ -98,9 +98,22 @@ Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplika
 
 Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. Metoden löser följande system:
 
-Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall.
-\newline
-\newline
+$$\begin{bmatrix}
+K & A^T \\
+A & 0
+\end{bmatrix}
+\begin{bmatrix}
+-p \\
+\lambda^*
+\end{bmatrix}
+=
+\begin{bmatrix}
+g \\
+c
+\end{bmatrix}
+$$
+
+Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall. \\
 Något som skullet vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
 
 \subsection{MEX}

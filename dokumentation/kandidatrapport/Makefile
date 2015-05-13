@@ -17,7 +17,7 @@ RUBEN_DIR = ruben-tex
 YNGVE_NAME = kandidatrapport-yngve
 YNGVE_DIR = yngve-tex
 
-NAMES = $(KAND_NAME) $(ADAM_NAME) $(DENNIS_NAME) $(MARTIN_NAME) $(RUBEN_NAME) $(YNGVE_NAME)
+NAMES = $(KAND_NAME) $(ADAM_NAME) $(DENNIS_NAME) $(MARTIN_NAME) $(YNGVE_NAME) #$(RUBEN_NAME)
 
 PDFS = $(addprefix $(BUILDDIR)/, $(addsuffix .pdf,$(NAMES)))
 
