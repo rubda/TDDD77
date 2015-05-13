@@ -49,6 +49,32 @@
 \newpage
 }
 
+%% Titelsida Adam
+\newcommand{\LIPSTitelsidaadam}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Best practices}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Adam Sestorp}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -126,15 +152,26 @@
 \appendixpage
 \addappheadtotoc
 \renewcommand{\thesection}{\arabic{section}}
-	\section{Allmänt om uppgiften}
-	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-adam.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
-	\newpage
-	%\input{tex/kandidatrapport-yngve}
-	\newpage
+\section{Allmänt om uppgiften}
+%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
+\newpage
+%\includepdf[pages={-}]{pdf/kandidatrapport-adam.pdf}
+\newpage
+%\includepdf[pages={-}]{pdf/kandidatrapport-dennis.pdf}
+\newpage
+%\input{tex/kandidatrapport-yngve}
+\newpage
+
+%Adams report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaadam
+\setcounter{section}{0} 
+\printcontents[sections]{ }{2}{}
+\newpage
+\input{adam_input}
+
+\newpage
 
 %Martins report
 \stopcontents
@@ -146,15 +183,11 @@
 \input{martin_input}
 
 
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
-	\newpage
-	%\input{tex/kandidatrapport-sebastian}
-	\newpage
-	%\input{tex/kandidatrapport-johan}
-
-
-
-
+\newpage
+%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
+\newpage
+%\input{tex/kandidatrapport-sebastian}
+\newpage
+%\input{tex/kandidatrapport-johan}
 
 \end{document}
