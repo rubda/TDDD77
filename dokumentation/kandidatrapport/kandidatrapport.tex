@@ -49,8 +49,6 @@
 \newpage
 }
 
-
-
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -69,6 +67,10 @@
 \usepackage{url}
 \usepackage{mathtools}
 \usepackage{titletoc}
+
+
+
+
 \bibliographystyle{plainnat}
 
 \usetikzlibrary{shapes, arrows}
@@ -105,6 +107,7 @@
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
 \startcontents
+
 \input{tex/kandidatrapport-inledning}
 \input{tex/kandidatrapport-bakgrund}
 \input{tex/kandidatrapport-teori}
@@ -114,16 +117,15 @@
 \input{tex/kandidatrapport-slutsatser}
 \input{tex/kandidatrapport-fortsatt-arbete}
 %\input{tex/kandidatrapport-referenser}
-
-\bibliography{tex/refs}{}
-
 \newpage
+\bibliography{tex/refs}{}
+\newpage
+
+%start the appendix
 \appendix
 \appendixpage
 \addappheadtotoc
-%\renewcommand{\thesubsection}{\arabic{subsection}}
 \renewcommand{\thesection}{\arabic{section}}
-
 	\section{Allmänt om uppgiften}
 	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
 	\newpage
@@ -133,14 +135,17 @@
 	\newpage
 	%\input{tex/kandidatrapport-yngve}
 	\newpage
+
+%Martins report
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidamartin
 \setcounter{section}{0} 
 \printcontents[sections]{ }{2}{}
 \newpage
-	\input{martin_input}
-	\section{hej}
+\input{martin_input}
+
+
 	\newpage
 	%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
 	\newpage
