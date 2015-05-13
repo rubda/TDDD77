@@ -51,11 +51,18 @@ bool fill_active_set(problem* prob){
 
 /* Removes the active constraint with the most negative lagrange multiplier */
 bool remove_constraint(problem* prob){
+  /* check if unconstrained problem */
+  if (prob->constraints_count == 0) {
+    return false;
+  }
+
+  /* calculate lagrange multiplicator */
   matrix* ait;
   matrix* ai;
   matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
   matrix* lagrange = create_matrix(prob->active_set->count, 1);
 
+  /* create right and left hand side of system */
   int i;
   for (i = 1; i <= prob->active_set->count; i++) {
     ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
@@ -65,6 +72,7 @@ bool remove_constraint(problem* prob){
     free_matrix(ait);
   }
   
+  /* solve system to retrieve lagrange multiplicators */
   if (!gauss_jordan_solver(LA, lagrange, prob->gk)){
     least_square(LA, lagrange, prob->gk);
   }
@@ -86,6 +94,7 @@ bool remove_constraint(problem* prob){
     }
   }
 
+  /* check if value is negative */
   if (val < 0) {
     /* Remove */
     work_set_remove(prob->active_set,small);
@@ -103,8 +112,8 @@ bool remove_constraint(problem* prob){
 /* Calculates and takes the step for active set method */
 bool take_step(problem* prob){
   matrix* ai, *ati;
-  ati = create_matrix(prob->A->columns, 1);
-  ai = create_matrix(1, prob->A->columns);
+  ati = create_matrix(prob->variable_count, 1);
+  ai = create_matrix(1, prob->variable_count);
   matrix* z_old = matrix_copy(prob->z);
   value bi, nom, temp_step, step = 1;
 

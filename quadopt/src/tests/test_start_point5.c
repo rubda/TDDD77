@@ -9,7 +9,10 @@ int main(){
   double time_spent;
   begin = clock();
 
-  matrix* Q = create_zero_matrix(2,2);
+  matrix* Q = create_matrix(2,2);
+  value Q_arr[4] = {2, 1, 
+                    1, 5};
+  insert_array(Q_arr, Q);
 
   matrix* q = create_zero_matrix(2, 1);
 
