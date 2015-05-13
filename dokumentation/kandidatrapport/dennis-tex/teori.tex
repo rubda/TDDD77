@@ -62,13 +62,16 @@ Det går att göra egna kommandon, antingen med eller utan argument i {\LaTeX}.
 Paketen i {\LaTeX} kan ses som bibliotek med användbara kommandon. Dessa paket importeras typiskt i början på dokumentet med kommandot ''\textbackslash usepackage\{paketnamn\}'' och ger användaren tillgång till innehållet under hela dokumentet. Det existerar redan inbyggt stöd för en mängd paket i {\LaTeX} och det finns många mer att hämta från internet. Med fler kommandon kan annars svåra uppgifter göras lättare och mer automatiserade.  
 
 \subsubsection{Grafik}
-För att infoga bilder, diagram och grafer till exempel, används med fördel miljön ''figure''.
+För att infoga bilder, diagram och grafer till exempel, används med fördel miljön ''figure''. Miljön skapar en ''flytande'' miljö. ''Flytande'' miljöer tillåter inga sidbrytningar och kan ''flyta'' till en passande plats i dokumentet. Detta ger {\LaTeX} mer frihet att göra bättre sidbrytningar för återstående text. 
+\newline
+\newline
+Figuren blir numrerad och kan refereras till med kommandot ''\textbackslash label\{fig:namn figuren\}'' 
 
 \subsubsection{Matematik och algoritmer}
 I {\LaTeX} finns stöd för matematiska formler och variabler, om än något begränsad. För ökat stöd kan paketet ''amsmath'' från American Mathematical Society installeras vilket förfinar några existerande kommandon och introducerar nya. För att kunna skriva matematiska formler används operatorn "\$" \hspace{0.2mm} vilket säger åt {\LaTeX} att ändra från vanligt textläge till matematikläge och tillbaka, till exempel ''\$a = b\$'' resulterar i $a = b$. Det finns en rad kommandon att använda i matematik läget, både för olika uttryck och symboler. En mer avancerad formel kan skrivas ''\$\textbackslash sum\^ \,\{n\}\_\{i = 0\}\textbackslash binom\{n\}\{i\} a\^ \,\{i\} b\^ \,\{n - i\} = (a + b)\^ \,\{n\}\$'' vilket resultar i $\sum^{n}_{i=0}\binom{n}{i}a^{i}b^{n-i} = (a + b)^{n}$. 
 \newline
 \newline
-Ytterligare funktionalitet finns att uttnyttja om olika miljöer används till matematikläget. En av de mest använda miljöerna är ''equation'' och används för att typsätta en numrerad ekvation. Miljön gör att ekvationen står ut från texten och gör den numrerad. Det går även att referera till ekvationen genom att i miljön skriva ''\textbackslash label\{eq:namn på ekvationen\}'' och sedan i texten ''\textbackslash ref\{eq:namn på ekvationen\}'', ett exempel visas i figur bla bla        
+Ytterligare funktionalitet finns att uttnyttja om olika miljöer används till matematikläget. En av de mest använda miljöerna är ''equation'' och används för att typsätta en numrerad ekvation. Miljön gör att ekvationen står ut från texten och gör den numrerad. Det går även att referera till ekvationen genom att i miljön använda ''label''.    
 \newline
 \newline
 I {\LaTeX} finns inget inbyggt stöd för algoritmer och pseudokod utan ett paket måste installeras, förslagsvis paketen ''algorithm'' och ''algpseudocode''. Dessa ger tillgång till kommandon för att definiera algoritmer och skriva pseudokod. För att beskriva en algoritm med pseudokod börjas först miljön ''algorithm'' med ''\textbackslash begin\{algorithm\}''. Detta låter användaren namge algoritmen och referera till den. Sedan för att börja skriva själva pseudokoden börjas miljön ''algorithmic'' och här kan olika kommandon användas. Till exempel för att skriva villkorssatser som ''if'' skrivs ''\textbackslash If\{villkoret\}'' följt av koden som ska vara i if-satsen och avslutas sedan med ''\textbackslash EndIf''. Det finns även kommandon för olika loopar och andra satser. Se figur bla bla för exempel 

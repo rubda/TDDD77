@@ -103,6 +103,46 @@
 \newpage
 }
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+%% Titelsida dennis
+\newcommand{\LIPSTitelsidadennis}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge {\LaTeX} för teknisk dokumentation}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Dennis Ljung}
+=======
+%% Titelsida johan
+\newcommand{\LIPSTitelsidajohan}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Mjukvarutestning}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Johan Isaksson}
+>>>>>>> 368b9b6e7a55497c2b9b4dd19d8d426f71dcb23a
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+=======
+>>>>>>> 796e4b94157e13d62b5d93328b34e215508d547d
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -198,7 +238,6 @@
 \printcontents[sections]{ }{1}{}
 \newpage
 \input{adam_input}
-
 \newpage
 
 %Martins report
@@ -210,8 +249,31 @@
 \printcontents[sections]{ }{1}{}
 \newpage
 \input{martin_input}
-
 \newpage
+
+%Dennis report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidadennis
+\setcounter{section}{0} 
+\newpage
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{dennis_input}
+\newpage
+
+%Johans report
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidajohan
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{johan_input}
+\newpage
+
+%Rubens report
 \stopcontents
 \startcontents[sections]
 \LIPSTitelsidaruben
@@ -219,8 +281,5 @@
 \printcontents[sections]{ }{1}{}
 \newpage
 \input{ruben_input}
-\newpage
-
-
 
 \end{document}
