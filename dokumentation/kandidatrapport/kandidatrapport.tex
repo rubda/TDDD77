@@ -23,6 +23,58 @@
 \newcommand{\LIPSkursansvarig}{Kristian Sandahl}
 \newcommand{\LIPShandledare}{Andreas Runfalk}
 
+%% Titelsida martins
+\newcommand{\LIPSTitelsidamartin}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Optimering av matrisbibliotek}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Martin Söderén}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
+%% Titelsida ruben
+\newcommand{\LIPSTitelsidaruben}{%
+{\ }\vspace{45mm}
+\begin{center}
+  \textbf{\Huge Kvalitetsäkring}
+\end{center}
+\begin{center}
+  {\Large Redaktör: Ruben Das}
+\end{center}
+\begin{center}
+  {\Large \textbf{Version \LIPSversion}}
+\end{center}
+\vfill
+\begin{center}
+  {\large Status}\\[1.5ex]
+  \begin{tabular}{|*{3}{p{40mm}|}}
+    \hline
+    Granskad & \LIPSgranskare & \LIPSgranskatdatum \\
+    \hline
+    Godkänd & \LIPSgodkannare & \LIPSgodkantdatum \\
+    \hline
+  \end{tabular}
+\end{center}
+\newpage
+}
+
 % Dokument-specifika paket
 \usepackage{tabularx}
 \usepackage{pdfpages}
@@ -38,6 +90,12 @@
 \usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amsfonts}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage{titletoc}
+\usepackage{tcolorbox}
+
+
 
 \bibliographystyle{plainnat}
 
@@ -74,6 +132,7 @@
 
 \newpage
 \pagenumbering{arabic}	%Påbörja sidnumrering
+\startcontents
 
 \input{tex/kandidatrapport-inledning}
 \input{tex/kandidatrapport-bakgrund}
@@ -84,11 +143,15 @@
 \input{tex/kandidatrapport-slutsatser}
 \input{tex/kandidatrapport-fortsatt-arbete}
 %\input{tex/kandidatrapport-referenser}
-
-\bibliography{tex/refs}{}
-
 \newpage
-\begin{appendices}
+\bibliography{tex/refs}{}
+\newpage
+
+%start the appendix
+\appendix
+\appendixpage
+\addappheadtotoc
+\renewcommand{\thesection}{\arabic{section}}
 	\section{Allmänt om uppgiften}
 	%\includepdf[pages={-}]{bilagor/14Prediktionsreglering.pdf}
 	\newpage
@@ -98,16 +161,27 @@
 	\newpage
 	%\input{tex/kandidatrapport-yngve}
 	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-martin.pdf}
-	\newpage
-	%\includepdf[pages={-}]{pdf/kandidatrapport-ruben.pdf}
+
+%Martins report
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidamartin
+\setcounter{section}{0} 
+\newpage
+\printcontents[sections]{ }{1}{}
+\newpage
+\input{martin_input}
+\newpage
+\stopcontents
+\startcontents[sections]
+\LIPSTitelsidaruben
+\setcounter{section}{0} 
+\printcontents[sections]{ }{1}{}
+\newpage\input{ruben_input}
 	\newpage
 	%\input{tex/kandidatrapport-sebastian}
 	\newpage
 	%\input{tex/kandidatrapport-johan}
-
-		
-\end{appendices}
 
 
 
