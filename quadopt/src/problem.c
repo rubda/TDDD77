@@ -7,9 +7,59 @@
 
 #include <problem.h>
 
+
+void fill_constraint_matrices(problem* prob) {
+  prob->constraints_count = prob->equality_count + prob->inequality_count;
+
+
+  if (prob->constraints_count != 0) {
+    /* All constrains lhs */
+    prob->A = create_matrix(prob->constraints_count, prob->variable_count);
+    /* All constrains rhs */
+    prob->b = create_matrix(prob->constraints_count, 1);
+
+    if (prob->is_sparse) {
+      /* create array with sparse rows */
+      prob->sparse_A = malloc(prob->constraints_count*sizeof(sparse_matrix*));
+    }
+
+  }
+
+  /* Insert equality constraints */
+  matrix* temp_row;
+  sparse_matrix* s_temp;
+  int r;
+  for (r = 1; r <= prob->equality_count; r++){
+    temp_row = get_row_vector_with_return(r, prob->E);
+    insert_row_vector(r, temp_row, prob->A);
+    insert_value_without_check(get_value_without_check(r, 1, prob->h), r, 1, prob->b);
+
+    if (prob->is_sparse) {
+      s_temp = create_sparse_matrix(temp_row, -1);
+      prob->sparse_A[r-1] = s_temp;
+    }
+
+    free_matrix(temp_row);
+  }
+
+  /* Insert inequality constraints */
+  for (r = 1; r <= prob->inequality_count; r++){
+    temp_row = get_row_vector_with_return(r, prob->F);
+    insert_row_vector(r+prob->equality_count, temp_row, prob->A);
+    insert_value_without_check(get_value_without_check(r, 1, prob->g), r+prob->equality_count, 1, prob->b);
+
+    if (prob->is_sparse) {
+      s_temp = create_sparse_matrix(temp_row, -1);
+      prob->sparse_A[r-1+prob->equality_count] = s_temp;
+    }
+
+    free_matrix(temp_row);
+  }
+}
+
+
 /* Allocates the problem and sets all necessary variables */
-problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g,
-			matrix* z0, int max_iter, int max_micro_sec){
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g,	matrix* z0, int max_iter, int max_micro_sec){
 
   problem* prob = (problem*)malloc(sizeof(problem));
 
@@ -50,8 +100,6 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   prob->g = g;
 
 
-
-
   /* create sparse matrices */
   size_t n = matrix_sparsity(Q);
   if (n < Q->size/4) {
@@ -63,32 +111,9 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   }
 
 
-  prob->constraints_count = prob->equality_count + prob->inequality_count;
-
-
-  if (prob->constraints_count != 0) {
-    /* All constrains */
-    prob->A = create_matrix(prob->constraints_count, prob->variable_count);
-    /* Right hand side of b */
-    prob->b = create_matrix(prob->constraints_count, 1);    
-  }
-  /* Insert equality constraints */
-  matrix* temp_row;
-  int r;
-  for (r = 1; r <= prob->equality_count; r++){
-    temp_row = get_row_vector_with_return(r, E);
-    insert_row_vector(r, temp_row, prob->A);
-    insert_value_without_check(get_value_without_check(r, 1, h), r, 1, prob->b);
-    free_matrix(temp_row);
-  }
-
-  /* Insert inequality constraints */
-  for (r = 1; r <= prob->inequality_count; r++){
-    temp_row = get_row_vector_with_return(r, F);
-    insert_row_vector(r+prob->equality_count, temp_row, prob->A);
-    insert_value_without_check(get_value_without_check(r, 1, g), r+prob->equality_count, 1, prob->b);
-    free_matrix(temp_row);
-  }
+  /* insert all constraint into big matrix */
+  fill_constraint_matrices(prob);
+  
 
   /* Points and vectors */  
   if (z0 == NULL){
@@ -103,14 +128,11 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   prob->has_solution = false;
   prob->solution = create_matrix(prob->variable_count, 1);
 
-  if (prob->constraints_count != 0) {
-    prob->lagrange = create_matrix(prob->constraints_count, 1);
-  }
   prob->p = create_matrix(prob->variable_count, 1);
   prob->gk = create_matrix(prob->variable_count, 1);
 
   /* Work set */
-  prob->active_set = work_set_create(prob->A->rows);
+  prob->active_set = work_set_create(prob->constraints_count);
 
   /* Max iterations */
   /* 0 is unlimited */
@@ -213,6 +235,13 @@ void free_problem(problem* prob){
 
   free_sparse_matrix(prob->sparse_Q);
   free_sparse_matrix(prob->sparse_Q_inv);
+  int r;
+  if (prob->is_sparse) {
+    for (r = 0; r < prob->constraints_count; r++) {
+      free_sparse_matrix(prob->sparse_A[r]);
+    }
+    free(prob->sparse_A);
+  }
 
   work_set_free(prob->active_set);
 
@@ -239,6 +268,42 @@ matrix* get_active_conditions(problem* prob){
   }
 }
 
+/* Returns a sparse matrix with the currently active constraints */
+sparse_matrix* get_sparse_active_conditions(problem* prob){
+  if (prob->active_set->count == 0) return NULL;
+
+  int r, c, s = 0;
+
+  /* count elements != 0 */
+  for (r = 0; r < prob->active_set->count; r++) {
+    s += prob->sparse_A[prob->active_set->data[r]-1]->size;
+  }
+
+  /* create sparse matrix */
+  int dest = 0;
+  sparse_matrix* S = create_empty_sparse_matrix(s);
+  for (r = 0; r < prob->active_set->count; r++) {
+    
+    /* copy values */
+    memcpy(S->A+dest, prob->sparse_A[prob->active_set->data[r]-1]->A, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(value));
+    /* copy columns */
+    memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(int));
+    /* copy rows */
+    for (c = 0; c < prob->sparse_A[prob->active_set->data[r]-1]->size; c++) {
+      S->rA[dest+c] = r+1;
+    }
+    /* move dest */
+    dest += prob->sparse_A[prob->active_set->data[r]-1]->size;
+  }
+
+  S->rows = prob->active_set->count;
+  S->columns = prob->variable_count;
+
+  return S;
+
+
+}
+
 /* Returns a matrix with the right hand side of the currently active constraints */
 matrix* get_active_conditions_rhs(problem* prob){
   matrix* b = create_matrix(prob->active_set->count, prob->b->columns);
@@ -262,27 +327,16 @@ matrix* get_active_conditions_rhs(problem* prob){
 /* Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob){
   if(!prob->has_solution) return false;
-
-  matrix* z_trans = create_matrix(prob->z->columns, prob->z->rows);
-  transpose_matrix(prob->z, z_trans);
-
-  matrix* q_trans = create_matrix(prob->q->columns, prob->q->rows);
-  transpose_matrix(prob->q, q_trans);
-
-  matrix* zTQ = multiply_matrices_with_return(z_trans, prob->Q);
-  matrix* zTQz = multiply_matrices_with_return(zTQ, prob->z);
-  multiply_matrix_with_scalar(0.5, zTQz);
-  matrix* qTz = multiply_matrices_with_return(q_trans, prob->z);
-  matrix* solution = add_matrices_with_return(zTQz, qTz);
-
-  prob->solution_value = get_value_without_check(1, 1, solution);
-
-  free_matrix(z_trans);
-  free_matrix(q_trans);
-  free_matrix(zTQ);
-  free_matrix(zTQz);
-  free_matrix(qTz);
-  free_matrix(solution);
+  if (prob->is_sparse) {
+    matrix* Qz = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->z);
+    prob->solution_value = dot_product(prob->z, Qz) + dot_product(prob->q, prob->z);
+    free_matrix(Qz);
+  } else {
+    matrix* Qz = create_matrix(prob->z->rows, prob->z->columns);
+    multiply_matrices(prob->Q, prob->z, Qz);
+    prob->solution_value = dot_product(prob->z, Qz) + dot_product(prob->q, prob->z);
+    free_matrix(Qz);  
+  }
 
   return true;
 }

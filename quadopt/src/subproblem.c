@@ -3,19 +3,20 @@
 #include <solver.h>
 #include <assert.h>
 
-void range_space_sparse(matrix* A, problem* prob){
+void range_space_sparse(sparse_matrix* A, problem* prob){
 
-  sparse_matrix* s_A = create_sparse_matrix(A, -1);
-  matrix* At = transpose_matrix_with_return(A);  
+  transpose_sparse_matrix(A);
+  matrix* At = sparse_to_normal(A);
+  transpose_sparse_matrix(A); 
 
   matrix* QAt = multiply_sparse_matrix_matrix(prob->sparse_Q_inv, At);
-  matrix* AQAt = multiply_sparse_matrix_matrix(s_A, QAt);
+  matrix* AQAt = multiply_sparse_matrix_matrix(A, QAt);
   sparse_matrix* s_AQAt = create_sparse_matrix(AQAt, -1);
 
   matrix* Qg = multiply_sparse_matrix_matrix(prob->sparse_Q_inv, prob->gk);
-  matrix* AQg = multiply_sparse_matrix_matrix(s_A, Qg);
+  matrix* AQg = multiply_sparse_matrix_matrix(A, Qg);
   
-  matrix* Az = multiply_sparse_matrix_matrix(s_A, prob->z);
+  matrix* Az = multiply_sparse_matrix_matrix(A, prob->z);
 
 
   matrix* b = get_active_conditions_rhs(prob);
@@ -23,13 +24,14 @@ void range_space_sparse(matrix* A, problem* prob){
 
   matrix* h1 = subtract_matrices_with_return(AQg, c);  
 
-  matrix* lambda = create_zero_matrix(AQg->rows, AQg->columns);   
+  prob->lagrange = create_zero_matrix(AQg->rows, AQg->columns);   
 
-  /* solve to retrieve lambda */
-  conjugate_gradient(s_AQAt, lambda, h1);
+  /* solve to retrieve lagrange multiplicators */
+  conjugate_gradient(s_AQAt, prob->lagrange, h1);
   //gauss_jordan_solver(AQAt, lambda, h1);  
 
-  matrix* ht = multiply_matrices_with_return(At, lambda);
+  transpose_sparse_matrix(A);
+  matrix* ht = multiply_sparse_matrix_matrix(A, prob->lagrange);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
   /* solve to retrieve p */
@@ -45,7 +47,6 @@ void range_space_sparse(matrix* A, problem* prob){
     }
   }
 
-  free_sparse_matrix(s_A);
   free_sparse_matrix(s_AQAt);
   free_matrix(QAt);
   free_matrix(At);
@@ -54,7 +55,6 @@ void range_space_sparse(matrix* A, problem* prob){
   free_matrix(AQg);
   free_matrix(Az);
   free_matrix(h1);
-  free_matrix(lambda);
   free_matrix(ht);
   free_matrix(h2);
   free_matrix(Qp);
@@ -80,10 +80,10 @@ void range_space(matrix* A, problem* prob){
 
   matrix* h1 = subtract_matrices_with_return(AQg, c);  
 
-  matrix* lambda = create_matrix(AQg->rows, AQg->columns);
-  gauss_jordan_solver(AQAt, lambda, h1);  
+  prob->lagrange = create_matrix(AQg->rows, AQg->columns);
+  gauss_jordan_solver(AQAt, prob->lagrange, h1);
 
-  matrix* ht = multiply_matrices_with_return(At, lambda);
+  matrix* ht = multiply_matrices_with_return(At, prob->lagrange);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
   gauss_jordan_solver(prob->Q, prob->p, h2);  
@@ -103,7 +103,7 @@ void range_space(matrix* A, problem* prob){
   free_matrix(AQg);
   free_matrix(Az);
   free_matrix(h1);
-  free_matrix(lambda);
+  //free_matrix(lambda);
   free_matrix(ht);
   free_matrix(h2);
   free_matrix(Qp);
@@ -112,13 +112,9 @@ void range_space(matrix* A, problem* prob){
 }
 
 
-void KKT_sub_sparse(matrix* A, problem* prob){
+void KKT_sub_sparse(sparse_matrix* A, problem* prob){
 
-  sparse_matrix* s_A = create_sparse_matrix(A, -1);
-
-  /* create sparse verison of lhs */
-  int n = matrix_sparsity(A);
-  sparse_matrix* s_K = create_empty_sparse_matrix(n + n + prob->sparse_Q->size);
+  sparse_matrix* s_K = create_empty_sparse_matrix(A->size + A->size + prob->sparse_Q->size);
   int i;
 
   int dest = 0;
@@ -129,23 +125,23 @@ void KKT_sub_sparse(matrix* A, problem* prob){
   dest += prob->sparse_Q->size;
 
   /* copy A */
-  memcpy(s_K->A + dest, s_A->A, s_A->size*sizeof(value));
-  memcpy(s_K->cA + dest, s_A->cA, s_A->size*sizeof(int));
-  for (i = 0; i < s_A->size; i++) {
-    s_K->rA[dest+i] = s_A->rA[i] + prob->Q->rows;
+  memcpy(s_K->A + dest, A->A, A->size*sizeof(value));
+  memcpy(s_K->cA + dest, A->cA, A->size*sizeof(int));
+  for (i = 0; i < A->size; i++) {
+    s_K->rA[dest+i] = A->rA[i] + prob->Q->rows;
   }
-  dest += s_A->size;
+  dest += A->size;
 
   /* copy At */
-  transpose_sparse_matrix(s_A);
-  memcpy(s_K->A + dest, s_A->A, s_A->size*sizeof(value));
-  memcpy(s_K->rA + dest, s_A->rA, s_A->size*sizeof(int));
-  for (i = 0; i < s_A->size; i++) {
-    s_K->cA[dest+i] = s_A->cA[i] + prob->Q->columns;
+  transpose_sparse_matrix(A);
+  memcpy(s_K->A + dest, A->A, A->size*sizeof(value));
+  memcpy(s_K->rA + dest, A->rA, A->size*sizeof(int));
+  for (i = 0; i < A->size; i++) {
+    s_K->cA[dest+i] = A->cA[i] + prob->Q->columns;
   }
 
   /* transpose back */
-  transpose_sparse_matrix(s_A);
+  transpose_sparse_matrix(A);
 
   s_K->rows = prob->Q->rows + A->rows;
   s_K->columns = prob->Q->columns + A->rows; /* transpose columns */
@@ -157,7 +153,7 @@ void KKT_sub_sparse(matrix* A, problem* prob){
   matrix* gc = create_matrix(pl->rows,1);
 
   /* Fill rhs */
-  matrix* Az = multiply_sparse_matrix_matrix(s_A, prob->z);
+  matrix* Az = multiply_sparse_matrix_matrix(A, prob->z);
 
   matrix* b = get_active_conditions_rhs(prob);
   matrix* c = subtract_matrices_with_return(Az, b);
@@ -180,7 +176,6 @@ void KKT_sub_sparse(matrix* A, problem* prob){
   free_matrix(b);
   free_matrix(c);
   free_sparse_matrix(s_K);
-  free_sparse_matrix(s_A);
 }
 
 void KKT_sub(matrix* A, problem* prob){
@@ -255,43 +250,33 @@ void solve_subproblem(problem* prob){
     return;
   }
 
-  /* Solve system as long as you get the the zero vector */
-  matrix* A = get_active_conditions(prob);
-
-  bool success;
-  do{
-    success = ((A->rows >= A->columns)); //|| gauss_jordan(A));
-
-    if(success){
-      /* Remove condition */
-      if (!remove_constraint(prob)){
-
-	int i;
+  /* Solve system as long as we get the the zero vector */
+  while (prob->active_set->count >= prob->variable_count) {
+    if (!remove_constraint(prob)){
+        int i;
         for(i = 1; i <= prob->p->rows; i++){
           insert_value_without_check(0, i, 1, prob->p);
         }
-        free_matrix(A);
         return;
       }
-      
-      /* Resize A matrix */
-      free_matrix(A);
-      A = get_active_conditions(prob);
-    }
-  } while(success);
+  }
+
 
   /* Use range-space to get p */
-
   if (prob->is_sparse) {
-    range_space_sparse(A, prob);
-    /* range_space(A, prob); */
-    /* KKT_sub_sparse(A, prob); */
+    sparse_matrix* s_A = get_sparse_active_conditions(prob);
+
+    range_space_sparse(s_A, prob);
+    /* KKT_sub_sparse(s_A, prob); */
+    free_sparse_matrix(s_A);
 
   } else {
+    matrix* A = get_active_conditions(prob);
     range_space(A, prob);
     /* KKT_sub(A, prob); */
+    free_matrix(A);
   }
  
-  free_matrix(A);
+  
 
 }

@@ -58,6 +58,17 @@ sparse_matrix* create_empty_sparse_matrix(int size) {
   return S;
 }
 
+matrix* sparse_to_normal(sparse_matrix* S) {
+  matrix* M = create_zero_matrix(S->rows, S->columns);
+  int i;
+
+  for (i = 0; i < S->size; i++) {
+    insert_value_without_check(S->A[i], S->rA[i], S->cA[i], M);
+  }
+  return M;
+}
+
+
 /* return number of elements != 0 */
 size_t matrix_sparsity(matrix* A) {
   int r, c;

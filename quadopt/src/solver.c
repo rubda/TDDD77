@@ -56,25 +56,28 @@ bool remove_constraint(problem* prob){
     return false;
   }
 
-  /* calculate lagrange multiplicator */
-  matrix* ait;
-  matrix* ai;
-  matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
-  matrix* lagrange = create_matrix(prob->active_set->count, 1);
+  if (prob->lagrange == NULL) {
+    /* calculate lagrange multiplicator */
+    matrix* ait;
+    matrix* ai;
+    matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
+    prob->lagrange = create_matrix(prob->active_set->count, 1);
 
-  /* create right and left hand side of system */
-  int i;
-  for (i = 1; i <= prob->active_set->count; i++) {
-    ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
-    ait = transpose_matrix_with_return(ai);
-    insert_column_vector(i, ait, LA);
-    free_matrix(ai);
-    free_matrix(ait);
-  }
-  
-  /* solve system to retrieve lagrange multiplicators */
-  if (!gauss_jordan_solver(LA, lagrange, prob->gk)){
-    least_square(LA, lagrange, prob->gk);
+    /* create right and left hand side of system */
+    int i;
+    for (i = 1; i <= prob->active_set->count; i++) {
+      ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
+      ait = transpose_matrix_with_return(ai);
+      insert_column_vector(i, ait, LA);
+      free_matrix(ai);
+      free_matrix(ait);
+    }
+    
+    /* solve system to retrieve lagrange multiplicators */
+    if (!gauss_jordan_solver(LA, prob->lagrange, prob->gk)){
+      least_square(LA, prob->lagrange, prob->gk);
+    }
+    free_matrix(LA);
   }
   
   /* Find most negative and remove (if not equality constraint) */
@@ -83,29 +86,27 @@ bool remove_constraint(problem* prob){
   value val = 0;
 
   int j;
-  for (j = 1; j <= lagrange->rows; j++){
+  for (j = 1; j <= prob->lagrange->rows; j++){
     if (prob->active_set->data[j-1] <= prob->equality_count){
       continue;
     }
-    tmp = get_value_without_check(j, 1, lagrange);
+    tmp = get_value_without_check(j, 1, prob->lagrange);
     if (tmp < val){
       small = prob->active_set->data[j-1];
       val = tmp;
     }
   }
 
+  free_matrix(prob->lagrange);
+  prob->lagrange = NULL;
   /* check if value is negative */
   if (val < 0) {
     /* Remove */
     work_set_remove(prob->active_set,small);
-    free_matrix(LA);
-    free_matrix(lagrange);
     return true;
   }
 
-  /* Could not remove any constraints */
-  free_matrix(LA);
-  free_matrix(lagrange);
+  /* Could not remove any constraints */  
   return false;
 }
 

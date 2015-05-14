@@ -42,8 +42,8 @@ struct problem{
   matrix* g; /**< Larger-than constraints right-hand side constraint. */
 
   /* All constraints */
-  matrix* A; /**< All constraints left-hand side coefficients. */
-  sparse_matrix* sparse_A;
+  matrix* A; /**< All constraints left-hand side coefficients. */  
+  sparse_matrix** sparse_A;
 
   matrix* b; /**< All constraints right-hand side constraints. */
   int constraints_count; /**< Total number of constraints. */
@@ -91,6 +91,9 @@ void free_problem(problem* prob);
 
 /** Returns a matrix with the currently active constraints */
 matrix* get_active_conditions(problem* prob);
+
+/* Returns a sparse matrix with the currently active constraints */
+sparse_matrix* get_sparse_active_conditions(problem* prob);
 
 /** Returns a matrix with the right hand side of the currently active constraints */
 matrix* get_active_conditions_rhs(problem* prob);
