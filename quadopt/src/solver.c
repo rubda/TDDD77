@@ -30,19 +30,35 @@ void prefill_set(problem* prob){
 bool fill_active_set(problem* prob){
   prob->active_set->count = prob->equality_count;
 
-  /* Fill */
-  int i;
-  for (i = prob->equality_count+1; i <= prob->A->rows; i++){
-    value ans = 0;
+  if (prob->is_sparse) {
+    /* Fill */
+    int i;
+    for (i = prob->equality_count; i < prob->constraints_count; i++){
+      value ans = 0;    
 
-    int j;
-    for (j = 1; j <= prob->A->columns; j++){
-      ans += get_value(i, j, prob->A)*get_value(j, 1, prob->z); 
-      /* TODO add check and get_value_without_check and return false */
+      int j;
+      for (j = 0; j < prob->sparse_A[i]->size; j++){
+        ans += prob->sparse_A[i]->A[j]*get_value_without_check(prob->sparse_A[i]->cA[j], 1, prob->z);
+      }
+
+      if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
+        work_set_append(prob->active_set, i);
+      }
     }
+  } else {
+    /* Fill */
+    int i;
+    for (i = prob->equality_count+1; i <= prob->constraints_count; i++){
+      value ans = 0;    
 
-    if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
-      work_set_append(prob->active_set, i);
+      int j;
+      for (j = 1; j <= prob->variable_count; j++){
+        ans += get_value(i, j, prob->A)*get_value_without_check(j, 1, prob->z);
+      }
+
+      if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
+        work_set_append(prob->active_set, i);
+      }
     }
   }
 
@@ -116,10 +132,10 @@ bool take_step(problem* prob){
   ati = create_matrix(prob->variable_count, 1);
   ai = create_matrix(1, prob->variable_count);
   matrix* z_old = matrix_copy(prob->z);
-  value bi, nom, temp_step, step = 1;
+  value bi, nom, dnom, temp_step, step = 1;
 
   /* Only go through the inequality constraints */
-  int i;
+  int i, j;
   bool cont;
   for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     cont = false;
@@ -132,14 +148,33 @@ bool take_step(problem* prob){
     if (cont) {
       continue;
     }
-    get_row_vector(i, prob->A, ai);
-    transpose_matrix(ai, ati);
-    nom = dot_product(ati, prob->p);
-    if (nom < 0){
-      bi = get_value(i, 1, prob->b);
-      temp_step = (bi - dot_product(ati, prob->z))/nom;
-      if (temp_step < step){
-        step = temp_step;
+
+    if (prob->is_sparse) {
+      nom = 0;
+      for (j = 0; j < prob->sparse_A[i-1]->size; j++) {
+        nom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->p);
+      }
+      if (nom < 0){
+        bi = get_value(i, 1, prob->b);
+        dnom = 0;
+        for (j = 0; j < prob->sparse_A[i-1]->size; j++) {
+          dnom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->z);
+        }
+        temp_step = (bi - dnom)/nom;
+        if (temp_step < step){
+          step = temp_step;
+        }
+      }
+    } else {
+      get_row_vector(i, prob->A, ai);
+      transpose_matrix(ai, ati);
+      nom = dot_product(ati, prob->p);
+      if (nom < 0){
+        bi = get_value(i, 1, prob->b);
+        temp_step = (bi - dot_product(ati, prob->z))/nom;
+        if (temp_step < step){
+          step = temp_step;
+        }
       }
     }
   }
