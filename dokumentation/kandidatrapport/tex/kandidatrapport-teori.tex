@@ -33,18 +33,16 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 \caption{Definition av ett kvadratiskt konvext optimeringsproblem}
 \label{fig:qp_def}
 \end{figure}
-\subsection{Andra lösare}
-Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem såsom Gurabi, Matlab och CLPEX. Anledningen till att en ny behövs tas fram är för att kunden vill ha en med öppen källkod, som fungerar utan tillgång till internet och som de kan arbeta vidare på. Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt. 
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. Till exempel '' Phase I'', ''Phase II'' och ''Big M''. Problemet med dessa metoder är att de bygger på simplex så de kräver en Simplex-lösare \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet men nödvändigt då alla algoritmer kräven en giltigt punkt att börja i. Dock så fanns det flera olika metoder för att lösa detta problem. Till exempel '' Phase I'', ''Phase II'' och ''Big M''. Problemet med dessa metoder är att de bygger på simplex så de kräver en Simplex-lösare \citep{numericaloptimization}.
 
 \subsection{Simplex}
 Skriv om simplex
 
 \subsubsection{Phase I}
-''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, låter en gissa på en startpunkt och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
+''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmattad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
@@ -55,16 +53,15 @@ När problemet sedan är på rätt form kan simplex-delen börja. \\
 Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. De nya variabler döps till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
 $$Ex = h, \quad -Fx+Ds = -g$$
 Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
-Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
+När alla slackvariabler är tillagda ska virtuella variablerna läggas till. Det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta görs för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
 $$Ex+Ca = h, \quad -Fx + Ds - Ba = -g$$
-Där $C$ och $B$ innehåller de virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
+Där $C$ och $B$ innehåller virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
 Simplexmetoden kräver också att alla variabler måste vara större/lika med noll. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
 $$x_i = x_{i_1} - x_{i_2}$$
 där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
-Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är som sagt relaxationen av problemet, men om man på något sätt kan stega sig fram med hjälp av simplexmetoden så att relexationen försvinner så är punkten man står i en giltig punkt för originalproblemet. Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av de virtuella variablerna.
+Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är relaxationen av problemet. Simplexmetoden kan nu användas för att bli av med relaxationen . Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av virtuella variablerna.
 $$min \: z = \sum^{\#a_i}_{i=1} {a_i} \quad  \Leftrightarrow \quad min \: z - \sum^{\#a_i}_{i=1} {a_i} = 0$$
-Efter att ha satt in målfunktionen i tablån är det sista som måste göras (innan simplexlösningen kan börja) att eliminera alla virtuella variabler i målfunktionen. Detta görs med hjälp av radoperationer i tablån, till exempel genom att addera en rad innehållande en virtuell variabel till målfunktionen. \\
-Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa. Varje iteration börjar med att man tar ut kolumnen där det mest positiva elementet i målfunktionen ligger. Denna kolumn representerar inkommande variabel. Efter det väljs den rad där kvoten, av högerledet och elementet i den valda kolumnen, är som minst. Dock så måste elementet i raden vara positivt. Om det inte är det måste raden hoppas över, annars fungerar inte metoden. Den utvalda raden representerar utgående variabel. Därefter fortsätter man som vanligt i simplex och eliminerar alla element i den valda kolumnen med hjälp utav den valda raden och fortsätter till nästa iteration. Om det visar sig att det finns positiva element i målfunktionen och ingen rad kan väljas ut i tablån (eftersom elementen är negativa), innebär det att bivillkoren inte spänner upp ett tillåtet område. Med andra ord finns det inte någon tillåten startpunkt\citep{numericaloptimization}.
+Efter att ha satt in målfunktionen i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktionen\citep{numericaloptimization}.
 
 \subsection{Big M}
 Skriv om detta
@@ -107,7 +104,7 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \end{algorithm}
 
 \subsection{Subproblem}
-Subproblemet är det problem som uppstår när man ska hitta en riktningen att ta nästa steg i. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
+Subproblemet är det problem som uppstår när man ska hitta riktningen mot det globala optimala punkten. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
 \newline
 \newline
 Det finns flera olika metoder för att lösa subproblemet.
@@ -142,7 +139,7 @@ Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimizatio
 Skriv om detta
 
 \subsection{MEX}
-MEX är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
+MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
 
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/mex.c}
@@ -157,4 +154,4 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 \end{itemize}
 
 \subsection{Programspråket C}
-Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
+Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren, annars kan minnesläckor uppstå. \citep{cbible}
