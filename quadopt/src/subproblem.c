@@ -48,6 +48,8 @@ void range_space_sparse(sparse_matrix* A, problem* prob){
   free_matrix(AQg);
   free_matrix(Az);
   free_matrix(h1);
+  free_matrix(prob->lagrange);
+  prob->lagrange = NULL;
   free_matrix(ht);
   free_matrix(h2);
   free_matrix(Qp);
@@ -56,7 +58,6 @@ void range_space_sparse(sparse_matrix* A, problem* prob){
 }
 
 void range_space(matrix* A, problem* prob){
-
 
   matrix* At = transpose_matrix_with_return(A);  
   matrix* AQ = multiply_matrices_with_return(A, prob->Q_inv);
@@ -92,6 +93,8 @@ void range_space(matrix* A, problem* prob){
   free_matrix(b);
   free_matrix(c);
   free_matrix(h1);
+  free_matrix(prob->lagrange);
+  prob->lagrange = NULL;
   free_matrix(ht);
   free_matrix(h2);
   free_matrix(Qp);

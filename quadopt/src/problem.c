@@ -82,6 +82,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   }else{
     prob->equality_count = E->rows;
   }
+
   /* Right hand side for E */
   prob->h = h;
 
@@ -97,20 +98,22 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   prob->g = g;
 
   /* Create sparse matrices */
-  /*size_t n = matrix_sparsity(Q);
+  size_t n = matrix_sparsity(Q);
   if (n < Q->size/4){
     prob->is_sparse = true;
     prob->sparse_Q = create_sparse_matrix(Q, n);
     prob->sparse_Q_inv = create_sparse_matrix(Q_inv, n);
-  } else {
+  }else{
     prob->is_sparse = false;
     prob->sparse_Q = NULL;
     prob->sparse_Q_inv = NULL;
-  }*/
-  prob->is_sparse = false;
+  }
 
   /* Insert all constraint into big matrix */
   fill_constraint_matrices(prob);  
+
+  /* Lagrange vector */
+  prob->lagrange = NULL;
 
   /* Points and vectors */  
   if (z0 == NULL){
@@ -220,7 +223,6 @@ void free_problem(problem* prob){
   free_matrix(prob->solution);
   free_matrix(prob->p);
   free_matrix(prob->gk);
-
   
   int r;
   if (prob->is_sparse){
@@ -264,25 +266,25 @@ sparse_matrix* get_sparse_active_conditions(problem* prob){
 
   int r, c, s = 0;
 
-  /* count elements != 0 */
-  for (r = 0; r < prob->active_set->count; r++) {
+  /* Count elements != 0 */
+  for (r = 0; r < prob->active_set->count; r++){
     s += prob->sparse_A[prob->active_set->data[r]-1]->size;
   }
 
-  /* create sparse matrix */
+  /* Create sparse matrix */
   int dest = 0;
   sparse_matrix* S = create_empty_sparse_matrix(s);
-  for (r = 0; r < prob->active_set->count; r++) {
+  for (r = 0; r < prob->active_set->count; r++){
     
-    /* copy values */
+    /* Copy values */
     memcpy(S->A+dest, prob->sparse_A[prob->active_set->data[r]-1]->A, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(value));
-    /* copy columns */
+    /* Copy columns */
     memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(int));
-    /* copy rows */
-    for (c = 0; c < prob->sparse_A[prob->active_set->data[r]-1]->size; c++) {
+    /* Copy rows */
+    for (c = 0; c < prob->sparse_A[prob->active_set->data[r]-1]->size; c++){
       S->rA[dest+c] = r+1;
     }
-    /* move dest */
+    /* Move dest */
     dest += prob->sparse_A[prob->active_set->data[r]-1]->size;
   }
 
@@ -290,8 +292,6 @@ sparse_matrix* get_sparse_active_conditions(problem* prob){
   S->columns = prob->variable_count;
 
   return S;
-
-
 }
 
 /* Returns a matrix with the right hand side of the currently active constraints */
@@ -317,11 +317,12 @@ matrix* get_active_conditions_rhs(problem* prob){
 /* Calculates the optimum value given by the solution point */
 bool get_solution_value(problem* prob){
   if(!prob->has_solution) return false;
-  if (prob->is_sparse) {
+  
+  if (prob->is_sparse){
     matrix* Qz = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->z);
     prob->solution_value = dot_product(prob->z, Qz) + dot_product(prob->q, prob->z);
     free_matrix(Qz);
-  } else {
+  }else{
     matrix* Qz = create_matrix(prob->z->rows, prob->z->columns);
     multiply_matrices(prob->Q, prob->z, Qz);
     prob->solution_value = dot_product(prob->z, Qz) + dot_product(prob->q, prob->z);
@@ -358,4 +359,35 @@ bool time_to_exit(problem* prob, double time_spent){
 
   /* None have been fullfilled */
   return false;
+}
+
+/* Checks if a point is feasible subject to the constraints in a problem */
+bool is_feasible_point(matrix* z, problem* prob){
+  value ans;
+  int r, c;
+  
+  /* Check all equality constraints */
+  for (r = 1; r <= prob->equality_count; r++){
+    ans = 0;
+    for (c = 1; c <= prob->E->columns; c++){
+      ans += get_value_without_check(r, c, prob->E)*get_value(c, 1, z);
+    }
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->h)) != 0){
+      return false;
+    }    
+  }
+
+  /* Check all inequality constraints */
+  for (r = 1; r <= prob->inequality_count; r++){
+    ans = 0;    
+    for (c = 1; c <= prob->F->columns; c++){
+      ans += get_value_without_check(r, c, prob->F)*get_value(c, 1, z);
+    }
+    
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->g)) == -1){
+      return false;
+    }
+  }
+  
+  return true;
 }
