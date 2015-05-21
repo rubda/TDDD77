@@ -1,39 +1,39 @@
 \section{Metod}
-Nedan beskrivs hur vi arbetar i gruppen samt hur vi kom fram till vald lösningsmetod. 
+i detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hur kandidatgruppen kom fram till vald lösningsmetod. 
 
 \subsection{Algoritmer och metoder} 
 \label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan gruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde så att gruppen till slut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
 \\
-För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
+För att förstå hur kandidatgruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
 Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
 
 \subsubsection{Startpunkt}
-Till att börja med valdes en mer lättimplementerad lösning som gruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
+Till att börja med valdes en mer lättimplementerad lösning som kandidatgruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
 $${f+(n-e) \choose (n-e)}, n>e $$
-Detta sågs som relativt effektivt då gruppen trodde att $e \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $f = 192, e = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
+Detta sågs som relativt effektivt då kandidatgruppen trodde att $e \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $f = 192, e = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
-Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för.\citep{numericaloptimization}
+Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken kandidatgruppen eller kunden har tid för.
 
 \subsubsection{Problem}
 ''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
 
 \subsubsection{Working set}
-''Working set'' är den struktur som implementerats för att kunna hålla koll på vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
+''Working set'' är den struktur som implementerats för att kunna avgöra vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
 
 
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Projektets kund var som tidigare nämnt industridoktoranden Daniel Simon vid Linköpings universitet. Kundkontakten kom igång sent på grund av att kunden inte var på Universitetet när projektet drog igång. Vi hade därefter flera möten bara för att förstå vad kunden hade för krav på oss. Någon som var bra var att han hade väldigt bra koll på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Vi itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter så hade vi inte så mycket kontakt tills dess att vi kom till en punkt där vi behövde hans hjälp för att lösa en del problem. Sedan så tog det ett tag till innan vi hade möten igen för det det var mycket jobb innan vi hade fått ihop något som kunde visas upp. 
+Kundkontakten kom igång sent på grund av att kunden inte var på universitetet när projektet drog igång. Kandidatgruppen hade därefter flera möten bara för att förstå vad kunden hade för krav på produkten. Någon som var bra var att han hade väldigt bra koll på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Kandidatgruppen itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter fanns inte så mycket kontakt tills dess att kundens hjälp behövdes för att lösa en del problem.
 \newline
 \newline
-Ett av kraven som vi hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta in skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde vi förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
+Ett av kraven som kandidatgruppen hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta inte skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde kandidatgruppen förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
 
 \subsection{GUI och parser}
-Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parser skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parser tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
+Förutom optimeringsalgoritmen skulle ett GUI (Graphical User Interface) och parsern skapas. I GUI:t är det menat att användaren ska fylla in hur problemet ska se och samtidigt deklarera variabler för problemet. Sedan skall parsern tolka detta och skapa en C-fil. Se figur \ref{fig:quadoptgui} för att se hur GUI:t ser ut.
 \begin{figure}[H]
 \centerline{\includegraphics[scale=0.58]{grafik/QuadOptGUI}}
 \caption{QuadOpt GUI}
@@ -45,13 +45,13 @@ GUI:t skapades med hjälp av språket Python och tkinter. Anledningen till att s
 Tkinter är ett grafiskt bibliotek, dvs ett bibliotek som hjälper till att forma ett GUI. Anledningen till att Tkinter användes var för att det är lätt att använda och det är ett standardbibliotek som är det mest använda inom Python.
 \newline
 \newline
-Parser ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. Anledningen till att denna syntax har valts är för att kontaktpersonen Daniel Simon har erfarenhet av den.
+Parsern ska tolka indata från användaren och transformera indatan till ett uttryck av matriser som QuadOpt sedan kan lösa. Syntaxen för hur man skriva in ett problem har baserats på en syntax som CVXGEN använder sig av. CVXGEN är en mjukvara som specialiserar sig i att lösa diverse optimeringsproblem. Anledningen till att denna syntax har valts är därför att kunden har erfarenhet av den.
  
 \subsection{Lösaren i MATLAB}
-För att kalla på lösaren från MATLAB användes MEX. Mexfunktionen från figur~\ref{fig:mex} användes i en C fil som döptes till ''quadopt''. I denna fil fanns matrisbiblioteket och våran lösare importerad. Först görs alla inskickade MATLAB matriser om till matriser från matrisbiblioteket genom att iterera över ''prhs[]'' och skicka MATLAB matrisernas rader och kolumner till ''create\_matrix''. De konverterade matriserna läggs i problem strukten och skickas till lösaren. Den resulterande matrisen konverteras till en MATLAB matris och läggs i ''plhs[0]''.
+För att kalla på lösaren från MATLAB användes MEX. Mexfunktionen från figur~\ref{fig:mex} användes i en C fil som döptes till ''quadopt''. I denna fil fanns matrisbiblioteket och vår lösare importerad. Först görs alla inskickade MATLAB matriser om till matriser från matrisbiblioteket genom att iterera över ''prhs[]'' och skicka MATLAB-matrisernas rader och kolumner till ''create\_matrix''. De konverterade matriserna läggs i problemstrukten och skickas till lösaren. Den resulterande matrisen konverteras till en MATLAB-matris och läggs i ''plhs[0]'' se \ref{sec:mex}.
 
 \subsection{Utvecklingsmetod}
-Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i underkapitlet ''Förstudien''. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i underkapitlet ''Resterande iterationer''.
+Under projektets gång har det inte funnits någon uppenbar utvecklingsmetodik som kandidatgruppen har följt. Inledningsvis i projektet diskuterades att vissa egenskaper från någon utvecklingsmetodik skulle följas, detta tas upp i \ref{sec:forstudie}. När iteration 1 påbörjades fanns det ingen självklar utvecklingsmetodik som följdes, men växte fram under projektets gång och detta tas upp i \ref{sec:resterande}.
 \newline
 \newline
 För att sammanfatta hur kandidatgruppen arbetade, så  inleddes en normal arbetsvecka med möte för att stämma av hur det går för alla i gruppen, om de har förekommit några problem och vad som bör göras härnäst. För att sedan arbeta med de ''practices'' från ''eXtreme programming'' och fullfölja de aktiviteter som satts upp under förstudien. 
@@ -60,10 +60,11 @@ För att sammanfatta hur kandidatgruppen arbetade, så  inleddes en normal arbet
 Kandidatgruppen har även haft en egen hemsida som innehåller en kalender och i denna kalender brukar möten och arbetspass bokas in så medlemmar kan strukturera upp hur deras vecka ser ut.
 
 \subsubsection{Förstudien}
-Under förstudien i detta kandidatprojekt var gruppmedlemmarna överens om att någon sorts utvecklingsmetodik skulle finnas till hands. Det mest naturliga valet var att använda sig av utvecklingsmetodiken ''Scrum'', då flertalet medlemmar i gruppen har tidigare erfarenhet av den. ''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. https://www.scrumalliance.org/why-scrum
+\label{sec:forstudie}
+Under förstudien i detta kandidatprojekt var gruppmedlemmarna överens om att någon sorts utvecklingsmetodik skulle finnas till hands. Det mest naturliga valet var att använda sig av utvecklingsmetodiken ''Scrum'', då flertalet medlemmar i gruppen har tidigare erfarenhet av den. ''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. \citep{scrum}
 \newline
 \newline
-Planen var att inte att använda sig av alla attribut som ''Scrum'' har att erbjuda, utan att plocka ut de bästa delar, då vissa attribut kan kännas lite överflödiga. Den viktigaste attributen som hade beräknats att ta med från ''Scrum'' var det såkallade ''Scrum table''. En ''Scrum table'' är helt enkelt en tavla som i vårt fall skulle innehålla tre kategorier, dessa syns nedan.
+Planen var att inte att använda sig av alla delmoment som ''Scrum'' har att erbjuda, utan att plocka ut de bästa delmomenten, då vissa delmoment kan kännas lite överflödiga. Den viktigaste delmomenten som hade beräknats att ta med från ''Scrum'' var det så kallade ''Scrum table''. En ''Scrum table'' är helt enkelt en tavla som i vårt fall skulle innehålla tre kategorier, dessa syns nedan.
 \begin{itemize}
   \item "Ej påbörjade"
   \item "Under arbete"
@@ -75,7 +76,7 @@ Under varje kategori skulle sedan ett antal aktiviteter finnas med. Dessa aktivi
 Den andra attributen som hade planerats ta med från ''Scrum'' var även ett ''Burn down chart'', dvs en graf som visar hur mycket jobb som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. Detta är lätt att implementera då tavlan nämnd tidigare skulle hålla kolla på timmar på ett strukturerat sätt. 
 \newline
 \newline
-Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att funka, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen. Under en period diskuterade även kandidatgruppen om en vanlig whiteboard-tavla skulle funka, men kandidatgruppen hade inte tillgång till en sådan tavla.
+Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattribut ''Scrum table'' och ''Burn down chart''. För att implementera detta användes ett antal mjukvaruapplikationer. Den första applikationen som användes var ''Trac'', en webbapplikation som används för utveckling av mjukvaruprojekt. ''Trac'' hade de attribut som ''Scrum table'' och ''Burn down chart'', men det var  inget lätt system att förstå och omständigt att konfigurera. Ingen i kandidatgruppen ansåg att ''Trac'' var tillräckligt bra och värt att lägga ytterligare tid på, därav användes inte det. Sedan gavs ''Trello'' en chans, ''Trello'' är också en webbapplikation, men dess huvudsyfte är att visa ett ''Scrum table''. Aktiviteterna i ''Trello'' gick inte att lägga timmar på och ett ''Burn down chart'' fanns inte heller tillgängligt, åtminstone inte utan använda sig av externa program. Medlemmarna i kandidatgruppen installerade externa program för att få dessa funktioner att fungera, men precis som med ''Trac'' kändes systemet för alldeles krångligt och inte heller värt att lägga tid på. Se figur \ref{fig:trello} för en bild på hur ''Trello'' såg ut för kandidatgruppen. Under en period övervägde även kandidatgruppen om en vanlig whiteboard-tavla skulle fungera, men en sådan tavla fanns ej att tillgå.
 
 \begin{figure}[H]
 \centerline{\includegraphics[scale=0.35]{grafik/trello}}
@@ -86,17 +87,18 @@ Detta var alltså planen, att implementera en variant av ''Scrum'' med huvudattr
 \noindent Efter dessa försök med ''Trac'' och ''Trello'' gav kandidatgruppen upp med tanken av att använda utvecklingsmetodiken ''Scrum'' och inledde första iterationen av projektet utan någon specifik utvecklingsmetodik.
 
 \subsubsection{Resterande iterationer}
+\label{sec:resterande}
 Som nämnt gick kandidatgruppen in i första iterationen utan någon specifik utvecklingsmetodik, men under arbetetsgången växte en sorts utvecklingsmetodik fram.
 \newline
 \newline
-Under projektet arbetade samtliga gruppmedlemmar i närheten av varandra. I ett tidigt skede hade gruppen tillgång till ett kontor där arbetet kunde genomföras samt möten kunde hållas. Genom att arbeta så nära varandra underlättade det att hjälpa till där det behövdes och om ett problem uppstod kunde det snabbt tas itu med.
+Under projektet arbetade samtliga gruppmedlemmar i närheten av varandra. I ett tidigt skede hade kandidatgruppen tillgång till ett kontor där arbetet kunde genomföras samt möten kunde hållas. Genom att arbeta så nära varandra underlättade det att hjälpa till där det behövdes och om ett problem uppstod kunde det snabbt tas itu med.
 \newline
 \newline
-Den utvecklingsmetodik som växte fram för kandidatgruppen kan efterlikna utvecklingsmetodiken ''eXtreme programming'' också kallad XP. XP är likt ''Scrum'', ett agilt arbetssätt för mjukvaruprojekt. XP innehåller ett antal ''practices'', dvs metoder för hur man ska behandla kod. De metoder som förekommer i kandidatgruppen, finns listade nedan.
+Den utvecklingsmetodik som växte fram för kandidatgruppen liknar utvecklingsmetodiken ''eXtreme programming'' också kallad XP. XP är likt ''Scrum'', ett agilt arbetssätt för mjukvaruprojekt. XP innehåller ett antal ''practices'', dvs metoder för hur man ska behandla kod. De metoder som förekommer i kandidatgruppen, finns listade nedan.
 \begin{itemize}
-  \item \textbf{Pairprogramming} - I kandidatgruppen har vissa medlemmar parprogrammerat. Detta innebär att två stycken personer ska utföra en uppgift, en skriver kod och den andra granskar. Ett byte av roller sker också emellanåt. Genom att parprogrammera kan man diskutera om vad som skulle ge upphov till den bästa lösningen.
+  \item \textbf{Parprogramming} - I kandidatgruppen har vissa medlemmar parprogrammerat. Detta innebär att två stycken personer ska utföra en uppgift, en skriver kod och den andra granskar. Ett byte av roller sker också emellanåt. Genom att parprogrammera kan man diskutera om vad som skulle ge upphov till den bästa lösningen.
   \item \textbf{Refactoring} - ''Refactoring'' är något som har dykt upp väldigt mycket under arbetsgången. Poängen med ''Refactoring'' är att förbättra kods läsbarhets samt reducera komplexiteten utan att ändra kodens syfte. Detta har varit en stor del av projektet då kunden har tryckt på att kod ska vara väldokumenterad och strukturerad.
-  \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och säger till om testerna misslyckas eller inte. CI översatt till svenska står för kontinuerlig integration.
+  \item \textbf{Continuous integeration} - ''Continuous integration'' eller CI som det brukar kallas har också varit en stor del av kandidatprojektet. Det är väldigt viktigt att all kod som skrivs funkar med de olika komponenterna i detta projekt, t.ex. att matrisbiblioteket och koden för lösaren funkar tillsammans. Det som har gjorts i projektet är att tester skrivs för de allra viktigaste funktioner och dessa testas kontinuerligt genom att använda ''Travis CI''. ''Travis CI'' kompilerar all kod och rapporterar om vilka tester som lyckas eller misslyckas. CI översatt till svenska står för kontinuerlig integration.
 \end{itemize}
 Med hjälp av dessa ''practices'' och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
 
@@ -116,10 +118,10 @@ Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. P
 De verktygen som användes under detta kandidatprojekt var främst
 \newline
 \newline
-\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 gb hårddisk, 1 gb RAM och 1 gb swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att ''hosta'' kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
+\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 GB hårddisk, 1 GB RAM och 1 GB swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att driva kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
 \newline
 \newline 
-\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och håller koll på versioner av ens projekt i linjär tid. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt har individer som har velat jobba med något experimentellt kunnat gå sin egen väg genom att skapa en branch och jobba på den branchen. Det brukar finns en master branch, dvs där det huvudsakliga arbetet görs och sen kan man skapa andra branches för kod annat. 
+\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och tillhandahåller versioner av ens projekt i linjär tid. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt tillåtit individer att jobba med experimentell kod.
 \newline
 \newline 
 \textbf{Github.} Github är ett webbhotell som använder Git. Här kan man lagra alla versioner av sin kod. Kandidatgruppen lagrar alla väsentligt dokumentation för projektet på Github, dvs alla dokument som skrivs och all kod. Kandidatgruppens Github är dessutom privat så bara folk som ska ha med dokumentationen att göra har tillgång till sidan.
@@ -167,7 +169,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Doxygen.} Doxygen är en dokumentationsgenerator för programvara. Programmet funkar genom att användaren har skrivit kommenterar i koden under projektets gång och då använder Doxygen sig av dessa kommentarer för att generera ett dokument. Resultaten blir en pdf som består av förklaringar för funktioner och datastrukturer. 
 
 \subsection{Forskningsmetod}
-Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken Numerical Optimization. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
+Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken \emph{Numerical Optimization} \citep{numericaloptimization}. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
 \newline
 \newline
 De tre algoritmerna som fanns var \emph{Active set method}, \emph{Gradient Projection method} och \emph{Interior point method}. Dessa algoritmer hade sina egna styrkor och svagheter, och det var just dessa som behövde jämföras utifrån prediktionsregleringsproblemets behov.
