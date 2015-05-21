@@ -97,7 +97,7 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   prob->g = g;
 
   /* Create sparse matrices */
-  size_t n = matrix_sparsity(Q);
+  /*size_t n = matrix_sparsity(Q);
   if (n < Q->size/4){
     prob->is_sparse = true;
     prob->sparse_Q = create_sparse_matrix(Q, n);
@@ -106,7 +106,8 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
     prob->is_sparse = false;
     prob->sparse_Q = NULL;
     prob->sparse_Q_inv = NULL;
-  }
+  }*/
+  prob->is_sparse = false;
 
   /* Insert all constraint into big matrix */
   fill_constraint_matrices(prob);  
@@ -220,10 +221,12 @@ void free_problem(problem* prob){
   free_matrix(prob->p);
   free_matrix(prob->gk);
 
-  free_sparse_matrix(prob->sparse_Q);
-  free_sparse_matrix(prob->sparse_Q_inv);
+  
   int r;
   if (prob->is_sparse){
+    free_sparse_matrix(prob->sparse_Q);
+    free_sparse_matrix(prob->sparse_Q_inv);
+
     for (r = 0; r < prob->constraints_count; r++){
       free_sparse_matrix(prob->sparse_A[r]);
     }
