@@ -14,6 +14,6 @@
 
 /** Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h).*/
 bool trans_dyn_cons(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x, size_t card_u);
-bool trans_ineq_cons(matrix* Fx, matrix* Fu, matrix* gx, matrix* gu, matrix* F, matrix* g);
+bool trans_ineq_cons(matrix* Fx, matrix* gx, matrix* F, matrix* g, size_t card_x, size_t card_u, size_t N, matrix* x_lim, matrix* u_lim);
 
 #endif /* TRANS_CON_H */
