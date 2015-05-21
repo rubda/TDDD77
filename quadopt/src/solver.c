@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <solver.h>
 #include <math.h>
-#include <feasible_point.h>
 #include <subproblem.h>
 #include <time.h>
 #include <simplex.h>

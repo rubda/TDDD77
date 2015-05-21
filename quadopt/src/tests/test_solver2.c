@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
-#include <feasible_point.h>
 
 int main(){
   clock_t begin, end;

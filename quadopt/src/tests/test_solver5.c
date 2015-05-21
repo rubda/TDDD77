@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <time.h>
 #include <stdio.h>
-#include <feasible_point.h>
 #include <simplex.h>
 
 int main(){
