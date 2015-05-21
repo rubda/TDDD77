@@ -30,7 +30,7 @@ void prefill_set(problem* prob){
 bool fill_active_set(problem* prob){
   prob->active_set->count = prob->equality_count;
 
-  if (prob->is_sparse) {
+  if (prob->is_sparse){
     /* Fill */
     int i;
     for (i = prob->equality_count; i < prob->constraints_count; i++){
@@ -45,7 +45,7 @@ bool fill_active_set(problem* prob){
         work_set_append(prob->active_set, i);
       }
     }
-  } else {
+  }else{
     /* Fill */
     int i;
     for (i = prob->equality_count+1; i <= prob->constraints_count; i++){
@@ -67,19 +67,19 @@ bool fill_active_set(problem* prob){
 
 /* Removes the active constraint with the most negative lagrange multiplier */
 bool remove_constraint(problem* prob){
-  /* check if unconstrained problem */
-  if (prob->constraints_count == 0) {
+  /* Check if unconstrained problem */
+  if (prob->constraints_count == 0){
     return false;
   }
 
-  if (prob->lagrange == NULL) {
-    /* calculate lagrange multiplicator */
+  if (prob->lagrange == NULL){
+    /* Calculate lagrange multiplicator */
     matrix* ait;
     matrix* ai;
     matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
     prob->lagrange = create_matrix(prob->active_set->count, 1);
 
-    /* create right and left hand side of system */
+    /* Create right and left hand side of system */
     int i;
     for (i = 1; i <= prob->active_set->count; i++) {
       ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
@@ -89,7 +89,7 @@ bool remove_constraint(problem* prob){
       free_matrix(ait);
     }
     
-    /* solve system to retrieve lagrange multiplicators */
+    /* Solve system to retrieve lagrange multiplicators */
     if (!gauss_jordan_solver(LA, prob->lagrange, prob->gk)){
       least_square(LA, prob->lagrange, prob->gk);
     }
@@ -115,7 +115,7 @@ bool remove_constraint(problem* prob){
 
   free_matrix(prob->lagrange);
   prob->lagrange = NULL;
-  /* check if value is negative */
+  /* Check if value is negative */
   if (val < 0) {
     /* Remove */
     work_set_remove(prob->active_set,small);
@@ -128,7 +128,8 @@ bool remove_constraint(problem* prob){
 
 /* Calculates and takes the step for active set method */
 bool take_step(problem* prob){
-  matrix* ai, *ati;
+  matrix* ai;
+  matrix* ati;
   ati = create_matrix(prob->variable_count, 1);
   ai = create_matrix(1, prob->variable_count);
   matrix* z_old = matrix_copy(prob->z);
@@ -139,25 +140,25 @@ bool take_step(problem* prob){
   bool cont;
   for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     cont = false;
-    for (int j = prob->equality_count; j < prob->active_set->count; j++) {
-      if (prob->active_set->data[j] == i) {
+    for (int j = prob->equality_count; j < prob->active_set->count; j++){
+      if (prob->active_set->data[j] == i){
         cont = true;
         break;
       }
     }
-    if (cont) {
+    if (cont){
       continue;
     }
 
-    if (prob->is_sparse) {
+    if (prob->is_sparse){
       nom = 0;
-      for (j = 0; j < prob->sparse_A[i-1]->size; j++) {
+      for (j = 0; j < prob->sparse_A[i-1]->size; j++){
         nom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->p);
       }
       if (nom < 0){
         bi = get_value(i, 1, prob->b);
         dnom = 0;
-        for (j = 0; j < prob->sparse_A[i-1]->size; j++) {
+        for (j = 0; j < prob->sparse_A[i-1]->size; j++){
           dnom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->z);
         }
         temp_step = (bi - dnom)/nom;
@@ -165,7 +166,7 @@ bool take_step(problem* prob){
           step = temp_step;
         }
       }
-    } else {
+    }else{
       get_row_vector(i, prob->A, ai);
       transpose_matrix(ai, ati);
       nom = dot_product(ati, prob->p);
