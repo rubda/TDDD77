@@ -1650,31 +1650,31 @@ void multiply_column_with_scalar(value scal, int col, matrix* mat) {
   value* start = mat->start + (col - 1);
   int i = 0;
   int step = mat->rows ;
-  for (; i < mat->rows; i++) {
+  for (; i < mat->rows; i++){
     *(start + i * step) *= scal;
   }
 }
 
 /* Divides a column with a scalar */
-void divide_column_with_scalar(value scal, int col, matrix* mat) {
+void divide_column_with_scalar(value scal, int col, matrix* mat){
   if (scal==0){
     return;
   }
   value* start = mat->start + (col - 1);
   int i = 0;
   int step = mat->rows ;
-  for (; i < mat->rows; i++) {
+  for (; i < mat->rows; i++){
     *(start + i * step) /= scal;
   }
 }
 
 /* Takes row vector from matrix a and puts it into b which also is a row vector
  *however get_sub_matrix should be faster */
-bool get_row_vector(int row, matrix* a, matrix* b) {
+bool get_row_vector(int row, matrix* a, matrix* b){
   if (!check_boundaries(row, 1, a)) {
     return false;
   }
-  if (b->rows != 1 || b->columns != a->columns) {
+  if (b->rows != 1 || b->columns != a->columns){
     return false;
   }
   int i = 0;
@@ -1687,8 +1687,8 @@ bool get_row_vector(int row, matrix* a, matrix* b) {
 
 /* Returns row vector row from matrix a with a pointer to a matrix */
 matrix* get_row_vector_with_return(int row,matrix* a){
-  matrix* b=create_matrix(1,a->columns);
-  if(get_row_vector(row,a,b)){
+  matrix* b=create_matrix(1, a->columns);
+  if(get_row_vector(row, a, b)){
     return b;
   }
   else{

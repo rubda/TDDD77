@@ -101,7 +101,7 @@ void rref(matrix* M, matrix* N){
   }
 }
 
-void rref1(matrix* M) {
+void rref1(matrix* M){
   int lead = 1;
   int i = 1;
 

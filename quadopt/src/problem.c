@@ -8,18 +8,17 @@
 #include <problem.h>
 
 
-void fill_constraint_matrices(problem* prob) {
+void fill_constraint_matrices(problem* prob){
   prob->constraints_count = prob->equality_count + prob->inequality_count;
 
-
-  if (prob->constraints_count != 0) {
-    /* All constrains lhs */
+  if (prob->constraints_count != 0){
+    /* All constrains LHS */
     prob->A = create_matrix(prob->constraints_count, prob->variable_count);
-    /* All constrains rhs */
+    /* All constrains RHS */
     prob->b = create_matrix(prob->constraints_count, 1);
 
-    if (prob->is_sparse) {
-      /* create array with sparse rows */
+    if (prob->is_sparse){
+      /* Create array with sparse rows */
       prob->sparse_A = malloc(prob->constraints_count*sizeof(sparse_matrix*));
     }
 
@@ -34,11 +33,11 @@ void fill_constraint_matrices(problem* prob) {
     insert_row_vector(r, temp_row, prob->A);
     insert_value_without_check(get_value_without_check(r, 1, prob->h), r, 1, prob->b);
 
-    if (prob->is_sparse) {
+    if (prob->is_sparse){
       s_temp = create_sparse_matrix(temp_row, -1);
       prob->sparse_A[r-1] = s_temp;
     }
-
+    
     free_matrix(temp_row);
   }
 
@@ -48,7 +47,7 @@ void fill_constraint_matrices(problem* prob) {
     insert_row_vector(r+prob->equality_count, temp_row, prob->A);
     insert_value_without_check(get_value_without_check(r, 1, prob->g), r+prob->equality_count, 1, prob->b);
 
-    if (prob->is_sparse) {
+    if (prob->is_sparse){
       s_temp = create_sparse_matrix(temp_row, -1);
       prob->sparse_A[r-1+prob->equality_count] = s_temp;
     }
@@ -59,7 +58,7 @@ void fill_constraint_matrices(problem* prob) {
 
 
 /* Allocates the problem and sets all necessary variables */
-problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g,	matrix* z0, int max_iter, int max_micro_sec){
+problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, matrix* g, matrix* z0, int max_iter, int max_micro_sec){
 
   problem* prob = (problem*)malloc(sizeof(problem));
 
@@ -68,7 +67,6 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   matrix* Q_inv = create_matrix(Q->rows, Q->columns);
   get_inverse(Q, Q_inv);
   prob->Q_inv = Q_inv;
- 
 
   prob->q = q;
 
@@ -87,7 +85,6 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   /* Right hand side for E */
   prob->h = h;
 
-
   /* Inequality constraints */
   prob->F = F;
   
@@ -99,21 +96,20 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   /* Right hand side for F */
   prob->g = g;
 
-
-  /* create sparse matrices */
+  /* Create sparse matrices */
   size_t n = matrix_sparsity(Q);
-  if (n < Q->size/4) {
+  if (n < Q->size/4){
     prob->is_sparse = true;
     prob->sparse_Q = create_sparse_matrix(Q, n);
     prob->sparse_Q_inv = create_sparse_matrix(Q_inv, n);
   } else {
     prob->is_sparse = false;
+    prob->sparse_Q = NULL;
+    prob->sparse_Q_inv = NULL;
   }
 
-
-  /* insert all constraint into big matrix */
-  fill_constraint_matrices(prob);
-  
+  /* Insert all constraint into big matrix */
+  fill_constraint_matrices(prob);  
 
   /* Points and vectors */  
   if (z0 == NULL){
@@ -208,36 +204,27 @@ void print_problem(problem* prob){
 void free_problem(problem* prob){
   free_matrix(prob->Q);
   free_matrix(prob->Q_inv);
-
   free_matrix(prob->q);
-
   free_matrix(prob->E);
   free_matrix(prob->h);
-
   free_matrix(prob->F);
   free_matrix(prob->g);
   
-
   free_matrix(prob->A);
   free_matrix(prob->b);
   free_matrix(prob->lagrange);
   
-
   free_matrix(prob->z0);
-
   free_matrix(prob->z);
-
   free_matrix(prob->solution);
-
   free_matrix(prob->p);
   free_matrix(prob->gk);
-  
 
   free_sparse_matrix(prob->sparse_Q);
   free_sparse_matrix(prob->sparse_Q_inv);
   int r;
-  if (prob->is_sparse) {
-    for (r = 0; r < prob->constraints_count; r++) {
+  if (prob->is_sparse){
+    for (r = 0; r < prob->constraints_count; r++){
       free_sparse_matrix(prob->sparse_A[r]);
     }
     free(prob->sparse_A);
