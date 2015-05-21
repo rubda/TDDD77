@@ -1,5 +1,5 @@
 \section{Teori}
-Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som löser konvexa kvadratiska optimeringsproblem. Det som har gjort är att gruppen har jämfört olika algoritmer mot varandra i fråga om hastighet, robusthet samt implementerbarhet. Problemet med detta är att algoritmerna som testats varierar i hastighet beroende på hur stora matriserna som ska lösas är, samt hur de är strukturerade. Även vilket programmeringsspråk och plattform som algoritmen är implementerade på spelar roll.
+Här beskrivs matematiken bakom de problem som programvaran ska lösa. Olika algoritmer som löser problemen beskrivs och vad som skiljer dem åt. Även olika algoritmer för att hitta en startpunkt för algoritmen beskrivs och jämförs.
 
 \subsection{Matematiska definitioner}
 \begin{equation*}
@@ -15,7 +15,7 @@ Syftet med projektet är att ta fram ett snabbt och lättutvecklat program som l
 \end{equation*}
 
 \subsection{Kvadratiska konvexa optimeringsproblem}
-Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är definierade i figur~\ref{fig:qp_def}. Dessa problem har målfunktioner med kvadratiska termer och linjära bivillkor.
+Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är definierade i figur~\ref{fig:qp_def}. Dessa problem har målfunktioner med kvadratiska termer och linjära bivillkor \citep{numericaloptimization}.
 \begin{figure}[H]
 \begin{equation*}
 \begin{aligned}
@@ -33,70 +33,93 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 \caption{Definition av ett kvadratiskt konvext optimeringsproblem}
 \label{fig:qp_def}
 \end{figure}
-\subsection{Liknande problem}
-Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem. Anledning till att gruppen gör ett nytt är för att de som redan finns är breda och riktar in sig på många olika problem, vilket gör dem komplexa och svåra att modifiera för att passa sitt egna problem. En annan anledning är att de oftast inte har öppen källkod, vilket gör att man inte får med källkoden till programmet så att man själv inte kan vidareutveckla det. Ett problem med de som faktiskt har öppen källkod är att man inte säkert kan veta om de använder sig av tredjepartskod som har någon annan licens, eller om de utvecklare som varit med och skrivit koden skulle vilja ha ersättning för det de gjort.
-Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt.
+\subsection{Andra lösare}
+Det finns sedan tidigare redan många andra program som löser liknande optimeringsproblem såsom Gurabi, Matlab och CLPEX. Anledningen till att en ny behövs tas fram är för att kunden vill ha en med öppen källkod, som fungerar utan tillgång till internet och som de kan arbeta vidare på. Tanken med gruppens program är att gruppen ska äga det, men Saab AB ska ha rätten att vidareutveckla och använda det kommersiellt. 
 
-\subsection{Algoritmer och metoder} 
-\label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken Numerical Optimization av Jorge Nocedal och Stephen J. Wright. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan gruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
-\\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde så att gruppen till slut valde att gå vidare med just Active set. 
-\\
-För att förstå hur gruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
-Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
-
-\subsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Om man har läst någon kurs i optimering så märker man redan nu att den är väldigt lik Simplexmetoden, och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll.
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är enligt boken ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. De som nämns i boken är '' Phase I'', ''Phase II'' och ''Big M'' som alla tre gör det de ska ganska fort. Problemet med dessa metoder är att de bygger på simplex. Om gruppen skulle välja att implementera någon av dessa skulle det betyda att även en simplexlösare skulle behöva implementeras. 
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet. Dock så fanns det flera olika metoder för att lösa detta problem. Till exempel '' Phase I'', ''Phase II'' och ''Big M''. Problemet med dessa metoder är att de bygger på simplex så de kräver en Simplex-lösare \citep{numericaloptimization}.
 
-\subsubsection{Metod 1}
-Till att börja med valdes en mer lättimplementerad lösning som gruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
-$${f+(n-e) \choose (n-e)}, n>e $$
-Detta sågs som relativt effektivt då gruppen trodde att $e \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $f = 192, e = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
-$${222 \choose 30} \approx 1.19*10^{37}$$
-Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken vi eller kunden har tid för.
+\subsection{Simplex}
+Skriv om simplex
 
 \subsubsection{Phase I}
-Efter ytterliggare utbildning bestämdes det att ''Phase I'' skulle implementeras då denna metod ansågs lättast. ''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. I vårt fall väljs punkten alltid till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, låter en gissa på en startpunkt och låter en sedan utgå från den. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. Detta är givetvis inte nödvändigt och har därför inte implementerats. \\
+''Phase I'' och ''Phase II'' är egentligen bara simplexmetoden uppdelad i två separata steg där den första hittar en giltig punkt och den andra hittar en optimal. ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, låter en gissa på en startpunkt och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
-Vår kvadratiska problemlösare hanterar problem på formen:
+Bivillkoren kan ha följande form:
 $$Ex = h, \quad Fx \geq g$$
 vilket innebär att både $F$ och $g$ måste multipliceras med $-1$ för att de ska vara på rätt form. För att uppfylla att $h$ är positiv måste de element däri som är negativa, och motsvarande rad i $E$-matrisen, multipliceras med $-1$.
 När problemet sedan är på rätt form kan simplex-delen börja. \\
-Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. Dessa nya variabler har blivit döpta till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
+Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. De nya variabler döps till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
 $$Ex = h, \quad -Fx+Ds = -g$$
 Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
 Sedan när alla slackvariabler är tillagda ska de virtuella variablerna läggas till, det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
 $$Ex+Ca = h, \quad -Fx + Ds - Ba = -g$$
 Där $C$ och $B$ innehåller de virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
-Simplexmetoden kräver också att alla variabler måste vara större/lika med noll, vilket är något som inte speciellt ofta är uppfyllt i vårt fall. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
+Simplexmetoden kräver också att alla variabler måste vara större/lika med noll. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
 $$x_i = x_{i_1} - x_{i_2}$$
 där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
 Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är som sagt relaxationen av problemet, men om man på något sätt kan stega sig fram med hjälp av simplexmetoden så att relexationen försvinner så är punkten man står i en giltig punkt för originalproblemet. Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av de virtuella variablerna.
 $$min \: z = \sum^{\#a_i}_{i=1} {a_i} \quad  \Leftrightarrow \quad min \: z - \sum^{\#a_i}_{i=1} {a_i} = 0$$
 Efter att ha satt in målfunktionen i tablån är det sista som måste göras (innan simplexlösningen kan börja) att eliminera alla virtuella variabler i målfunktionen. Detta görs med hjälp av radoperationer i tablån, till exempel genom att addera en rad innehållande en virtuell variabel till målfunktionen. \\
-Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa. Varje iteration börjar med att man tar ut kolumnen där det mest positiva elementet i målfunktionen ligger. Denna kolumn representerar inkommande variabel. Efter det väljs den rad där kvoten, av högerledet och elementet i den valda kolumnen, är som minst. Dock så måste elementet i raden vara positivt. Om det inte är det måste raden hoppas över, annars fungerar inte metoden. Den utvalda raden representerar utgående variabel. Därefter fortsätter man som vanligt i simplex och eliminerar alla element i den valda kolumnen med hjälp utav den valda raden och fortsätter till nästa iteration. Om det visar sig att det finns positiva element i målfunktionen och ingen rad kan väljas ut i tablån (eftersom elementen är negativa), innebär det att bivillkoren inte spänner upp ett tillåtet område. Med andra ord finns det inte någon tillåten startpunkt.
+Eftersom det är ett minimeringsproblem vill man iterera tills alla koefficienter i målfunktionen är negativa. Varje iteration börjar med att man tar ut kolumnen där det mest positiva elementet i målfunktionen ligger. Denna kolumn representerar inkommande variabel. Efter det väljs den rad där kvoten, av högerledet och elementet i den valda kolumnen, är som minst. Dock så måste elementet i raden vara positivt. Om det inte är det måste raden hoppas över, annars fungerar inte metoden. Den utvalda raden representerar utgående variabel. Därefter fortsätter man som vanligt i simplex och eliminerar alla element i den valda kolumnen med hjälp utav den valda raden och fortsätter till nästa iteration. Om det visar sig att det finns positiva element i målfunktionen och ingen rad kan väljas ut i tablån (eftersom elementen är negativa), innebär det att bivillkoren inte spänner upp ett tillåtet område. Med andra ord finns det inte någon tillåten startpunkt\citep{numericaloptimization}.
 
-\subsubsection{Diskussion}
-Antagandet om att antalet bivillkor var ungefär lika med antalet variabler - 1, som ledde till att metod 1 implementerades, kan man säga var taget ur luften. Antagandet kom ifrån den första testdata som gruppen fick ifrån kunden, där detta var uppfyllt. Om gruppen istället inte hade antagit något sådant hade man istället kunnat tidigare utbilda sig i simplexmetoden. När det dessutom visade sig att simplex faktiskt var relativt enkel att både förstå sig på och implementera kändes metod 1 riktigt omdömeslös. \\
-Ett problem med vår implementation ''Phase I'' utav simplexmetoden är att vi antar att alla variabler kan vara negativa, vilket leder till att alla variabler substitueras. En möjlig optimering till detta skulle vara att kolla ifall något av bivillkoren säger att en variabel är större än/lika med noll. I så fall skulle detta bivillkor kunna tas bort, och variabeln skulle inte behövas substituera. Detta skulle leda till att simplextablån blir mindre och därav går det både snabbare att hitta en punkt, och risken till numeriska fel vid hantering av flyttal skulle minska. 
+\subsection{Big M}
+Skriv om detta
+
+\subsection{Active set method}   
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen \citep{numericaloptimization}.
+
+\begin{algorithm}[H]
+\caption{Quadopt-solver}
+\label{alg:quadoptsolver}
+\begin{algorithmic}
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break}
+		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
+	\EndIf
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Subproblem}
-Subproblemet är det problem som uppstår när man ska hitta en riktningen att ta nästa steg i. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor).
-Som beskrivet tidigare kändes det ganska trivialt att lösa subproblemet, men efter en tid in i implementeringen upptäcktes det hur svårt det var att få datorn att göra samma sak som man så smidigt gjorde på papper. Det som krånglade till det var att på papper löste man ut variabler genom att derivera målfunktionen och använda sig av de linjära uttryck som då kvarstår. Efter mycket slit utan resultat avbröts implementationen av den lösningsmetoden och en ny utbildningsfas påbörjade för att hitta en annan metod. Ur Numerical Optimization hittades dessa fyra: ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' krävde att problemet var väldigt specifikt och såg ut på ett visst sätt, men de resterande tre var av intresse. Alla tre hade sina för- och nackdelar men alla uppfyllde i alla fall det som behövdes. Efter en del övervägningar landande till slut valet på ''Range-space'' som var överlägset lättaste att implementera. Nackdelen med metoden är dock att den kräver att man inverterar Q-matrisen (som innehåller de kvadratiska termerna i målfunktionen), vilket är en väldigt tung matematisk operation. Som tur är hade gruppen vetskap om att Q-matrisen alltid var symmetrisk samt att den oftast är näst intill diagonal. Detta gör att matrisen blir lättinverterbar, och det behövs endast göras en gång per algoritmkörning. Alltså blev kostnaden av valet av subproblemslösare inte så dyrt. ''Range-space'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
+Subproblemet är det problem som uppstår när man ska hitta en riktningen att ta nästa steg i. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
+\newline
+\newline
+Det finns flera olika metoder för att lösa subproblemet.
+Till exempel ''Range-space'', ''Null-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' kräver att problemet var väldigt specifikt och såg ut på ett visst sätt. ''Range-space'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
 $$({A_k}Q^{-1}A_k^T)\lambda^* = ({A_k}Q^{-1}g-c)$$
 där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikatorer. Förövrigt så är
 $g = Qz+q$ och $c = A_kz - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegriktningen $p$:
 $$Qp = A^T\lambda^* - q$$
 Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplikationer, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen symmetri utnyttjas. 
-
-
-Efter en tid in i projektet implementerades även en enkel version av ''KKT''-metoden som bygger på att man löser en del utav det system KKT-bivillkoren bygger upp. KKT står för Karush-Kuhn-Tucker, dvs personerna bakom metoden. Metoden löser följande system:
+\newline
+\newline
+KKT står för Karush-Kuhn-Tucker. Metoden löser följande system:
 
 $$\begin{bmatrix}
 K & A^T \\
@@ -113,11 +136,13 @@ c
 \end{bmatrix}
 $$
 
-Där submatriserna är som beskriva i ''Range-space''. Det som menas med att detta är en ''enkel version'' är att ingen av de strukturer som matriserna har har utnyttjats. Till exempel vet man att en matris är symmetrisk, och därför behövs inte mycket beräkningar utföras, men information om hur detta skulle utnyttjas var svåråtkomlig. Som följd av att inga strukturer utnyttjats blev funktionen tvungen att lösa ett stort ekvationssytem vilket tyvärr inte var så snabbt, inte snabbare än ''Range-space'' i alla fall. \\
-Något som skulle vara trevligt skulle vara att jämföra de olika subproblemslösarna och se vilken som presterar bäst i olika fall.
+Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimization}.
+
+\subsection{Interior point method}
+Skriv om detta
 
 \subsection{MEX}
-MEX är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen, se figur~\ref{fig:mex}. 
+MEX är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
 
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/mex.c}
@@ -125,12 +150,11 @@ MEX är utvecklat av MathWorks och används för att bygga MATLAB funktioner fr�
 \label{fig:mex}
 \end{figure}  
 
-Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Med hjälp av olika funktioner i MEX-biblioteket kan dessa datatyper konverteras till datatyper som C kan använda och tillbaka. Några händiga funktioner följer:
+Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Med hjälp av olika funktioner i MEX-biblioteket kan dessa datatyper konverteras till datatyper som C kan använda och tillbaka\citep{mathworks}. Några händiga funktioner följer:
 \begin{itemize}
 \item mxGetM(mxArray) - returnerar mxArray rader
-\item mxGetM(mxArray) - returnerar mxArray kolumner
 \item mxCreateDoubleMatrix(rader, kolumner, mxREAL) - returnerar en mxArray
 \end{itemize}
 
 \subsection{Programspråket C}
-Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Eftersom det varken finns objekt, automatisk minneshantering eller ''overhead-kod'' gör C till ett mycket snabbt språk. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
+Programspråket C är en av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren annars kan minnesläckor uppstå. \citep{cbible}
