@@ -81,7 +81,7 @@ bool remove_constraint(problem* prob){
 
     /* Create right and left hand side of system */
     int i;
-    for (i = 1; i <= prob->active_set->count; i++) {
+    for (i = 1; i <= prob->active_set->count; i++){
       ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
       ait = transpose_matrix_with_return(ai);
       insert_column_vector(i, ait, LA);

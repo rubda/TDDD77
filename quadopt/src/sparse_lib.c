@@ -90,7 +90,7 @@ bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax){
   value temp1, temp2;
   //matrix* Ax = create_zero_matrix(x->rows, x->columns);
 
-  /* multiply */
+  /* Multiply */
   for (i = 0; i < A->size; i++){
     temp1 = get_value_without_check(A->cA[i], 1, x);
     temp1 *= A->A[i];
@@ -158,7 +158,7 @@ void print_sparse_matrix(sparse_matrix* S){
   matrix* M = create_zero_matrix(S->rows, S->columns);
   
   int i;
-  for (i = 0; i < S->size; i++) {
+  for (i = 0; i < S->size; i++){
     insert_value_without_check(S->A[i], S->rA[i], S->cA[i], M);
   }
 

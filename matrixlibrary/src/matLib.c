@@ -117,7 +117,7 @@ bool insert_array(value arr[], matrix* mat) {
   return true;
 }
 
-/*returns true if matrices a and b look the same*/
+/* Returns true if matrices a and b look the same */
 bool compare_matrices(matrix* a, matrix* b) {
   if ((a->columns != b->columns) || (a->rows != b->rows)) {
     return false;
@@ -2013,15 +2013,14 @@ matrix* get_zero_matrix(int rows, int columns){
   return zero;
 }
 
-/** Returns the absolute value of a */
+/* Returns the absolute value of a */
 value matlib_fabs(value a){
   if (a==0){
     return 0;
   }
   if (a<0){
     return -a;
-  }
-  else{
+  }else{
     return a;
   }
 
