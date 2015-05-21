@@ -29,7 +29,7 @@ def parse_qp(filename, out_filename, data_filename):
             elif line == "variables":
                 out_file.write(indent + "/* Variables */\n\n")
                 copy = True
-            elif line == "limits":
+            elif line == "dimensions":
                 copy_limits = True
             elif line == "minimize":
                 found_min = True
