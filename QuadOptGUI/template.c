@@ -79,34 +79,31 @@ int main(){
 			 25};
   insert_array(gx_data, gx);
 
-  matrix* Fu;
-  Fu = create_matrix(1, 1);
-  value Fu_data[1] = {0};
-  insert_array(Fu_data, Fu);
-
-  matrix* gu;
-  gu = create_matrix(1, 1);
-  value gu_data[1] = {0};
-  insert_array(gu_data, gu);
-
   matrix* k;
   k = create_matrix(2, 1);
   value k_data[2] = {15, 45};
   insert_array(k_data, k);
 
+  matrix* x_lim;
+  x_lim = create_matrix(4, 1);
+  value x_lim_data[4] = {20, 100, 15, 100};
+  insert_array(x_lim_data, x_lim);
+
+  matrix* u_lim;
+  u_lim = create_matrix(2, 1);
+  value u_lim_data[2] = {25, 25};
+  insert_array(u_lim_data, u_lim);
 
   /* Transform matrix stuff */
   matrix* E = create_zero_matrix(card_x*(N + 1), n_vars);
   matrix* h = create_zero_matrix(card_x*(N + 1), 1);
   assert(trans_dyn_cons(A, B, k, E, h, card_x, card_u));
-  print_matrix(E);
-  print_matrix(h);
   
-  matrix* F = create_zero_matrix(Fx->rows + Fu->rows, Fx->columns + Fu->columns);
-  matrix* g = create_zero_matrix(gx->rows + gu->rows, 1);
-  assert(trans_ineq_cons(Fx, Fu, gx, gu, F, g));
-  print_matrix(F);
-  print_matrix(g);
+  size_t rows = 2*card_x*N + Fx->rows + 2*card_u*N;
+  size_t cols = card_x*(N + 1) + card_u*N;
+  matrix* F = create_zero_matrix(rows, cols);
+  matrix* g = create_zero_matrix(rows, 1);
+  assert(trans_ineq_cons(Fx, gx, F, g, card_x, card_u, N, x_lim, u_lim));
 
   /* Solveranropp */ 
   int i; 
@@ -124,8 +121,6 @@ int main(){
   free_matrix(B);
   free_matrix(Fx);
   free_matrix(gx);
-  free_matrix(Fu);
-  free_matrix(gu);
   free_matrix(k);
   free_matrix(E);
   free_matrix(h);
