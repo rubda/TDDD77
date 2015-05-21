@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <solver.h>
 #include <math.h>
-#include <feasible_point.h>
 #include <subproblem.h>
 #include <time.h>
 #include <simplex.h>
@@ -30,19 +29,35 @@ void prefill_set(problem* prob){
 bool fill_active_set(problem* prob){
   prob->active_set->count = prob->equality_count;
 
-  /* Fill */
-  int i;
-  for (i = prob->equality_count+1; i <= prob->A->rows; i++){
-    value ans = 0;
+  if (prob->is_sparse){
+    /* Fill */
+    int i;
+    for (i = prob->equality_count; i < prob->constraints_count; i++){
+      value ans = 0;    
 
-    int j;
-    for (j = 1; j <= prob->A->columns; j++){
-      ans += get_value(i, j, prob->A)*get_value(j, 1, prob->z); 
-      /* TODO add check and get_value_without_check and return false */
+      int j;
+      for (j = 0; j < prob->sparse_A[i]->size; j++){
+        ans += prob->sparse_A[i]->A[j]*get_value_without_check(prob->sparse_A[i]->cA[j], 1, prob->z);
+      }
+
+      if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
+        work_set_append(prob->active_set, i);
+      }
     }
+  }else{
+    /* Fill */
+    int i;
+    for (i = prob->equality_count+1; i <= prob->constraints_count; i++){
+      value ans = 0;    
 
-    if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
-      work_set_append(prob->active_set, i);
+      int j;
+      for (j = 1; j <= prob->variable_count; j++){
+        ans += get_value(i, j, prob->A)*get_value_without_check(j, 1, prob->z);
+      }
+
+      if (compare_elements(ans, get_value_without_check(i, 1, prob->b)) == 0){
+        work_set_append(prob->active_set, i);
+      }
     }
   }
 
@@ -51,30 +66,33 @@ bool fill_active_set(problem* prob){
 
 /* Removes the active constraint with the most negative lagrange multiplier */
 bool remove_constraint(problem* prob){
-  /* check if unconstrained problem */
-  if (prob->constraints_count == 0) {
+  /* Check if unconstrained problem */
+  if (prob->constraints_count == 0){
     return false;
   }
 
-  /* calculate lagrange multiplicator */
-  matrix* ait;
-  matrix* ai;
-  matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
-  matrix* lagrange = create_matrix(prob->active_set->count, 1);
+  if (prob->lagrange == NULL){
+    /* Calculate lagrange multiplicator */
+    matrix* ait;
+    matrix* ai;
+    matrix* LA = create_matrix(prob->p->rows, prob->active_set->count);
+    prob->lagrange = create_matrix(prob->active_set->count, 1);
 
-  /* create right and left hand side of system */
-  int i;
-  for (i = 1; i <= prob->active_set->count; i++) {
-    ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
-    ait = transpose_matrix_with_return(ai);
-    insert_column_vector(i, ait, LA);
-    free_matrix(ai);
-    free_matrix(ait);
-  }
-  
-  /* solve system to retrieve lagrange multiplicators */
-  if (!gauss_jordan_solver(LA, lagrange, prob->gk)){
-    least_square(LA, lagrange, prob->gk);
+    /* Create right and left hand side of system */
+    int i;
+    for (i = 1; i <= prob->active_set->count; i++){
+      ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
+      ait = transpose_matrix_with_return(ai);
+      insert_column_vector(i, ait, LA);
+      free_matrix(ai);
+      free_matrix(ait);
+    }
+    
+    /* Solve system to retrieve lagrange multiplicators */
+    if (!gauss_jordan_solver(LA, prob->lagrange, prob->gk)){
+      least_square(LA, prob->lagrange, prob->gk);
+    }
+    free_matrix(LA);
   }
   
   /* Find most negative and remove (if not equality constraint) */
@@ -83,62 +101,80 @@ bool remove_constraint(problem* prob){
   value val = 0;
 
   int j;
-  for (j = 1; j <= lagrange->rows; j++){
+  for (j = 1; j <= prob->lagrange->rows; j++){
     if (prob->active_set->data[j-1] <= prob->equality_count){
       continue;
     }
-    tmp = get_value_without_check(j, 1, lagrange);
+    tmp = get_value_without_check(j, 1, prob->lagrange);
     if (tmp < val){
       small = prob->active_set->data[j-1];
       val = tmp;
     }
   }
 
-  /* check if value is negative */
+  free_matrix(prob->lagrange);
+  prob->lagrange = NULL;
+  /* Check if value is negative */
   if (val < 0) {
     /* Remove */
     work_set_remove(prob->active_set,small);
-    free_matrix(LA);
-    free_matrix(lagrange);
     return true;
   }
 
-  /* Could not remove any constraints */
-  free_matrix(LA);
-  free_matrix(lagrange);
+  /* Could not remove any constraints */  
   return false;
 }
 
 /* Calculates and takes the step for active set method */
 bool take_step(problem* prob){
-  matrix* ai, *ati;
+  matrix* ai;
+  matrix* ati;
   ati = create_matrix(prob->variable_count, 1);
   ai = create_matrix(1, prob->variable_count);
   matrix* z_old = matrix_copy(prob->z);
-  value bi, nom, temp_step, step = 1;
+  value bi, nom, dnom, temp_step, step = 1;
 
   /* Only go through the inequality constraints */
-  int i;
+  int i, j;
   bool cont;
   for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     cont = false;
-    for (int j = prob->equality_count; j < prob->active_set->count; j++) {
-      if (prob->active_set->data[j] == i) {
+    for (int j = prob->equality_count; j < prob->active_set->count; j++){
+      if (prob->active_set->data[j] == i){
         cont = true;
         break;
       }
     }
-    if (cont) {
+    if (cont){
       continue;
     }
-    get_row_vector(i, prob->A, ai);
-    transpose_matrix(ai, ati);
-    nom = dot_product(ati, prob->p);
-    if (nom < 0){
-      bi = get_value(i, 1, prob->b);
-      temp_step = (bi - dot_product(ati, prob->z))/nom;
-      if (temp_step < step){
-        step = temp_step;
+
+    if (prob->is_sparse){
+      nom = 0;
+      for (j = 0; j < prob->sparse_A[i-1]->size; j++){
+        nom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->p);
+      }
+      if (nom < 0){
+        bi = get_value(i, 1, prob->b);
+        dnom = 0;
+        for (j = 0; j < prob->sparse_A[i-1]->size; j++){
+          dnom += prob->sparse_A[i-1]->A[j]*get_value_without_check(prob->sparse_A[i-1]->cA[j], 1, prob->z);
+        }
+        temp_step = (bi - dnom)/nom;
+        if (temp_step < step){
+          step = temp_step;
+        }
+      }
+    }else{
+      get_row_vector(i, prob->A, ai);
+      transpose_matrix(ai, ati);
+      nom = dot_product(ati, prob->p);
+      if (nom < 0){
+        bi = get_value(i, 1, prob->b);
+        temp_step = (bi - dot_product(ati, prob->z))/nom;
+        if (temp_step < step){
+          step = temp_step;
+        }
       }
     }
   }

@@ -117,7 +117,7 @@ bool insert_array(value arr[], matrix* mat) {
   return true;
 }
 
-/*returns true if matrices a and b look the same*/
+/* Returns true if matrices a and b look the same */
 bool compare_matrices(matrix* a, matrix* b) {
   if ((a->columns != b->columns) || (a->rows != b->rows)) {
     return false;
@@ -1650,31 +1650,31 @@ void multiply_column_with_scalar(value scal, int col, matrix* mat) {
   value* start = mat->start + (col - 1);
   int i = 0;
   int step = mat->rows ;
-  for (; i < mat->rows; i++) {
+  for (; i < mat->rows; i++){
     *(start + i * step) *= scal;
   }
 }
 
 /* Divides a column with a scalar */
-void divide_column_with_scalar(value scal, int col, matrix* mat) {
+void divide_column_with_scalar(value scal, int col, matrix* mat){
   if (scal==0){
     return;
   }
   value* start = mat->start + (col - 1);
   int i = 0;
   int step = mat->rows ;
-  for (; i < mat->rows; i++) {
+  for (; i < mat->rows; i++){
     *(start + i * step) /= scal;
   }
 }
 
 /* Takes row vector from matrix a and puts it into b which also is a row vector
  *however get_sub_matrix should be faster */
-bool get_row_vector(int row, matrix* a, matrix* b) {
+bool get_row_vector(int row, matrix* a, matrix* b){
   if (!check_boundaries(row, 1, a)) {
     return false;
   }
-  if (b->rows != 1 || b->columns != a->columns) {
+  if (b->rows != 1 || b->columns != a->columns){
     return false;
   }
   int i = 0;
@@ -1687,8 +1687,8 @@ bool get_row_vector(int row, matrix* a, matrix* b) {
 
 /* Returns row vector row from matrix a with a pointer to a matrix */
 matrix* get_row_vector_with_return(int row,matrix* a){
-  matrix* b=create_matrix(1,a->columns);
-  if(get_row_vector(row,a,b)){
+  matrix* b=create_matrix(1, a->columns);
+  if(get_row_vector(row, a, b)){
     return b;
   }
   else{
@@ -1925,26 +1925,24 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
   int lead = 1;
   int i = 1;
 
-  //TODO  doesn't need all theese
-  //      fix indentation
   matrix* row1 = create_matrix(1,M->columns);
   matrix* row2 = create_matrix(1,M->columns);
   matrix* row3 = create_matrix(1,M->columns);
 
-  for (int r = 1; r <= M->rows; r++) {
-    if (M->columns <= lead) {
+  for (int r = 1; r <= M->rows; r++){
+    if (M->columns+1 <= lead){
       free_matrix(row1);
       free_matrix(row2);
       free_matrix(row3);
       return;
     }
     i = r;
-    while (get_value_without_check(i,lead,M) == 0) {
+    while (compare_elements(get_value_without_check(i,lead,M),0) == 0){
       i = i + 1;
-      if (M->rows == i) {
+      if (M->rows+1 == i){
         i = r;
         lead = lead + 1;
-        if (M->columns == lead) {
+        if (M->columns+1 == lead){
           free_matrix(row1);
           free_matrix(row2);
           free_matrix(row3);
@@ -1953,14 +1951,14 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
       }
     }
     switch_rows(i,r,M);
-    if (get_value_without_check(r,lead,M) != 0) {
+    if (compare_elements(get_value_without_check(r,lead,M),0) != 0){
       divide_row_with_scalar(get_value_without_check(r,lead,M),r,M);
     }
-    for (i = 1; i <= M->rows; i++) {
+    for (i = 1; i <= M->rows; i++){
       if (i != r) {
         get_row_vector(r,M,row1);
         get_row_vector(i,M,row2);
-        multiply_matrix_with_scalar(get_value_without_check(i,lead,M),row1);
+        multiply_matrix_with_scalar(-get_value_without_check(i,lead,M),row1);
         add_matrices(row1,row2,row3);
         insert_row_vector(i,row3,M);
       }
@@ -2013,15 +2011,14 @@ matrix* get_zero_matrix(int rows, int columns){
   return zero;
 }
 
-/** Returns the absolute value of a */
+/* Returns the absolute value of a */
 value matlib_fabs(value a){
   if (a==0){
     return 0;
   }
   if (a<0){
     return -a;
-  }
-  else{
+  }else{
     return a;
   }
 

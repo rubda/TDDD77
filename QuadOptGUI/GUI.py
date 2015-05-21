@@ -112,7 +112,7 @@ def highlight(event=None):
 def generate_c(event=None):
     global filename
     try:
-        parse_qp(filename, "result.c", "exempel.qopt")
+        parse_qp("test.qopt", "result.c", "exempel.qopt")
 
         f = open("result.c")
         t = f.read()
@@ -167,14 +167,14 @@ text = CustomText(mainArea, yscrollcommand=scrollbar.set, undo=True)
 text.pack(expand=True, fill="both")
 
 scrollbar.config(command=text.yview)
-
+"""
 # buttons
 problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold",
                      fg="#305080", bg="#f6f6f6")
 problemLabel.pack()
 
 editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
-editButton.pack()
+editButton.pack()"""
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold",
                    fg="#305080", bg="#f6f6f6")
@@ -190,7 +190,7 @@ cButton.pack()
 runButton = Button(sideBar, text="Run code", width=15, command=generate_c)
 runButton.pack()
 
-exitButton = Button(sideBar, text="Exit", width=15, command=quit)
+exitButton = Button(sideBar, text="Exit", width=15, command=quit)   
 exitButton.pack(side=BOTTOM)
 
 # menu

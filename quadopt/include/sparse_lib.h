@@ -20,6 +20,8 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size);
 
 sparse_matrix* create_empty_sparse_matrix(int size);
 
+matrix* sparse_to_normal(sparse_matrix* S);
+
 size_t matrix_sparsity(matrix* A);
 
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax);

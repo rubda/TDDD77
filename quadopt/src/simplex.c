@@ -22,7 +22,7 @@ bool simplex_phase_1(problem* prob){
 
   int r, i, c;
 
-  /* Negatate all equality constraints where rhs is negative */
+  /* Negatate all equality constraints where RHS is negative */
   if (prob->equality_count > 0){  
     for (r = 1; r <= prob->equality_count; r++){
       if (compare_elements(get_value_without_check(r, 1, prob->h), 0) == -1){
@@ -73,7 +73,7 @@ bool simplex_phase_1(problem* prob){
     free_matrix(temp);
   }
 
-  /* initial tableau structure example
+  /* Initial tableau structure example
    *
    * Constraints
    * 1*x1 - 1*x2 + 2*x3  = 0
@@ -82,14 +82,14 @@ bool simplex_phase_1(problem* prob){
    * 2*x1 + 2*x2 + 2*x3 <= -2
    * 1*x1 + 2*x2 + 3*x3 <= 2
    *
-   * slack and virtual variables added
+   * Slack and virtual variables added
    * 1*x1 - 1*x2 + 2*x3                      + 1*a1                = 0
    * 2*x1 + 1*x2 + 5*x3                             + 1*a2         = 0
    * 1*x1 - 1*x2 + 2*x3 + 1*s1                                     = 1
    * 2*x1 + 2*x2 + 2*x3        + 1*s2                      - 1*a3  = -2
    * 1*x1 + 2*x2 + 3*x3               + 1*s3                       = 2 
    *
-   * constructed tableau
+   * Constructed tableau
    *     | x1  x2  x3  s1  s2  s3  a1  a2  a3 | rhs
    * ------------------------------------------------
    * a1  | 1   -1  2   0   0   0   1   0   0  | 0
@@ -103,7 +103,7 @@ bool simplex_phase_1(problem* prob){
    *
    */
 
-  /* Create tableau. +1 rows for objective function, +1 columns for rhs.  */
+  /* Create tableau. +1 rows for objective function, +1 columns for RHS. */
   matrix* tableau = get_zero_matrix(prob->inequality_count + prob->equality_count + 1, prob->variable_count*2 +
 				    prob->inequality_count + virtual_vars->count + 1);  
 
@@ -294,7 +294,7 @@ bool is_neg_tableau_row(int row, matrix* tableau){
   return true;
 }
 
-/* Returns the row with smallest rhs/(lhs element in choosen column), for simplex phase I*/
+/* Returns the row with smallest RHS/(LHS element in choosen column), for simplex phase I*/
 int min_test(int column, matrix* tableau){
   value temp, cur;
   bool first = true;
