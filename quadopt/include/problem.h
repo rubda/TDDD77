@@ -107,4 +107,7 @@ void print_solution(problem* prob);
 /** Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent);
 
+/* Checks if a point is feasible subject to the constraints in a problem */
+bool is_feasible_point(matrix* z, problem* prob)
+
 #endif /* PROBLEM_H */

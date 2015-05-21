@@ -360,3 +360,34 @@ bool time_to_exit(problem* prob, double time_spent){
   /* None have been fullfilled */
   return false;
 }
+
+/* Checks if a point is feasible subject to the constraints in a problem */
+bool is_feasible_point(matrix* z, problem* prob){
+  value ans;
+  int r, c;
+  
+  /* Check all equality constraints */
+  for (r = 1; r <= prob->equality_count; r++){
+    ans = 0;
+    for (c = 1; c <= prob->E->columns; c++){
+      ans += get_value_without_check(r, c, prob->E)*get_value(c, 1, z);
+    }
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->h)) != 0){
+      return false;
+    }    
+  }
+
+  /* Check all inequality constraints */
+  for (r = 1; r <= prob->inequality_count; r++){
+    ans = 0;    
+    for (c = 1; c <= prob->F->columns; c++){
+      ans += get_value_without_check(r, c, prob->F)*get_value(c, 1, z);
+    }
+    
+    if (compare_elements(ans, get_value_without_check(r, 1, prob->g)) == -1){
+      return false;
+    }
+  }
+  
+  return true;
+}
