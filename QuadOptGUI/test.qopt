@@ -10,7 +10,7 @@ parameters
     x_min (2)
 end
 
-constants
+dimensions
     N = 30  
     R = 8
     u_max = 25
@@ -30,4 +30,4 @@ subject to
     x_min <= x{[k] <= x_max , k = 0..N-1
     u_min <= u[k] <= u_max, k= 0..N-1
     F*x[N] <= g
-end
+end 
