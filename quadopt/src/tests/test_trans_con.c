@@ -95,13 +95,21 @@ void test_inequality_constraints(){
   value gx_arr[3] = {4, 5, 6};
   insert_array(gx_arr, gx);
 
+  matrix* xlim = create_matrix(4, 1);
+  value xlim_arr[4] = {1, 2, 3, 4};
+  insert_array(xlim_arr, xlim);
+
+  matrix* ulim = create_matrix(2, 1);
+  value ulim_arr[2] = {1, 2};
+  insert_array(ulim_arr, ulim);
+
   size_t card_x = 2;
   size_t card_u = 1;
   size_t N = 5;
   int rows = 2*card_x*N + Fx->rows + 2*card_u*N;
   int columns = card_x*(N + 1) + card_u*N;
   matrix* F = create_zero_matrix(rows, columns);
-  matrix* g = create_zero_matrix(6, 1);
+  matrix* g = create_zero_matrix(rows, 1);
 
   matrix* expected_F = create_matrix(6, 6);
   value exp_F_arr[36] = {1, 2, 3, 0, 0, 0,
@@ -116,8 +124,9 @@ void test_inequality_constraints(){
   value exp_g_arr[6] = {4, 5, 6, 4, 5, 6};
   insert_array(exp_g_arr, expected_g);
 
-  trans_ineq_cons(Fx, gx, F, g, 2, 1, 5, NULL, NULL);
-  print_matrix(F);
+  assert(trans_ineq_cons(Fx, gx, F, g, 2, 1, 5, xlim, ulim));
+
+  /* TODO: Fix these tests */
   /* assert(compare_matrices(expected_F, F)); */
   /* assert(compare_matrices(expected_g, g)); */
 

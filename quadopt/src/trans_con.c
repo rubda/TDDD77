@@ -11,6 +11,7 @@
 bool insert_x_identity_matrices(matrix* F, size_t card_x, size_t N);
 bool insert_fx(matrix* F, matrix* Fx, size_t card_x, size_t N);
 bool insert_u_identity_matrices(matrix* F, size_t card_u, size_t N);
+bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t card_x, size_t N);
 bool insert_identity_matrices(matrix* E, size_t card_x);
 bool insert_A_matrices(matrix* E, matrix* A);
 bool insert_B_matrices(matrix* E, matrix* B, size_t N);
@@ -32,6 +33,7 @@ bool trans_ineq_cons(matrix* Fx, matrix* gx, matrix* F, matrix* g, size_t card_x
   insert_x_identity_matrices(F, card_x, N);
   insert_fx(F, Fx, card_x, N);
   insert_u_identity_matrices(F, card_u, N);
+  fix_g(g, gx, x_lim, u_lim, card_x, N);
 
   return true;
 }
@@ -53,7 +55,6 @@ bool insert_x_identity_matrices(matrix* F, size_t card_x, size_t N){
   for(start_row = 1; start_row < stuff->rows * N ; start_row += stuff->rows){
     end_row = start_row + stuff->rows - 1;
     end_col = start_col + stuff->columns - 1;
-    printf("sr = %i, er = %i, sc = %i, ec = %i\n", start_row, end_row, start_col, end_col);
     if(!insert_sub_matrix(start_row, end_row, start_col, end_col, stuff, F)){
       free_matrix(stuff);
       return false;
@@ -91,12 +92,10 @@ bool insert_u_identity_matrices(matrix* F, size_t card_u, size_t N){
   free_matrix(neg_id_matrix);
 
 
-  printf("Before\n");
   size_t start_col = F->columns - card_u*N + 1;
   for(size_t start_row = F->rows - 2 * card_u * N + 1; start_row < F->rows; start_row += stuff->rows){
     size_t end_row = start_row + stuff->rows - 1;
     size_t end_col = start_col + stuff->columns - 1;
-    printf("sr = %i, er = %i, sc = %i, ec = %i\n", start_row, end_row, start_col, end_col);
     if(!insert_sub_matrix(start_row, end_row, start_col, end_col, stuff, F)){
       free_matrix(stuff);
       return false;
@@ -106,6 +105,30 @@ bool insert_u_identity_matrices(matrix* F, size_t card_u, size_t N){
   }
 
   free_matrix(stuff);
+
+  return true;
+}
+
+bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t card_x, size_t N){
+  for(size_t start_row = 1; start_row < x_lim->rows*N; start_row += x_lim->rows){
+    size_t end_row = start_row + x_lim->rows - 1;
+    if(!insert_sub_matrix(start_row, end_row, 1, 1, x_lim, g)){
+      return false;
+    }
+  }
+
+  size_t start_row_gx = x_lim->rows*N + 1;
+  size_t end_row_gx = start_row_gx + gx->rows - 1;
+  if(!insert_sub_matrix(start_row_gx, end_row_gx, 1, 1, gx, g)){
+    return false;
+  }
+
+  for(size_t start_row = end_row_gx + 1; start_row < g->rows; start_row += u_lim->rows){
+    size_t end_row = start_row + u_lim->rows - 1;
+    if(!insert_sub_matrix(start_row, end_row, 1, 1, u_lim, g)){
+      return false;
+    }
+  }
 
   return true;
 }
