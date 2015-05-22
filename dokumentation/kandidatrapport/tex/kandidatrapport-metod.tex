@@ -1,12 +1,48 @@
 \section{Metod}
-i detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hur kandidatgruppen kom fram till vald lösningsmetod. 
+I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hur kandidatgruppen kom fram till vald lösningsmetod. 
 
 \subsection{Algoritmer och metoder} 
 \label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från vår kund eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
 När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
 \\
+\subsection{Vår lösning}
+I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.
+
+\begin{algorithm}[H]
+\caption{Quadopt-solver}
+\label{alg:quadoptsolver}
+\begin{algorithmic}
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break}
+		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
+	\EndIf
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 För att förstå hur kandidatgruppen skulle gå tillväga med att implementera Active set metoden löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
 Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
 
@@ -15,7 +51,6 @@ Till att börja med valdes en mer lättimplementerad lösning som kandidatgruppe
 $${f+(n-e) \choose (n-e)}, n>e $$
 Detta sågs som relativt effektivt då kandidatgruppen trodde att $e \approx n-1$ alltid stämde. Men vid senare testdata visade det sig att så inte var fallet. I det test som fick metoden att falla var $f = 192, e = 62, n = 92$ vilket ledde till att oerhört många kombinationer skulle testas:
 $${222 \choose 30} \approx 1.19*10^{37}$$
-Vilket är ca 100 biljoner gånger antalet stjärnor i universum. Om man grovt antar att datorn kan testa runt en miljard kombinationer per sekund skulle det ta ca $4*10^{20}$ år för den att testa alla kombinationer, vilket är något varken kandidatgruppen eller kunden har tid för.
 
 \subsubsection{Problem}
 ''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
@@ -107,12 +142,7 @@ SEMAT står för Software Engineering Method and Theory och är ett initiativ f�
 \newline
 \newline
 Ivar Jacobson, som är en av grundarna till SEMAT, har utvecklat ett verktyg kallat Alpha State. Alpha States representerar olika faser ett mjukvaruprojekt kan gå igenom.
-\begin{figure}[H]
-\centerline{\includegraphics[scale=0.25]{grafik/alpha_state_cards}}
-\caption{Alpha State Cards}
-\label{fig:alphas}
-\end{figure}
-Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. På korten finns alla faser och de krav som ska vara uppfyllda för just den fasen. Ett exempel på hur Alpha State Cards visas i Figur ~\ref{fig:alphas}. Genom att checka av vilka krav som är uppfyllda för vilken fas kan gruppen få ökad förståelse för vilket tillstånd projektet befinner sig i.  
+Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. På korten finns alla faser och de krav som ska vara uppfyllda för just den fasen. Genom att checka av vilka krav som är uppfyllda för vilken fas kan gruppen få ökad förståelse för vilket tillstånd projektet befinner sig i.  
 
 \subsubsection{Utvecklingsverktyg}
 De verktygen som användes under detta kandidatprojekt var främst
