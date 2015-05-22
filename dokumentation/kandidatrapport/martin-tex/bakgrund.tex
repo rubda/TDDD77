@@ -1,28 +1,7 @@
 \section{Bakgrund}
-Under kandidatprojektet Prediktionsreglering så skulle en lösare av kvadratiska komplexa problem tas fram. För detta behövdes ett matrisbibliotek väljas men inget bibliotek uppfyllde kraven. Dessa var:
-\begin{enumerate}
+Under kandidatprojektet Prediktionsreglering så skulle en lösare av kvadratiska komplexa problem tas fram. För detta behövdes ett matrisbibliotek väljas men inget bibliotek uppfyllde kraven, istället togs beslutet att utveckla ett eget. De matrisoperationer som behövdes var:
 
-\item Lättanvänt api
-\item Bra prestanda
-\item Plattformsoberoende
-\item Lätt att kompilera
-\item Ta upp lite minne
-\item Bra dokumenterad kod så man själv kan implementera förbättringar
-
-\end{enumerate} 
-
-Inget bibliotek uppfyllde alla dessa krav. De som undersöktes var:
 \begin{itemize}
-
-\item GNU Scientific library
-\item LAPACK
-\item ATLAS
-\item NAG
-
-\end{itemize}
-Då togs beslutet att ta fram ett eget bibliotek som döptes till matLib. De matrisoperationer som behövdes var:
-\begin{itemize}
-
 \item addition
 \item subtraktion
 \item multiplikation
@@ -34,7 +13,7 @@ Då togs beslutet att ta fram ett eget bibliotek som döptes till matLib. De mat
 \item skalärmultiplikation
 \item radoperationer
 \item kolumnoperationer
-
 \end{itemize}
+
 Efter implementation ska nu eventuella optimeringar undersökas. 
 

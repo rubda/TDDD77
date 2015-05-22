@@ -1,36 +1,43 @@
 \section{Resultat}
-I avsnitt \ref{avsnitt:fragestallning} framfördes frågeställningarna:
-
-\begin{enumerate}
-\item Vilket av de två byggsystemen har bäst prestanda?
-\item Vilket byggsystem är lättast att använda och utveckla?
-\item Hur hade projektet påverkats av ett annat val av byggsystem?
-\end{enumerate}
-
-\noindent Efter undersökningen beskriven i avsnitt \ref{avsnitt:metod} kan svaren på dessa frågor ges här.
+I avsnitt \ref{avsnitt:fragestallning} framfördes tre frågeställningar om hur Make och SCons skiljer sig. Efter undersökningen beskriven i avsnitt \ref{avsnitt:metod} kan svaren på dessa frågor ges här.
 
 \subsection{Prestanda}
-Resultatet från prestandamätningarna syns i tabell \ref{tabell:prestanda} och i figur \ref{fig:prestanda}.
+Resultatet från prestandamätningarna syns i tabell \ref{tabell:makeprestanda}, tabell \ref{tabell:sconsprestanda} och i figur \ref{fig:prestanda}.
 
 \begin{table}[h!]
   \centering
   \begin{tabular}{|l|l|l|}
     \hline
-    \textbf{Trådar} & \textbf{Make} (s) & \textbf{SCons} (s) \\ \hline
-    1 & 2.65 & 3.62 \\ \hline
-    2 & 1.56 & 2.34 \\ \hline
-    4 & 1.32 & 2.19 \\ \hline
-    8 & 1.32 & 2.20 \\ \hline
-    16 & 1.34 & 2.25 \\ \hline
+    \textbf{Trådar} & \textbf{Make} (s) & \textbf{Make $\sigma$} (s) \\ \hline
+    1 & 2,65 & 0,057 \\ \hline
+    2 & 1,56 & 0,018 \\ \hline
+    4 & 1,32 & 0,020 \\ \hline
+    8 & 1,32 & 0,016 \\ \hline
+    16 & 1,34 & 0,027 \\ \hline
   \end{tabular}
-  \caption{Resultat från prestandatester.}
-  \label{tabell:prestanda}
+  \caption{Resultat från prestandatester med Make.}
+  \label{tabell:makeprestanda}
+\end{table}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|l|l|l|}
+    \hline
+    \textbf{Trådar} & \textbf{SCons} (s) & \textbf{SCons $\sigma$} (s) \\ \hline
+    1 & 3,63 & 0,039 \\ \hline
+    2 & 2,35 & 0,027 \\ \hline
+    4 & 2,19 & 0,027 \\ \hline
+    8 & 2,20 & 0,033 \\ \hline
+    16 & 2,25 & 0,017 \\ \hline
+  \end{tabular}
+  \caption{Resultat från prestandatester med SCons.}
+  \label{tabell:sconsprestanda}
 \end{table}
 
 \begin{figure}[h!]
   \centering
   \includegraphics[scale=0.6]{yngve-tex/grafik/prestanda.pdf}
-  \caption{Resultat från prestandatester.}
+  \caption{Byggtid med Make och SCons.}
   \label{fig:prestanda}
 \end{figure}
 

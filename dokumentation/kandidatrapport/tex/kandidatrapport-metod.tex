@@ -5,11 +5,8 @@ I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hu
 \label{sec:algmet}
 Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point method och Active set method. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set method kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
 \\
-För att förstå hur kandidatgruppen skulle gå tillväga med att implementera Active set method löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
-Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper men inte lika trivial att göra i programkod.
-
 \subsection{Vår lösning}
 I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
@@ -46,6 +43,8 @@ I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+För att förstå hur kandidatgruppen skulle gå tillväga med att implementera Active set metoden löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
+Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
 
 \subsubsection{Startpunkt}
 Till att börja med valdes en mer lättimplementerad lösning som kandidatgruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
@@ -63,7 +62,7 @@ $${222 \choose 30} \approx 1.19*10^{37}$$
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Kundkontakten kom igång sent på grund av att kunden inte var på universitetet när projektet drog igång. Kandidatgruppen hade därefter flera möten bara för att förstå vad kunden hade för krav på produkten. Någon som var bra var att han hade väldigt bra koll på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Kandidatgruppen itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter fanns inte så mycket kontakt tills dess att kundens hjälp behövdes för att lösa en del problem.
+Kundkontakten kom igång sent på grund av att kunden inte var på universitetet när projektet drog igång. Kandidatgruppen hade därefter flera möten bara för att förstå vad kunden hade för krav på produkten. Någon som var bra var att han hade väldigt bra koll på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Kandidatgruppen itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter fanns inte så mycket kontakt tills dess att kundens hjälp behövdes för att lösa en del problem. Ingen del av arbetet har visats för kunden under något av mötena. 
 \newline
 \newline
 Ett av kraven som kandidatgruppen hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta inte skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde kandidatgruppen förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
@@ -149,55 +148,55 @@ Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. P
 De verktygen som användes under detta kandidatprojekt var främst
 \newline
 \newline
-\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 GB hårddisk, 1 GB RAM och 1 GB swap. Den kör Debian GNU/Linux Stable (Wheezy). Maskinen används främst för att driva kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
+\textbf{Virtuell maskin.} Till kandidatgruppens förfogande fanns en virtuell maskin med 8 GB hårddisk, 1 GB RAM och 1 GB swap. Den kör Debian GNU/Linux Stable (Wheezy \citep{wheezy}). Maskinen används främst för att driva kandidatgruppens hemsida. Hemsidan består av nyttiga länkar och en kalender som i sin tur består av möten och grupparbeten som gruppmedlemmar bör medverka i.
 \newline
 \newline 
-\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och tillhandahåller versioner av ens projekt i linjär tid. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt tillåtit individer att jobba med experimentell kod.
+\textbf{Git.} Git är ett versionshanteringssystem. Ett versionshanteringssystem möjliggör gör parallell utveckling och tillhandahåller versioner av ens projekt i linjär tid \citep{git}. Med hjälp av Git har kandidatgruppen kunnat arbeta parallellt med stora delar av kod samt tillåtit individer att jobba med experimentell kod.
 \newline
 \newline 
-\textbf{Github.} Github är ett webbhotell som använder Git. Här kan man lagra alla versioner av sin kod. Kandidatgruppen lagrar alla väsentligt dokumentation för projektet på Github, dvs alla dokument som skrivs och all kod. Kandidatgruppens Github är dessutom privat så bara folk som ska ha med dokumentationen att göra har tillgång till sidan.
+\textbf{Github.} GitHub är ett webbhotell som använder Git. Här kan man lagra alla versioner av sin kod \citep{github}. Kandidatgruppen lagrar alla väsentligt dokumentation för projektet på GitHub, dvs alla dokument som skrivs och all kod. Kandidatgruppens GitHub är dessutom privat så bara folk som ska ha med dokumentationen att göra har tillgång till sidan.
 \newline
 \newline
 \textbf{Byggsystem.} Ett byggsystem av kandidatgruppen har skapats och gruppen klassar det som ett utvecklingsverktyg. Byggsystemet kompilerar all kod och kör alla tester som finns i biblioteket. Detta har underlättat arbetsprocessen enormt, då efter man har skrivit kod kan man helt enkelt skriva in make i terminalen och då kompileras allt och alla tester. Byggsystem är utvecklat i språket Make.
 \newline
 \newline 
-\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med Github. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. Travis säger till om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och säger till om testerna lyckades eller inte. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens Github-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej.
+\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med GitHub. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. Travis säger till om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och säger till om testerna lyckades eller inte. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens GitHub-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej \citep{travisinfo}.
 \newline
 \newline
-\textbf{Valgrind.} Lösaren allokerar mycket minne och då den är implementerad i C så måste man själv se till att frigöra allt minne. För att vara säkra på att det inte fanns några minnesläckor så användes Valgrind, som kan hitta minnesläckor genom ett enkelt anrop. Hittades några minnesläckor så åtgärdades dessa.  
+\textbf{Valgrind.} Lösaren allokerar mycket minne och då den är implementerad i C så måste man själv se till att frigöra allt minne. För att vara säkra på att det inte fanns några minnesläckor så användes Valgrind, som kan hitta minnesläckor genom ett enkelt anrop. Hittades några minnesläckor så åtgärdades dessa \citep{valgrind}.
 \newline
 \newline
-\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var emacs som är en textredigerare skapad Richard 	Stallman. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer.
+\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var emacs som är en textredigerare skapad Richard 	Stallman. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer \citep{emacs}.
 \newline
 \newline
-\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen använde. Det som är utmärkande drag för Sublime är att redigeraren har en rätt så unik syntax-highlighting, dvs hur den belyser text. Detta uppskattades samt att inlärningsprocessen var enkel.s
+\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen använde. Det som är utmärkande drag för Sublime är att redigeraren har en rätt så unik syntax-highlighting, dvs hur den belyser text. Detta uppskattades samt att inlärningsprocessen var enkel \citep{sublime}.
 \newline
 \newline
-\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger. De som använde Eclipse tyckte att debuggern kom tillhands väldigt ofta och därför använde de Eclipse.
+\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger. De som använde Eclipse tyckte att debuggern kom tillhands väldigt ofta och därför använde de Eclipse \citep{eclipse}.
 \newline
 \newline
-\textbf{MATLAB.} MATLAB är ett datorprogram och programspråk som främst används för tekniska beräkningar och matematiska. Eftersom optimeringsalgoritmen som skrevs skulle kunna användas i MATLAB har MATLAB varit ett viktigt verktyg för kandidatgruppen. Tester av gruppens optimeringsalgoritm har gjorts i MATLAB många gånger. Även MATLAB matrisoperationer har varit till stor nytta för kandidatgruppen för att underlätta räkning av uppgifter. MATLAB har även en egen optimeringslösare som liknar kandidatgruppens, jämförelser har gjorts med den vid ett flertal tillfällen.
+\textbf{MATLAB.} MATLAB är ett datorprogram och programspråk som främst används för tekniska beräkningar och matematiska \citep{matlab}. Eftersom optimeringsalgoritmen som skrevs skulle kunna användas i MATLAB har MATLAB varit ett viktigt verktyg för kandidatgruppen. Tester av gruppens optimeringsalgoritm har gjorts i MATLAB många gånger. Även MATLAB matrisoperationer har varit till stor nytta för kandidatgruppen för att underlätta räkning av uppgifter. MATLAB har även en egen optimeringslösare som liknar kandidatgruppens, jämförelser har gjorts med den vid ett flertal tillfällen.
 \newline
 \newline
-\textbf{Gurobi.} Gurobi är ett kommersiellt programverktyg som specialiserar sig att lösa optimeringsproblem utav av alla typer. Kandidatgruppen hade i början ett krav på att vara likvärdig med Gurobi gällande hastighet. Detta har lett till att många tester har gjorts med Gurobi.
+\textbf{Gurobi.} Gurobi är ett kommersiellt programverktyg som specialiserar sig att lösa optimeringsproblem utav olika sorters optimeringsproblem \citep{gurobi}. Kandidatgruppen hade i början ett krav på att vara likvärdig med Gurobi gällande hastighet.
 \newline
 \newline
-\textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp. Anledning till att många i kandidatgruppen har använt Texmaker är för att de funkar på individernas operativsystem.
+\textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX \hspace{0.2mm} \citep{texmaker}. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp. Anledning till att många i kandidatgruppen har använt Texmaker är för att de funkar på individernas operativsystem.
 \newline
 \newline
-\textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system. Gummi kan anses vara ett lättviktigare program än Texmaker som är lite tyngre och har funktioner som inte har varit så nödvändiga.
+\textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system \citep{gummi}. Gummi kan anses vara ett lättviktigare program än Texmaker som är lite tyngre och har funktioner som inte har varit så nödvändiga.
 \newline
 \newline
-\textbf{Google Drive.} Google Drive har använts under projektets gång för att arbete med dokument med mindre betydelse. Dokument som mötesrapporter och tidsrapporter som enbart är menat för kandidatgruppen och handledare. Vid presentationstillfällen har Google Drive också varit till nytta för att göra presentationer.
+\textbf{Google Drive.} Google Drive har använts under projektets gång för att arbete med dokument med mindre betydelse. Dokument som mötesrapporter och tidsrapporter som enbart är menat för kandidatgruppen och handledare. Vid presentationstillfällen har Google Drive också varit till nytta för att göra presentationer \citep{gdrive}.
 \newline
 \newline
-\textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
+\textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program \citep{timeprofiler}. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
 \newline
 \newline
-\textbf{DDD.} Data Diplay Debugger har använts i projektet för att hitta kritiska fel. Felsökningen av kod sker i ett grafiskt användargränssnitt och är ett väldigt kraftfullt verktyg.
+\textbf{DDD.} Data Diplay Debugger har använts i projektet för att hitta kritiska fel. Felsökningen av kod sker i ett grafiskt användargränssnitt och är ett väldigt kraftfullt verktyg \citep{ddd}.
 \newline
 \newline
-\textbf{Doxygen.} Doxygen är en dokumentationsgenerator för programvara. Programmet funkar genom att användaren har skrivit kommenterar i koden under projektets gång och då använder Doxygen sig av dessa kommentarer för att generera ett dokument. Resultaten blir en pdf som består av förklaringar för funktioner och datastrukturer. 
+\textbf{Doxygen.} Doxygen är en dokumentationsgenerator för programvara. Programmet funkar genom att användaren har skrivit kommenterar i koden under projektets gång och då använder Doxygen sig av dessa kommentarer för att generera ett dokument. Resultaten blir en pdf som består av förklaringar för funktioner och datastrukturer \citep{Doxygen}. 
 
 \subsection{Forskningsmetod}
 Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken \emph{Numerical Optimization} \citep{numericaloptimization}. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.

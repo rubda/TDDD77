@@ -61,16 +61,51 @@ $$x_i = x_{i_1} - x_{i_2}$$
 där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
 Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är relaxationen av problemet. Simplexmetoden kan nu användas för att bli av med relaxationen . Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av virtuella variablerna.
 $$min \: z = \sum^{\#a_i}_{i=1} {a_i} \quad  \Leftrightarrow \quad min \: z - \sum^{\#a_i}_{i=1} {a_i} = 0$$
-Efter att ha satt in målfunktionen i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktionen\citep{numericaloptimization}.
+Efter att ha satt in målfunktionen i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktionen. \citep{numericaloptimization}
 
 \subsection{Active set method}   
 Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll.
 \textcolor{red}{skriv mer}
 
 \subsection{Interior point}
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningpunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
+
+\begin{algorithm}[H]
+\caption{Quadopt-solver}
+\label{alg:quadoptsolver}
+\begin{algorithmic}
+\Procedure{Quadopt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break}
+		\EndIf
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
+	\EndIf
+\EndWhile
+\State  $solution$ in $P\gets z$;
+
+\State \textbf{return} $solution$ in $P$;
+	
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Subproblem}
-Subproblemet är det problem som uppstår när man ska hitta riktningen mot det globala optimala punkten. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
+Subproblemet är det problem som uppstår när riktningen mot den globala optimala punkten ska hittas. Till att börja med så är det som kallas ett ''Subproblem'' till Active set metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också då målfunktionens globala minimum har flyttats, relativt till position den står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). \citep{numericaloptimization}
 \newline
 \newline
 Det finns flera olika metoder för att lösa subproblemet.
@@ -79,7 +114,7 @@ $$({A_k}Q^{-1}A_k^T)\lambda^* = ({A_k}Q^{-1}g-c)$$
 där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikatorer. Förövrigt så är
 $g = Qz+q$ och $c = A_kz - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegriktningen $p$:
 $$Qp = A^T\lambda^* - q$$
-Sedan är subproblemet löst. Som man kan se så utförs många matrismultiplikationer, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen symmetri utnyttjas. 
+Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen symmetri utnyttjas. \citep{numericaloptimization}
 \newline
 \newline
 KKT står för Karush-Kuhn-Tucker. Metoden löser följande system:
