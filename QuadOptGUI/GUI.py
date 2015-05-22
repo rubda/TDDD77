@@ -6,7 +6,27 @@ import os
 
 filename = None
 clipboard = None
-start_file = "parameters\n\nend\n\nvariables\n\nend\n\nlimits\n  max_iterations= \n  max_ms=\nend\n\nminimize\n\nsubject to\n\nend\n"
+start_file = """parameters
+    
+end
+
+dimensions
+
+end
+
+settings
+
+end
+
+variables
+
+end
+
+minimize 
+
+subject to
+
+end """
 
 
 def new_file(event=None):
@@ -48,6 +68,20 @@ def open_file(event=None):
     global filename
     try:
         f = askopenfile(mode='r')
+        t = f.read()
+        filename = f.name
+
+        text.delete(0.0, END)
+        text.insert(0.0, t)
+        root.title(filename)
+        highlight()
+    except:
+        pass
+
+def init_text(event=None):
+    global filename
+    try:
+        f = open("test.qopt")
         t = f.read()
         filename = f.name
 
@@ -107,12 +141,14 @@ def highlight(event=None):
     text.highlight_pattern("minimize", "blue")
     text.highlight_pattern("subject to", "blue")
     text.highlight_pattern("end", "blue")
+    text.highlight_pattern("dimensions", "blue")
+    text.highlight_pattern("settings", "blue")
 
 
 def generate_c(event=None):
     global filename
     try:
-        parse_qp("test.qopt", "result.c", "exempel.qopt")
+        parse_qp("test.qopt", "result.c", "problem_data.qopt")
 
         f = open("result.c")
         t = f.read()
@@ -121,6 +157,10 @@ def generate_c(event=None):
                  message="The generated C code was written to " + "result.c")
     except:
         showerror(title="Error", message="Something went wrong!")
+
+
+def run_code(event=None):
+    showerror()
 
 
 def edit_problem(event=None):
@@ -167,14 +207,6 @@ text = CustomText(mainArea, yscrollcommand=scrollbar.set, undo=True)
 text.pack(expand=True, fill="both")
 
 scrollbar.config(command=text.yview)
-"""
-# buttons
-problemLabel = Label(sideBar, text="Problem", font="Verdana 12 bold",
-                     fg="#305080", bg="#f6f6f6")
-problemLabel.pack()
-
-editButton = Button(sideBar, text="Edit", width=15, command=edit_problem)
-editButton.pack()"""
 
 blankLabel = Label(sideBar, text=" ", font="Verdana 12 bold",
                    fg="#305080", bg="#f6f6f6")
@@ -186,8 +218,8 @@ codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
 
-# FIX, RUN CURRENTLY CALLS GENERATE_C. SHOULD CALL MAKE OR SOMETHING!
-runButton = Button(sideBar, text="Run code", width=15, command=generate_c)
+# FIX, RUN CURRENTLY CALLS NOTHING. SHOULD CALL MAKE OR SOMETHING!
+runButton = Button(sideBar, text="Run code", width=15, command=run_code)
 runButton.pack()
 
 exitButton = Button(sideBar, text="Exit", width=15, command=quit)   
@@ -235,6 +267,7 @@ root.bind("<KeyPress>", highlight)
 root.config(menu=menuBar)
 root.wm_title("QuadOpt Solver")
 root.protocol("WM_DELETE_WINDOW", quit)
+root.geometry("700x620")
 
-new_file()
+init_text()
 root.mainloop()
