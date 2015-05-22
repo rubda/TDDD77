@@ -1,4 +1,5 @@
 \section{Teori}
+I det här avsnittet förklaras grundläggande teori om matrisbiblioteket samt metoder för eventuella förbättringar.
 
 \subsection{Allmän design av biblioteket}
 Alla operationer på matriser och vektorer bygger i grunden på matris structen som är definierad i matLib.h.
@@ -10,33 +11,41 @@ Som skapar en $row \ \text{x} \ column$ stor matris.
 \newline
 För att sätt in ett värde i matris används följande funktion:
 \lstinputlisting[language=C]{martin-tex/insert_value.c}
-Matriserna lagras row major så datan ligger lagrad enligt figur 1. 
+Matriserna lagras row major så datan ligger lagrad enligt figur \ref{fig:rowmajor}. 
 \begin{figure}[h]
 \center
 \scalebox{0.8}{\input{martin-tex/matrix_dia}}
 \caption{Ordning som data i matrisen lagras på}
+\label{fig:rowmajor}
 \end{figure}
 
 
 \subsection{Tidskomplexitet på nuvarande implementationer operationer}
-Alla tidskomplexiteter beräknas på nxn matriser.
-Addition: $\mathcal{O}(n^2)$\\
-Subtraktion: $\mathcal{O}(n^2)$\\
-Multiplikation: $\mathcal{O}(n^3)$\\
-Invers (crout och sedan lösa n ekvationssystem): $\mathcal{O}(n^3)$\\ 
+Tabell \ref{tabell:matrisopkomplexitet} visar tidskomplexiteten i värsta fallet för operationer på matriser. Alla tidskomplexiteter beräknas på \scalebox{1.2}{$n$}x\scalebox{1.2}{$n$} matriser.
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Operation} & \textbf{Tidskomplexitet} \\ \hline
+    Addition & $\mathcal{O}(n^2)$ \\ \hline
+    Subtraktion & $\mathcal{O}(n^2)$\\ \hline
+    Multiplikation & $\mathcal{O}(n^3)$\\ \hline
+    Invers (crout och sedan lösa $n$ ekvationssystem) & $\mathcal{O}(n^3)$\\ \hline
+  \end{tabular}
+  \caption{Tidskomplexitet för matematiska operationer på matriser.}
+  \label{tabell:matrisopkomplexitet}
+\end{table}
 
 \subsection{Algoritmiska förbättringar}
-Multiplikation:\\
-Istället för den naive algoritmen kan Strassen algoritmen implementeras vilket reducerar tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$ \citep{Strassen1969}. \\
-Inverse:\\
-Istället för crout så kan inversen beräknas med Strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$. Denna algoritm har dock en stor nackdel som beskrivs i sektion \ref{sec:inverse_nackdelar}.
+För snabbare multiplikation kan Strassen algoritmen implementeras vilket reducerar tidskomplexiteten till $\mathcal{O}(n^{2.807})$ från $\mathcal{O}(n^3)$ för den naiva algoritmen \citep{Strassen1969}. Istället för crout så kan inversen beräknas med Strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$. Denna algoritm har dock en stor nackdel som beskrivs i sektion \ref{sec:inverse_nackdelar}.
 
 \subsection{Strukturella förbättringar}
 När ett linjärt ekvationssystem på formen $Ax=b $ löses så bryts A ned till två matriser L och U där L är en undre triangulär matris och U är en övre triangulär matris\citep{Ching}. I matris structen skulle dessa matriser kunna sparas tillsammans med en boolean som säger om matrisen har modifierats så skulle man kunna undvika att beräkna U och L flera gånger för samma matris. Samma sätt skulle kunna användas för inversen till matriser. 
 
 \subsection{Strassen algoritmen för beräkning av inverser}
 \label{sec:inverse_nackdelar}
-Matrisen som ska invertera delas upp i fyra submatriser på följande sätt:
+Matrisen som ska inverteras delas upp i fyra submatriser på följande sätt:
 $$A=\begin{bmatrix}
 A_{11} & A_{12} \\
 A_{21}& A_{22}
@@ -137,7 +146,7 @@ C_{21}& C_{22}
  \\
 Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallell då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan Strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare på x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
  \subsubsection{Nackdelar med Strassen}
- I den nuvarande implementationen av matrisbiblioteket så skapas en ny matris varje gång man går en operation. Detta kan leda till att den använder mycket minne.
+ I den nuvarande implementationen av matrisbiblioteket så skapas en ny matris varje gång man gör en operation. Detta kan leda till att den använder mycket minne.
  
 
  
