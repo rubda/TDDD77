@@ -2,8 +2,8 @@
 
 De frågeställningar som ställdes i början av dokumentet var:
 \begin{enumerate}
-\item Går det att implementera en kvadratisk optimeringslösare i programspråket C med tiden som har getts kandidatgruppen?
-\item Kan vi implementera ett system som löser kvadratiska optimeringsproblem snabbare än Gurobi?
+\item Går det att implementera en kvadratisk optimeringslösare i programspråket C?
+\item Kan kandidatgruppen implementera ett system som löser kvadratiska optimeringsproblem snabbare än Gurobi?
 \item Kan projektet utföras utan någon speciell utvecklingsmetodik? 
 \end{enumerate}
 
@@ -23,20 +23,20 @@ Svaren på dessa frågor besvaras i listan nedan:
 \end{enumerate}
 	
 	
-\subsection{Gruppens gemensamma erfarenheter}
-En lärdom vi tagit under projektets gång är vikten av att hålla regelbundna möten med kunden i början av projektet för att klargöra vad som verkligen ska göras. Många frågor uppkommer och utan en tydlig kravspecifikation blir det svårt att planera projektet. Den första kravspecifikationen som togs fram var bristfällig då gruppmedlemmarna saknade praktisk erfarenhet av dels kvadratiska optimeringsproblem och dels metodiker för programvaruutveckling. Om fler kundmöten hade planerats hade åtminstone det förstnämnda blivit ett mindre problem. Istället blev det mycket osäkerheter kring uppgiften i början av projektet vilket ledde till att gruppen förlorade tid. Till exempel försöktes lösningsalgoritmen implementeras utan tillräcklig kunskap vilket gjorde att den behövde revideras flera gånger.
+\subsection{Kanditatgruppens gemensamma erfarenheter}
+En lärdom kandidatgruppen tagit under projektets gång är vikten av att hålla regelbundna möten med kunden i början av projektet för att klargöra vad som verkligen ska göras. Många frågor uppkommer och utan en tydlig kravspecifikation blir det svårt att planera projektet. Den första kravspecifikationen som togs fram var bristfällig då gruppmedlemmarna saknade praktisk erfarenhet av dels kvadratiska optimeringsproblem och dels metodiker för programvaruutveckling. Om fler kundmöten hade planerats hade åtminstone det förstnämnda blivit ett mindre problem. Istället blev det mycket osäkerheter kring uppgiften i början av projektet vilket ledde till att kandidatgruppen förlorade tid. Till exempel försöktes lösningsalgoritmen implementeras utan tillräcklig kunskap vilket gjorde att den behövde revideras flera gånger.
 \newline
 \newline
-Vi har haft goda erfarenheter med att använda molntjänster som GitHub och Google Drive för hantering av kod och dokumentation, så länge vi gör upp vilka som skriver vad för att undvika konflikter. När konflikter har uppstått har de tacklats utbildning av gruppens samtliga medlemmar, vilket har lett till mer kunskapsspridning.
+Kandidatgruppen har haft goda erfarenheter med att använda molntjänster som Github och Google Drive för hantering av kod och dokumentation, så länge kandidatgruppen gör upp vilka som skriver vad för att undvika konflikter i versionshanteringen. När konflikter har uppstått har de tacklats med utbildning av kandidatgruppens samtliga medlemmar, vilket har lett till mer kunskapsspridning.
 \newline
 \newline
-Till yttermera visso har gruppen fått en djupare förståelse för programspråket C. Då ett krav på programvaran är att den ska gå att kompilera och exekvera på ett flertal plattformar, har gruppen fått en insikt om vad ''implementation defined'' verkligen betyder. Det har hänt flera gånger att programmet går att exekvera på en plattform men får segmenteringsfel på en annan. Detta beror ofta på att olika operativsystem och kompilatorer hanterar minnesallokering på olika sätt.
+Till yttermera visso har kandidatgruppen fått en djupare förståelse för programspråket C. Då ett krav på programvaran är att den ska gå att kompilera och exekvera på ett flertal plattformar, har kandidatgruppen fått en insikt om vad ''implementation defined'' verkligen betyder. Det har hänt flera gånger att programmet går att exekvera på en plattform men får segmenteringsfel på en annan. Detta beror ofta på att olika operativsystem och kompilatorer hanterar minnesallokering på olika sätt.
 \newline
 \newline
-Utöver detta har gruppen insett vikten av testning och kontinuerlig integration. Tack vare att ett synnerligen välfungerande byggsystem implementerades tidigt i projektets gång har mycket tid sparats in som antagligen skulle lagts på kompilering och felsökande. Gruppens byggserver kör automatiskt tester direkt när kod har skickats till den centrala versionshanteringsservern och varnar syndaren via elektronisk post om något test eller kompilering skulle misslyckas. Detta har gjort att fel har upptäckts tidigt och åtgärdats snabbt.
+Utöver detta har kandidatgruppen insett vikten av testning och kontinuerlig integration. Tack vare att ett synnerligen välfungerande byggsystem implementerades tidigt i projektets gång har mycket tid sparats in som antagligen skulle lagts på kompilering och felsökande. Kandidatgruppens byggserver kör automatiskt tester direkt när kod har skickats till den centrala versionshanteringsservern och varnar syndaren via elektronisk post om något test eller kompilering skulle misslyckas. Detta har gjort att fel har upptäckts tidigt och åtgärdats snabbt.
 
 \subsection{Översikt över de individuella utredningarna}
-I de individuella utredningarna har vi rapporter som behandlar: 
+I de individuella utredningarna har kandidatgruppen rapporter som behandlar: 
 \begin{itemize}
 	\item En undersökning av olika byggsystem.
 	\item Hur man är en bra team ledare och vad best practices är.
