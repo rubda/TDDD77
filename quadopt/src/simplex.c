@@ -12,7 +12,7 @@ int min_test(int column, matrix* tableau);
 
 bool simplex_phase_1(problem* prob){
   /* Slack and virtual variable sets */  
-  work_set* virtual_vars = work_set_create(prob->equality_count+prob->equality_count);
+  work_set* virtual_vars = work_set_create(prob->equality_count+prob->inequality_count);
 
   matrix* Fr;  
   matrix* gr;
