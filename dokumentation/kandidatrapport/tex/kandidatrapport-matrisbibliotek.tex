@@ -57,7 +57,7 @@ Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svår
 
 
 \subsubsection{Datastrukturer}
-Hela biblioteket bygger på en c-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. Columns säger hur många kolumner matrisen har, rows säger hur många rader den har, size säger hur många element den har och start är en pekare till första elementet i matrisen. För att komma åt ett element på rad x och i kolumn y så använder man ekvationen $start+columns(x-1)+y-1$ vilket ger pekaren till elementet. Alla operationer för att sätta in och hämta element tar $\mathcal{O}(1)$
+Hela biblioteket bygger på en c-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. Columns säger hur många kolumner matrisen har, rows säger hur många rader den har, size säger hur många element den har och start är en pekare till första elementet i matrisen. För att komma åt ett element på rad x och i kolumn y så använder man ekvationen $start+columns(x-1)+y-1$ vilket ger pekaren till elementet. Alla operationer för att sätta in och hämta element tar då $\mathcal{O}(1)$
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 \caption{Matrix struct}
@@ -73,7 +73,7 @@ Det finns även ett tillägg till matLib som döpts till sparseLib. Detta är et
 \label{fig:sparse_struct}
 \end{figure}
 
-I figur~\ref{fig:sparse_struct} kan det ses att precis som den vanliga matrisen innehåller glesa matrisen information om antal rader, antal columner och storlek. Istället för ett fält med alla elementen finns nu tre fält. A innehåller de nollskillda elementens värden, rA innehåller deras radkoordinat och cA innehåller deras columnkoordinat. \\
+I figur~\ref{fig:sparse_struct} precis som i den vanliga matrisen innehåller glesa matrisen information om antal rader, antal columner och storlek. Istället för ett fält med alla elementen finns nu tre fält. A innehåller de nollskillda elementens värden, rA innehåller deras radkoordinat och cA innehåller deras columnkoordinat. \\
 Fördelen med detta format är att vissa operationer blir snabbare. Till exempel, en multiplikation mellan en gles matris och en vanlig matris. Båda av storleken $nxn$. Om den glesa matrisen innehåller $m$ nollskilda element blir tidkomplexiteten endast $\mathcal{O}(m*n)$, i jämförelse med den naiva matrismultiplikationen vars komplexitet är $\mathcal{O}(n^3)$. För att matrisen ska räknas som gles så är $m \ll n^2$.
 Ett annat exempel på förbättring är att ta ut transponatet av en matris. För en matris i det glesa formatet behövs endast pekaren till radfältet och pekaren till columnfältet byta plats. Detta leder till att komplexiteten för denna operation blir $\mathcal{O}(1)$ istället för $\mathcal{O}(n^2)$. \\
 Nackdelar med det nya formatet är att information om var element befinner sig i fälten saknas. Därför krävs det, om man ska skriva till en position i matrisen, att man itererar igenom fälten för att hitta det valda elementet. Detta tar $\mathcal{O}(n)$ tid, jämfört med vanliga matrisen där det tar $\mathcal{O}(1)$ tid.
