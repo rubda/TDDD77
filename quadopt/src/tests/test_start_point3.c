@@ -1,6 +1,5 @@
 #include <solver.h>
 #include <assert.h>
-#include <feasible_point.h>
 #include <simplex.h>
 
 int main() {
