@@ -7,10 +7,13 @@ Byggsystemet tillhör raden av verktyg som används väldigt ofta i utvecklingsp
   \item Generering av installationsfiler samt installation
 \end{itemize}
 
-Byggsystemet måste även hålla reda på de beroenden som existerar mellan filerna som utgör ett färdigt program eller dokument. Figur \ref{fig:beroendegraf} visar ett minimalistiskt exempel över hur beroendegrafen kan se ut. I exemplet ska programmet ''program'' byggas som består av källkodsfilerna ''display.h'', ''display.c'' och ''program.c''. Dessa källkodsfiler ska kompileras till två objektfiler ''display.o'' och ''program.o''. Dessutom används ett programbibliotek från tredje part, ''lib3d.a'', som måste länkas med objektfilerna för att ge den slutgiltiga produkten av bygget, den körbara filen ''program''. De riktade bågarna i grafen symboliserar relationen ''beror på''.
+Byggsystemet måste även hålla reda på de beroenden som existerar mellan filerna som utgör ett färdigt program eller dokument \citep{pragmaticautomation}.
 \newline
 \newline
-Ett välkonstruerat byggsystem håller reda på alla beroenden mellan filerna samt bygger bara om det som behöver byggas om när något ändras. Om till exempel filen ''display.c'' skulle ändras skulle det medföra att allting som beror på den måste byggas om, det vill säga ''display.o'' och programmet ''program''. ''program.o'' behöver inte kompileras igen.
+Figur \ref{fig:beroendegraf} visar ett minimalistiskt exempel över hur beroendegrafen kan se ut. I exemplet ska programmet ''program'' byggas som består av källkodsfilerna ''display.h'', ''display.c'' och ''program.c''. Dessa källkodsfiler ska kompileras till två objektfiler ''display.o'' och ''program.o''. Dessutom används ett programbibliotek från tredje part, ''lib3d.a'', som måste länkas med objektfilerna för att ge den slutgiltiga produkten av bygget, den körbara filen ''program''. De riktade bågarna i grafen symboliserar relationen ''beror på''.
+\newline
+\newline
+Ett välkonstruerat byggsystem håller reda på alla beroenden mellan filerna samt bygger bara om det som behöver byggas om när något ändras \citep{make}. Om till exempel filen ''display.c'' skulle ändras skulle det medföra att allting som beror på den måste byggas om, det vill säga ''display.o'' och programmet ''program''. ''program.o'' behöver inte kompileras igen.
 
 \begin{figure}[h!]
   \centering
@@ -20,16 +23,13 @@ Ett välkonstruerat byggsystem håller reda på alla beroenden mellan filerna sa
 \end{figure}
 
 \subsection{Make}
-Make är ett gammalt verktyg som skapades av Stuart Feldman 1976. Den variant som är vanligast idag är GNU Make och det är den som kommer att behandlas i rapporten.
-\newline
-\newline
-Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i samma katalog som källkoden. I filen skrivs en uppsättning direktiv som berättar för Make vad och hur allt ska byggas. Språket kallas för Make och är ett deklarativt programspråk. Make använder sig av skalkommandon vilket medför att hela skalmiljön är åtkomlig för Make.
+Make är ett gammalt verktyg som skapades av Stuart Feldman 1978. Den variant som är vanligast idag är GNU Make och det är den som kommer att behandlas i rapporten. Make används genom att utvecklaren skapar en fil kallad Makefile som ligger i samma katalog som källkoden. I filen skrivs en uppsättning direktiv som berättar för Make vad och hur allt ska byggas. Språket kallas för Make och är ett deklarativt programspråk. Make använder sig av skalkommandon vilket medför att hela skalmiljön är åtkomlig för Make \citep{make}.
 \newline
 \newline
 Normal praxis är att använda flera Makefiler, till exempel en för varje delkomponent i programmet, och att ha en huvudfil som anropar de andra filerna. Detta kan dock bli väldigt förvirrande och leda till att byggsystemet måste uppdateras ofta när koden ändras \citep{recursivemake}.
 \newline
 \newline
-För att få Make att bygga programmet i figur \ref{fig:beroendegraf} används Makefilen från figur \ref{fig:makefile}. Kommandot i figur \ref{fig:makekommando} används sedan för att bygga programmet.
+För att få Make att bygga programmet i figur \ref{fig:beroendegraf} används Makefilen från figur \ref{fig:makefile}. Kommandot \colorbox{lightgray}{\lstinline$make program$} används sedan för att bygga programmet.
 
 \begin{figure}[h!]
   \lstinputlisting[language=make]{yngve-tex/Makefile_exempel.mk}
@@ -37,29 +37,14 @@ För att få Make att bygga programmet i figur \ref{fig:beroendegraf} används M
   \label{fig:makefile}
 \end{figure}
 
-\begin{figure}[h!]
-  \lstinputlisting[language=sh]{yngve-tex/make_exempel.sh}
-  \caption{Kommando för att bygga med Make.}
-  \label{fig:makekommando}
-\end{figure}
-
 \subsection{SCons}
-SCons är ett nyare verktyg som skapades Steven Knight år 2000. SCons används på liknande sätt som Make men istället för en Makefile skapas en fil kallad SConstruct. Till skillnad från Make används Python som språk för att beskriva hur och vad som ska byggas. Dessutom är skalmiljön normalt sett inte åtkomlig för SCons.
+SCons är ett nyare verktyg som skapades av Steven Knight år 2000 som bidrag till tävlingen ''Software Carpentry SC Build competition'', en tävling som SCons lyckades vinna. Målet med SCons är att åtgärda svagheter i andra byggsystem och skapa ett lättanvänt och portabelt alternativ \citep{scons}. SCons används på liknande sätt som Make men istället för en Makefile skapas en fil kallad SConstruct. Till skillnad från Make används Python som språk för att beskriva hur och vad som ska byggas. Dessutom är skalmiljön normalt sett inte åtkomlig för SCons. Även SCons-byggsystem brukar delas upp i flera filer. Här kallas huvudfilen SConstruct och underfilerna SConscript \citep{sconsmanual}.
 \newline
 \newline
-Även SCons-byggsystem brukar delas upp i flera filer. Här kallas huvudfilen SConstruct och underfilerna SConscript.
-\newline
-\newline
-SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}. Figur \ref{fig:sconstruct} visar ett exempel på en SConstruct-fil som gör samma sak som Makefilen i figur \ref{fig:makefile}. Kommandot i figur \ref{fig:sconskommando} används för att bygga programmet med SCons.
+SCons körs på ett likande sätt som Make för att bygga programmet i figur \ref{fig:beroendegraf}. Figur \ref{fig:sconstruct} visar ett exempel på en SConstruct-fil som gör samma sak som Makefilen i figur \ref{fig:makefile}. Kommandot \colorbox{lightgray}{\lstinline$scons program$} används för att bygga programmet med SCons.
 
 \begin{figure}[h!]
   \lstinputlisting[language=python]{yngve-tex/SConstruct_exempel.py}
   \caption{SConstruct för exemplet i figur \ref{fig:beroendegraf}.}
   \label{fig:sconstruct}
-\end{figure}
-
-\begin{figure}[h!]
-  \lstinputlisting[language=sh]{yngve-tex/scons_exempel.sh}
-  \caption{Kommando för att bygga med SCons.}
-  \label{fig:sconskommando}
 \end{figure}

@@ -1,15 +1,15 @@
 \section{Teori}
-I boken ''Software Product Quality Control'' \cite{SPQC} nämns ett antal definitioner som förtydligar vad kvalitetssäkring innebär, dessa syns nedan.  
+I boken ''Software Product Quality Control'' \citep{SPQC} nämns ett antal definitioner som förtydligar vad kvalitetssäkring innebär, dessa syns nedan.  
 
 \begin{itemize}
-  \item ''Quality assurance: a planned and systematic pattern of all actions necessary to provide adequate confidence that an item or product conforms to established technical requirements.'' 
-  \item ''Constructive quality assurance: All means to be used in constructing a product in a way so it meets its quality requirements.'' 
-  \item ''Analyctical quality assurance: All means of analysing the state of the quality of a product.'' 
+  \item ''Quality assurance: a planned and systematic pattern of all actions necessary to provide adequate confidence that an item or product conforms to established technical requirements.'' \citep[p.19]{SPQC} 
+  \item ''Constructive quality assurance: All means to be used in constructing a product in a way so it meets its quality requirements.'' \citep[p.19]{SPQC} 
+  \item ''Analyctical quality assurance: All means of analysing the state of the quality of a product.'' \citep[p.19]{SPQC} 
 \end{itemize}
-\noindent Kvalitetssäkring innebär följaktligen att man som leverantör av en produkt eller tjänst ska se till att de uppfyller de krav som har satts upp i en eventuell kravspecifikation. Att man under arbetsgången analyserar om man är på väg att uppfylla kraven eller inte, i sådana fall måste detta åtgärdas omedelbart.
+\noindent Kvalitetssäkring innebär följaktligen att man som leverantör av en produkt eller tjänst ska se till att de uppfyller de krav som har satts upp i en eventuell kravspecifikation. Det är dessa krav som sätter standarden för vad som är rätt nivå gällande kvalité. Under arbetsgången måste man analysera om man är på väg att uppfylla kraven eller inte, i sådana fall måste detta åtgärdas omedelbart.
 \newline
 \newline
-Med detta sagt finns det flera steg i ett projekt att kvalitetssäkra. Ett effektivt sätt att göra detta på är genom att följa Shewhart cykeln, det vill säga planera, göra, studera och agera (PGSA) \citep{PDCA}. Shewhart cykeln är en iterativ fyra stegs metod, se figur \ref{fig:shewcycle} och metoden är utvecklad av William Edwards Deming. Namnet ''Shewhart'' kommer från en av Demings kollegor \citep[p.~88]{Deming}. 
+Med detta sagt finns det flera steg i ett projekt att kvalitetssäkra. Ett effektivt sätt att göra detta på är genom att följa Shewhart cykeln, det vill säga planera, göra, studera och agera (PGSA) \citep{PDCA}. Shewhart cykeln är en iterativ fyra stegs metod, se figur \ref{fig:shewcycle}. Metoden är utvecklad av William Edwards Deming. Namnet ''Shewhart'' kommer från en av Demings kollegor \citep[p.~88]{Deming}. 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.5]{ruben-tex/graphic/shewhartcycle}}
 \caption{Shewhart cykeln \citep{Mindtools}}
@@ -17,9 +17,9 @@ Med detta sagt finns det flera steg i ett projekt att kvalitetssäkra. Ett effek
 \end{figure}
 \begin{enumerate}
   \item Planera. I detta skede ska målet fastställas, det vill säga sätta upp de krav som behövs för att kunden skall bli nöjd. Genom att göra detta är det tydligt om vad som skall göras och en överenskommelse finns mellan kund och leverantör. 
-  \item Göra. När man väl har fått för sig om vad som behövs göras för att kunden skall bli nöjd är det dags att implementera ett sätt att jobba och fullfölja processen.
-  \item Studera. Efter att ha följt processen under en viss period är det dags att utvärdera om processen man har följt kommer leda till att man uppfyller de målen man har fastställt i ''planera''-skedet.
-  \item Agera. Om man under ''studera''-skedet upptäcker att processen man följer inte kommer leda till att man uppfyller de krav som kund och leverantör var överens om måste detta åtgärdas omedelbart genom att planera om arbetsprocessen eller i viss mån diskutera kraven med kunden. Om processen som följs kommer uppfylla de krav som har satts upp kan man fortsätta med iterationerna av Shewhart cykeln precis som innan.
+  \item Göra. När man konstaterat vad som behöver göras för att kunden skall bli nöjd är det dags att implementera ett sätt att arbeta och fullfölja processen.
+  \item Studera. Efter att ha följt processen under en viss period är det dags att utvärdera om processen man har följt kommer leda till att man uppfyller de målen man har fastställt i planeringsfasen.
+  \item Agera. Om man under studeringsfasen upptäcker att processen man följer inte kommer leda till att man uppfyller de krav som kund och leverantör var överens om måste detta åtgärdas omedelbart genom att planera om arbetsprocessen eller i viss mån diskutera kraven med kunden. Om processen som följs kommer uppfylla de krav som har satts upp kan man fortsätta med iterationerna av Shewhart cykeln precis som innan.
 \end{enumerate}
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.15]{ruben-tex/graphic/PDCA_Process}}
