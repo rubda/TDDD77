@@ -104,7 +104,7 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \end{algorithm}
 
 \subsection{Subproblem}
-Subproblemet är det problem som uppstår när man ska hitta riktningen mot det globala optimala punkten. Till att börja med så är det som kallas ett ''Subproblem'' till Active set-metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
+Subproblemet är det problem som uppstår när man ska hitta riktningen mot det globala optimala punkten. Till att börja med så är det som kallas ett ''Subproblem'' till Active set metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det lite från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också en aning då målfunktionens globala minimum har flyttats, relativt till position man står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). 
 \newline
 \newline
 Det finns flera olika metoder för att lösa subproblemet.
@@ -139,6 +139,7 @@ Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimizatio
 Skriv om detta
 
 \subsection{MEX}
+\label{sec:mex}
 MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
 
 \begin{figure}[H]
