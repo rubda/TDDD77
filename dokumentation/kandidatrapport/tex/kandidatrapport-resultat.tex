@@ -2,14 +2,14 @@
 
 De frågeställningar som ställdes i början av dokumentet var:
 \begin{enumerate}
-\item Går det att implementera en kvadratisk optimeringslösare i programspråket C?
+\item Går det att implementera en kvadratisk optimeringslösare i programspråket C med tiden som har getts kandidatgruppen?
 \item Kan vi implementera ett system som löser kvadratiska optimeringsproblem snabbare än Gurobi?
 \item Kan projektet utföras utan någon speciell utvecklingsmetodik? 
 \end{enumerate}
 
 Svaren på dessa frågor besvaras i listan nedan:
 \begin{enumerate}
-\item Ja, det går att implementera en kvadratisk optimeringslösare i programspråket C. Detta eftersom kandidatgruppen har lyckats med att göra det. Den kvadratiska optimeringslösaren som skrevs i programspråket C var active-set metoden. I figur \ref{fig:arkitektur} visas en överblick hur hela systemet såg ut. Där problem.c skapar en struct innehållande de matriser som problemet består av och sedan löser solvern detta problem.
+\item Ja, det går att implementera en kvadratisk optimeringslösare i programspråket C med den tid som hade getts. Den kvadratiska optimeringslösaren som skrevs i programspråket C var Active set metoden. I figur \ref{fig:arkitektur} visas en överblick hur hela systemet såg ut. Där problem.c skapar en struct innehållande de matriser som problemet består av och sedan löser solvern detta problem.
 
 \begin{figure}[h]
 \centerline{\includegraphics[scale=0.5]{grafik/arkitektur}}
@@ -27,7 +27,7 @@ Svaren på dessa frågor besvaras i listan nedan:
 En lärdom vi tagit under projektets gång är vikten av att hålla regelbundna möten med kunden i början av projektet för att klargöra vad som verkligen ska göras. Många frågor uppkommer och utan en tydlig kravspecifikation blir det svårt att planera projektet. Den första kravspecifikationen som togs fram var bristfällig då gruppmedlemmarna saknade praktisk erfarenhet av dels kvadratiska optimeringsproblem och dels metodiker för programvaruutveckling. Om fler kundmöten hade planerats hade åtminstone det förstnämnda blivit ett mindre problem. Istället blev det mycket osäkerheter kring uppgiften i början av projektet vilket ledde till att gruppen förlorade tid. Till exempel försöktes lösningsalgoritmen implementeras utan tillräcklig kunskap vilket gjorde att den behövde revideras flera gånger.
 \newline
 \newline
-Vi har haft goda erfarenheter med att använda molntjänster som Github och Google Drive för hantering av kod och dokumentation, så länge vi gör upp vilka som skriver vad för att undvika konflikter. När konflikter har uppstått har de tacklats utbildning av gruppens samtliga medlemmar, vilket har lett till mer kunskapsspridning.
+Vi har haft goda erfarenheter med att använda molntjänster som GitHub och Google Drive för hantering av kod och dokumentation, så länge vi gör upp vilka som skriver vad för att undvika konflikter. När konflikter har uppstått har de tacklats utbildning av gruppens samtliga medlemmar, vilket har lett till mer kunskapsspridning.
 \newline
 \newline
 Till yttermera visso har gruppen fått en djupare förståelse för programspråket C. Då ett krav på programvaran är att den ska gå att kompilera och exekvera på ett flertal plattformar, har gruppen fått en insikt om vad ''implementation defined'' verkligen betyder. Det har hänt flera gånger att programmet går att exekvera på en plattform men får segmenteringsfel på en annan. Detta beror ofta på att olika operativsystem och kompilatorer hanterar minnesallokering på olika sätt.
