@@ -8,7 +8,10 @@ def parse_mpc(filename, outfile, datafile):
         matrix_dimensions = get_mpc_data(mpcfile)
 
         for key in matrix_dimensions:
-            print(create_matrix(key, matrix_dimensions[key], matrix_data[key]))
+            out = create_matrix(key, matrix_dimensions[key], matrix_data[key])
+            print(out)
+            outfile.write(out)
+
 
 
 """
@@ -85,10 +88,10 @@ def create_matrix(name, dimensions, data):
     cols = str(dimensions[1])
     size = str(dimensions[0]*dimensions[1])
 
-    matrix_init = "matrix* " + name + "= create_matrix(" + rows + "," + cols + ");\n"
+    matrix_init = "matrix* " + name + " = create_matrix(" + rows + "," + cols + ");\n"
     matrix_fill = "value " + name + "_data[" + size + "] = " + data + ";\n"
     matrix_insert = "insert_array(" + name + "_data, " + name + ");\n"
 
-    return matrix_init + matrix_fill + matrix_insert 
+    return matrix_init + matrix_fill + matrix_insert + "\n"
 
 parse_mpc("test.qopt", "result.c", "problem_data.qopt")
