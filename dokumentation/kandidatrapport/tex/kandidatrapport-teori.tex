@@ -36,13 +36,13 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet men nödvändigt då alla algoritmer kräven en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
 
 \subsection{Simplex}
 Skriv om simplex
 
 \subsubsection{Phase I}
-''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmattad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
+''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
@@ -68,7 +68,7 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \textcolor{red}{skriv mer}
 
 \subsection{Interior point}
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningpunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningspunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
 
 \begin{algorithm}[H]
 \caption{Quadopt-solver}
