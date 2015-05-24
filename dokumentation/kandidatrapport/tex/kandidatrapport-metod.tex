@@ -5,7 +5,7 @@ I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hu
 \label{sec:algmet}
 Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens jobb att välja den av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var projektets beställare Daniel som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt honom var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
 \\
 \subsection{Vår lösning}
 I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.
@@ -44,7 +44,7 @@ I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active
 \end{algorithmic}
 \end{algorithm}
 För att förstå hur kandidatgruppen skulle gå tillväga med att implementera Active set metoden löstes först problemet tillsammans för hand. Detta gjorde att gruppmedlemmarna fick en klarare bild av hur algoritmen skulle se ut och hur den kunde delas upp i mindre funktioner. Problemet som löstes var ett väldigt litet problem (endast två variabler) för att det skulle gå att visualisera problemet på papper. \\
-Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men hur lätt det var att implementera metoden i kod var otydlig. 
+Något som upptäcktes när problemet löstes för hand var att definitionen av hur subproblemet skulle lösas var tydlig och trivial när det löstes på papper, men att implementera den i kod inte var lika trivialt.
 
 \subsubsection{Startpunkt}
 Till att börja med valdes en mer lättimplementerad lösning som kandidatgruppen tog fram själva. Denna metod byggde på att lösa många linjära system och leta efter en punkt där en delmängd av bivillkoren är aktiva, men också att punkten även uppfyller alla andra bivillkor. Antalet kombinationer denna metod testar är då, räknat med $e$ st likhetsbivillkor, $f$ st olikhetsbivillkor och $n$ st variabler:
@@ -99,7 +99,7 @@ Kandidatgruppen har även haft en egen hemsida som innehåller en kalender och i
 Under förstudien i detta kandidatprojekt var gruppmedlemmarna överens om att någon sorts utvecklingsmetodik skulle finnas till hands. Det mest naturliga valet var att använda sig av utvecklingsmetodiken ''Scrum'', då flertalet medlemmar i gruppen har tidigare erfarenhet av den. ''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. \citep{scrum}
 \newline
 \newline
-Planen var att inte att använda sig av alla delmoment som ''Scrum'' har att erbjuda, utan att plocka ut de bästa delmomenten, då vissa delmoment kan kännas lite överflödiga. Den viktigaste delmomenten som hade beräknats att ta med från ''Scrum'' var det så kallade ''Scrum table''. En ''Scrum table'' är helt enkelt en tavla som i vårt fall skulle innehålla tre kategorier, dessa syns nedan.
+Planen var att inte att använda sig av alla delmoment som ''Scrum'' har att erbjuda, utan att plocka ut några av delmomenten, då vissa delmoment kan kännas lite överflödiga. Den viktigaste delmomenten som hade beräknats att ta med från ''Scrum'' var det så kallade ''Scrum table''. En ''Scrum table'' är helt enkelt en tavla som i vårt fall skulle innehålla tre kategorier, dessa syns nedan.
 \begin{itemize}
   \item "Ej påbörjade"
   \item "Under arbete"
