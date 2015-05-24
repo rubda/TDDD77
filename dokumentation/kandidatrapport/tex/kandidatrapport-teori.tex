@@ -36,13 +36,13 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet men nödvändigt då alla algoritmer kräven en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
 
 \subsection{Simplex}
 Skriv om simplex
 
 \subsubsection{Phase I}
-''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmattad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
+''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
@@ -68,7 +68,7 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \textcolor{red}{skriv mer}
 
 \subsection{Interior point}
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningpunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningspunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
 
 \begin{algorithm}[H]
 \caption{Quadopt-solver}
@@ -155,15 +155,26 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 \subsection{Programspråket C}
 Programspråket C är ett av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren, annars kan minnesläckor uppstå. \citep{cbible}
 
-\subsection{FORTRAN}
+\subsection{Fortran}
+Fortran var en av de första etablerade ''hög nivå'' språken och är än idag en av de främsta språken för vetenskapliga och tekniska applikationer. Det har blivit populärt och utbrett tack vare dess unika kombination av egenskaper. Program skrivna i Fortran är generellt mer portabla än de skrivna i andra större språk och effektiviteten av den kompilerade koden tenderar till att vara relativt hög eftersom språket är enkelt att kompilera. Fortran har dock en del svagheter och nackdelar, till exempel att namn på deklarerade variabler och funktioner maximalt får vara sex tecken. \citep{fortran}     
 
-\subsection{Python}
-\textcolor{red}{Skriv om tkinter och att det är platformsoberoende}
-\subsection{Java}
-\textcolor{red}{Skriv om det är platformsoberoende}
+\subsection{Python och tkinter}
+Python är ett ''hög nivå'' språk med fokus på läsbarhet. Det innehåller ett omfattande standard kod bibliotek och är plattformsoberoende. \citep{python}  
+\newline
+\newline
+Tkinter är ett paket som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
 
 \subsection{CVXGEN}
-\textcolor{red}{Skriv om deras interface}
+CVXGEN är ett program för att generera kod för att lösa små kvadratiska konvexa optimeringsproblem genom ett online gränssnitt. Gränssnittet används för att beskriva problemen med enkelt kraftfullt språk. \citep{cvxgen} \newline
+\newline
+I figur~\ref{fig:cvxgen} visas ett exempel på CVXGEN språket för ett kvadratiskt konvext optimeringsproblem som härstammar från ett prediktionsregleringsproblem.   
+
+\begin{figure}[H]
+\lstinputlisting[language=Python]{tex/cvxgen.py}
+\caption{CVXGEN kod \citep{cvxgen2}}
+\label{fig:cvxgen}
+\end{figure}  
+
 
 \subsection{Matrisbibliotek}
 \textcolor{red}{Skriv om de olika matrisbiblioteken som vi jämför}
@@ -171,8 +182,14 @@ textcolor{red}{kom ihåg att skriva att ATLAS använder hårvaruoptimerad kod}
 
 \subsection{Tidskomplexitet för matrisoperation}
 \textcolor{red}{Skriv även om sparsematrisoperationer samt den ökade minnesanvändningen}
-\subsection{SCRUM}
-\textcolor{red}{Skriv om scrumboard och burn down chart}
+\subsection{Scrum}
+''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. Metodiken innehåller flera delmoment som ''Scrum table'' och ''Burn down chart''. En ''Scrum table'' är en tavla som kategoriserar aktiviteter i ett projekt enligt följande: 
+\begin{itemize}
+  \item "Ej påbörjade"
+  \item "Under arbete"
+  \item "Klart"
+\end{itemize} 
+En ''Burn down chart'' är en graf som visar hur mycket jobb som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. \citep{scrum}
 
 \subsection{eXtreme programming}
 \textcolor{red}{Skriv om parprogrammering,refactoring,Ci}
