@@ -27,7 +27,7 @@ void fill_constraint_matrices(problem* prob){
   /* Insert equality constraints */
   matrix* temp_row;
   sparse_matrix* s_temp;
-  int r;
+  size_t r;
   for (r = 1; r <= prob->equality_count; r++){
     temp_row = get_row_vector_with_return(r, prob->E);
     insert_row_vector(r, temp_row, prob->A);
@@ -180,8 +180,8 @@ void print_problem(problem* prob){
   }
 
   printf("Properties: \n");
-  printf("Number of variables = %d\n", prob->z->rows);
-  printf("Number of constraints = %d\n", prob->constraints_count);
+  printf("Number of variables = %u\n", (unsigned int)prob->z->rows);
+  printf("Number of constraints = %u\n", (unsigned int)prob->constraints_count);
   printf("Accuracy = %f\n\n", 1-prob->accuracy);
 
   printf("Starting point: \n");
@@ -224,7 +224,7 @@ void free_problem(problem* prob){
   free_matrix(prob->p);
   free_matrix(prob->gk);
   
-  int r;
+  size_t r;
   if (prob->is_sparse){
     free_sparse_matrix(prob->sparse_Q);
     free_sparse_matrix(prob->sparse_Q_inv);
@@ -245,7 +245,7 @@ matrix* get_active_conditions(problem* prob){
   matrix* A = create_matrix(prob->active_set->count, prob->A->columns);
   
   bool success = false;
-  int i;
+  size_t i;
   for(i = 0; i < prob->active_set->count; i++){
     matrix* temp_row = get_row_vector_with_return(prob->active_set->data[i], prob->A);
     success = insert_row_vector(i+1, temp_row, A);
@@ -264,22 +264,25 @@ matrix* get_active_conditions(problem* prob){
 sparse_matrix* get_sparse_active_conditions(problem* prob){
   if (prob->active_set->count == 0) return NULL;
 
-  int r, c, s = 0;
+  int s = 0;
+
 
   /* Count elements != 0 */
+  size_t r;
   for (r = 0; r < prob->active_set->count; r++){
     s += prob->sparse_A[prob->active_set->data[r]-1]->size;
   }
 
   /* Create sparse matrix */
-  int dest = 0;
+  size_t dest = 0;
+  size_t c;
   sparse_matrix* S = create_empty_sparse_matrix(s);
   for (r = 0; r < prob->active_set->count; r++){
     
     /* Copy values */
     memcpy(S->A+dest, prob->sparse_A[prob->active_set->data[r]-1]->A, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(value));
     /* Copy columns */
-    memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(int));
+    memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(size_t));
     /* Copy rows */
     for (c = 0; c < prob->sparse_A[prob->active_set->data[r]-1]->size; c++){
       S->rA[dest+c] = r+1;
@@ -299,7 +302,7 @@ matrix* get_active_conditions_rhs(problem* prob){
   matrix* b = create_matrix(prob->active_set->count, prob->b->columns);
   
   bool success = false;
-  int i;
+  size_t i;
   for(i = 0; i < prob->active_set->count; i++){
     matrix* temp_row = get_row_vector_with_return(prob->active_set->data[i], prob->b);
     success = insert_row_vector(i+1, temp_row, b);
@@ -364,7 +367,8 @@ bool time_to_exit(problem* prob, double time_spent){
 /* Checks if a point is feasible subject to the constraints in a problem */
 bool is_feasible_point(matrix* z, problem* prob){
   value ans;
-  int r, c;
+  size_t r;
+  size_t c;
   
   /* Check all equality constraints */
   for (r = 1; r <= prob->equality_count; r++){

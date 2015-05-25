@@ -12,13 +12,13 @@
 bool insert_x_identity_matrices(matrix* F, size_t card_x, size_t N);
 bool insert_fx(matrix* F, matrix* Fx, size_t card_x, size_t N);
 bool insert_u_identity_matrices(matrix* F, size_t card_u, size_t N);
-bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t card_x, size_t N);
+bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t N);
 bool insert_identity_matrices(matrix* E, size_t card_x);
 bool insert_A_matrices(matrix* E, matrix* A);
 bool insert_B_matrices(matrix* E, matrix* B, size_t N);
 
 /** Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h).*/
-bool trans_dyn_cons(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x, size_t card_u){
+bool trans_dyn_cons(matrix* A, matrix *B, matrix* k, matrix* E, matrix* h, size_t card_x){
   size_t N = (h->rows - 2) / 2;
 
   if(!insert_sub_matrix(1, k->rows, 1, 1, k, h)) return false;
@@ -34,7 +34,7 @@ bool trans_ineq_cons(matrix* Fx, matrix* gx, matrix* F, matrix* g, size_t card_x
   insert_x_identity_matrices(F, card_x, N);
   insert_fx(F, Fx, card_x, N);
   insert_u_identity_matrices(F, card_u, N);
-  fix_g(g, gx, x_lim, u_lim, card_x, N);
+  fix_g(g, gx, x_lim, u_lim, N);
 
   return true;
 }
@@ -49,7 +49,7 @@ bool insert_x_identity_matrices(matrix* F, size_t card_x, size_t N){
   free_matrix(id_matrix);
   free_matrix(neg_id_matrix);
 
-  int start_row = 1;
+  size_t start_row = 1;
   size_t start_col = 1;
   size_t end_row;
   size_t end_col;
@@ -110,7 +110,7 @@ bool insert_u_identity_matrices(matrix* F, size_t card_u, size_t N){
   return true;
 }
 
-bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t card_x, size_t N){
+bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t N){
   for(size_t start_row = 1; start_row < x_lim->rows*N; start_row += x_lim->rows){
     size_t end_row = start_row + x_lim->rows - 1;
     if(!insert_sub_matrix(start_row, end_row, 1, 1, x_lim, g)){
@@ -137,7 +137,7 @@ bool fix_g(matrix* g, matrix* gx, matrix* x_lim, matrix* u_lim, size_t card_x, s
 bool insert_identity_matrices(matrix* E, size_t card_x){
   matrix* id_matrix = create_identity_matrix(card_x, card_x);
   size_t start_col = 1;
-  for(int start_row = 1; start_row < E->rows; start_row += card_x){
+  for(size_t start_row = 1; start_row < E->rows; start_row += card_x){
     size_t end_row = start_row + card_x - 1;
     size_t end_col = start_col + card_x - 1;
     if(!insert_sub_matrix(start_row, end_row, start_col, end_col, id_matrix, E)){
@@ -153,7 +153,7 @@ bool insert_identity_matrices(matrix* E, size_t card_x){
 
 bool insert_A_matrices(matrix* E, matrix* A){
   size_t start_col = 1;
-  for(int start_row = 1 + A->rows; start_row < E->rows; start_row += A->rows){
+  for(size_t start_row = 1 + A->rows; start_row < E->rows; start_row += A->rows){
     size_t end_row = start_row + A->rows - 1;
     size_t end_col = start_col + A->columns - 1;
     if(!insert_sub_matrix(start_row, end_row, start_col, end_col, A, E)){
@@ -167,7 +167,7 @@ bool insert_A_matrices(matrix* E, matrix* A){
 
 bool insert_B_matrices(matrix* E, matrix* B, size_t N){
   size_t start_col = N*B->rows + B->rows + 1;
-  for(int start_row = 1 + B->rows; start_row < E->rows; start_row += B->rows){
+  for(size_t start_row = 1 + B->rows; start_row < E->rows; start_row += B->rows){
     size_t end_row = start_row + B->rows - 1;
     size_t end_col = start_col + B->columns - 1;
     if(!insert_sub_matrix(start_row, end_row, start_col, end_col, B, E)){
@@ -181,7 +181,7 @@ bool insert_B_matrices(matrix* E, matrix* B, size_t N){
 
 bool create_objective(int n, matrix* Qin, matrix* P, matrix* R, matrix* Q){
 
-  int i, pos, size = Qin->rows*(n+1) + R->rows*n;
+  size_t i, size = Qin->rows*(n+1) + R->rows*n;
 
   /* insert Qin */
   for(i = 1; i <= n*Qin->rows; i += Qin->rows){

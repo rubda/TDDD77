@@ -66,7 +66,7 @@ int main(void) {
   double tolerance = 100;
 #endif /* INT */
 
-  for(int i = 0; i < diff->rows; i++){
+  for(size_t i = 0; i < diff->rows; i++){
     double d = fabs((double)diff->start[i]);
    if(d > tolerance){
      printf("solve_linear failed! Difference between answer and expected is greater than %f: %f\n", tolerance, d);

@@ -25,17 +25,17 @@ struct problem{
 
   matrix* q; /**< The matrix containing the linear optimization problem. */
 
-  int variable_count; /**< The number of variables in the problem. */
+  size_t variable_count; /**< The number of variables in the problem. */
 
   /* Equality constraints */
-  int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
+  size_t equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
   matrix* E; /**< Equality constraints left-hand side coefficient. */
   sparse_matrix* sparse_E;
 
   matrix* h; /**< Equality constraints right-hand side constraint. */
 
   /* Larger-than constraints */
-  int inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
+  size_t inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
   matrix* F; /**< Larger-than constraints left-hand side coefficient. */
   sparse_matrix* sparse_F;
 
@@ -46,7 +46,7 @@ struct problem{
   sparse_matrix** sparse_A;
 
   matrix* b; /**< All constraints right-hand side constraints. */
-  int constraints_count; /**< Total number of constraints. */
+  size_t constraints_count; /**< Total number of constraints. */
 
   /* Variables */
   bool has_start_point;

@@ -5,6 +5,7 @@
 void test_equality_constraints_transform();
 void test_big_equality_constraints();
 void test_inequality_constraints();
+void test_objective();
 
 int main(){
   test_equality_constraints_transform();
@@ -45,7 +46,7 @@ void test_equality_constraints_transform(){
 		     0, 0, -4, -3, 0, 1, 0, 9};
   insert_array(eE_arr, expected_E);
 
-  assert(trans_dyn_cons(A, B, k, E, h, 2, 1));
+  assert(trans_dyn_cons(A, B, k, E, h, 2));
   assert(compare_matrices(E, expected_E));
   assert(compare_matrices(h, expected_h));
 
@@ -79,7 +80,7 @@ void test_big_equality_constraints(){
   matrix* E = create_zero_matrix(card_x*(N + 1), N*(card_x + card_u) + card_x);
   matrix* h = create_zero_matrix(card_x*(N + 1), 1);
 
-  assert(trans_dyn_cons(A, B, k, E, h, card_x, card_u));
+  assert(trans_dyn_cons(A, B, k, E, h, card_x));
 
   free_matrix(A);
   free_matrix(B);

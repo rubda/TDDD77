@@ -10,11 +10,11 @@
 #include <work_set.h>
 
 /* Creates a new work set */
-work_set* work_set_create(int ws_max) {
+work_set* work_set_create(size_t ws_max) {
   /*TODO validate indata*/
   work_set* ws = (work_set*)malloc(sizeof(work_set));
   if (ws_max > 0) {
-    ws->data = malloc(ws_max*sizeof(int));
+    ws->data = malloc(ws_max*sizeof(size_t));
   }
   ws->max_count = ws_max;
   ws->count = 0;
@@ -22,7 +22,7 @@ work_set* work_set_create(int ws_max) {
 }
 
 /* Adds an element to the set */
-bool work_set_append(work_set* ws, int val) {
+bool work_set_append(work_set* ws, size_t val) {
   /*TODO validate indata*/
   ws->data[ws->count] = val;
   ws->count++;
@@ -30,10 +30,10 @@ bool work_set_append(work_set* ws, int val) {
 }
 
 /* Removes an element from the set */
-bool work_set_remove(work_set* ws, int val) {
+bool work_set_remove(work_set* ws, size_t val) {
   /*TODO validate indata*/
   /*maybe want to keep order of conditions, but for now: mess up order on remove!*/
-  int i;
+  size_t i;
   for (i = 0; i < ws->count; i++) {
     if (ws->data[i] == val) {
       if (i == ws->count-1) {
@@ -63,18 +63,18 @@ bool work_set_free(work_set* ws) {
 /* Prints all current elements in the set */
 void work_set_print(work_set* ws) {
   printf("work_set: ");
-  int i;
+  size_t i;
   for (i = 0; i < ws->count-1; i++) {
-    printf("%d, ", ws->data[i]);
+    printf("%u, ", (unsigned int)(ws->data[i]));
   }
   if (ws->count > 0) {
-    printf("%d\n\n", ws->data[ws->count-1]);
+    printf("%d\n\n", (unsigned int)(ws->data[ws->count-1]));
   }
 }
 
 /* Checks if the set is containing the item */
-bool work_set_contains(work_set* ws, int item) {
-  int i;
+bool work_set_contains(work_set* ws, size_t item) {
+  size_t i;
   for (i = 0; i < ws->count; i++) {
     if (item == ws->data[i]) {
       return true;

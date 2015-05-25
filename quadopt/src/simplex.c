@@ -20,7 +20,7 @@ bool simplex_phase_1(problem* prob){
   matrix* Ft;
   matrix* Et;
 
-  int r, i, c;
+  size_t r, i, c;
 
   /* Negatate all equality constraints where RHS is negative */
   if (prob->equality_count > 0){  
@@ -166,7 +166,7 @@ bool simplex_phase_1(problem* prob){
   }
   
   /* Remove vars from inequality constraints */
-  int temp_col = prob->variable_count*2 + prob->inequality_count + prob->equality_count + 1;
+  size_t temp_col = prob->variable_count*2 + prob->inequality_count + prob->equality_count + 1;
 
   for (r = prob->equality_count+1; r <= tableau->rows-1; r++){
     if (temp_col >= tableau->columns){
@@ -244,7 +244,7 @@ bool simplex_phase_1(problem* prob){
     matrix* new_row;
 
     for (r = 1; r <= tableau->rows; r++){
-      if (r == row){
+      if ((int)r == row){
         continue;
       }
       scal = -get_value_without_check(r, column, tableau);
@@ -285,7 +285,7 @@ bool simplex_phase_1(problem* prob){
 
 /* Checks if all the elements in a row in the simplex tableau is negative or zero */
 bool is_neg_tableau_row(int row, matrix* tableau){
-  int c;
+  size_t c;
   for (c = 1; c <= tableau->columns; c++){
     if (compare_elements(get_value_without_check(row, c, tableau), 0) == 1){
       return false;
@@ -299,7 +299,7 @@ int min_test(int column, matrix* tableau){
   value temp, cur;
   bool first = true;
   int min_row = -1;
-  int r;
+  size_t r;
   for (r = 1; r < tableau->rows; r++){
     temp = get_value_without_check(r, column, tableau);
     if (compare_elements(temp, 0) == 1){
