@@ -58,6 +58,7 @@ sparse_matrix* create_empty_sparse_matrix(int size){
   return S;
 }
 
+/* Converts sparse matrix to normal matrix */
 matrix* sparse_to_normal(sparse_matrix* S){
   matrix* M = create_zero_matrix(S->rows, S->columns);
   
@@ -69,7 +70,7 @@ matrix* sparse_to_normal(sparse_matrix* S){
 }
 
 
-/* Return number of elements != 0 */
+/* Returns number of elements != 0 */
 size_t matrix_sparsity(matrix* A){
   int r, c;
   size_t n = 0;
@@ -85,10 +86,10 @@ size_t matrix_sparsity(matrix* A){
   return n;
 }
 
+/* Multiplies sparse matrix with normal vector, stores result in normal matrix Ax */
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax){
   int i;
   value temp1, temp2;
-  //matrix* Ax = create_zero_matrix(x->rows, x->columns);
 
   /* Multiply */
   for (i = 0; i < A->size; i++){
@@ -100,6 +101,7 @@ bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax){
   return true;
 }
 
+/* Multiplies sparse matrix with a normal matrix. Returns a normal matrix. */
 matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B){
   int i, c;
   value temp1, temp2;
@@ -118,7 +120,7 @@ matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B){
   return AB;
 }
 
-
+/* Copies a sparse matrix and returns it */
 sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain){
   sparse_matrix* S = malloc(sizeof(sparse_matrix));
   S->size = Ain->size;
@@ -135,6 +137,7 @@ sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain){
   return S;
 }
 
+/* Transposes input sparse matrix */
 void transpose_sparse_matrix(sparse_matrix* Ain){
   int* temp = Ain->rA;
   Ain->rA = Ain->cA;
@@ -145,6 +148,7 @@ void transpose_sparse_matrix(sparse_matrix* Ain){
   Ain->columns = t;
 }
 
+/* Transposes a sparse matrix and returns it in a new sparse matrix */
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain){
   sparse_matrix* S = copy_sparse_matrix(Ain);
   int* temp = S->rA;
@@ -154,6 +158,7 @@ sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain){
   return S;
 }
 
+/* Prints sparse matrix */
 void print_sparse_matrix(sparse_matrix* S){
   matrix* M = create_zero_matrix(S->rows, S->columns);
   
@@ -166,6 +171,7 @@ void print_sparse_matrix(sparse_matrix* S){
   free_matrix(M);
 }
 
+/* Frees allocated memory of the sparse matrix */
 void free_sparse_matrix(sparse_matrix* S){
   if (S != NULL){
     if (S->size > 0){
