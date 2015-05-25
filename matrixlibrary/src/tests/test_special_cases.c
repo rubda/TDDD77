@@ -29,10 +29,10 @@ int main(){
   matrix* x = create_matrix(4, 1);
   assert(gauss_jordan_solver(a,x,b));
   matrix* temp=multiply_matrices_with_return(a,x);
-  print_matrix(a);
-  print_matrix(x);
-  print_matrix(temp);
-  print_matrix(b);
+  /* print_matrix(a); */
+  /* print_matrix(x); */
+  /* print_matrix(temp); */
+  /* print_matrix(b); */
 
   free_matrix(a);
   free_matrix(b);

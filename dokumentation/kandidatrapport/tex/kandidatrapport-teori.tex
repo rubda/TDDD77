@@ -36,10 +36,11 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase I''. Problemet med denna metod är att den bygger på simplexmetoden, vilket innebär att det krävs en Simplex-lösare för att kunna implementera algoritmen. \citep{numericaloptimization}.
 
 \subsection{Simplex}
-Skriv om simplex
+Simplexmetoden är en algoritm som ofta används för att lösa konvexa linjära optimeringsproblem. Algoritmen löser ett problem genom att iterativt gå mellan olika uppsättningar av bivillkor för att hitta den uppsättning som ger en optimal lösning. Detta innebär att algoritmens tidskomplexitet är $\mathcal{O}(2^n)$ \citep{numericaloptimization}, vilket betyder att algoritmen kan bli långsam för större problem. \\
+Algoritmen går att dela upp i två faser, ''Phase I'' och ''Phase II'', där den första fasen hittar en tillåten startpunkt och den andra hittar den optimala lösningspunkten.
 
 \subsubsection{Phase I}
 ''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
@@ -106,11 +107,11 @@ Subproblemet är det problem som uppstår när riktningen mot den globala optima
 \newline
 Det finns flera olika metoder för att lösa subproblemet.
 Till exempel ''Range-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' kräver att problemet var väldigt specifikt och såg ut på ett visst sätt. ''Range-space'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
-$$({A_k}Q^{-1}A_k^T)\lambda^* = ({A_k}Q^{-1}g-c)$$
+$$({A_k}G^{-1}A_k^T)\lambda^* = ({A_k}G^{-1}g-c)$$
 där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikatorer. Förövrigt så är
-$g = Qz+q$ och $c = A_kz - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegriktningen $p$:
-$$Qp = A^T\lambda^* - q$$
-Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen symmetri utnyttjas. \citep{numericaloptimization}
+$g = Gx+d$ och $c = A_kx - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegriktningen $p$:
+$$Gp = A^T\lambda^* - q$$
+Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen intern symmetri i matriserna utnyttjas. \citep{numericaloptimization}
 \newline
 \newline
 KKT står för Karush-Kuhn-Tucker. Metoden löser följande system:
@@ -132,25 +133,23 @@ $$
 
 Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimization}.
 \subsubsection{Lagrange multiplikationer}
-
+Lagrangemultiplikatorerna ($\hat{\lambda_i}$) är det kvadratiska optimeringsproblemets slackvariabler, och de kan beräknas på följande sätt: \\ 
 \begin{equation*}
 \begin{aligned}
-\sum_{i \in \hat{W}} a_i \hat{\lambda_i} = g = G \hat{x} + d
+\sum_{i \in W_k} a_i \hat{\lambda_i} = g = G x_k + d
 \end{aligned}
 \end{equation*}
+där $x_k$ är den punkt som lösaren står i, och $W_k$ är den uppsättning av bivillkor som är aktiva.
 
-\textcolor{red}{skriv mer}
 
 \subsubsection{Stegformel}
+Att ta ett steg i den önskade riktningen kräver att steget inte är för långt, så att den nya punkten inte hamnar utanför det tillåtna området. Detta löses genom att minska stegets längd om ett bivillkor är i vägen, genom att använda stegformeln nedan:
 \begin{equation*}
 \begin{aligned}
 \alpha_k\overset{def}{=}min \bigg(1,\underset{i\notin W_k,a_i^Tp_k<0}{min} \frac{b_i-a_i^Tx_k}{a_i^Tp_k} \bigg)
 \end{aligned}
 \end{equation*}
-\textcolor{red}{skriv mer}
-
-\subsection{Interior point}
-\textcolor{red}{skriv}
+där $\alpha_k$ är steglängden. 
 
 \subsection{MEX}
 \label{sec:mex}
@@ -205,13 +204,13 @@ textcolor{red}{kom ihåg att skriva att ATLAS använder hårvaruoptimerad kod}
   \item "Under arbete"
   \item "Klart"
 \end{itemize} 
-En ''Burn down chart'' är en graf som visar hur mycket jobb som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. \citep{scrum}
+En ''Burn down chart'' är en graf som visar hur mycket arbete som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. \citep{scrum}
 
 \subsection{Extreme programming}
 ''Extreme programming'' är ett agilt lättviktigt arbetssätt för små till medium-stora grupper i ett mjukvaruprojekt. Några metoder metodiken bidrar med är bland annat:     
 \begin{itemize}
 \item \textbf{Parprogrammering} - Detta innebär att två stycken personer ska utföra en uppgift, en skriver kod och den andra granskar. Ett byte av roller sker också emellanåt. Genom att parprogrammera kan man diskutera om vad som skulle ge upphov till den bästa lösningen. 
-\item \textbf{Refactoring} - Förbättra läsbarheten och reducera komplexiteten hos koden utan att ändra dess syfte.
-\item \textbf{Continuous Integration} - Integrering och testning av systemet ska ske kontinuerligt med hjälp av ett automatiserat byggsystem. 
+\item \textbf{Refaktorering} - Förbättra läsbarheten och reducera komplexiteten hos koden utan att ändra dess syfte.
+\item \textbf{Kontinuerlig integration} - Integrering och testning av systemet ska ske kontinuerligt med hjälp av ett automatiserat byggsystem. 
 \end{itemize}
 \citep{kristiansandahl}
