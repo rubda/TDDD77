@@ -56,7 +56,7 @@ create_objective(N, Q, P, R, Qfinal)
 /* Solveranrop */ 
 int i; 
 for(i = 0; i <= 10; i++){ 
-problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
+problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL, 0, 0);
 quadopt_solver(problem);
 print_solution(problem);
 }
