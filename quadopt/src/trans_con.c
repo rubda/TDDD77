@@ -7,6 +7,7 @@
 */
 
 #include <trans_con.h>
+#include <assert.h>
 
 bool insert_x_identity_matrices(matrix* F, size_t card_x, size_t N);
 bool insert_fx(matrix* F, matrix* Fx, size_t card_x, size_t N);
@@ -176,4 +177,26 @@ bool insert_B_matrices(matrix* E, matrix* B, size_t N){
   }
 
   return true;
+}
+
+bool create_objective(int n, matrix* Qin, matrix* P, matrix* R, matrix* Q){
+
+  int i, pos, size = Qin->rows*(n+1) + R->rows*n;
+
+  /* insert Qin */
+  for(i = 1; i <= n*Qin->rows; i += Qin->rows){
+    insert_sub_matrix(i, i+Qin->rows-1, i, i+Qin->columns-1, Qin, Q);
+  }
+
+  /* insert P */
+  insert_sub_matrix(i, i+P->rows-1, i, i+P->columns-1, P, Q);
+  i += P->rows;
+
+  /* insert R */
+  for(; i <= size; i+=R->rows){
+    insert_sub_matrix(i, i+R->rows-1, i, i+R->columns-1, R, Q);
+  }
+
+  return true;
+
 }
