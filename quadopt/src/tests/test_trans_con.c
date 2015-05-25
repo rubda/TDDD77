@@ -11,6 +11,8 @@ int main(){
   test_big_equality_constraints();
   test_inequality_constraints();
 
+  test_objective();
+
   return 0;
 }
 
@@ -136,4 +138,28 @@ void test_inequality_constraints(){
   free_matrix(g);
   free_matrix(expected_F);
   free_matrix(expected_g);
+}
+
+void test_objective(){
+
+  int n = 30;
+
+  matrix* Qin = create_matrix(2, 2);
+  value Q_arr[4] = {4.0000, 0, 
+                    0, 0.1000};
+  insert_array(Q_arr, Qin);
+
+  matrix* P = create_matrix(2, 2);
+  value P_arr[4] = {59.2896, 6.9782, 
+                    6.9782, 1.8280};
+  insert_array(P_arr, P);
+
+  matrix* R = create_matrix(1, 1);
+  value R_arr[1] = {8};
+  insert_array(R_arr, R);
+
+  matrix* Q = create_zero_matrix((n+1)*Qin->rows + n*R->rows, (n+1)*Qin->rows + n*R->rows);
+
+  create_objective(n, Qin, P, R, Q);
+
 }
