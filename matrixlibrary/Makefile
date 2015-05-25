@@ -37,6 +37,10 @@ $(BUILD_DIR)/matLib.o: $(SRC_DIR)/matLib.c $(wildcard $(INCLUDE_DIR)/*.h)
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@
 
+$(BUILD_DIR)/sparse_lib.o: $(SRC_DIR)/sparse_lib.c $(wildcard $(INCLUDE_DIR)/*.h)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -fPIC -I $(INCLUDE_DIR) -c $< -o $@
+
 
 # Rule for making the library
 
