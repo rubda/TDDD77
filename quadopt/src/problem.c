@@ -274,7 +274,7 @@ sparse_matrix* get_sparse_active_conditions(problem* prob){
   }
 
   /* Create sparse matrix */
-  int dest = 0;
+  size_t dest = 0;
   size_t c;
   sparse_matrix* S = create_empty_sparse_matrix(s);
   for (r = 0; r < prob->active_set->count; r++){
@@ -282,7 +282,7 @@ sparse_matrix* get_sparse_active_conditions(problem* prob){
     /* Copy values */
     memcpy(S->A+dest, prob->sparse_A[prob->active_set->data[r]-1]->A, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(value));
     /* Copy columns */
-    memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(int));
+    memcpy(S->cA+dest, prob->sparse_A[prob->active_set->data[r]-1]->cA, prob->sparse_A[prob->active_set->data[r]-1]->size*sizeof(size_t));
     /* Copy rows */
     for (c = 0; c < prob->sparse_A[prob->active_set->data[r]-1]->size; c++){
       S->rA[dest+c] = r+1;
