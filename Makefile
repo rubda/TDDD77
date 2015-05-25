@@ -23,3 +23,8 @@ quadopt:
 test:
 	cd matrixlibrary ; make test
 	cd quadopt ; make test
+
+.PHONY: matlab
+matlab:
+	cd matlab; make
+
