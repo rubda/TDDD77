@@ -20,7 +20,8 @@ void copy_solution(problem* prob);
 
 
 void prefill_set(problem* prob){
-  for (int i = 1; i <= prob->equality_count; i++) {
+  int i;
+  for (i = 1; i <= prob->equality_count; i++) {
     work_set_append(prob->active_set, i);
   }
 }
@@ -139,7 +140,7 @@ bool take_step(problem* prob){
   bool cont;
   for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     cont = false;
-    for (int j = prob->equality_count; j < prob->active_set->count; j++){
+    for (j = prob->equality_count; j < prob->active_set->count; j++){
       if (prob->active_set->data[j] == i){
         cont = true;
         break;
