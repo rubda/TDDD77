@@ -50,6 +50,9 @@ assert(trans_ineq_cons(Fx, gx, F, g, card_x, card_u, N, x_lim, u_lim));
 multiply_matrix_with_scalar(-1, F);
 multiply_matrix_with_scalar(-1, g);
 
+matrix* Qfinal = create_zero_matrix(n_vars, n_vars);
+create_objective(N, Q, P, R, Qfinal)
+
 /* Solveranrop */ 
 int i; 
 for(i = 0; i <= 10; i++){ 
