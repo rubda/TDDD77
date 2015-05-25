@@ -244,8 +244,7 @@ bool simplex_phase_1(problem* prob){
     matrix* new_row;
 
     for (r = 1; r <= tableau->rows; r++){
-      int p = (int)r;
-      if (p == row){
+      if ((int)r == row){
         continue;
       }
       scal = -get_value_without_check(r, column, tableau);
