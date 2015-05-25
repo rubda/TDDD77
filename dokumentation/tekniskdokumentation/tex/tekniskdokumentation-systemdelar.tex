@@ -5,10 +5,28 @@ QuadOpt innehåller ett flertal olika moduler som används för att lösa och to
 \subsection{Lösaren}
 Här kan t.ex. förklaring av hur lösaren fungerar steg för steg, använd möjligtvis delar från kandidatrapporten.
 
-\subsection{Matlab - mex} \label{subsec:mex}
-Beskrivning av hur mex gränssnitt/konverteringen fungerar och är uppbyggt
+\subsection{MATLAB - MEX} \label{subsec:mex}
+
+MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen, se figur~\ref{fig:mex2}. 
+
+\begin{figure}[H]
+\lstinputlisting[language=C]{tex/mex.c}
+\caption{MEX gateway routine}
+\label{fig:mex2}
+\end{figure}  
+
+Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Med hjälp av olika funktioner i MEX-biblioteket kan dessa datatyper konverteras till datatyper som C kan använda och tillbaka. Några händiga funktioner följer:
+\begin{itemize}
+\item mxGetM(mxArray) - returnerar mxArray rader
+\item mxCreateDoubleMatrix(rader, kolumner, mxREAL) - returnerar en mxArray
+\end{itemize}
+
+
+
 \subsection{Matlib}
 Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
+
+\lstinputlisting[language=C]{tex/matrix_struct.c}
 \subsection{Byggsystem}
 
 \subsection{Parser}
