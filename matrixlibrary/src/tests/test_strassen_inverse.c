@@ -22,7 +22,7 @@ bool strassen_linear_solve(matrix* a,matrix* x,matrix* b){
   matrix* a_corrected;
   matrix* b_corrected;
   matrix* x_corrected;
-  if ((int)(matrix_size)!=a->columns){
+  if (matrix_size != a->columns){
     a_corrected=create_identity_matrix(matrix_size,matrix_size);
     b_corrected=create_matrix(matrix_size,1);
     x_corrected=create_matrix(matrix_size,1);
@@ -42,7 +42,7 @@ bool strassen_linear_solve(matrix* a,matrix* x,matrix* b){
 
 bool strassen_inverse(matrix* a,matrix* b){
   value matrix_size=get_logarithm(a->columns);
-  if ((int)(matrix_size)!=a->columns){
+  if (matrix_size != a->columns){
     return false;
   }
   if (a->rows!=a->columns||a->rows!=b->rows||a->columns!=b->columns){
