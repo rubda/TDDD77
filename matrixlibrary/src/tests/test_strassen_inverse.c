@@ -1,7 +1,6 @@
 #include <matLib.h>
 #include <assert.h>
 
-/** Solves Ax=b  */
 bool strassen_linear_solve(matrix* a,matrix* x,matrix* b);
 value get_logarithm(value x);
 value power_to(value base,value exponent );
@@ -10,12 +9,11 @@ matrix* strassen_inverse_with_return(matrix* a);
 int main(){
   matrix* a=create_identity_matrix(4,4);
   matrix* b=strassen_inverse_with_return(a);
-  print_matrix(b);
+  /* print_matrix(b); */
   free_matrix(a);
   free_matrix(b);
 }
 
-/** Solves Ax=b  */
 bool strassen_linear_solve(matrix* a,matrix* x,matrix* b){
   if (a->rows!=b->rows||a->columns!=x->rows||b->columns!=1||x->columns!=1||a->rows!=a->columns){
     return false;
@@ -128,7 +126,6 @@ matrix* strassen_inverse_with_return(matrix* a){
   }
 }
 
-/** Returns first value that fulfil x<=2^value */
 value get_logarithm(value x){
   if (x<=0){
     return 0;
@@ -142,7 +139,6 @@ value get_logarithm(value x){
   }
 }
 
-/** Returns base^exponent */
 value power_to(value base,value exponent ){
   value temp=base;
   for (int i=1;i<exponent;i++){
