@@ -1330,7 +1330,7 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   
   multiply_matrices(trans_a, a, lhs);
   multiply_matrices(trans_a, b, rhs);
-  solve_linear(lhs, x, rhs);
+  gauss_jordan_solver(lhs, x, rhs);
 
   free_matrix(trans_a);
   free_matrix(lhs);

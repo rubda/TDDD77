@@ -135,6 +135,8 @@ void test_inequality_constraints(){
 
   free_matrix(Fx);
   free_matrix(gx);
+  free_matrix(xlim);
+  free_matrix(ulim);
   free_matrix(F);
   free_matrix(g);
   free_matrix(expected_F);
@@ -163,4 +165,8 @@ void test_objective(){
 
   create_objective(n, Qin, P, R, Q);
 
+  free_matrix(Qin);
+  free_matrix(P);
+  free_matrix(R);
+  free_matrix(Q);
 }
