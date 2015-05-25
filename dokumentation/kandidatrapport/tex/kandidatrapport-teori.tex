@@ -36,13 +36,13 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet men nödvändigt då alla algoritmer kräven en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase 1''. Problemet med denna metod är att den bygger på simplex så det kräves en Simplex-lösare \citep{numericaloptimization}.
 
 \subsection{Simplex}
 Skriv om simplex
 
 \subsubsection{Phase I}
-''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmattad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
+''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
 Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
@@ -64,47 +64,43 @@ $$min \: z = \sum^{\#a_i}_{i=1} {a_i} \quad  \Leftrightarrow \quad min \: z - \s
 Efter att ha satt in målfunktionen i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktionen. \citep{numericaloptimization}
 
 \subsection{Active set method}   
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll.
+Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:activeset} visas pseudokod för algoritmen. 
+\citep{numericaloptimization}
 \textcolor{red}{skriv mer}
 
-\subsection{Interior point}
-Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mer generell och kräver inte att den nuvarande lösningpunkten står på något bivillkor. Detta gör att det går att lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:quadoptsolver} finns pseudokod för algoritmen. \citep{numericaloptimization}
-
 \begin{algorithm}[H]
-\caption{Quadopt-solver}
-\label{alg:quadoptsolver}
+\caption{Active set method}
+\label{alg:activeset}
 \begin{algorithmic}
-\Procedure{Quadopt-solver}{$problem$ $P$}
-\If{$P$ has not feasible starting point $z_0$}
-	\State Compute a feasible starting point $z_0$;
-\EndIf	
-\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
-\While{$\textbf{true}$}
-	\State Solve subproblem to find step direction $p$;
-	\If{$p$ is zero vector}
-		\If{$activeSet$ has zero constraints}
-			\State \textbf{break};
-		\EndIf		
-		\If{Could not remove constraints from $activeSet$}
-			\State \textbf{break}
+\Procedure{Active set method}{}
+\State Compute a feasible starting point $x_0$;
+\State Set $W_0$ to be a subset of the active constraints at $x_0$;
+\For{$k = 0, 1, 2,...$}
+	\State Solve subproblem to find $p_k$;
+	\If{$p_k = 0$}
+		\State Compute Lagrange multipliers $\hat{\lambda_i}$,
+		\State set $\hat{W} = W_k$; 
+		\If{$\hat{\lambda_i} \ge 0$ for all $i \in W_k \cap I$}
+			\State \textbf{STOP} with solution $x^* = x_k$;
+		\Else
+			\State Set $j =$ argmin$_{j \in W_k \cap I}\hat{\lambda_j}$;
+			\State $x_{k+1} = x_k; W_{k+1} \gets W_k$ \textbackslash \{$j$\};		
 		\EndIf
-	\Else
-		\State Take step to better feasible point $z$ in $P$;
-		\If{Could not step}
-			\State \textbf{break};
-		\EndIf
-		\State Set $activeSet$ with new active constraints at $z$;	
+	\Else		
+		\State Compute $\alpha_k$ from stepformula;
+		\State $x_{k+1} \gets x_k + \alpha_k p_k$;
+		\If{There are blocking constraints}
+			\State Obtain $W_{k+1}$ by adding one of the blocking constraints to $W_{k+1}$;
+		\Else
+			\State $W_{k+1} \gets W_k$;	
+		\EndIf 	
 	\EndIf
-\EndWhile
-\State  $solution$ in $P\gets z$;
-
-\State \textbf{return} $solution$ in $P$;
-	
+\EndFor 
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Subproblem}
+\subsubsection{Subproblem}
 Subproblemet är det problem som uppstår när riktningen mot den globala optimala punkten ska hittas. Till att börja med så är det som kallas ett ''Subproblem'' till Active set metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också då målfunktionens globala minimum har flyttats, relativt till position den står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). \citep{numericaloptimization}
 \newline
 \newline
@@ -135,6 +131,26 @@ c
 $$
 
 Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimization}.
+\subsubsection{Lagrange multiplikationer}
+
+\begin{equation*}
+\begin{aligned}
+\sum_{i \in \hat{W}} a_i \hat{\lambda_i} = g = G \hat{x} + d
+\end{aligned}
+\end{equation*}
+
+\textcolor{red}{skriv mer}
+
+\subsubsection{Stegformel}
+\begin{equation*}
+\begin{aligned}
+\alpha_k\overset{def}{=}min \bigg(1,\underset{i\notin W_k,a_i^Tp_k<0}{min} \frac{b_i-a_i^Tx_k}{a_i^Tp_k} \bigg)
+\end{aligned}
+\end{equation*}
+\textcolor{red}{skriv mer}
+
+\subsection{Interior point}
+\textcolor{red}{skriv}
 
 \subsection{MEX}
 \label{sec:mex}
@@ -155,15 +171,26 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 \subsection{Programspråket C}
 Programspråket C är ett av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren, annars kan minnesläckor uppstå. \citep{cbible}
 
-\subsection{FORTRAN}
+\subsection{Fortran}
+Fortran var en av de första etablerade ''hög nivå'' språken och är än idag en av de främsta språken för vetenskapliga och tekniska applikationer. Det har blivit populärt och utbrett tack vare dess unika kombination av egenskaper. Program skrivna i Fortran är generellt mer portabla än de skrivna i andra större språk och effektiviteten av den kompilerade koden tenderar till att vara relativt hög eftersom språket är enkelt att kompilera. Fortran har dock en del svagheter och nackdelar, till exempel att namn på deklarerade variabler och funktioner maximalt får vara sex tecken. \citep{fortran}     
 
-\subsection{Python}
-\textcolor{red}{Skriv om tkinter och att det är platformsoberoende}
-\subsection{Java}
-\textcolor{red}{Skriv om det är platformsoberoende}
+\subsection{Python och tkinter}
+Python är ett ''hög nivå'' språk med fokus på läsbarhet. Det innehåller ett omfattande standard kod bibliotek och är plattformsoberoende. \citep{python}  
+\newline
+\newline
+Tkinter är ett paket som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
 
 \subsection{CVXGEN}
-\textcolor{red}{Skriv om deras interface}
+CVXGEN är ett program för att generera kod för att lösa små kvadratiska konvexa optimeringsproblem genom ett online gränssnitt. Gränssnittet används för att beskriva problemen med enkelt kraftfullt språk. \citep{cvxgen} \newline
+\newline
+I figur~\ref{fig:cvxgen} visas ett exempel på CVXGEN språket för ett kvadratiskt konvext optimeringsproblem som härstammar från ett prediktionsregleringsproblem.   
+
+\begin{figure}[H]
+\lstinputlisting[language=Python]{tex/cvxgen.py}
+\caption{CVXGEN kod \citep{cvxgen2}}
+\label{fig:cvxgen}
+\end{figure}  
+
 
 \subsection{Matrisbibliotek}
 \textcolor{red}{Skriv om de olika matrisbiblioteken som vi jämför}
@@ -171,8 +198,20 @@ textcolor{red}{kom ihåg att skriva att ATLAS använder hårvaruoptimerad kod}
 
 \subsection{Tidskomplexitet för matrisoperation}
 \textcolor{red}{Skriv även om sparsematrisoperationer samt den ökade minnesanvändningen}
-\subsection{SCRUM}
-\textcolor{red}{Skriv om scrumboard och burn down chart}
+\subsection{Scrum}
+''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. Metodiken innehåller flera delmoment som ''Scrum table'' och ''Burn down chart''. En ''Scrum table'' är en tavla som kategoriserar aktiviteter i ett projekt enligt följande: 
+\begin{itemize}
+  \item "Ej påbörjade"
+  \item "Under arbete"
+  \item "Klart"
+\end{itemize} 
+En ''Burn down chart'' är en graf som visar hur mycket arbete som finns kvar att göra i jämförelse med hur mycket tid som finns kvar. \citep{scrum}
 
-\subsection{eXtreme programming}
-\textcolor{red}{Skriv om parprogrammering,refactoring,Ci}
+\subsection{Extreme programming}
+''Extreme programming'' är ett agilt lättviktigt arbetssätt för små till medium-stora grupper i ett mjukvaruprojekt. Några metoder metodiken bidrar med är bland annat:     
+\begin{itemize}
+\item \textbf{Parprogrammering} - Detta innebär att två stycken personer ska utföra en uppgift, en skriver kod och den andra granskar. Ett byte av roller sker också emellanåt. Genom att parprogrammera kan man diskutera om vad som skulle ge upphov till den bästa lösningen. 
+\item \textbf{Refaktorering} - Förbättra läsbarheten och reducera komplexiteten hos koden utan att ändra dess syfte.
+\item \textbf{Kontinuerlig integration} - Integrering och testning av systemet ska ske kontinuerligt med hjälp av ett automatiserat byggsystem. 
+\end{itemize}
+\citep{kristiansandahl}

@@ -38,6 +38,7 @@ Tabell \ref{tabell:matrisopkomplexitet} visar tidskomplexiteten i värsta fallet
 \end{table}
 
 \subsection{Algoritmiska förbättringar}
+Vad gäller addition och subtraktion kan det inte göra några algoritmiska förbättringar. Då man måste gå igenom alla element och addera eller subtrahera detta separat. Dock så skulle detta kunna ske parallelt\citep{Anderson1968}.
 För snabbare multiplikation kan Strassen algoritmen implementeras vilket reducerar tidskomplexiteten till $\mathcal{O}(n^{2.807})$ från $\mathcal{O}(n^3)$ för den naiva algoritmen \citep{Strassen1969}. Istället för crout så kan inversen beräknas med Strassen algoritmen och på så sätt så sänks tidskomplexiteten från $\mathcal{O}(n^3)$ till $\mathcal{O}(n^{2.807})$. Denna algoritm har dock en stor nackdel som beskrivs i sektion \ref{sec:inverse_nackdelar}.
 
 \subsection{Strukturella förbättringar}
@@ -51,8 +52,9 @@ A_{11} & A_{12} \\
 A_{21}& A_{22}
  \end{bmatrix}
  $$
- Där inversen till $A$ beräknas på följande sätt\citep{Petkovic2013}:
- \begin{align}
+ Där $A$ är en \scalebox{1.2}{$n$}x\scalebox{1.2}{$n$} matris och $A_{11},A_{12},A_{21}\text{ och } A_{22}$ är lika stora, det vill säga de innehåller en fjärdedel var av $A$.
+ Sedan beräknas inversen till $A$ på följande sätt\citep{Petkovic2013}:
+ \begin{align*}
   R_1 & =A_{11}^{-1} \\
   R_2 & =A_{21}R_1 \\
   R_3 & =R_1A_{12} \\
@@ -68,14 +70,14 @@ A_{21}& A_{22}
 X_{11} & X_{12} \\
 X_{21}& X_{22}
  \end{bmatrix}
- \end{align}
+ \end{align*}
  Här så kan $A_{11}^{-1}$ och $R_1^{-1}$ beräknas rekursivt med samma algoritm. Det stora problemet med denna algoritm är att samtliga submatriser måste vara inverterbara. Det vill säga följande måste vara uppfyllt:
- \begin{align}
+ \begin{align*}
    A_{11}A_{11}^{-1}= & I_n \\
    A_{12}A_{12}^{-1}= & I_n \\
    A_{21}A_{21}^{-1}= & I_n \\
    A_{22}A_{22}^{-1}= & I_n \\
- \end{align}
+ \end{align*}
  Ta till exempel identitetsmatrisen $I_n$ som är inverterbar då den är sin egna invers. Om denna delas upp i submatriser enligt Strassen algoritmen så får man följande:
  
  $$ I_n =
@@ -123,7 +125,7 @@ B_{21}& B_{22}
  $$
  Skulle radantalet vara ojämnt så fylls matriserna ut med en extra nollrad. Samma sak gäller kolumnerna.
  Vi definierar följande matriser:
-  \begin{align}
+  \begin{align*}
   M_1 & =(A_{11}+A_{22})(B_{11}+B_{22}) \\
   M_2 & =(A_{21}+A_{22})B_{11} \\
   M_3 & =A_{11}(B_{12}-B_{22}) \\
@@ -131,9 +133,9 @@ B_{21}& B_{22}
   M_5 & =(A_{11}+A_{12})B_{22} \\
   M_6 & =(A_{21}-A_{11})(B_{11}+B_{12}) \\
   M_7 & =(A_{12}-A_{22})(B_{21}+B_{22}) 
- \end{align}
+ \end{align*}
  Resultatmatrisen $C$ beräknas på följande sätt:
-   \begin{align}
+   \begin{align*}
     C & =\begin{bmatrix}
 C_{11} & C_{12} \\
 C_{21}& C_{22}
@@ -142,11 +144,11 @@ C_{21}& C_{22}
   C_{12} & = M_3+M_5 \\
   C_{21} & = M_2+M_4 \\
   C_{22} & = M_1-M_2+M_3+M_6
- \end{align}
+ \end{align*}
  \\
 Denna algoritm har tidskomplexitet $\mathcal{O}(n^{2.807})$ jämfört med den naiva algoritmen som har tidskomplexitet $\mathcal{O}(n^{3})$. Denna kan även utvecklas till att köras parallell då beräkningen av matriser $M_{1-7}$ kan utföras helt åtskilda. Matrismultiplikationerna i denna algoritmen kan sedan rekursivt använda samma algoritm och på så sätt kan processen använda många trådar. Antalet trådar beror på när man väljer att börja använda den naiva algoritmen. Vid små matriser kan Strassen vara mindre lämpad då det tar tid att dela upp matriserna i mindre matriser samt använder upp mer minne. Väljer man att dela upp problemet till flera trådar så tar det tid att starta trådarna så man måste bestämma vid vilken storlek av matriser som man börjar använda den naiva algoritmen. Detta beror självklart på arkitekturen men tester kommer utföras senare på x86-64 arkitekturen för att se när denna algoritm lämpar sig bäst. 
- \subsubsection{Nackdelar med Strassen}
- I den nuvarande implementationen av matrisbiblioteket så skapas en ny matris varje gång man gör en operation. Detta kan leda till att den använder mycket minne.
+ \subsubsection{Nackdelar med Strassen i den nuvarande implementation}
+ I den nuvarande implementationen av matrisbiblioteket så skapas en ny matris varje gång man gör en operation. Detta kan leda till att den använder mycket minne. Detta 
  
 
  
