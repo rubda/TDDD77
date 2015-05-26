@@ -1,8 +1,6 @@
 #ifndef SPARSE_LIB_H
 #define SPARSE_LIB_H
 
-#define MAX_ITER 1000000
-
 #include <matLib.h>
 
 /** Store sparse matrix using COO (coordinate list) */
