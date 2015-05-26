@@ -10,20 +10,10 @@
 bool is_neg_tableau_row(int row, matrix* tableau);
 int min_test(int column, matrix* tableau);
 
-bool simplex_phase_1(problem* prob){
-  /* Slack and virtual variable sets */  
-  work_set* virtual_vars = work_set_create(prob->equality_count+prob->inequality_count);
-
-  matrix* Fr;  
-  matrix* gr;
-
-  matrix* Ft;
-  matrix* Et;
-
-  size_t r, i, c;
-
+void neg_equality(problem* prob, work_set* virtual_vars){
   /* Negatate all equality constraints where RHS is negative */
   if (prob->equality_count > 0){  
+    size_t r;
     for (r = 1; r <= prob->equality_count; r++){
       if (compare_elements(get_value_without_check(r, 1, prob->h), 0) == -1){
         multiply_row_with_scalar(-1, r, prob->E);
@@ -33,8 +23,9 @@ bool simplex_phase_1(problem* prob){
       work_set_append(virtual_vars, r);
     }
   }
+}
 
-
+void convert_geq_to_leq(problem* prob, work_set* virtual_vars, matrix* Fr, matrix* gr){
   /* Convert >= to <= */
   if (prob->inequality_count > 0){
     Fr = matrix_copy(prob->F);
@@ -43,12 +34,29 @@ bool simplex_phase_1(problem* prob){
     multiply_matrix_with_scalar(-1, gr);
 
     /* Find last virtual variable */
+    size_t r;
     for (r = 1; r <= prob->inequality_count; r++){
       if (compare_elements(get_value_without_check(r, 1, gr), 0) == -1){
         work_set_append(virtual_vars, r+prob->equality_count);
       }
     }
   }
+}
+
+bool simplex_phase_1(problem* prob){
+  /* Slack and virtual variable sets */  
+  work_set* virtual_vars = work_set_create(prob->equality_count+prob->inequality_count);
+
+  matrix* Ft;
+  matrix* Et;
+
+  size_t r, i, c;
+
+  neg_equality(prob, virtual_vars);
+
+  matrix* Fr = NULL;
+  matrix* gr = NULL;
+  convert_geq_to_leq(prob, virtual_vars, Fr, gr);
 
   /* Split variables to allow negative values */
   if (prob->inequality_count > 0) {
