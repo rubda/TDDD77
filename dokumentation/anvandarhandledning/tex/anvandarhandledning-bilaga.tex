@@ -1,0 +1,133 @@
+\lstset{ language=C, backgroundcolor=\color{black!5}, basicstyle=\footnotesize}
+
+\section{MPC-data exempel}
+
+\begin{lstlisting}
+parameters
+    A (2,2)
+    B (2)
+    Fx (12,2)
+    gx (12)
+    P (2,2)
+    Q (2,2)
+    k (2)
+    x_max (2)
+    x_min (2)
+    R = 8   
+    u_max = 25
+    u_min = -25
+end
+
+dimensions
+    N = 30  
+end
+
+variables
+    x[t] (2), t=1..N+1
+    u[t] (1), t=0..N
+end
+
+settings 
+    iterations = 0
+    time = 0
+end
+
+minimize 
+    sum[k=0..N-1](x[k]'*Q*x[k] + u[k]'*R*u[k]) + x[N]'*P*x[N]
+subject to
+    x[0] = x0
+    x[k+1] = A*x[k] + B*u[k], k = 0..N-1
+    x_min <= x{[k] <= x_max , k = 0..N-1
+    u_min <= u[k] <= u_max, k= 0..N-1
+    F*x[N] <= g
+end 
+\end{lstlisting}
+
+\newpage
+
+\section{Problem-data exempel}
+
+\begin{lstlisting}
+A =
+
+    0.9721    0.0155
+    0.2114    0.9705
+
+B =
+
+    0.0143
+    0.6860
+
+Fx =
+
+   -0.8037   -0.0461
+   -0.8442   -0.0404
+   -0.8845   -0.0332
+    0.9243    0.0243
+   -0.9243   -0.0243
+    0.9630    0.0133
+   -0.9630   -0.0133
+    1.0000         0
+         0    1.0000
+   -1.0000         0
+         0   -1.0000
+    0.6398    0.1555
+
+gx =
+
+    15
+    15
+    15
+    20
+    15
+    20
+    15
+    20
+   100
+    15
+   100
+    25
+
+N =
+
+    30
+
+P =
+
+   59.2896    6.9782
+    6.9782    1.8280
+
+Q =
+
+    4.0000         0
+         0    0.1000
+
+R =
+
+     8
+
+u_max =
+
+    25
+
+u_min =
+
+   -25
+
+k =
+
+    15
+    45
+
+x_max =
+
+    20
+   100
+
+x_min =
+
+   -15
+  -100
+\end{lstlisting}
+
+
