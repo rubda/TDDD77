@@ -20,7 +20,7 @@ För att kunna utföra projeket så behövdes det ett matrisbibliotek för att k
 \subsubsection{Befintliga matrisbibliotek}
 Det fanns många bibliotek som hade dessa operationer dock så uppfyllde inget alla krav vi ställde. Vi vill att biblioteket skulle:
 \begin{enumerate}
-\item ha lättanvänt API(Application Programming Interface)
+\item ha lättanvänt API (Application Programming Interface)
 \item prestera bra
 \item vara platformsoberoende
 \item vara lätt att kompilera
@@ -37,9 +37,9 @@ De bibliotek som vi undersökte var:
 
 \end{itemize}
 GNU gick bort för det krävde att man installera det som ett extern paket vilket vi inte vill att vår kund ska behöva göra. Bortsett från detta så var detta det bibliotek som var mest lovande. 
-LAPACK krävde en FORTRAN kompilator för att kunna kompileras och eftersom det var skrivet i FORTRAN så var alla funktionsnamn endast 6 tecken vilket inte kan klassas som ett lättanvändt api.
+LAPACK krävde en FORTRAN kompilator för att kunna kompileras och eftersom det var skrivet i FORTRAN så var alla funktionsnamn endast sex tecken vilket kandidatgruppen inte klassar som ett lättanvänt API.
 ATLAS bygger på LAPACK så det har ärvt mycket av alla funktionsnamn.
-NAG är det modernaste av bibliotekten men även det använder funktionsnamn med 6 tecken samt så var dokumentationen sparsam. 
+NAG är det modernaste av bibliotekten men även det använder funktionsnamn med sex tecken och var också bristfälligt dokumenterat.
 \newline
 \newline
 Först så övervägdes att göra att API till något av biblioteken för att göra det mer lättanvänt men sedan så bestämdes det att vi skulle göra att eget biblioteket. Anledning till detta var att man då kunde bygga allting på standard c-bibliotek så man inte krävde några externa bibliotek. Detta leder till att biblioteket kunde användas på alla platformar så länge det hade en c-kompilator. 
