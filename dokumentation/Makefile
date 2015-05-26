@@ -6,6 +6,9 @@ ASM_NAME = active-set-method
 ARK_DIR = arkitekturdokument
 ARK_NAME = arkitekturdokument
 
+ANV_DIR = anvandarhandledning
+ANV_NAME = anvandarhandledning
+
 KRAV_DIR = kravspecifikation
 KRAV_NAME = kravspecifikation
 
@@ -32,6 +35,7 @@ UT2_NAME = utvarderingiteration2
 
 PDFS =  $(ASM_DIR)/$(BUILDDIR)/$(ASM_NAME).pdf
 PDFS += $(ARK_DIR)/$(BUILDDIR)/$(ARK_NAME).pdf
+PDFS += $(ANV_DIR)/$(BUILDDIR)/$(ANV_NAME).pdf
 PDFS += $(KRAV_DIR)/$(BUILDDIR)/$(KRAV_NAME).pdf
 PDFS += $(KVAL_DIR)/$(BUILDDIR)/$(KVAL_NAME).pdf
 PDFS += $(PROJ_DIR)/$(BUILDDIR)/$(PROJ_NAME).pdf
@@ -50,6 +54,7 @@ kandidatrapport:
 
 $(ASM_DIR)/$(BUILDDIR)/$(ASM_NAME).pdf: $(ASM_DIR)/$(ASM_NAME).tex $(wildcard $(ASM_DIR)/tex/*) $(wildcard $(ASM_DIR)/grafik/*)
 $(ARK_DIR)/$(BUILDDIR)/$(ARK_NAME).pdf: $(ARK_DIR)/$(ARK_NAME).tex $(wildcard $(ARK_DIR)/tex/*) $(wildcard $(ARK_DIR)/bilder/*)
+$(ANV_DIR)/$(BUILDDIR)/$(ANV_NAME).pdf: $(ANV_DIR)/$(ANV_NAME).tex $(wildcard $(ANV_DIR)/tex/*) $(wildcard $(ANV_DIR)/bilder/*)
 $(KRAV_DIR)/$(BUILDDIR)/$(KRAV_NAME).pdf: $(KRAV_DIR)/$(KRAV_NAME).tex $(wildcard $(KRAV_DIR)/tex/*)
 $(KVAL_DIR)/$(BUILDDIR)/$(KVAL_NAME).pdf: $(KVAL_DIR)/$(KVAL_NAME).tex $(wildcard $(KVAL_DIR)/tex/*)
 $(PROJ_DIR)/$(BUILDDIR)/$(PROJ_NAME).pdf: $(PROJ_DIR)/$(PROJ_NAME).tex $(wildcard $(PROJ_DIR)/tex/*) $(wildcard $(PROJ_DIR)/grafik/*)
