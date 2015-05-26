@@ -7,6 +7,7 @@ import os
 
 filename = None
 data_filename = None
+generated_c = False
 clipboard = None
 start_file = """parameters
     
@@ -66,20 +67,25 @@ def save_as(event=None):
                         message="Unable to save file...")
 
 
-def open_file(event=None):
+def open_mpc_file(event=None):
     global filename
-    global data_filename
     try:
         f = askopenfile(mode='r')
         t = f.read()
         filename = f.name
-        data_file = askopenfile(mode="r")
-        data_filename = data_file.name
 
         text.delete(0.0, END)
         text.insert(0.0, t)
         root.title(filename)
         highlight()
+    except:
+        pass
+
+def open_data_file(event=None):
+    global data_filename
+    try:
+        f = askopenfile(mode='r')
+        data_filename = f.name
     except:
         pass
 
@@ -161,11 +167,19 @@ def generate_c(event=None):
 
         showinfo(title="C code generation",
                  message="The generated C code was written to " + res_file)
+        generated_c = True
     except:
         showerror(title="Error", message="Something went wrong!")
 
 
 def run_code(event=None):
+    global filename
+    global data_filename
+    if None in (filename, data_filename):
+        showerror(title="Error", message="Both a data file and MPC file must be specified!")
+        return
+    elif not generated_c:
+        generate_c()
     cmd_line = "make && ./solution"
     os.system(cmd_line)
 
@@ -220,7 +234,8 @@ exitButton.pack(side=BOTTOM)
 menuBar = Menu(root)
 fileMenu = Menu(menuBar)
 fileMenu.add_command(label="New", command=new_file)
-fileMenu.add_command(label="Open", command=open_file)
+fileMenu.add_command(label="Open MPC file", command=open_mpc_file)
+fileMenu.add_command(label="Open data file", command=open_data_file)
 fileMenu.add_command(label="Save", command=save_file)
 fileMenu.add_command(label="Save As...", command=save_as)
 fileMenu.add_separator()
@@ -249,7 +264,6 @@ text.bind("<Control-v>", paste)
 text.bind("<Control-x>", cut)
 text.bind("<Control-s>", save_file)
 text.bind("<Control-S>", save_as)
-text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
 text.bind("<Control-q>", quit)
