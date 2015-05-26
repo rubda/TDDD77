@@ -3,7 +3,38 @@ QuadOpt innehåller ett flertal olika moduler som används för att lösa och to
 (OBS kan möjligtvis vara bra att ha egna filer för dessa underrubriker om det blir mycket)
 
 \subsection{Lösaren}
-Här kan t.ex. förklaring av hur lösaren fungerar steg för steg, använd möjligtvis delar från kandidatrapporten.
+
+\begin{algorithm}[H]
+\caption{Active set method}
+\label{alg:activeset}
+\begin{algorithmic}
+\Procedure{Active set method}{}
+\State Compute a feasible starting point $x_0$;
+\State Set $W_0$ to be a subset of the active constraints at $x_0$;
+\For{$k = 0, 1, 2,...$}
+	\State Solve subproblem to find $p_k$;
+	\If{$p_k = 0$}
+		\State Compute Lagrange multipliers $\hat{\lambda_i}$,
+		\State set $\hat{W} = W_k$; 
+		\If{$\hat{\lambda_i} \ge 0$ for all $i \in W_k \cap I$}
+			\State \textbf{STOP} with solution $x^* = x_k$;
+		\Else
+			\State Set $j =$ argmin$_{j \in W_k \cap I}\hat{\lambda_j}$;
+			\State $x_{k+1} = x_k; W_{k+1} \gets W_k$ \textbackslash \{$j$\};		
+		\EndIf
+	\Else		
+		\State Compute $\alpha_k$ from stepformula;
+		\State $x_{k+1} \gets x_k + \alpha_k p_k$;
+		\If{There are blocking constraints}
+			\State Obtain $W_{k+1}$ by adding one of the blocking constraints to $W_{k+1}$;
+		\Else
+			\State $W_{k+1} \gets W_k$;	
+		\EndIf 	
+	\EndIf
+\EndFor 
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{MATLAB - MEX} \label{subsec:mex}
 
@@ -24,9 +55,12 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 
 
 \subsection{Matlib}
-Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
+%Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
+Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
 
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 \subsection{Byggsystem}
+Ett byggsystem används för att optimera utvecklandet av QuadOpt, där hela systemets delar byggs tillsammans med ett kommando för att man på ett snabbare och enklare sätt ska se om allt fungerar....  FYLL I
 
 \subsection{Parser}
+Parsern läser in problemet som står i GUI:t i textform och utvecklar den matematiska beskrivningen för att utifrån de givna matriserna kunna generera alla de matriser som QuadOpt kommer att behöva för att lösa problemet. FYLL I MER

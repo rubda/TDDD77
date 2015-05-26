@@ -3,14 +3,55 @@
 {\ttfamily \#include $<$subproblem.\+h$>$}\\*
 {\ttfamily \#include $<$mat\+Lib.\+h$>$}\\*
 {\ttfamily \#include $<$solver.\+h$>$}\\*
+{\ttfamily \#include $<$assert.\+h$>$}\\*
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
+\item 
+void \hyperlink{subproblem_8c_ae829a64ba1585ef2480efd7bc2a32665}{range\+\_\+space\+\_\+sparse} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$A, \hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{subproblem_8c_a0839bfd872745979f3632a3d4629d0ae}{range\+\_\+space} (\hyperlink{structmatrix}{matrix} $\ast$A, \hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{subproblem_8c_a6cf23a327f076ee7d96d10e5e5902f56}{K\+K\+T\+\_\+sub\+\_\+sparse} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$A, \hyperlink{structproblem}{problem} $\ast$prob)
+\item 
+void \hyperlink{subproblem_8c_aa5dab70bc6bba59604a26c64fee289a9}{K\+K\+T\+\_\+sub} (\hyperlink{structmatrix}{matrix} $\ast$A, \hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 void \hyperlink{subproblem_8c_a6dfb043508dbeedee034842c89c30e38}{solve\+\_\+subproblem} (\hyperlink{structproblem}{problem} $\ast$prob)
 \end{DoxyCompactItemize}
 
 
 \subsection{Function Documentation}
+\hypertarget{subproblem_8c_aa5dab70bc6bba59604a26c64fee289a9}{}\index{subproblem.\+c@{subproblem.\+c}!K\+K\+T\+\_\+sub@{K\+K\+T\+\_\+sub}}
+\index{K\+K\+T\+\_\+sub@{K\+K\+T\+\_\+sub}!subproblem.\+c@{subproblem.\+c}}
+\subsubsection[{K\+K\+T\+\_\+sub}]{\setlength{\rightskip}{0pt plus 5cm}void K\+K\+T\+\_\+sub (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{A, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{subproblem_8c_aa5dab70bc6bba59604a26c64fee289a9}
+\hypertarget{subproblem_8c_a6cf23a327f076ee7d96d10e5e5902f56}{}\index{subproblem.\+c@{subproblem.\+c}!K\+K\+T\+\_\+sub\+\_\+sparse@{K\+K\+T\+\_\+sub\+\_\+sparse}}
+\index{K\+K\+T\+\_\+sub\+\_\+sparse@{K\+K\+T\+\_\+sub\+\_\+sparse}!subproblem.\+c@{subproblem.\+c}}
+\subsubsection[{K\+K\+T\+\_\+sub\+\_\+sparse}]{\setlength{\rightskip}{0pt plus 5cm}void K\+K\+T\+\_\+sub\+\_\+sparse (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{A, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{subproblem_8c_a6cf23a327f076ee7d96d10e5e5902f56}
+\hypertarget{subproblem_8c_a0839bfd872745979f3632a3d4629d0ae}{}\index{subproblem.\+c@{subproblem.\+c}!range\+\_\+space@{range\+\_\+space}}
+\index{range\+\_\+space@{range\+\_\+space}!subproblem.\+c@{subproblem.\+c}}
+\subsubsection[{range\+\_\+space}]{\setlength{\rightskip}{0pt plus 5cm}void range\+\_\+space (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{A, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{subproblem_8c_a0839bfd872745979f3632a3d4629d0ae}
+\hypertarget{subproblem_8c_ae829a64ba1585ef2480efd7bc2a32665}{}\index{subproblem.\+c@{subproblem.\+c}!range\+\_\+space\+\_\+sparse@{range\+\_\+space\+\_\+sparse}}
+\index{range\+\_\+space\+\_\+sparse@{range\+\_\+space\+\_\+sparse}!subproblem.\+c@{subproblem.\+c}}
+\subsubsection[{range\+\_\+space\+\_\+sparse}]{\setlength{\rightskip}{0pt plus 5cm}void range\+\_\+space\+\_\+sparse (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{A, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{subproblem_8c_ae829a64ba1585ef2480efd7bc2a32665}
 \hypertarget{subproblem_8c_a6dfb043508dbeedee034842c89c30e38}{}\index{subproblem.\+c@{subproblem.\+c}!solve\+\_\+subproblem@{solve\+\_\+subproblem}}
 \index{solve\+\_\+subproblem@{solve\+\_\+subproblem}!subproblem.\+c@{subproblem.\+c}}
 \subsubsection[{solve\+\_\+subproblem}]{\setlength{\rightskip}{0pt plus 5cm}void solve\+\_\+subproblem (

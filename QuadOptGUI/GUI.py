@@ -2,6 +2,7 @@ from tkinter.filedialog import *
 from tkinter.messagebox import *
 from CustomText import *
 from parser import *
+import subprocess
 import os
 
 filename = None
@@ -163,7 +164,8 @@ def generate_c(event=None):
 
 
 def run_code(event=None):
-    showerror()
+    cmd_line = "cd ../quadopt && make clean && make"
+    os.system(cmd_line)
 
 
 def edit_problem(event=None):
@@ -221,7 +223,6 @@ codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
 
-# FIX, RUN CURRENTLY CALLS NOTHING. SHOULD CALL MAKE OR SOMETHING!
 runButton = Button(sideBar, text="Run code", width=15, command=run_code)
 runButton.pack()
 

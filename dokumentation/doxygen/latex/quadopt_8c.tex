@@ -8,19 +8,6 @@
 \item 
 void \hyperlink{quadopt_8c_a6a215cbfde54f82a3ce599228fc3fce5}{mex\+Function} (int nlhs, mx\+Array $\ast$plhs\mbox{[}$\,$\mbox{]}, int nrhs, const mx\+Array $\ast$prhs\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
-\subsection*{Variables}
-\begin{DoxyCompactItemize}
-\item 
-mx\+Array $\ast$ \hyperlink{quadopt_8c_a4e9a8f4791a37a69d56f4c12d7bd8427}{mat\+\_\+matrix}
-\item 
-double $\ast$ \hyperlink{quadopt_8c_ae3202599ba87da77d908d997f34b9fe3}{out\+\_\+matrix}
-\item 
-\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{quadopt_8c_a0ae74d6614b5ba6e53d99af20ff97f26}{lib\+\_\+matrix}
-\item 
-\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{quadopt_8c_abb865b02748d9ae53cbe1a0cc82f8605}{result\+\_\+matrix}
-\item 
-\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{quadopt_8c_a81f864c20f18824f138d046a0e4cdd0e}{lib\+\_\+matrices} \mbox{[}nrhs-\/1\mbox{]}
-\end{DoxyCompactItemize}
 
 
 \subsection{Function Documentation}
@@ -35,21 +22,3 @@ double $\ast$ \hyperlink{quadopt_8c_ae3202599ba87da77d908d997f34b9fe3}{out\+\_\+
 \end{DoxyParamCaption}
 )}\label{quadopt_8c_a6a215cbfde54f82a3ce599228fc3fce5}
 This functions creates an interface between M\+A\+T\+L\+A\+B and the solver together with the matrixlibrary. It also converts M\+A\+T\+L\+A\+B structured matrices into the matrixlibrary structure. 
-
-\subsection{Variable Documentation}
-\hypertarget{quadopt_8c_a81f864c20f18824f138d046a0e4cdd0e}{}\index{quadopt.\+c@{quadopt.\+c}!lib\+\_\+matrices@{lib\+\_\+matrices}}
-\index{lib\+\_\+matrices@{lib\+\_\+matrices}!quadopt.\+c@{quadopt.\+c}}
-\subsubsection[{lib\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ lib\+\_\+matrices\mbox{[}nrhs-\/1\mbox{]}}\label{quadopt_8c_a81f864c20f18824f138d046a0e4cdd0e}
-An array of all the matrices that should be sent to the solver. \hypertarget{quadopt_8c_a0ae74d6614b5ba6e53d99af20ff97f26}{}\index{quadopt.\+c@{quadopt.\+c}!lib\+\_\+matrix@{lib\+\_\+matrix}}
-\index{lib\+\_\+matrix@{lib\+\_\+matrix}!quadopt.\+c@{quadopt.\+c}}
-\subsubsection[{lib\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ lib\+\_\+matrix}\label{quadopt_8c_a0ae74d6614b5ba6e53d99af20ff97f26}
-Used to temporarily store the Matlib matrix that is created when converting the Matlab matrix. \hypertarget{quadopt_8c_a4e9a8f4791a37a69d56f4c12d7bd8427}{}\index{quadopt.\+c@{quadopt.\+c}!mat\+\_\+matrix@{mat\+\_\+matrix}}
-\index{mat\+\_\+matrix@{mat\+\_\+matrix}!quadopt.\+c@{quadopt.\+c}}
-\subsubsection[{mat\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}mx\+Array$\ast$ mat\+\_\+matrix}\label{quadopt_8c_a4e9a8f4791a37a69d56f4c12d7bd8427}
-Used to store the incoming matrices from Matlab when converting to Matlib matrices. \hypertarget{quadopt_8c_ae3202599ba87da77d908d997f34b9fe3}{}\index{quadopt.\+c@{quadopt.\+c}!out\+\_\+matrix@{out\+\_\+matrix}}
-\index{out\+\_\+matrix@{out\+\_\+matrix}!quadopt.\+c@{quadopt.\+c}}
-\subsubsection[{out\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}double$\ast$ out\+\_\+matrix}\label{quadopt_8c_ae3202599ba87da77d908d997f34b9fe3}
-Used to return the result back to Matlab. \hypertarget{quadopt_8c_abb865b02748d9ae53cbe1a0cc82f8605}{}\index{quadopt.\+c@{quadopt.\+c}!result\+\_\+matrix@{result\+\_\+matrix}}
-\index{result\+\_\+matrix@{result\+\_\+matrix}!quadopt.\+c@{quadopt.\+c}}
-\subsubsection[{result\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ result\+\_\+matrix}\label{quadopt_8c_abb865b02748d9ae53cbe1a0cc82f8605}
-The Matlib matrix containing the result returned from the solver. 
