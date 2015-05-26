@@ -1,16 +1,18 @@
-\section{Matlab}
-Beskrivning för installation och användande av QuadOpt i Matlab.
+\section{MATLAB}
+Beskrivning för installation och användande av QuadOpt i MATLAB.
 
-\subsection{Installera QuadOpt i Matlab}
+\subsection{Installera QuadOpt i MATLAB}
 \begin{enumerate}
-	\item Se till att du har en C-kompilator installerad.
-	\item Packa upp \emph{quadopt.zip} i ditt Matlab workspace.
-	\item Kör nu skriptet \textbf{build} i Matlab.
-	\item Klart! QuadOpt är nu installerat i Matlab och är redo att köras.
+	\item Starta MATLAB och ställ dig i \emph{/matlab} på valfritt sätt. 
+	\item Skriv \textbf{build} i MATLAB-terminalen.
+	\item Klart! QuadOpt är nu installerat i MATLAB och är redo att köras.
+	\newline
+	\newline
+	\textbf{OBS!} Kom ihåg att en C-kompilator måste vara installerad för att detta ska funka!
 \end{enumerate}
 
 \subsection{Användning}
-Anropa QuadOpt lösaren i Matlab genom att skriva
+Anropa QuadOpt lösaren i MATLAB genom att skriva
 
 \begin{lstlisting}
 z = quadopt(Q, q, E, h, F, g, iter, time);
