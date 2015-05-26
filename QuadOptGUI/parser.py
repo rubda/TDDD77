@@ -36,8 +36,7 @@ def parse_mpc(filename, outfile, datafile):
                 out = create_matrix(key, matrix_dimensions[key], matrix_data[key])
                 outfile.write(out)
 
-        print(matrix_dimensions['Q'][0])
-        out = "matrix* q = create_zero_matrix(" + str(matrix_dimensions['Q'][0]) + ", 1);"
+        out = "matrix* q = create_zero_matrix(" + str(matrix_dimensions['Q'][0]) + ", 1);\n"
         outfile.write(out)
 
         out = """/* Transform matrix stuff */
@@ -100,7 +99,7 @@ def create_limits(matrix_dimensions, matrix_data, upper, lower):
 
     data = matrix_data[upper] + "," + neg_vals
     rows = matrix_dimensions[upper][0] + matrix_dimensions[upper][0]
-    cols = matrix_dimensions[lower][0] + matrix_dimensions[lower][0]
+    cols = matrix_dimensions[upper][1]
 
     return data, [rows, cols]
 
