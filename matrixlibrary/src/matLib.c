@@ -128,6 +128,8 @@ bool compare_matrices(matrix* a, matrix* b) {
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
       if(!(matlib_fabs(a_val - b_val) <= PRECISION)){
+	printf("%lu\n", a->rows);
+	printf("%lu\n", a->columns);
 	return false;
       }
     }
