@@ -58,14 +58,13 @@ matrix* Qfinal = create_zero_matrix(n_vars, n_vars);
 create_objective(N, Q, P, R, Qfinal);
 
 /* Solveranrop */  
-for(size_t i = 0; i <= 10; i++){
 """
         outfile.write(out)
 
         out = "problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL," + settings + ");\n"# 0, 0);
         outfile.write(out)
 
-        out = "quadopt_solver(problem);\nprint_solution(problem);\n}\n\n"
+        out = "quadopt_solver(problem);\nprint_solution(problem);\n\n"
         outfile.write(out)
 
         for key in matrix_dimensions:
