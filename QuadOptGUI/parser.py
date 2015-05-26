@@ -36,12 +36,16 @@ def parse_mpc(filename, outfile, datafile):
                 out = create_matrix(key, matrix_dimensions[key], matrix_data[key])
                 outfile.write(out)
 
-        out = """/* Transform matrix stuff */
+        out = "matrix* q = create_zero_matrix(n_vars, 1);\n\n"
+        outfile.write(out)
+
+        out = """
+/* Transform matrix stuff */
 matrix* E = create_zero_matrix(card_x*(N + 1), n_vars);
 matrix* h = create_zero_matrix(card_x*(N + 1), 1);
-assert(trans_dyn_cons(A, B, k, E, h, card_x, card_u));
+assert(trans_dyn_cons(A, B, k, E, h, card_x));
 
-size_t rows = 2*card_x*N + F->rows + 2*card_u*N;
+size_t rows = 2*card_x*N + Fx->rows + 2*card_u*N;
 size_t cols = card_x*(N + 1) + card_u*N;
 matrix* F = create_zero_matrix(rows, cols);
 matrix* g = create_zero_matrix(rows, 1);
@@ -51,11 +55,11 @@ multiply_matrix_with_scalar(-1, F);
 multiply_matrix_with_scalar(-1, g);
 
 matrix* Qfinal = create_zero_matrix(n_vars, n_vars);
-create_objective(N, Q, P, R, Qfinal)
+create_objective(N, Q, P, R, Qfinal);
 
-/* Solveranrop */ 
-int i; 
-for(i = 0; i <= 10; i++){"""
+/* Solveranrop */  
+for(size_t i = 0; i <= 10; i++){
+"""
         outfile.write(out)
 
         out = "problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL," + settings + ");\n"# 0, 0);
@@ -96,7 +100,7 @@ def create_limits(matrix_dimensions, matrix_data, upper, lower):
 
     data = matrix_data[upper] + "," + neg_vals
     rows = matrix_dimensions[upper][0] + matrix_dimensions[upper][0]
-    cols = matrix_dimensions[lower][0] + matrix_dimensions[lower][0]
+    cols = matrix_dimensions[upper][1]
 
     return data, [rows, cols]
 
