@@ -63,4 +63,4 @@ Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas 
 Ett byggsystem används för att optimera utvecklandet av QuadOpt, där hela systemets delar byggs tillsammans med ett kommando för att man på ett snabbare och enklare sätt ska se om allt fungerar....  FYLL I
 
 \subsection{Parser}
-Parsern läser in problemet som står i GUI:t i textform och utvecklar den matematiska beskrivningen för att utifrån de givna matriserna kunna generera alla de matriser som QuadOpt kommer att behöva för att lösa problemet. FYLL I MER
+Parsern är ett alternativ som möjliggör för användaren att generera en C-fil med vilken lösaren löser optimeringsproblemet. För att generera C-filen krävs det att parsern får två olika filer, en datafil med matrisdata och en fil med optimeringsproblemet där bland annat matrisernas dimensioner definieras. Dessa båda filer skickas till parsern från GUI:t. Anledning till parsern är att underlätta för användaren då många matriser som lösaren använder sig av är väldigt stora och innehåller många nollor. Parsern tar istället in mindre matriser som innehåller den data som dessa större matriser innehåller, bortsett från nollorna.

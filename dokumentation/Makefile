@@ -21,6 +21,9 @@ PROJ_NAME = projektplan
 TEST_DIR = testplan
 TEST_NAME = testplan
 
+TEK_DIR = tekniskdokumentation
+TEK_NAME = tekniskdokumentation
+
 TR1_DIR = testrapport1
 TR1_NAME = testrapport
 
@@ -40,6 +43,7 @@ PDFS += $(KRAV_DIR)/$(BUILDDIR)/$(KRAV_NAME).pdf
 PDFS += $(KVAL_DIR)/$(BUILDDIR)/$(KVAL_NAME).pdf
 PDFS += $(PROJ_DIR)/$(BUILDDIR)/$(PROJ_NAME).pdf
 PDFS += $(TEST_DIR)/$(BUILDDIR)/$(TEST_NAME).pdf
+PDFS += $(TEK_DIR)/$(BUILDDIR)/$(TEK_NAME).pdf
 PDFS += $(TR1_DIR)/$(BUILDDIR)/$(TR1_NAME).pdf
 PDFS += $(TR2_DIR)/$(BUILDDIR)/$(TR2_NAME).pdf
 PDFS += $(UT1_DIR)/$(BUILDDIR)/$(UT1_NAME).pdf
@@ -59,6 +63,7 @@ $(KRAV_DIR)/$(BUILDDIR)/$(KRAV_NAME).pdf: $(KRAV_DIR)/$(KRAV_NAME).tex $(wildcar
 $(KVAL_DIR)/$(BUILDDIR)/$(KVAL_NAME).pdf: $(KVAL_DIR)/$(KVAL_NAME).tex $(wildcard $(KVAL_DIR)/tex/*)
 $(PROJ_DIR)/$(BUILDDIR)/$(PROJ_NAME).pdf: $(PROJ_DIR)/$(PROJ_NAME).tex $(wildcard $(PROJ_DIR)/tex/*) $(wildcard $(PROJ_DIR)/grafik/*)
 $(TEST_DIR)/$(BUILDDIR)/$(TEST_NAME).pdf: $(TEST_DIR)/$(TEST_NAME).tex $(wildcard $(TEST_DIR)/tex/*)
+$(TEK_DIR)/$(BUILDDIR)/$(TEK_NAME).pdf: $(TEK_DIR)/$(TEK_NAME).tex $(wildcard $(TEK_DIR)/tex/*)
 $(TR1_DIR)/$(BUILDDIR)/$(TR1_NAME).pdf: $(TR1_DIR)/$(TR1_NAME).tex $(wildcard $(TR1_DIR)/tex/*)
 $(TR2_DIR)/$(BUILDDIR)/$(TR2_NAME).pdf: $(TR2_DIR)/$(TR2_NAME).tex $(wildcard $(TR2_DIR)/tex/*) $(wildcard $(TR2_DIR)/grafik/*)
 $(UT1_DIR)/$(BUILDDIR)/$(UT1_NAME).pdf: $(UT1_DIR)/$(UT1_NAME).tex $(wildcard $(UT1_DIR)/tex/*)

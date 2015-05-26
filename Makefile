@@ -34,7 +34,7 @@ matlab:
 
 
 .PHONY: package
-package: quadopt libmatrix
+package: quadopt libmatrix docs
 	mkdir -p $(PACKNAME)
 	cp QuadOptGUI/package_makefile.mk $(PACKNAME)/Makefile
 	cp QuadOptGUI/CustomText.py $(PACKNAME)/CustomText.py
@@ -53,5 +53,8 @@ package: quadopt libmatrix
 	mkdir -p $(PACKNAME)/matlab
 	cp matlab/build.m $(PACKNAME)/matlab
 	cp matlab/quadopt.c $(PACKNAME)/matlab
+	mkdir -p $(PACKNAME)/dokumentation
+	cp dokumentation/anvandarhandledning/build/anvandarhandledning.pdf $(PACKNAME)/dokumentation/
+	cp dokumentation/tekniskdokumentation/build/tekniskdokumentation.pdf $(PACKNAME)/dokumentation/
 	zip -r $(PACKNAME).zip $(PACKNAME)
 	rm -rf $(PACKNAME)
