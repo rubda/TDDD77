@@ -36,7 +36,7 @@ def parse_mpc(filename, outfile, datafile):
                 out = create_matrix(key, matrix_dimensions[key], matrix_data[key])
                 outfile.write(out)
 
-        out = "matrix* q = create_zero_matrix(" + str(matrix_dimensions['Q'][0]) + ", 1);\n"
+        out = "matrix* q = create_zero_matrix(n_vars, 1);\n\n"
         outfile.write(out)
 
         out = """
