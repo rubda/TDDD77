@@ -5,7 +5,7 @@ Beskrivning för installation och användande av QuadOpt i MATLAB.
 \begin{enumerate}
 	\item Starta MATLAB och ställ dig i \emph{/matlab} på valfritt sätt. 
 	\item Skriv \textbf{build} i MATLAB-terminalen.
-	\item Klart. QuadOpt är nu installerat i MATLAB och är redo att köras.
+	\item Klart. QuadOpt är nu redo att använda i MATLAB.
 	\newline
 	\newline
 	\textbf{OBS!} Kom ihåg att en C-kompilator måste vara installerad för att detta ska funka!
@@ -24,7 +24,7 @@ z = quadopt(Q, q, E, h, F, g, iter, time);
 	\item q - Matris innehållande den linjära delen av problemet.
 	\item E - Ekvivalensbivillkorsmatrisen.
 	\item h - Ekvivalensbivillkoren i högerledet.
-	\item F - Olikhetsbivillkorsmatrisen (Obs att det är större än eller lika med g).
+	\item F - Olikhetsbivillkorsmatrisen (\textbf{OBS!} det är större än eller lika med g).
 	\item g - Olikhetsbivillkoren i högerledet.
 	\item iter - Max antal iterationer innan lösaren avbryter.
 	\item time - Max tid i mikrosekunder innan lösaren avbryter.
