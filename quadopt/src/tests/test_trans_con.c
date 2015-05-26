@@ -3,6 +3,7 @@
 #include <matLib.h>
 
 void test_equality_constraints_transform();
+void test_equality_constraints_transform_1();
 void test_big_equality_constraints();
 void test_inequality_constraints();
 void test_objective();
