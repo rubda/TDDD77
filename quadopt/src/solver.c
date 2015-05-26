@@ -13,9 +13,7 @@
 #include <simplex.h>
 
 bool fill_active_set(problem* prob);
-
 bool take_step(problem* prob);
-
 void copy_solution(problem* prob);
 
 
