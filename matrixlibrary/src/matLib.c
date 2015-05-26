@@ -1100,14 +1100,14 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
-/** Initializes parallel variables */
+/* Initializes parallel variables */
 void initialize_parallelization(){
   pthread_mutex_init(&lock, NULL);
   thread_counter=(int*)malloc(sizeof(int));
   *thread_counter=0;
 }
 
-/** Free parallel variables */
+/* Free parallel variables */
 void deinitialize_parallelization(){
   free(thread_counter);
   pthread_mutex_destroy(&lock);
@@ -1362,7 +1362,7 @@ bool gauss_jordan(matrix* a) {
   return true;
 }
 
-/** Solves the system of linear equations using gauss jordan */
+/* Solves the system of linear equations using gauss jordan */
 bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
   if (a->columns!=x->rows||a->rows!=b->rows||x->columns!=b->columns||a->columns!=a->rows){
     return false;
