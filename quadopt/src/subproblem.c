@@ -22,14 +22,16 @@ void range_space_sparse(sparse_matrix* A, problem* prob){
   prob->lagrange = create_zero_matrix(AQg->rows, AQg->columns);   
 
   /* Solve to retrieve lagrange multiplicators */
-  conjugate_gradient(s_AQAt, prob->lagrange, h1);
+  //conjugate_gradient(s_AQAt, prob->lagrange, h1);
+  gauss_jordan_solver(AQAt, prob->lagrange, h1);
 
   transpose_sparse_matrix(A);
   matrix* ht = multiply_sparse_matrix_matrix(A, prob->lagrange);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
   /* Solve to retrieve p */
-  conjugate_gradient(prob->sparse_Q, prob->p, h2);
+  //conjugate_gradient(prob->sparse_Q, prob->p, h2);
+  gauss_jordan_solver(prob->Q, prob->p, h2);
   
   matrix* Qp = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->p);
   

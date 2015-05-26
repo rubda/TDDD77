@@ -204,7 +204,9 @@ bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
 
   value rs_new;
 
-  while (true){
+  unsigned long count = 0;
+  while (count < MAX_ITER){
+    count++;
 
     /* Clear Ap */
     for (i = 1; i <= Ap->rows; i++){

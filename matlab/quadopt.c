@@ -64,6 +64,8 @@ void mexFunction(int nlhs, mxArray* plhs[],
   /* Solve problem */
   quadopt_solver(problem);
 
+  /*mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs", "COCK.");*/
+
   /* Get the solution from the problem struct */
   result_matrix = problem->solution; 
 

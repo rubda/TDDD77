@@ -1,6 +1,8 @@
 #ifndef SPARSE_LIB_H
 #define SPARSE_LIB_H
 
+#define MAX_ITER 1000000
+
 #include <matLib.h>
 
 /** Store sparse matrix using COO (coordinate list) */
@@ -47,7 +49,8 @@ void print_sparse_matrix(sparse_matrix* S);
 /** Frees allocated memory of the sparse matrix */
 void free_sparse_matrix(sparse_matrix* S);
 
-/* solves Ax = b, x should be set to 0 */
+/** Solves Ax = b, x should be set to 0 */
+/** Is not used, due to not working with MATLAB gate. */
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b);
 
 #endif /* SPARSE_LIB_H */
