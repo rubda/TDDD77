@@ -68,6 +68,13 @@ for(i = 0; i <= 10; i++){"""
             out = create_free(key)
             outfile.write(out)
 
+        out = """free_matrix(F);
+free_matrix(g);
+free_matrix(E);
+free_matrix(h);
+free_matrix(Qfinal);\n\n"""
+        outfile.write(out) 
+
         out = "\n}"
         outfile.write(out)
 

@@ -5,7 +5,7 @@ def parse_mpc(filename, outfile, datafile):
     with open(filename, 'r') as mpcfile, open(datafile, 'r') as datafile, open(outfile, 'w') as outfile:
 
         matrix_data = get_matrix_data(datafile)
-        matrix_dimensions, N, card_x, card_u = get_mpc_data(mpcfile)
+        matrix_dimensions, N, card_x, card_u, settings = get_mpc_data(mpcfile)
 
         matrix_data["x_lim"], matrix_dimensions["x_lim"] = create_limits(matrix_dimensions, matrix_data, "x_max", "x_min")
         matrix_data["u_lim"], matrix_dimensions["u_lim"] = create_limits(matrix_dimensions, matrix_data, "u_max", "u_min")
@@ -55,18 +55,27 @@ create_objective(N, Q, P, R, Qfinal)
 
 /* Solveranrop */ 
 int i; 
-for(i = 0; i <= 10; i++){ 
-problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL, 0, 0);
-quadopt_solver(problem);
-print_solution(problem);
-}
+for(i = 0; i <= 10; i++){"""
+        outfile.write(out)
 
-"""
+        out = "problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL," + settings + ");\n"# 0, 0);
+        outfile.write(out)
+
+        out = "quadopt_solver(problem);\nprint_solution(problem);\n}\n\n"
         outfile.write(out)
 
         for key in matrix_dimensions:
-            out = create_free(key)
-            outfile.write(out)
+            if key != "x_max" and key != "x_min" and key != "u_max" and key != "u_min":
+                out = create_free(key)
+                outfile.write(out)
+
+        out = """free_matrix(F);
+free_matrix(g);
+free_matrix(E);
+free_matrix(h);
+free_matrix(Qfinal);
+free_matrix(z);\n"""
+        outfile.write(out) 
 
         out = "\n}"
         outfile.write(out)
@@ -100,9 +109,11 @@ def get_mpc_data(mpcfile):
     N = ""
     card_x = ""
     card_u = ""
+    settings = ""
     copy_parameters = False
     copy_dimensions = False
     copy_vars = False
+    copy_settings = False
     data = ""
     name = ""
     value = ""
@@ -116,14 +127,19 @@ def get_mpc_data(mpcfile):
             copy_dimensions = True
         elif line == 'variables':
             copy_vars = True
+        elif line == 'settings':
+            copy_settings = True
         elif line == 'end':
             copy_parameters = False
             copy_dimensions = False
             copy_vars = False
+            copy_settings = False
         elif copy_parameters:
             try:
-                name = line.split('(')[0]
-                dimensions = line.split('(')[1]
+                #name = line.split('(')[0]
+                #dimensions = line.split('(')[1]
+
+                name, dimensions = line.split('(')
                 dimensions = re.findall(r'\d+', dimensions)
                 dimensions = list(map(int, dimensions))
                 if len(dimensions) != 2:
@@ -140,8 +156,13 @@ def get_mpc_data(mpcfile):
                 card_x = line.split('(')[1].split(')')[0]
             elif line.startswith('u'):
                 card_u = line.split('(')[1].split(')')[0]
+        elif copy_settings:
+            name, val = line.split('=')
+            settings += " " + val + ","
 
-    return matrix_dimensions, N, card_x, card_u
+    settings = settings[:-1]
+
+    return matrix_dimensions, N, card_x, card_u, settings
 
 
 """
