@@ -8,9 +8,9 @@ parameters
     k (2)
     x_max (2)
     x_min (2)
-    R = 8   
-    u_max = 25
-    u_min = -25
+    R (1)  
+    u_max (1)
+    u_min (1)
 end
 
 dimensions
@@ -32,7 +32,7 @@ minimize
 subject to
     x[0] = x0
     x[k+1] = A*x[k] + B*u[k], k = 0..N-1
-    x_min <= x{[k] <= x_max , k = 0..N-1
+    x_min <= x[k] <= x_max, k = 0..N-1
     u_min <= u[k] <= u_max, k= 0..N-1
     F*x[N] <= g
-end 
+end
