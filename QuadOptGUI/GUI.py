@@ -6,6 +6,7 @@ import subprocess
 import os
 
 filename = None
+data_filename = None
 clipboard = None
 start_file = """parameters
     
@@ -67,10 +68,13 @@ def save_as(event=None):
 
 def open_file(event=None):
     global filename
+    global data_filename
     try:
         f = askopenfile(mode='r')
         t = f.read()
         filename = f.name
+        data_file = askopenfile(mode="r")
+        data_filename = data_file.name
 
         text.delete(0.0, END)
         text.insert(0.0, t)
@@ -148,39 +152,22 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
-    problem_file = "mpc.qopt"
-    res_file = "result.c"
-    data_file = "problem_data.qopt"
+    global data_filename
+    problem_file = filename
+    res_file = "solution.c"
+    data_file = data_filename
     try:
         parse_mpc(problem_file, res_file, data_file )
 
-        f = open("result.c")
-        t = f.read()
-
         showinfo(title="C code generation",
-                 message="The generated C code was written to " + "result.c")
+                 message="The generated C code was written to " + res_file)
     except:
         showerror(title="Error", message="Something went wrong!")
 
 
 def run_code(event=None):
-    cmd_line = "cd ../quadopt && make clean && make"
+    cmd_line = "make && ./solution"
     os.system(cmd_line)
-
-
-def edit_problem(event=None):
-    global filename
-    try:
-        text.config(state=NORMAL)
-        f = open(filename)
-        t = f.read()
-
-        text.delete(0.0, END)
-        text.insert(0.0, t)
-        root.title(filename)
-        highlight()
-    except:
-        pass
 
 
 def quit(event=None):
