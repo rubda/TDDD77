@@ -8,7 +8,7 @@ Här beskrivs matematiken bakom de problem som programvaran ska lösa. Olika alg
 &G  \quad \text{Matris med målfunktionens alla kvadratiska termer}\\
 &d  \quad \text{Matris med målfunktionens alla linjära termer}\\
 &F  \quad \text{Matris med alla olikhetsbivillkoren}\\
-&d  \quad \text{Vektor med olikhetsbivillkorens högerled}\\
+&g  \quad \text{Vektor med olikhetsbivillkorens högerled}\\
 &E  \quad \text{Matris med alla likhetsbivillkoren}\\
 &h  \quad \text{Vektor med likhetsbivillkorens högerled}
 \end{aligned}
@@ -117,7 +117,7 @@ Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör
 KKT står för Karush-Kuhn-Tucker. Metoden löser följande system:
 
 $$\begin{bmatrix}
-K & A^T \\
+G & A^T \\
 A & 0
 \end{bmatrix}
 \begin{bmatrix}
@@ -136,7 +136,7 @@ Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimizatio
 Lagrangemultiplikatorerna ($\hat{\lambda_i}$) är det kvadratiska optimeringsproblemets slackvariabler, och de kan beräknas på följande sätt: \\ 
 \begin{equation*}
 \begin{aligned}
-\sum_{i \in W_k} a_i \hat{\lambda_i} = g = G x_k + d
+\sum_{i \in W_k} a_i \lambda_i^* = g = G x_k + d
 \end{aligned}
 \end{equation*}
 där $x_k$ är den punkt som lösaren står i, och $W_k$ är den uppsättning av bivillkor som är aktiva.
@@ -153,7 +153,7 @@ där $\alpha_k$ är steglängden.
 
 \subsection{MEX}
 \label{sec:mex}
-MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
+MEX står för \textbf{M}atlab \textbf{ex}ecutable. Det är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
 
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/mex.c}

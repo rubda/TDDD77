@@ -166,6 +166,7 @@ bool insert_A_matrices(matrix* E, matrix* A){
 }
 
 bool insert_B_matrices(matrix* E, matrix* B, size_t N){
+  multiply_matrix_with_scalar(-1, B);
   size_t start_col = N*B->rows + B->rows + 1;
   for(size_t start_row = 1 + B->rows; start_row < E->rows; start_row += B->rows){
     size_t end_row = start_row + B->rows - 1;

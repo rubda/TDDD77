@@ -2,6 +2,7 @@
 \label{problem_8h}\index{T\+D\+D\+D77/quadopt/include/problem.\+h@{T\+D\+D\+D77/quadopt/include/problem.\+h}}
 {\ttfamily \#include $<$mat\+Lib.\+h$>$}\\*
 {\ttfamily \#include $<$work\+\_\+set.\+h$>$}\\*
+{\ttfamily \#include $<$sparse\+\_\+lib.\+h$>$}\\*
 \subsection*{Data Structures}
 \begin{DoxyCompactItemize}
 \item 
@@ -23,6 +24,8 @@ void \hyperlink{problem_8h_a82683e2c4085dc52c23b5b468a9ac736}{free\+\_\+problem}
 \item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8h_ac3c11b6e9f5ee8d74af24f1a4b96089e}{get\+\_\+active\+\_\+conditions} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{problem_8h_a7f5d8f1afbeb61eb01a0566a7328fa0b}{get\+\_\+sparse\+\_\+active\+\_\+conditions} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8h_a3e0c97402fe21797b7fb635415749bd1}{get\+\_\+active\+\_\+conditions\+\_\+rhs} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\+\_\+value} (\hyperlink{structproblem}{problem} $\ast$prob)
@@ -30,6 +33,8 @@ bool \hyperlink{problem_8h_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\
 void \hyperlink{problem_8h_acefe821ee0ec9c82e8db668beaf89972}{print\+\_\+solution} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 bool \hyperlink{problem_8h_aac78795d52fa0cf6857afe4117a1a148}{time\+\_\+to\+\_\+exit} (\hyperlink{structproblem}{problem} $\ast$prob, double time\+\_\+spent)
+\item 
+bool \hyperlink{problem_8h_ab5a324cc412f00a1ae586f3313423da5}{is\+\_\+feasible\+\_\+point} (\hyperlink{structmatrix}{matrix} $\ast$z, \hyperlink{structproblem}{problem} $\ast$prob)
 \end{DoxyCompactItemize}
 
 
@@ -83,7 +88,22 @@ Returns a matrix with the right hand side of the currently active constraints \h
 \item[{{\bf problem} $\ast$}]{prob}
 \end{DoxyParamCaption}
 )}\label{problem_8h_a828fe3528592c279acbdf6f11d83d743}
-Calculates the optimum value given by the solution point \hypertarget{problem_8h_a3b34d735f176c91c912671f182e447d6}{}\index{problem.\+h@{problem.\+h}!print\+\_\+problem@{print\+\_\+problem}}
+Calculates the optimum value given by the solution point \hypertarget{problem_8h_a7f5d8f1afbeb61eb01a0566a7328fa0b}{}\index{problem.\+h@{problem.\+h}!get\+\_\+sparse\+\_\+active\+\_\+conditions@{get\+\_\+sparse\+\_\+active\+\_\+conditions}}
+\index{get\+\_\+sparse\+\_\+active\+\_\+conditions@{get\+\_\+sparse\+\_\+active\+\_\+conditions}!problem.\+h@{problem.\+h}}
+\subsubsection[{get\+\_\+sparse\+\_\+active\+\_\+conditions}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ get\+\_\+sparse\+\_\+active\+\_\+conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_a7f5d8f1afbeb61eb01a0566a7328fa0b}
+\hypertarget{problem_8h_ab5a324cc412f00a1ae586f3313423da5}{}\index{problem.\+h@{problem.\+h}!is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}}
+\index{is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}!problem.\+h@{problem.\+h}}
+\subsubsection[{is\+\_\+feasible\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}bool is\+\_\+feasible\+\_\+point (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{z, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8h_ab5a324cc412f00a1ae586f3313423da5}
+\hypertarget{problem_8h_a3b34d735f176c91c912671f182e447d6}{}\index{problem.\+h@{problem.\+h}!print\+\_\+problem@{print\+\_\+problem}}
 \index{print\+\_\+problem@{print\+\_\+problem}!problem.\+h@{problem.\+h}}
 \subsubsection[{print\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+problem (
 \begin{DoxyParamCaption}
