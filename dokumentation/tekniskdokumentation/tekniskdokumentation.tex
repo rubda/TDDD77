@@ -31,6 +31,7 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{appendix}
 
 \pagenumbering{roman}
 
@@ -75,6 +76,11 @@
 \input{tex/tekniskdokumentation-systemdelar.tex}
 
 \input{tex/tekniskdokumentation-anvandargranssnitt.tex}
+
+\begin{appendices}
+	\section{Koddokumentation}
+	\includepdf[pages=-]{../doxygen/pdf/refman.pdf}
+\end{appendices}
 
 
 \end{document}
