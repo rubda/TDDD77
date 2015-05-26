@@ -81,7 +81,7 @@ def open_file(event=None):
 def init_text(event=None):
     global filename
     try:
-        f = open("test.qopt")
+        f = open("mpc.qopt")
         t = f.read()
         filename = f.name
 
@@ -147,8 +147,11 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
+    problem_file = "mpc.qopt"
+    res_file = "result.c"
+    data_file = "problem_data.qopt"
     try:
-        parse_qp("test.qopt", "result.c", "problem_data.qopt")
+        parse_mpc(problem_file, res_file, data_file )
 
         f = open("result.c")
         t = f.read()

@@ -1,0 +1,38 @@
+parameters
+    A (2,2)
+    B (2)
+    Fx (12,2)
+    gx (12)
+    P (2,2)
+    Q (2,2)
+    k (2)
+    x_max (2)
+    x_min (2)
+    R = 8   
+    u_max = 25
+    u_min = -25
+end
+
+dimensions
+    N = 30  
+end
+
+variables
+    x[t] (2), t=1..N+1
+    u[t] (1), t=0..N
+end
+
+settings
+    iterations = 0
+    time = 0
+end
+
+minimize 
+    sum[k=0..N-1](x[k]’*Q*x[k] + u[k]’*R*u[k]) + x[N]’*P*x[N]
+subject to
+    x[0] = x0
+    x[k+1] = A*x[k] + B*u[k], k = 0..N-1
+    x_min <= x{[k] <= x_max , k = 0..N-1
+    u_min <= u[k] <= u_max, k= 0..N-1
+    F*x[N] <= g
+end 
