@@ -72,12 +72,7 @@ create_objective(N, Q, P, R, Qfinal);
                 out = create_free(key)
                 outfile.write(out)
 
-        out = """free_matrix(F);
-free_matrix(g);
-free_matrix(E);
-free_matrix(h);
-free_matrix(Qfinal);
-free_matrix(z);\n"""
+        out = """free_matrix(z);\nfree_problem(problem);\n"""
         outfile.write(out) 
 
         out = "\n}"

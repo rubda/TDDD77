@@ -95,7 +95,7 @@ bool remove_constraint(problem* prob){
   }
   
   /* Find most negative and remove (if not equality constraint) */
-  int small;
+  int small = 0;
   value tmp;
   value val = 0;
 
@@ -116,7 +116,7 @@ bool remove_constraint(problem* prob){
   /* Check if value is negative */
   if (val < 0) {
     /* Remove */
-    work_set_remove(prob->active_set,small);
+    work_set_remove(prob->active_set, small);
     return true;
   }
 
