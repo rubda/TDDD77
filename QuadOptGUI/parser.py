@@ -39,7 +39,8 @@ def parse_mpc(filename, outfile, datafile):
         out = "matrix* q = create_zero_matrix(" + str(matrix_dimensions['Q'][0]) + ", 1);\n"
         outfile.write(out)
 
-        out = """/* Transform matrix stuff */
+        out = """
+/* Transform matrix stuff */
 matrix* E = create_zero_matrix(card_x*(N + 1), n_vars);
 matrix* h = create_zero_matrix(card_x*(N + 1), 1);
 assert(trans_dyn_cons(A, B, k, E, h, card_x));
