@@ -56,11 +56,11 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 
 \subsection{Matlib}
 %Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
-Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
+Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. %När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
 
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 \subsection{Byggsystem}
-Ett byggsystem används för att optimera utvecklandet av QuadOpt, där hela systemets delar byggs tillsammans med ett kommando för att man på ett snabbare och enklare sätt ska se om allt fungerar....  FYLL I
+Ett byggsystem används för att optimera utvecklandet av QuadOpt, där hela systemets delar byggs tillsammans med ett kommando för att man på ett snabbare och enklare sätt ska se om allt fungerar. %...  FYLL I
 
 \subsection{Parser}
 Parsern är ett alternativ som möjliggör för användaren att generera en C-fil med vilken lösaren löser optimeringsproblemet. För att generera C-filen krävs det att parsern får två olika filer, en datafil med matrisdata och en fil med optimeringsproblemet där bland annat matrisernas dimensioner definieras. Dessa båda filer skickas till parsern från GUI:t. Anledning till parsern är att underlätta för användaren då många matriser som lösaren använder sig av är väldigt stora och innehåller många nollor. Parsern tar istället in mindre matriser som innehåller den data som dessa större matriser innehåller, bortsett från nollorna.
