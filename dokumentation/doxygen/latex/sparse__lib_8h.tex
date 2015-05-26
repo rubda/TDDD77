@@ -1,0 +1,140 @@
+\hypertarget{sparse__lib_8h}{}\section{T\+D\+D\+D77/matrixlibrary/include/sparse\+\_\+lib.h File Reference}
+\label{sparse__lib_8h}\index{T\+D\+D\+D77/matrixlibrary/include/sparse\+\_\+lib.\+h@{T\+D\+D\+D77/matrixlibrary/include/sparse\+\_\+lib.\+h}}
+{\ttfamily \#include $<$mat\+Lib.\+h$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structsparse__matrix}{sparse\+\_\+matrix}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structsparse__matrix}{sparse\+\_\+matrix} \hyperlink{sparse__lib_8h_a348dba7eac5faabf3d8004be3d6aae08}{sparse\+\_\+matrix}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{sparse__lib_8h_a37a91cf0d71f64feaf8ec8218cefda1a}{create\+\_\+sparse\+\_\+matrix} (\hyperlink{structmatrix}{matrix} $\ast$Ain, int size)
+\item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{sparse__lib_8h_a8ff25b621bcf07182bf02de623a3f409}{create\+\_\+empty\+\_\+sparse\+\_\+matrix} (size\+\_\+t size)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{sparse__lib_8h_aef4662f924e65c42e15a755d64462ea6}{sparse\+\_\+to\+\_\+normal} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$S)
+\item 
+size\+\_\+t \hyperlink{sparse__lib_8h_aaae00417fc9c89688d114437c38cb7c1}{matrix\+\_\+sparsity} (\hyperlink{structmatrix}{matrix} $\ast$A)
+\item 
+bool \hyperlink{sparse__lib_8h_a311e5dd5c8e241c6117a458ac7615e0e}{multiply\+\_\+sparse\+\_\+matrix\+\_\+vector} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$A, \hyperlink{structmatrix}{matrix} $\ast$x, \hyperlink{structmatrix}{matrix} $\ast$Ax)
+\item 
+\hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{sparse__lib_8h_ae38591363ce93882eb872a7b51698ba1}{multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$A, \hyperlink{structmatrix}{matrix} $\ast$B)
+\item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{sparse__lib_8h_ad13b4f43ba28ff5696c77d1b7f1c7e61}{copy\+\_\+sparse\+\_\+matrix} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$Ain)
+\item 
+void \hyperlink{sparse__lib_8h_a14676812e413c4c48eb181d0a7f4ac57}{transpose\+\_\+sparse\+\_\+matrix} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$Ain)
+\item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{sparse__lib_8h_ad1835305e7e9045db66d8ebaab6c429a}{transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$Ain)
+\item 
+void \hyperlink{sparse__lib_8h_a2a5d697c57e5d7b33e34c22b912d16fa}{print\+\_\+sparse\+\_\+matrix} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$S)
+\item 
+void \hyperlink{sparse__lib_8h_a613e3e38f030b323c155c7c233cd036b}{free\+\_\+sparse\+\_\+matrix} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$S)
+\item 
+bool \hyperlink{sparse__lib_8h_ac49136f1a20ee1d7f5fce5fb533658d3}{conjugate\+\_\+gradient} (\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$A, \hyperlink{structmatrix}{matrix} $\ast$x, \hyperlink{structmatrix}{matrix} $\ast$b)
+\end{DoxyCompactItemize}
+
+
+\subsection{Typedef Documentation}
+\hypertarget{sparse__lib_8h_a348dba7eac5faabf3d8004be3d6aae08}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!sparse\+\_\+matrix@{sparse\+\_\+matrix}}
+\index{sparse\+\_\+matrix@{sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf sparse\+\_\+matrix} {\bf sparse\+\_\+matrix}}\label{sparse__lib_8h_a348dba7eac5faabf3d8004be3d6aae08}
+
+
+\subsection{Function Documentation}
+\hypertarget{sparse__lib_8h_ac49136f1a20ee1d7f5fce5fb533658d3}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!conjugate\+\_\+gradient@{conjugate\+\_\+gradient}}
+\index{conjugate\+\_\+gradient@{conjugate\+\_\+gradient}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{conjugate\+\_\+gradient}]{\setlength{\rightskip}{0pt plus 5cm}bool conjugate\+\_\+gradient (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{A, }
+\item[{{\bf matrix} $\ast$}]{x, }
+\item[{{\bf matrix} $\ast$}]{b}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_ac49136f1a20ee1d7f5fce5fb533658d3}
+Solves Ax = b, x should be set to 0 Is not used, due to not working with M\+A\+T\+L\+A\+B gate. \hypertarget{sparse__lib_8h_ad13b4f43ba28ff5696c77d1b7f1c7e61}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!copy\+\_\+sparse\+\_\+matrix@{copy\+\_\+sparse\+\_\+matrix}}
+\index{copy\+\_\+sparse\+\_\+matrix@{copy\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{copy\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ copy\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{Ain}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_ad13b4f43ba28ff5696c77d1b7f1c7e61}
+Copies a sparse matrix and returns it \hypertarget{sparse__lib_8h_a8ff25b621bcf07182bf02de623a3f409}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!create\+\_\+empty\+\_\+sparse\+\_\+matrix@{create\+\_\+empty\+\_\+sparse\+\_\+matrix}}
+\index{create\+\_\+empty\+\_\+sparse\+\_\+matrix@{create\+\_\+empty\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{create\+\_\+empty\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ create\+\_\+empty\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{size\+\_\+t}]{size}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a8ff25b621bcf07182bf02de623a3f409}
+Creates an empty sparse matrix \hypertarget{sparse__lib_8h_a37a91cf0d71f64feaf8ec8218cefda1a}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!create\+\_\+sparse\+\_\+matrix@{create\+\_\+sparse\+\_\+matrix}}
+\index{create\+\_\+sparse\+\_\+matrix@{create\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{create\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ create\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{Ain, }
+\item[{int}]{size}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a37a91cf0d71f64feaf8ec8218cefda1a}
+Creates a sparse matrix out of a normal matrix \hypertarget{sparse__lib_8h_a613e3e38f030b323c155c7c233cd036b}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!free\+\_\+sparse\+\_\+matrix@{free\+\_\+sparse\+\_\+matrix}}
+\index{free\+\_\+sparse\+\_\+matrix@{free\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{free\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{S}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a613e3e38f030b323c155c7c233cd036b}
+Frees allocated memory of the sparse matrix \hypertarget{sparse__lib_8h_aaae00417fc9c89688d114437c38cb7c1}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!matrix\+\_\+sparsity@{matrix\+\_\+sparsity}}
+\index{matrix\+\_\+sparsity@{matrix\+\_\+sparsity}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{matrix\+\_\+sparsity}]{\setlength{\rightskip}{0pt plus 5cm}size\+\_\+t matrix\+\_\+sparsity (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{A}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_aaae00417fc9c89688d114437c38cb7c1}
+Returns number of elements != 0 \hypertarget{sparse__lib_8h_ae38591363ce93882eb872a7b51698ba1}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix@{multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix}}
+\index{multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix@{multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ multiply\+\_\+sparse\+\_\+matrix\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{A, }
+\item[{{\bf matrix} $\ast$}]{B}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_ae38591363ce93882eb872a7b51698ba1}
+Multiplies sparse matrix with a normal matrix. Returns a normal matrix. \hypertarget{sparse__lib_8h_a311e5dd5c8e241c6117a458ac7615e0e}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!multiply\+\_\+sparse\+\_\+matrix\+\_\+vector@{multiply\+\_\+sparse\+\_\+matrix\+\_\+vector}}
+\index{multiply\+\_\+sparse\+\_\+matrix\+\_\+vector@{multiply\+\_\+sparse\+\_\+matrix\+\_\+vector}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{multiply\+\_\+sparse\+\_\+matrix\+\_\+vector}]{\setlength{\rightskip}{0pt plus 5cm}bool multiply\+\_\+sparse\+\_\+matrix\+\_\+vector (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{A, }
+\item[{{\bf matrix} $\ast$}]{x, }
+\item[{{\bf matrix} $\ast$}]{Ax}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a311e5dd5c8e241c6117a458ac7615e0e}
+Multiplies sparse matrix with normal vector, stores result in normal matrix Ax \hypertarget{sparse__lib_8h_a2a5d697c57e5d7b33e34c22b912d16fa}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!print\+\_\+sparse\+\_\+matrix@{print\+\_\+sparse\+\_\+matrix}}
+\index{print\+\_\+sparse\+\_\+matrix@{print\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{print\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{S}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a2a5d697c57e5d7b33e34c22b912d16fa}
+Prints sparse matrix \hypertarget{sparse__lib_8h_aef4662f924e65c42e15a755d64462ea6}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!sparse\+\_\+to\+\_\+normal@{sparse\+\_\+to\+\_\+normal}}
+\index{sparse\+\_\+to\+\_\+normal@{sparse\+\_\+to\+\_\+normal}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{sparse\+\_\+to\+\_\+normal}]{\setlength{\rightskip}{0pt plus 5cm}{\bf matrix}$\ast$ sparse\+\_\+to\+\_\+normal (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{S}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_aef4662f924e65c42e15a755d64462ea6}
+Converts sparse matrix to normal matrix \hypertarget{sparse__lib_8h_a14676812e413c4c48eb181d0a7f4ac57}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!transpose\+\_\+sparse\+\_\+matrix@{transpose\+\_\+sparse\+\_\+matrix}}
+\index{transpose\+\_\+sparse\+\_\+matrix@{transpose\+\_\+sparse\+\_\+matrix}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{transpose\+\_\+sparse\+\_\+matrix}]{\setlength{\rightskip}{0pt plus 5cm}void transpose\+\_\+sparse\+\_\+matrix (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{Ain}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_a14676812e413c4c48eb181d0a7f4ac57}
+Transposes input sparse matrix \hypertarget{sparse__lib_8h_ad1835305e7e9045db66d8ebaab6c429a}{}\index{sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}!transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return@{transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return}}
+\index{transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return@{transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return}!sparse\+\_\+lib.\+h@{sparse\+\_\+lib.\+h}}
+\subsubsection[{transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ transpose\+\_\+sparse\+\_\+matrix\+\_\+with\+\_\+return (
+\begin{DoxyParamCaption}
+\item[{{\bf sparse\+\_\+matrix} $\ast$}]{Ain}
+\end{DoxyParamCaption}
+)}\label{sparse__lib_8h_ad1835305e7e9045db66d8ebaab6c429a}
+Transposes a sparse matrix and returns it in a new sparse matrix 

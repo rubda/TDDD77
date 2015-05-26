@@ -4,6 +4,8 @@
 \subsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \hyperlink{problem_8c_ab1ce670e7d44d0006a56e56af16d8640}{fill\+\_\+constraint\+\_\+matrices} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
 \hyperlink{structproblem}{problem} $\ast$ \hyperlink{problem_8c_aaff088c718084e7ced83dc9cc33e9af4}{create\+\_\+problem} (\hyperlink{structmatrix}{matrix} $\ast$Q, \hyperlink{structmatrix}{matrix} $\ast$q, \hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$h, \hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$g, \hyperlink{structmatrix}{matrix} $\ast$z0, int max\+\_\+iter, int max\+\_\+micro\+\_\+sec)
 \item 
 void \hyperlink{problem_8c_a3b34d735f176c91c912671f182e447d6}{print\+\_\+problem} (\hyperlink{structproblem}{problem} $\ast$prob)
@@ -12,6 +14,8 @@ void \hyperlink{problem_8c_a82683e2c4085dc52c23b5b468a9ac736}{free\+\_\+problem}
 \item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8c_ac3c11b6e9f5ee8d74af24f1a4b96089e}{get\+\_\+active\+\_\+conditions} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
+\hyperlink{structsparse__matrix}{sparse\+\_\+matrix} $\ast$ \hyperlink{problem_8c_a7f5d8f1afbeb61eb01a0566a7328fa0b}{get\+\_\+sparse\+\_\+active\+\_\+conditions} (\hyperlink{structproblem}{problem} $\ast$prob)
+\item 
 \hyperlink{structmatrix}{matrix} $\ast$ \hyperlink{problem_8c_a3e0c97402fe21797b7fb635415749bd1}{get\+\_\+active\+\_\+conditions\+\_\+rhs} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 bool \hyperlink{problem_8c_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\+\_\+value} (\hyperlink{structproblem}{problem} $\ast$prob)
@@ -19,6 +23,8 @@ bool \hyperlink{problem_8c_a828fe3528592c279acbdf6f11d83d743}{get\+\_\+solution\
 void \hyperlink{problem_8c_acefe821ee0ec9c82e8db668beaf89972}{print\+\_\+solution} (\hyperlink{structproblem}{problem} $\ast$prob)
 \item 
 bool \hyperlink{problem_8c_aac78795d52fa0cf6857afe4117a1a148}{time\+\_\+to\+\_\+exit} (\hyperlink{structproblem}{problem} $\ast$prob, double time\+\_\+spent)
+\item 
+bool \hyperlink{problem_8c_ab5a324cc412f00a1ae586f3313423da5}{is\+\_\+feasible\+\_\+point} (\hyperlink{structmatrix}{matrix} $\ast$z, \hyperlink{structproblem}{problem} $\ast$prob)
 \end{DoxyCompactItemize}
 
 
@@ -38,7 +44,14 @@ bool \hyperlink{problem_8c_aac78795d52fa0cf6857afe4117a1a148}{time\+\_\+to\+\_\+
 \item[{int}]{max\+\_\+micro\+\_\+sec}
 \end{DoxyParamCaption}
 )}\label{problem_8c_aaff088c718084e7ced83dc9cc33e9af4}
-Puts matrices to a problem struct \hypertarget{problem_8c_a82683e2c4085dc52c23b5b468a9ac736}{}\index{problem.\+c@{problem.\+c}!free\+\_\+problem@{free\+\_\+problem}}
+Puts matrices to a problem struct \hypertarget{problem_8c_ab1ce670e7d44d0006a56e56af16d8640}{}\index{problem.\+c@{problem.\+c}!fill\+\_\+constraint\+\_\+matrices@{fill\+\_\+constraint\+\_\+matrices}}
+\index{fill\+\_\+constraint\+\_\+matrices@{fill\+\_\+constraint\+\_\+matrices}!problem.\+c@{problem.\+c}}
+\subsubsection[{fill\+\_\+constraint\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}void fill\+\_\+constraint\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8c_ab1ce670e7d44d0006a56e56af16d8640}
+\hypertarget{problem_8c_a82683e2c4085dc52c23b5b468a9ac736}{}\index{problem.\+c@{problem.\+c}!free\+\_\+problem@{free\+\_\+problem}}
 \index{free\+\_\+problem@{free\+\_\+problem}!problem.\+c@{problem.\+c}}
 \subsubsection[{free\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+problem (
 \begin{DoxyParamCaption}
@@ -66,7 +79,22 @@ Returns a matrix with the right hand side of the currently active constraints \h
 \item[{{\bf problem} $\ast$}]{prob}
 \end{DoxyParamCaption}
 )}\label{problem_8c_a828fe3528592c279acbdf6f11d83d743}
-Calculates the optimum value given by the solution point \hypertarget{problem_8c_a3b34d735f176c91c912671f182e447d6}{}\index{problem.\+c@{problem.\+c}!print\+\_\+problem@{print\+\_\+problem}}
+Calculates the optimum value given by the solution point \hypertarget{problem_8c_a7f5d8f1afbeb61eb01a0566a7328fa0b}{}\index{problem.\+c@{problem.\+c}!get\+\_\+sparse\+\_\+active\+\_\+conditions@{get\+\_\+sparse\+\_\+active\+\_\+conditions}}
+\index{get\+\_\+sparse\+\_\+active\+\_\+conditions@{get\+\_\+sparse\+\_\+active\+\_\+conditions}!problem.\+c@{problem.\+c}}
+\subsubsection[{get\+\_\+sparse\+\_\+active\+\_\+conditions}]{\setlength{\rightskip}{0pt plus 5cm}{\bf sparse\+\_\+matrix}$\ast$ get\+\_\+sparse\+\_\+active\+\_\+conditions (
+\begin{DoxyParamCaption}
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8c_a7f5d8f1afbeb61eb01a0566a7328fa0b}
+\hypertarget{problem_8c_ab5a324cc412f00a1ae586f3313423da5}{}\index{problem.\+c@{problem.\+c}!is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}}
+\index{is\+\_\+feasible\+\_\+point@{is\+\_\+feasible\+\_\+point}!problem.\+c@{problem.\+c}}
+\subsubsection[{is\+\_\+feasible\+\_\+point}]{\setlength{\rightskip}{0pt plus 5cm}bool is\+\_\+feasible\+\_\+point (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{z, }
+\item[{{\bf problem} $\ast$}]{prob}
+\end{DoxyParamCaption}
+)}\label{problem_8c_ab5a324cc412f00a1ae586f3313423da5}
+\hypertarget{problem_8c_a3b34d735f176c91c912671f182e447d6}{}\index{problem.\+c@{problem.\+c}!print\+\_\+problem@{print\+\_\+problem}}
 \index{print\+\_\+problem@{print\+\_\+problem}!problem.\+c@{problem.\+c}}
 \subsubsection[{print\+\_\+problem}]{\setlength{\rightskip}{0pt plus 5cm}void print\+\_\+problem (
 \begin{DoxyParamCaption}
