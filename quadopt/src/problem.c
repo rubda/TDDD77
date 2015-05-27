@@ -68,7 +68,11 @@ problem* create_problem(matrix* Q, matrix* q, matrix* E, matrix* h, matrix* F, m
   get_inverse(Q, Q_inv);
   prob->Q_inv = Q_inv;
 
-  prob->q = q;
+  if (q == NULL){
+    prob->q = create_zero_matrix(Q->rows, 1);
+  }else{
+    prob->q = q;
+  }
 
   prob->variable_count = Q->rows;
 
