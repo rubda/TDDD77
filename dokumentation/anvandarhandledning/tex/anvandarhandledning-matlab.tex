@@ -26,6 +26,7 @@ z = quadopt(Q, q, E, h, F, g, iter, time);
 	\item h - Ekvivalensbivillkoren i högerledet.
 	\item F - Olikhetsbivillkorsmatrisen (\textbf{OBS!} det är större än eller lika med g).
 	\item g - Olikhetsbivillkoren i högerledet.
-	\item iter - Max antal iterationer innan lösaren avbryter.
-	\item time - Max tid i mikrosekunder innan lösaren avbryter.
+	\item iter - Max antal iterationer innan lösaren avbryter. Input som 0 anger oändligt många iterationer och input som 1 ger en iteration osv. 
+	\item time - Max tid i mikrosekunder innan lösaren avbryter. Input som 0 anger oändligt många mikrosekunder.
+	\item \textbf{OBS!} Om någon matris inte finns till användning kan \texttt{[]} användas som input. Ett exempel är att om q matrisen inte finns, så kan indatan stå som \texttt{[]}. Ett exempel på ett quadopt-anrop finns i bilaga C tillsammans med ett exempel.
 \end{itemize}
