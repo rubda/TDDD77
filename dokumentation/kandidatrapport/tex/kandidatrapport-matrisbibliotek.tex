@@ -52,12 +52,12 @@ Det var även krav på att det skulle vara ett lättanvänt API så funktionsnam
 Kombinerat med förklarande funktionsnamn så är all kod väldokumenterad så det är enkelt att sätta sig in i den och göra eventuella förbättringar i framtiden.
 \newline
 \newline
-Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svårt att konkurrera med etablerade matrisbibliotek såsom ATLAS som använder hårdvaruoptimerad kod. Genom att hålla koden på låg nivå och använda funktioner för direkt datamanipulation så hålls prestandan rätt hög. Det som kräver mer arbete i framtiden är arbete på funktionerna som innehåller algoritmer som tar $\mathcal{O}(n^3)$ såsom matrismultiplikation och lösning av linjära system.
+Det som var det svåraste kravet att uppfylla var prestandakravet. Det är svårt att konkurrera med etablerade matrisbibliotek såsom ATLAS som använder hårdvaruoptimerad kod. Genom att hålla koden på låg nivå och använda funktioner för direkt datamanipulation så hålls prestandan rätt hög. Det som kräver mer arbete i framtiden är arbete på funktionerna som innehåller algoritmer som har tidskomplexitet $\mathcal{O}(n^3)$ såsom matrismultiplikation och lösning av linjära system.
 
 
 
 \subsubsection{Datastrukturer}
-Hela biblioteket bygger på en C-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. Columns säger hur många kolumner matrisen har, rows säger hur många rader den har, size säger hur många element den har och start är en pekare till första elementet i matrisen. För att komma åt ett element på rad x och i kolumn y så använder man ekvationen $start+columns(x-1)+y-1$ vilket ger pekaren till elementet. Alla operationer för att sätta in och hämta element tar då $\mathcal{O}(1)$
+Hela biblioteket bygger på en C-struct som heter matrix och är definierad enligt figur~\ref{fig:matrix_struct}. Alla operationer bygger på denna struct. Columns säger hur många kolumner matrisen har, rows säger hur många rader den har, size säger hur många element den har och start är en pekare till första elementet i matrisen. För att komma åt ett element på rad x och i kolumn y så använder man ekvationen $start+columns(x-1)+y-1$ vilket ger pekaren till elementet. Alla operationer för att sätta in och hämta element har då tidskomplexitet $\mathcal{O}(1)$.
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 \caption{Matrix struct}
