@@ -92,7 +92,7 @@ void free_problem(problem* prob);
 /** Returns a matrix with the currently active constraints */
 matrix* get_active_conditions(problem* prob);
 
-/* Returns a sparse matrix with the currently active constraints */
+/** Returns a sparse matrix with the currently active constraints */
 sparse_matrix* get_sparse_active_conditions(problem* prob);
 
 /** Returns a matrix with the right hand side of the currently active constraints */
@@ -107,7 +107,7 @@ void print_solution(problem* prob);
 /** Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent);
 
-/* Checks if a point is feasible subject to the constraints in a problem */
+/** Checks if a point is feasible subject to the constraints in a problem */
 bool is_feasible_point(matrix* z, problem* prob);
 
 #endif /* PROBLEM_H */
