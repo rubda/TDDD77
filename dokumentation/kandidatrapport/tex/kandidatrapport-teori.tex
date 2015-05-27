@@ -177,7 +177,7 @@ Fortran var en av de första etablerade högnivåspråken och är än idag en av
 Python är ett högnivåspråk med fokus på läsbarhet. Det innehåller ett omfattande standardkodbibliotek och är plattformsoberoende. \citep{python}  
 \newline
 \newline
-Tkinter är ett paket som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
+Tkinter är ett standardpaket i python som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
 
 \subsection{CVXGEN}
 CVXGEN är ett program för att generera kod för att lösa små kvadratiska konvexa optimeringsproblem genom ett webbgränssnitt. Gränssnittet används för att beskriva problemen med enkelt kraftfullt språk. \citep{cvxgen} \newline
@@ -190,13 +190,37 @@ I figur~\ref{fig:cvxgen} visas ett exempel på CVXGEN språket för ett kvadrati
 \label{fig:cvxgen}
 \end{figure}  
 
+\subsection{SEMAT Kernel}
+SEMAT står för Software Engineering Method and Theory och är ett initiativ för att förbättra mjukvaruutvecklingsindustrin. Med olika verktyg är det tänkt att ledare och managers ska kunna ge sina utvecklare bättre förutsättningar för att bli bättre, snabbare, billigare och gladare. \citep{semat} 
+\newline
+\newline
+Ivar Jacobson, som är en av grundarna till SEMAT, har utvecklat ett verktyg kallat Alpha State. Alpha States representerar olika faser ett mjukvaruprojekt kan gå igenom. \citep{alphastate}
 
 \subsection{Matrisbibliotek}
-\textcolor{red}{Skriv om de olika matrisbiblioteken som vi jämför}
-textcolor{red}{kom ihåg att skriva att ATLAS använder hårvaruoptimerad kod}
+För att kunna utföra matrisoperationer i språket C så behövs ett matrisbibliotek. Här listas de vanligaste biblioteken.
+\subsubsection{ATLAS}
+ATLAS är ett bibliotek som automatiskt ställer in sig själv för maximal prestande beroende på hårdvaran som den körs på. Det bygger på BLAS och är skivet dels i C och Fortran77.\citep{ATLAS}
+\subsubsection{BLAS}
+BLAS är en specifikation som beskriver ett antal rutiner för diverse matris och vektoroperationer. Detta grundade sig i ett Fortranbibliotek som anses vara referensimplementationen.\citep{BLAS}
+\subsubsection{GSL}
+GNU Scientific Library är ett C-bibliotek för tillämpad matematik och vetenskap. Det är modernare än BLAS och ATLAS då det släpptes för första gången 1996.\citep{GNU}
+
 
 \subsection{Tidskomplexitet för matrisoperation}
-\textcolor{red}{Skriv även om sparsematrisoperationer samt den ökade minnesanvändningen}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Operation} & \textbf{Tidskomplexitet} \\ \hline
+    Addition & $\mathcal{O}(n^2)$ \\ \hline
+    Subtraktion & $\mathcal{O}(n^2)$\\ \hline
+    Multiplikation & $\mathcal{O}(n^3)$\\ \hline
+    Invers  & $\mathcal{O}(n^3)$\\ \hline
+  \end{tabular}
+  \caption{Tidskomplexitet för matematiska operationer på matriser.}
+  \label{tabell:matrisopkomplexitet}
+\end{table}
+\citep{razvan}
 \subsection{Scrum}
 ''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. Metodiken innehåller flera delmoment som ''Scrum table'' och ''Burn down chart''. En ''Scrum table'' är en tavla som kategoriserar aktiviteter i ett projekt enligt följande: 
 \begin{itemize}

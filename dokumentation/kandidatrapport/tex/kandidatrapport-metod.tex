@@ -3,9 +3,11 @@ I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hu
 
 \subsection{Algoritmer och metoder} 
 \label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
-\\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Dessa var Gradient projection, Active set och Interior point . Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+\newline
+\newline
+Kunden ansåg att Gradient projection var en komplicerad algoritm och skulle troligtvis vara svår att implementera.
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. Active set och Interior point skiljer sig mycket från varandra. Den största skillnaden är att Active set söker efter den optimala punkten i punkter längs med bivillkoren först medan Interior point söker först mitt i lösningsrummet.
 \\
 \subsection{QuadOpts lösare}
 I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.
@@ -70,7 +72,7 @@ Alla parametrar med ''matrix *'' framför sig är matriserna för optimeringspro
 \input{tex/kandidatrapport-matrisbibliotek}
 
 \subsection{Kundkontakt}
-Kundkontakten kom igång sent på grund av att kunden inte var på universitetet när projektet drog igång. Kandidatgruppen hade därefter flera möten bara för att förstå vad kunden hade för krav på produkten. Något som var bra var att han hade väldigt bra insyn på vad han ville få ut av projektet och han hade redan satt upp de krav som han tyckte var viktigast. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Kandidatgruppen itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter fanns inte så mycket kontakt tills dess att kundens hjälp behövdes för att lösa en del problem. Ingen del av arbetet har visats för kunden under något av mötena. 
+Kundkontakten kom igång sent på grund av att kunden inte var på universitetet när projektet drog igång. Kandidatgruppen hade därefter flera möten bara för att förstå vad kunden hade för krav på produkten. Något som var bra var att han hade väldigt bra insyn på vad han ville få ut av projektet men han hade inte färdigställt konkreta krav förrän efter några möten. Det enda dokument som han tyckte var viktigt att ha insikt i var kravspecifikationen, resterande dokument som rörde projektet ville han inte ha del utav. Kandidatgruppen itererade fram en kravspecifikation tillsammans och efter några iterationer så var båda parterna nöjda. Därefter fanns inte så mycket kontakt tills dess att kundens hjälp behövdes för att lösa en del problem. Ingen del av arbetet har visats för kunden under något av mötena. 
 \newline
 \newline
 Ett av kraven som kandidatgruppen hade satt upp var att lösaren skulle kunna hantera felaktig indata, detta visade sig efteråt vara onödigt då kunden var säker på att detta inte skulle ske så lösaren har inte så många tester för indata. Ett annat krav var att lösaren skulle vara lika snabb eller snabbare än den kommersiella programvaran Gurobi. Detta visade sig senare vara svårare än vad som först var förväntat så detta krav kunde kandidatgruppen förhandla bort med kunden. I slutändan så var han nöjd med produkten. Det han var ute efter var en bra grund att bygga vidare på och koden är väldigt bra dokumenterad och strukturerad så det går definitivt bra att bygga vidare på den. 
@@ -139,11 +141,7 @@ Den utvecklingsmetodik som växte fram för kandidatgruppen liknar utvecklingsme
 \end{itemize}
 Med hjälp av dessa metoder och god kommunikation mellan gruppmedlemmarna kunde projektet genomföras. 
 
-\subsubsection{SEMAT Kernel}
-SEMAT står för Software Engineering Method and Theory och är ett initiativ för att förbättra mjukvaruutvecklingsindustrin. Med olika verktyg är det tänkt att ledare och managers ska kunna ge sina utvecklare bättre förutsättningar för att bli bättre, snabbare, billigare och gladare. \citep{semat} 
-\newline
-\newline
-Ivar Jacobson, som är en av grundarna till SEMAT, har utvecklat ett verktyg kallat Alpha State. Alpha States representerar olika faser ett mjukvaruprojekt kan gå igenom.
+\subsubsection{Alpha State Cards}
 Under kandidatprojektet har Alpha States använts i form av Alpha State Cards. På korten finns alla faser och de krav som ska vara uppfyllda för just den fasen. Genom att checka av vilka krav som är uppfyllda för vilken fas kan gruppen få ökad förståelse för vilket tillstånd projektet befinner sig i.  
 
 \subsubsection{Utvecklingsverktyg}
@@ -162,19 +160,20 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Byggsystem.} Ett byggsystem av kandidatgruppen har skapats och gruppen klassar det som ett utvecklingsverktyg. Byggsystemet kompilerar all kod och kör alla tester som finns i biblioteket. Detta har underlättat arbetsprocessen enormt, då efter man har skrivit kod kan man helt enkelt skriva in make i terminalen och då kompileras allt och alla tester. Byggsystem är utvecklat i språket Make.
 \newline
 \newline 
-\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med GitHub. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. Travis rapporterar om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och rapporterar vilka tester som lyckas och misslyckas. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens GitHub-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej \citep{travisinfo}.
+\textbf{Travis CI.} Travis CI är en byggserver som används tillsammans med GitHub. Det Travis gör är att kalla på byggsystemet som sedan kompilerar all kod och kör testfilerna. \citep{travisinfo} 
+Travis rapporterar om koden är kompilerbar eller ej, om den är kompilerbar så kör Travis alla tester som finns och rapporterar vilka tester som lyckas och misslyckas. Om Travis inte skulle ha lyckats kompilera koden eller klara alla tester så ändrar Travis statusen på projektet till ''build failing'' vilket visas på kandidatgruppens GitHub-sida. Om den klara allt så visar den ''build passing''. Den som lägger upp ny kod och orsakar en ''build failing'' får ett e-mail om att koden som har lagts upp inte är okej.
 \newline
 \newline
-\textbf{Valgrind.} Lösaren allokerar mycket minne och då den är implementerad i C så måste man själv se till att frigöra allt minne. För att vara säkra på att det inte fanns några minnesläckor så användes Valgrind, som kan hitta minnesläckor genom ett enkelt anrop. Hittades några minnesläckor så åtgärdades dessa \citep{valgrind}.
+\textbf{Valgrind.} Lösaren allokerar mycket minne och då den är implementerad i C så måste man själv se till att frigöra allt minne. För att vara säkra på att det inte fanns några minnesläckor så användes Valgrind, som kan hitta minnesläckor genom ett enkelt anrop \citep{valgrind}. Hittades några minnesläckor så åtgärdades dessa.
 \newline
 \newline
-\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var emacs som är en textredigerare skapad Richard 	Stallman. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer \citep{emacs}.
+\textbf{Emacs}. Under projektet användes ett flertal olika editorer för att skriva kod. En av dem var emacs som är en textredigerare skapad Richard 	Stallman \citep{emacs}. Vissa i kandidatgruppen använde emacs då de uppskattade att man enkelt kan arbete med flera filer vid sidan om varandra samt lättheten att byta mellan filer.
 \newline
 \newline
-\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen använde. Det som är utmärkande drag för Sublime är att redigeraren har en rätt så unik syntax-highlighting, dvs hur den belyser text. Detta uppskattades samt att inlärningsprocessen var enkel \citep{sublime}.
+\textbf{Sublime Text.} Sublime är en annan textredigerare som vissa i gruppen använde. Det som är utmärkande drag för Sublime är att redigeraren har en rätt så unik syntax-highlighting, dvs hur den belyser text \citep{sublime}. Detta uppskattades samt att inlärningsprocessen var enkel.
 \newline
 \newline
-\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger. De som använde Eclipse tyckte att debuggern kom tillhands väldigt ofta och därför använde de Eclipse \citep{eclipse}.
+\textbf{Eclipse.} Eclipse är ingen texteditor utan en IDE, dvs en integrerad utvecklingsmiljö. Den innehåller en textredigerare, kompilator och debugger. \citep{eclipse} De som använde Eclipse tyckte att debuggern kom tillhands väldigt ofta och därför använde de Eclipse.
 \newline
 \newline
 \textbf{MATLAB.} MATLAB är ett datorprogram och programspråk som främst används för tekniska beräkningar och matematiska \citep{matlab}. Eftersom optimeringsalgoritmen som skrevs skulle kunna användas i MATLAB har MATLAB varit ett viktigt verktyg för kandidatgruppen. Tester av gruppens optimeringsalgoritm har gjorts i MATLAB många gånger. Även MATLABs matrisoperationer har varit till stor nytta för kandidatgruppen för att underlätta räkning av uppgifter. MATLAB har även en egen optimeringslösare som liknar kandidatgruppens, jämförelser har gjorts med den vid ett flertal tillfällen.
@@ -183,7 +182,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Gurobi.} Gurobi är ett kommersiellt programverktyg som specialiserar sig att lösa optimeringsproblem utav olika sorters optimeringsproblem \citep{gurobi}. Kandidatgruppen hade i början ett krav på att vara likvärdig med Gurobi gällande hastighet.
 \newline
 \newline
-\textbf{CVXGEN.} CVXGEN är en webbaserad applikation som genererar kod för att lösa olika sorters optimeringsproblem. Problemen som skall lösas ges utav av användaren via matematiska uttryck. \cite{cvxgen} Kandidatgruppen har använt CVXGEN då kunden är familjär med dess syntax och QuadOpt försöker efterlikna denna syntax. 
+\textbf{CVXGEN.} CVXGEN är en webbaserad applikation som genererar kod för att lösa olika sorters optimeringsproblem \cite{cvxgen}. Problemen som skall lösas ges utav av användaren via matematiska uttryck. Kandidatgruppen har använt CVXGEN då kunden är familjär med dess syntax och QuadOpt försöker efterlikna denna syntax. 
 \newline
 \newline
 \textbf{Texmaker.} Texmaker är en textredigerare för att skriva i språket \LaTeX \hspace{0.2mm} \citep{texmaker}. Alla de dokument som har skrivits under kandidatprojektet har skrivits i {\LaTeX} och då har Texmaker varit till stor hjälp. Anledning till att många i kandidatgruppen har använt Texmaker är för att de fungerar på individernas operativsystem.
@@ -192,7 +191,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{Gummi.} Gummi är också en textredigerare för att skriva i språket {\LaTeX} men finns enbart för Linux system \citep{gummi}. Gummi kan anses vara ett lättviktigare program än Texmaker som är lite tyngre och har funktioner som inte har varit så nödvändiga.
 \newline
 \newline
-\textbf{Google Drive.} Google Drive har använts under projektets gång för att arbete med dokument med mindre betydelse. Dokument som mötesrapporter och tidsrapporter som enbart är menat för kandidatgruppen och handledare. Vid presentationstillfällen har Google Drive också varit till nytta för att göra presentationer \citep{gdrive}.
+\textbf{Google Drive.} Google Drive har använts under projektets gång för att arbete med dokument med mindre betydelse. Dokument som mötesrapporter och tidsrapporter som enbart är menat för kandidatgruppen och handledare. Vid presentationstillfällen har Google Drive också varit till nytta för att göra presentationer.
 \newline
 \newline
 \textbf{Time Profiler.} Time Profiler är ett verktyg som finns förinstallerad på Mac-datorer. Verktyget kan visa hur mycket tid som spenderas på funktioner i ett program \citep{timeprofiler}. Då optimeringsalgoritmen som har skapats ska ta så lite tid som möjligt har detta verktyg kommit tillhands för att se hur mycket tid algoritmen spenderar i vissa funktioner. Genom att hitta de funktioner som tar mest tid att utföra har kandidatgruppen kunnat snabba upp dem någorlunda.
@@ -201,7 +200,7 @@ De verktygen som användes under detta kandidatprojekt var främst
 \textbf{DDD.} Data Display Debugger har använts i projektet för att hitta kritiska fel. Felsökningen av kod sker i ett grafiskt användargränssnitt och är ett väldigt kraftfullt verktyg \citep{ddd}.
 \newline
 \newline
-\textbf{Doxygen.} Doxygen är en dokumentationsgenerator för programvara. Programmet fungerar genom att användaren har skrivit kommenterar i koden under projektets gång och då använder Doxygen sig av dessa kommentarer för att generera ett dokument. Resultaten blir en pdf som består av förklaringar för funktioner och datastrukturer \citep{Doxygen}. 
+\textbf{Doxygen.} Doxygen är en dokumentationsgenerator för programvara \citep{Doxygen}. Programmet fungerar genom att användaren har skrivit kommenterar i koden under projektets gång och då använder Doxygen sig av dessa kommentarer för att generera ett dokument. Resultaten blir en pdf som består av förklaringar för funktioner och datastrukturer. 
 
 \subsection{Forskningsmetod}
 Som tidigare nämnt var det tre olika algoritmer som var aktuella för projektet och som alla fanns med och beskrevs i boken \emph{Numerical Optimization} \citep{numericaloptimization}. Detta avsnitt kommer behandla hur algoritmerna jämfördes mot varandra för att slutligen avgöra vilken som skulle användas.
@@ -216,7 +215,7 @@ För att kunna avgöra vilken av algoritmerna som var den bäst lämpade för op
 Olika faktorer som spelade in var bland annat och möjligen det viktigaste implementerbarhet, mest eftersom projektet är väldigt tidsbegränsat och det finns ingen möjlighet till att överskrida tidsbudgeten. Eftersom det även var ett krav att lösaren skulle implementeras i C så var man tvungen att se vilka olika möjligheter för implementering som fanns där.
 
 \paragraph{Hastighet}
-Hastighet var även en väldigt viktig faktor, just på grund av att ett av de få krav som vi faktiskt hade var att programmet skulle vara lika snabbt eller snabbare än det kommersiella programmet Gurobi som används för att lösa alla möjliga sorters optimeringsproblem. En fördel vi hade gentemot Gurobi var att vår lösaren kunde optimeras för just detta problem och behövde inte vara lika generell som Gurobi.
+Hastighet var även en väldigt viktig faktor, just på grund av att ett av de få krav som kandidatgruppen faktiskt hade var att programmet skulle vara lika snabbt eller snabbare än det kommersiella programmet Gurobi som används för att lösa alla möjliga sorters optimeringsproblem. En fördel kandidatgruppen hade gentemot Gurobi var att vår lösaren kunde optimeras för just detta problem och behövde inte vara lika generell som Gurobi.
 
 \paragraph{Skalbarhet}
 En annan viktig faktor som var avgörande var skalbarhet. Matrisernas storlekar på problemet som ska lösas kan vara uppemot flera hundra element i båda dimensionerna, därför var det väldigt viktigt att algoritmen hade en tidskomplexitet som inte var allt för stor. Just i början kan detta vara väldigt svårt att veta eftersom det inte finns så stora möjligheter till att testa större problem, utan dessa kan endast testas i ett senare skede när lösaren verkligen kommit så långt att den kan hantera dem.
@@ -237,8 +236,8 @@ Det är den äldsta och standardmetoden, den är inte den snabbaste av algoritme
 Fungerar som Active set metoden, men istället för att bara kunna byta ett villkor åt gången till den aktiva mängden, så kan denna algoritmen byta ett flertal på en gång för att öka hastigheten. Denna algoritm är dock svårare att implementera och kräver mer förkunskaper.
 
 \paragraph{Interior point method}
-Interior point är en ganska modern algoritm och även en utav de snabbaste, den är dock mycket svårare att förstå sig på än t.ex. Active set och boken saknade implementations exempel för denna. Har man dock mer tid på sig och ska lösa större problem är det den här algoritmen man bör välja.
+Interior point är en ganska modern algoritm och även en utav de snabbaste, den är dock mycket svårare att förstå sig på än t.ex. Active set och boken saknade implementationsexempel för denna. Har man dock mer tid på sig och ska lösa större problem är det den här algoritmen man bör välja.
 
 \subsubsection{Slutsats om algoritmerna}
-Just på grund av det problemet som vi skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som vi kunde utgå ifrån.
+Just på grund av det problemet som kandidatgruppen skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som kandidatgruppen kunde utgå ifrån.
 
