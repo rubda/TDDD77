@@ -159,6 +159,7 @@ def highlight(event=None):
 def generate_c(event=None):
     global filename
     global data_filename
+    global generated_c
     problem_file = filename
     res_file = "solution.c"
     data_file = data_filename
