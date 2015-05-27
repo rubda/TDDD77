@@ -71,7 +71,7 @@ struct problem{
 
   value accuracy;
 
-  /* Max iterations/µs restrictions */
+  /* Max iterations/micro_sec restrictions */
   int max_iter;
   int max_micro_sec;
   bool check_time;
