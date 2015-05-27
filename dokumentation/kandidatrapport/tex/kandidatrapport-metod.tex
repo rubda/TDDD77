@@ -53,10 +53,18 @@ Detta sågs som relativt effektivt då kandidatgruppen trodde att $e \approx n-1
 $${222 \choose 30} \approx 1.19*10^{37}$$
 
 \subsubsection{Problem}
-''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
+''Problem''-strukturen (inparametern P i pseudokoden i Algoritm~\ref{alg:quadoptsolver}) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna kan ses i funktionen ''create\_problem'' som visas i figur~\ref{fig:createproblem}. 
+
+\begin{figure}[H]
+\lstinputlisting[language=C]{tex/createproblem.c}
+\caption{Create problem}
+\label{fig:createproblem}
+\end{figure}  
+
+Alla parametrar med ''matrix *'' framför sig är matriserna för optimeringsproblemet. Parametern ''max\_iter'' är hur många iterationer algoritmen får göra och parametern ''max\_micro\_sec'' är antalet mikrosekunder algoritmen har på sig att lösa optimeringsproblemet. 
 
 \subsubsection{Working set}
-''Working set'' är den struktur som implementerats för att kunna avgöra vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
+''Working set'' är den struktur som implementerats för att kunna avgöra vilka bivillkor som aktiva (activeSet i Algoritm~\ref{alg:quadoptsolver}). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
 
 
 \input{tex/kandidatrapport-matrisbibliotek}
