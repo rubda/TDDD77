@@ -5,6 +5,7 @@ SRC_DIR = src
 CC = gcc
 CFLAGS = -O3 -Wall -Wextra -Werror -pedantic --std=c99
 
+
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))
 LIB = $(BUILD_DIR)/libmatrix.a

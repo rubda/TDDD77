@@ -3,9 +3,11 @@ I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hu
 
 \subsection{Algoritmer och metoder} 
 \label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
-\\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Dessa var Gradient projection, Active set och Interior point . Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+\newline
+\newline
+Kunden ansåg att Gradient projection var en komplicerad algoritm och skulle troligtvis vara svår att implementera.
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. Active set och Interior point skiljer sig mycket från varandra. Den största skillnaden är att Active set söker efter den optimala punkten i punkter längs med bivillkoren först medan Interior point söker först mitt i lösningsrummet.
 \\
 \subsection{QuadOpts lösare}
 I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.

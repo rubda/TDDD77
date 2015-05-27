@@ -4,8 +4,10 @@
 q = zeros(92, 1);
 load('MPCdata.mat');
 
-options = optimoptions(@quadprog, 'Algorithm', 'active-set');
+%options = optimoptions(@quadprog, 'Algorithm', 'active-set');
+%tic;
+%quadprog(H, [], F, g, A, b)
+%toc;
 tic;
-quadprog(H, [], F, g, A, b)
+quadopt(H, q, A, b, -F, -g, [], 0, 0)
 toc;
-%quadopt(H, q, A, b, -F, -g, [], 0, 0)

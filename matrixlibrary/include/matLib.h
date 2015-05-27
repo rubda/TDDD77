@@ -2,7 +2,7 @@
 #define MATLIB_H
 
 /*
-  Author: Martin Söderén
+  Author: Martin Soderen
   Email: martin.soderen@gmail.com
   Date: 2015-03-05
   Description: This is the headerfile for the matLib-library which is used to handle matrices.
