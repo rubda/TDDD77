@@ -18,7 +18,7 @@ För att kunna utföra projeket så behövdes det ett matrisbibliotek för att k
 
 
 \subsubsection{Befintliga matrisbibliotek}
-Det fanns många bibliotek som hade dessa operationer dock så uppfyllde inget alla krav vi ställde. Vi vill att biblioteket skulle:
+Det fanns många bibliotek som hade dessa operationer dock så uppfyllde inget alla krav kandidatgruppen ställde. Kandidatgruppen vill att biblioteket skulle:
 \begin{enumerate}
 \item ha lättanvänt API (Application Programming Interface)
 \item prestera bra
@@ -27,7 +27,7 @@ Det fanns många bibliotek som hade dessa operationer dock så uppfyllde inget a
 \item ta upp lite minne
 \item ha bra dokumenterad kod så man själv kan implementera förbättringar
 \end{enumerate} 
-De bibliotek som vi undersökte var:
+De bibliotek som kandidatgruppen undersökte var:
 \begin{itemize}
 
 \item GNU Scientific library
@@ -36,13 +36,13 @@ De bibliotek som vi undersökte var:
 \item NAG
 
 \end{itemize}
-GNU gick bort för det krävde att man installera det som ett extern paket vilket vi inte vill att vår kund ska behöva göra. Bortsett från detta så var detta det bibliotek som var mest lovande. 
+GNU gick bort för det krävde att man installera det som ett extern paket vilket kandidatgruppen inte vill att vår kund ska behöva göra. Bortsett från detta så var detta det bibliotek som var mest lovande. 
 LAPACK krävde en FORTRAN kompilator för att kunna kompileras och eftersom det var skrivet i FORTRAN så var alla funktionsnamn endast sex tecken vilket kandidatgruppen inte klassar som ett lättanvänt API.
 ATLAS bygger på LAPACK så det har ärvt mycket av alla funktionsnamn.
 NAG är det modernaste av bibliotekten men även det använder funktionsnamn med sex tecken och var också bristfälligt dokumenterat.
 \newline
 \newline
-Först så övervägdes att göra att API till något av biblioteken för att göra det mer lättanvänt men sedan så bestämdes det att vi skulle göra att eget biblioteket. Anledning till detta var att man då kunde bygga allting på standard C-bibliotek så man inte krävde några externa bibliotek. Detta leder till att biblioteket kunde användas på alla platformar så länge det hade en C-kompilator. 
+Först så övervägdes att göra att API till något av biblioteken för att göra det mer lättanvänt men sedan så bestämdes det att kandidatgruppen skulle göra att eget biblioteket. Anledning till detta var att man då kunde bygga allting på standard C-bibliotek så man inte krävde några externa bibliotek. Detta leder till att biblioteket kunde användas på alla platformar så länge det hade en C-kompilator. 
 
 
 \subsubsection{matLib}

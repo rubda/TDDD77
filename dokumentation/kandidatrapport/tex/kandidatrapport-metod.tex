@@ -213,7 +213,7 @@ För att kunna avgöra vilken av algoritmerna som var den bäst lämpade för op
 Olika faktorer som spelade in var bland annat och möjligen det viktigaste implementerbarhet, mest eftersom projektet är väldigt tidsbegränsat och det finns ingen möjlighet till att överskrida tidsbudgeten. Eftersom det även var ett krav att lösaren skulle implementeras i C så var man tvungen att se vilka olika möjligheter för implementering som fanns där.
 
 \paragraph{Hastighet}
-Hastighet var även en väldigt viktig faktor, just på grund av att ett av de få krav som vi faktiskt hade var att programmet skulle vara lika snabbt eller snabbare än det kommersiella programmet Gurobi som används för att lösa alla möjliga sorters optimeringsproblem. En fördel vi hade gentemot Gurobi var att vår lösaren kunde optimeras för just detta problem och behövde inte vara lika generell som Gurobi.
+Hastighet var även en väldigt viktig faktor, just på grund av att ett av de få krav som kandidatgruppen faktiskt hade var att programmet skulle vara lika snabbt eller snabbare än det kommersiella programmet Gurobi som används för att lösa alla möjliga sorters optimeringsproblem. En fördel kandidatgruppen hade gentemot Gurobi var att vår lösaren kunde optimeras för just detta problem och behövde inte vara lika generell som Gurobi.
 
 \paragraph{Skalbarhet}
 En annan viktig faktor som var avgörande var skalbarhet. Matrisernas storlekar på problemet som ska lösas kan vara uppemot flera hundra element i båda dimensionerna, därför var det väldigt viktigt att algoritmen hade en tidskomplexitet som inte var allt för stor. Just i början kan detta vara väldigt svårt att veta eftersom det inte finns så stora möjligheter till att testa större problem, utan dessa kan endast testas i ett senare skede när lösaren verkligen kommit så långt att den kan hantera dem.
@@ -237,5 +237,5 @@ Fungerar som Active set metoden, men istället för att bara kunna byta ett vill
 Interior point är en ganska modern algoritm och även en utav de snabbaste, den är dock mycket svårare att förstå sig på än t.ex. Active set och boken saknade implementationsexempel för denna. Har man dock mer tid på sig och ska lösa större problem är det den här algoritmen man bör välja.
 
 \subsubsection{Slutsats om algoritmerna}
-Just på grund av det problemet som vi skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som vi kunde utgå ifrån.
+Just på grund av det problemet som kandidatgruppen skulle lösa och tidsbegränsningen som projektet hade, så ansåg gruppen att \emph{Active set} metoden lämpade sig bäst. Den hade även som tidigare förklarat en färdig pseudokodsimplementation i boken som kandidatgruppen kunde utgå ifrån.
 
