@@ -59,8 +59,75 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. %När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
 
 \lstinputlisting[language=C]{tex/matrix_struct.c}
+
+
 \subsection{Byggsystem}
-Ett byggsystem används för att optimera utvecklandet av QuadOpt, där hela systemets delar byggs tillsammans med ett kommando för att man på ett snabbare och enklare sätt ska se om allt fungerar. %...  FYLL I
+Byggsystemet är skrivet i Make och består av en huvudfil och sex underfiler enligt strukturen i figur \ref{fig:byggsystem}. De viktiga filerna för att bygga kod är huvudfilen i rotkatalogen, ''quadopt/Makefile'', ''matrixlibrary/Makefile'' och ''matlab/Makefile''. Resterande filer används enbart för att bygga dokumentation. För att bygga allting krävs gcc, MATLAB, pdflatex samt en gedigen \LaTeX-distribution.
+\newline
+\newline
+De anrop som kan köras från huvudfilen är följande:
+\begin{itemize}
+  \item \textbf{all} - bygg dokumentation, matrisbibliotek och quadopt samt kör tester
+  \item \textbf{clean} - rensa alla kataloger från byggresultat
+  \item \textbf{docs} - bygg all dokumentation
+  \item \textbf{libmatrix} - bygg matrisbiblioteket och kör tester
+  \item \textbf{quadopt} - bygg quadopt och kör tester
+  \item \textbf{test} - bygg matrisbiblioteket, quadopt och kör tester
+  \item \textbf{matlab} - bygg MATLAB-tillägg
+  \item \textbf{package} - bygg dokumentation, matrisbibliotek, quadopt, kör tester och paketera allt tillsammans med GUI och källkod till MATLAB-tillägget i en zip-fil för distribution
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+\
+|-- Makefile
+|-- dokumentation
+|   |-- Makefile
+|   |-- doxygen
+|   |   |-- latex
+|   |       |-- Makefile
+|   |-- kandidatrapport
+|       |-- Makefile
+|-- matlab
+|   |-- Makefile
+|-- matrixlibrary
+|   |-- Makefile
+|-- quadopt
+    |-- Makefile
+  \end{verbatim}
+  \caption{Byggsystemets struktur.}
+  \label{fig:byggsystem}
+\end{figure}
+
+\noindent Katalogerna ''matrixlibrary'' och ''quadopt'', där den stora mängden kod finns, har en struktur som syns i figur \ref{fig:katalogstruktur}. I mappen ''include''  finns alla headerfiler som definierar gränssnittet mellan källkodsfilerna i mappen ''src'' samt används av testerna i ''src/tests''. Mappen ''obj'' innehåller resultatet av bygget efter att Make har körts.
+
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+\
+|-- Makefile
+|-- include
+|   |-- h-filer
+|-- obj
+|   |-- binärer
+|-- src
+    |-- c-filer
+    |-- tests
+        |-- c-filer
+  \end{verbatim}
+  \caption{Katalogstruktur.}
+  \label{fig:katalogstruktur}
+\end{figure}
+
+\noindent En ny fil kan läggas till genom att lägga dess c-fil i ''src'', h-fil i ''include'' samt eventuella testfiler (c-filer) i ''src/tests''. De kommer då att hittas automatiskt och kompileras. Testbinärerna kommer även att köras automatiskt vid varje bygge. Om det rör sig om ny funktionalitet i matrisbiblioteket måste en ny regel läggas till i ''matrixlibrary/Makefile'' för att den nya filen ska inkluderas i biblioteket. Detta görs på samma sätt som de två regler som redan finns för filerna ''matLib.c'' och ''sparse\_lib.c''.
+\newline
+\newline
+Om MATLAB-tillägget ska byggas med Make måste variabeln MATLAB\_BIN sättas till sökvägen till MATLAB i filen ''matlab/Makefile''. Tillägget kan också byggas genom att öppna MATLAB och ställa sig i katalogen ''matlab'' samt skriva ''build'' i kommandofönstret.
+\newline
+\newline
+Den Makefile som används av parsern är ''QuadOptGUI/package\_makefile.mk''. När ''make package'' körs från projektets rotkatalog kopieras denna fil till QuadOpts zip-fil.
+
 
 \subsection{Parser}
 Parsern är ett alternativ som möjliggör för användaren att generera en C-fil med vilken lösaren löser optimeringsproblemet. För att generera C-filen krävs det att parsern får två olika filer, en datafil med matrisdata och en fil med optimeringsproblemet där bland annat matrisernas dimensioner definieras. Dessa båda filer skickas till parsern från GUI:t. Anledning till parsern är att underlätta för användaren då många matriser som lösaren använder sig av är väldigt stora och innehåller många nollor. Parsern tar istället in mindre matriser som innehåller den data som dessa större matriser innehåller, bortsett från nollorna.
