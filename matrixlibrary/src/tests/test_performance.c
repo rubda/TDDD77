@@ -2,10 +2,10 @@
 #include <assert.h>
 #include <time.h>
 int main(){
-  matrix* to_multiply;
-  matrix* multiplied;
-  clock_t begin, end;
-  double time_spent;
+  /* matrix* to_multiply; */
+  /* matrix* multiplied; */
+  /* clock_t begin, end; */
+  /* double time_spent; */
 
   /* int number_of_tests=4096; */
   /* for (int j=1;j<=1;j++){ */

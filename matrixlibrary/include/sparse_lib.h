@@ -5,12 +5,12 @@
 
 /** Store sparse matrix using COO (coordinate list) */
 struct sparse_matrix {
-  int size;
-  int rows;
-  int columns;
+  size_t size;
+  size_t rows;
+  size_t columns;
   value* A;
-  int* rA;
-  int* cA;
+  size_t* rA;
+  size_t* cA;
 };
 typedef struct sparse_matrix sparse_matrix;
 
@@ -18,7 +18,7 @@ typedef struct sparse_matrix sparse_matrix;
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size);
 
 /** Creates an empty sparse matrix */
-sparse_matrix* create_empty_sparse_matrix(int size);
+sparse_matrix* create_empty_sparse_matrix(size_t size);
 
 /** Converts sparse matrix to normal matrix */
 matrix* sparse_to_normal(sparse_matrix* S);
@@ -47,7 +47,8 @@ void print_sparse_matrix(sparse_matrix* S);
 /** Frees allocated memory of the sparse matrix */
 void free_sparse_matrix(sparse_matrix* S);
 
-/* solves Ax = b, x should be set to 0 */
+/** Solves Ax = b, x should be set to 0 */
+/** Is not used, due to not working with MATLAB gate. */
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b);
 
 #endif /* SPARSE_LIB_H */

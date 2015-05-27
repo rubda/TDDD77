@@ -2,7 +2,7 @@
 \input{../mall/layout.tex}	% Importera generella layout-strukturer
 % Information nödvändig för generella layout-strukturer
 \newcommand{\LIPSredaktor}{Sebastian Fast}
-\newcommand{\LIPSversion}{0.1}
+\newcommand{\LIPSversion}{1.0}
 \newcommand{\LIPSdokument}{Teknisk dokumentation}
 \newcommand{\LIPSdokumenttyp}{Teknisk dokumentation}
 \newcommand{\LIPSgranskatdatum}{-}
@@ -28,6 +28,10 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{listings}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{appendix}
 
 \pagenumbering{roman}
 
@@ -72,6 +76,11 @@
 \input{tex/tekniskdokumentation-systemdelar.tex}
 
 \input{tex/tekniskdokumentation-anvandargranssnitt.tex}
+
+\begin{appendices}
+	\section{Koddokumentation}
+	\includepdf[pages=-]{../doxygen/pdf/refman.pdf}
+\end{appendices}
 
 
 \end{document}

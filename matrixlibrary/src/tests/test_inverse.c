@@ -35,8 +35,8 @@ int main(void) {
   insert_array(temp_e, e);
   subtract_matrices(c, e, e);
   free_matrix(c);
-  for (int i = 1; i <= e->rows; i++) {
-    for (int j = 1; j <= e->columns; j++) {
+  for (size_t i = 1; i <= e->rows; i++) {
+    for (size_t j = 1; j <= e->columns; j++) {
       assert(abs(get_value(i,j,e))<0.00001);
     }
   }

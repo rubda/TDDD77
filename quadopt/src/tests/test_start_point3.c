@@ -40,11 +40,11 @@ int main() {
   insert_array(g_arr, g);
 
 
-  //problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
+  problem* problem = create_problem(Q, q, E, h, F, g, NULL, 0, 0);
 
 
-  //assert(simplex_phase_1(problem));
-  //assert(is_feasible_point(problem->z0, problem));
+  assert(simplex_phase_1(problem));
+  assert(is_feasible_point(problem->z0, problem));
 
-  //free_problem(problem);
+  free_problem(problem);
 }

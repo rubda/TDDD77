@@ -3,7 +3,11 @@ INCLUDE_DIR = include
 SRC_DIR = src
 
 CC = gcc
+<<<<<<< HEAD
 CFLAGS = -O3 -Wall -Wextra -pedantic --std=c99
+=======
+CFLAGS = -O3 -Wall -Wextra -Werror -pedantic --std=c99
+>>>>>>> cf2f8964ecff33e9e97eaa634c4f5a11be0c7c2a
 
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 OBJS = $(patsubst %.c, %.o, $(subst $(SRC_DIR)/, $(BUILD_DIR)/, $(SRCS)))

@@ -3,7 +3,7 @@
 
 /* Creates a sparse matrix out of a normal matrix */
 sparse_matrix* create_sparse_matrix(matrix* Ain, int size){
-  int r, c, n = 0,  i = 0;
+  size_t r, c, n = 0,  i = 0;
   value val;
 
   if (size == -1){
@@ -17,7 +17,7 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size){
       }
     }
   }else{
-    n = size;
+    n = (size_t)size;
   }
 
   /* Create sparse matrix */
@@ -27,8 +27,8 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size){
   S->columns = Ain->columns;
   if (n > 0) {
     S->A = malloc(n*sizeof(value));
-    S->rA = malloc(n*sizeof(int));
-    S->cA = malloc(n*sizeof(int));
+    S->rA = malloc(n*sizeof(size_t));
+    S->cA = malloc(n*sizeof(size_t));
   }
 
   for (r = 1; r <= Ain->rows; r++){
@@ -47,13 +47,13 @@ sparse_matrix* create_sparse_matrix(matrix* Ain, int size){
 }
 
 /* Creates an empty sparse matrix */
-sparse_matrix* create_empty_sparse_matrix(int size){
+sparse_matrix* create_empty_sparse_matrix(size_t size){
   /* Create sparse matrix */
   sparse_matrix* S = malloc(sizeof(sparse_matrix));
   S->size = size;
   S->A = malloc(size*sizeof(value));
-  S->rA = malloc(size*sizeof(int));
-  S->cA = malloc(size*sizeof(int));
+  S->rA = malloc(size*sizeof(size_t));
+  S->cA = malloc(size*sizeof(size_t));
 
   return S;
 }
@@ -62,7 +62,7 @@ sparse_matrix* create_empty_sparse_matrix(int size){
 matrix* sparse_to_normal(sparse_matrix* S){
   matrix* M = create_zero_matrix(S->rows, S->columns);
   
-  int i;
+  size_t i;
   for (i = 0; i < S->size; i++){
     insert_value_without_check(S->A[i], S->rA[i], S->cA[i], M);
   }
@@ -72,7 +72,7 @@ matrix* sparse_to_normal(sparse_matrix* S){
 
 /* Returns number of elements != 0 */
 size_t matrix_sparsity(matrix* A){
-  int r, c;
+  size_t r, c;
   size_t n = 0;
   value val;
   for (r = 1; r <= A->rows; r++){
@@ -88,7 +88,7 @@ size_t matrix_sparsity(matrix* A){
 
 /* Multiplies sparse matrix with normal vector, stores result in normal matrix Ax */
 bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax){
-  int i;
+  size_t i;
   value temp1, temp2;
 
   /* Multiply */
@@ -103,7 +103,7 @@ bool multiply_sparse_matrix_vector(sparse_matrix* A, matrix* x, matrix* Ax){
 
 /* Multiplies sparse matrix with a normal matrix. Returns a normal matrix. */
 matrix* multiply_sparse_matrix_matrix(sparse_matrix* A, matrix* B){
-  int i, c;
+  size_t i, c;
   value temp1, temp2;
   matrix* AB = create_zero_matrix(A->rows, B->columns);
 
@@ -127,23 +127,23 @@ sparse_matrix* copy_sparse_matrix(sparse_matrix* Ain){
   S->rows = Ain->rows;
   S->columns = Ain->columns;
   S->A = malloc(Ain->size*sizeof(value));
-  S->rA = malloc(Ain->size*sizeof(int));
-  S->cA = malloc(Ain->size*sizeof(int));
+  S->rA = malloc(Ain->size*sizeof(size_t));
+  S->cA = malloc(Ain->size*sizeof(size_t));
 
   memcpy(S->A, Ain->A, Ain->size*sizeof(value));
-  memcpy(S->rA, Ain->rA, Ain->size*sizeof(int));
-  memcpy(S->cA, Ain->cA, Ain->size*sizeof(int));
+  memcpy(S->rA, Ain->rA, Ain->size*sizeof(size_t));
+  memcpy(S->cA, Ain->cA, Ain->size*sizeof(size_t));
 
   return S;
 }
 
 /* Transposes input sparse matrix */
 void transpose_sparse_matrix(sparse_matrix* Ain){
-  int* temp = Ain->rA;
+  size_t* temp = Ain->rA;
   Ain->rA = Ain->cA;
   Ain->cA = temp;
 
-  int t = Ain->rows;
+  size_t t = Ain->rows;
   Ain->rows = Ain->columns;
   Ain->columns = t;
 }
@@ -151,7 +151,7 @@ void transpose_sparse_matrix(sparse_matrix* Ain){
 /* Transposes a sparse matrix and returns it in a new sparse matrix */
 sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain){
   sparse_matrix* S = copy_sparse_matrix(Ain);
-  int* temp = S->rA;
+  size_t* temp = S->rA;
   S->rA = S->cA;
   S->cA = temp;
 
@@ -162,7 +162,7 @@ sparse_matrix* transpose_sparse_matrix_with_return(sparse_matrix* Ain){
 void print_sparse_matrix(sparse_matrix* S){
   matrix* M = create_zero_matrix(S->rows, S->columns);
   
-  int i;
+  size_t i;
   for (i = 0; i < S->size; i++){
     insert_value_without_check(S->A[i], S->rA[i], S->cA[i], M);
   }
@@ -188,7 +188,7 @@ void free_sparse_matrix(sparse_matrix* S){
 bool conjugate_gradient(sparse_matrix* A, matrix* x, matrix* b){
   /* Variables */
   value alpha, beta;
-  int i;
+  size_t i;
 
   /* r0 = b - Ax0 */
   matrix* Ap = multiply_sparse_matrix_matrix(A, x);

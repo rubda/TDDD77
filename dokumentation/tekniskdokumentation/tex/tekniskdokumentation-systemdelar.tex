@@ -1,14 +1,133 @@
 \section{Systemdelar}
 QuadOpt innehåller ett flertal olika moduler som används för att lösa och tolka optimeringsproblemet, förklaringar av hur dessa är uppbyggda och fungerar kommer att ges i detta avsnitt.
-(OBS kan möjligtvis vara bra att ha egna filer för dessa underrubriker om det blir mycket)
+%(OBS kan möjligtvis vara bra att ha egna filer för dessa underrubriker om det blir mycket)
 
 \subsection{Lösaren}
-Här kan t.ex. förklaring av hur lösaren fungerar steg för steg, använd möjligtvis delar från kandidatrapporten.
+Nedan följer på algoritmform en beskrivning av hur QuadOpt arbetar utgående ifrån Active set metoden. 
+\begin{algorithm}[H]
+\caption{Active set method}
+\label{alg:activeset}
+\begin{algorithmic}
+\Procedure{Active set method}{}
+\State Compute a feasible starting point $x_0$;
+\State Set $W_0$ to be a subset of the active constraints at $x_0$;
+\For{$k = 0, 1, 2,...$}
+	\State Solve subproblem to find $p_k$;
+	\If{$p_k = 0$}
+		\State Compute Lagrange multipliers $\hat{\lambda_i}$,
+		\State set $\hat{W} = W_k$; 
+		\If{$\hat{\lambda_i} \ge 0$ for all $i \in W_k \cap I$}
+			\State \textbf{STOP} with solution $x^* = x_k$;
+		\Else
+			\State Set $j =$ argmin$_{j \in W_k \cap I}\hat{\lambda_j}$;
+			\State $x_{k+1} = x_k; W_{k+1} \gets W_k$ \textbackslash \{$j$\};		
+		\EndIf
+	\Else		
+		\State Compute $\alpha_k$ from stepformula;
+		\State $x_{k+1} \gets x_k + \alpha_k p_k$;
+		\If{There are blocking constraints}
+			\State Obtain $W_{k+1}$ by adding one of the blocking constraints to $W_{k+1}$;
+		\Else
+			\State $W_{k+1} \gets W_k$;	
+		\EndIf 	
+	\EndIf
+\EndFor 
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
-\subsection{Matlab - mex} \label{subsec:mex}
-Beskrivning av hur mex gränssnitt/konverteringen fungerar och är uppbyggt
+\subsection{MATLAB - MEX} \label{subsec:mex}
+
+MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen, se figur~\ref{fig:mex2}. 
+
+\begin{figure}[H]
+\lstinputlisting[language=C]{tex/mex.c}
+\caption{MEX gateway routine}
+\label{fig:mex2}
+\end{figure}  
+
+Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Med hjälp av olika funktioner i MEX-biblioteket kan dessa datatyper konverteras till datatyper som C kan använda och tillbaka. Några händiga funktioner följer:
+\begin{itemize}
+\item mxGetM(mxArray) - returnerar mxArray rader
+\item mxCreateDoubleMatrix(rader, kolumner, mxREAL) - returnerar en mxArray
+\end{itemize}
+
+
+
 \subsection{Matlib}
-Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
+%Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
+Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. %När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
+
+\lstinputlisting[language=C]{tex/matrix_struct.c}
+
+
 \subsection{Byggsystem}
+Byggsystemet är skrivet i Make och består av en huvudfil och sex underfiler enligt strukturen i figur \ref{fig:byggsystem}. De viktiga filerna för att bygga kod är huvudfilen i rotkatalogen, ''quadopt/Makefile'', ''matrixlibrary/Makefile'' och ''matlab/Makefile''. Resterande filer används enbart för att bygga dokumentation. För att bygga allting krävs gcc, MATLAB, pdflatex samt en gedigen \LaTeX-distribution.
+\newline
+\newline
+De anrop som kan köras från huvudfilen är följande:
+\begin{itemize}
+  \item \textbf{all} - bygg dokumentation, matrisbibliotek och quadopt samt kör tester
+  \item \textbf{clean} - rensa alla kataloger från byggresultat
+  \item \textbf{docs} - bygg all dokumentation
+  \item \textbf{libmatrix} - bygg matrisbiblioteket och kör tester
+  \item \textbf{quadopt} - bygg quadopt och kör tester
+  \item \textbf{test} - bygg matrisbiblioteket, quadopt och kör tester
+  \item \textbf{matlab} - bygg MATLAB-tillägg
+  \item \textbf{package} - bygg dokumentation, matrisbibliotek, quadopt, kör tester och paketera allt tillsammans med GUI och källkod till MATLAB-tillägget i en zip-fil för distribution
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+\
+|-- Makefile
+|-- dokumentation
+|   |-- Makefile
+|   |-- doxygen
+|   |   |-- latex
+|   |       |-- Makefile
+|   |-- kandidatrapport
+|       |-- Makefile
+|-- matlab
+|   |-- Makefile
+|-- matrixlibrary
+|   |-- Makefile
+|-- quadopt
+    |-- Makefile
+  \end{verbatim}
+  \caption{Byggsystemets struktur.}
+  \label{fig:byggsystem}
+\end{figure}
+
+\noindent Katalogerna ''matrixlibrary'' och ''quadopt'', där den stora mängden kod finns, har en struktur som syns i figur \ref{fig:katalogstruktur}. I mappen ''include''  finns alla headerfiler som definierar gränssnittet mellan källkodsfilerna i mappen ''src'' samt används av testerna i ''src/tests''. Mappen ''obj'' innehåller resultatet av bygget efter att Make har körts.
+
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+\
+|-- Makefile
+|-- include
+|   |-- h-filer
+|-- obj
+|   |-- binärer
+|-- src
+    |-- c-filer
+    |-- tests
+        |-- c-filer
+  \end{verbatim}
+  \caption{Katalogstruktur.}
+  \label{fig:katalogstruktur}
+\end{figure}
+
+\noindent En ny fil kan läggas till genom att lägga dess c-fil i ''src'', h-fil i ''include'' samt eventuella testfiler (c-filer) i ''src/tests''. De kommer då att hittas automatiskt och kompileras. Testbinärerna kommer även att köras automatiskt vid varje bygge. Om det rör sig om ny funktionalitet i matrisbiblioteket måste en ny regel läggas till i ''matrixlibrary/Makefile'' för att den nya filen ska inkluderas i biblioteket. Detta görs på samma sätt som de två regler som redan finns för filerna ''matLib.c'' och ''sparse\_lib.c''.
+\newline
+\newline
+Om MATLAB-tillägget ska byggas med Make måste variabeln MATLAB\_BIN sättas till sökvägen till MATLAB i filen ''matlab/Makefile''. Tillägget kan också byggas genom att öppna MATLAB och ställa sig i katalogen ''matlab'' samt skriva ''build'' i kommandofönstret.
+\newline
+\newline
+Den Makefile som används av parsern är ''QuadOptGUI/package\_makefile.mk''. När ''make package'' körs från projektets rotkatalog kopieras denna fil till QuadOpts zip-fil.
+
 
 \subsection{Parser}
+Parsern är ett alternativ som möjliggör för användaren att generera en C-fil med vilken lösaren löser optimeringsproblemet. För att generera C-filen krävs det att parsern får två olika filer, en datafil med matrisdata och en fil med optimeringsproblemet där bland annat matrisernas dimensioner definieras. Dessa båda filer skickas till parsern från GUI:t. Anledning till parsern är att underlätta för användaren då många matriser som lösaren använder sig av är väldigt stora och innehåller många nollor. Parsern tar istället in mindre matriser som innehåller den data som dessa större matriser innehåller, bortsett från nollorna.

@@ -1,8 +1,8 @@
 \section{Bakgrund}
-I dagens allt större och komplexare dataprogram som består av allt fler komponenter som ska hänga ihop med varandra på olika vis och som ofta skrivs av allt fler utvecklare, så måste den följa en viss struktur för att det inte ska bli ett stort kaos av obegriplig kod och för att modulerna ska fungera korrekt med varandra. Till exempel användande av kodstandarder och designmönster för att de som utvecklar och även nya utvecklare lättare ska kunna sätta sig in och förstå sig på den.
+I dagens allt större och komplexare datasystem som består av allt fler komponenter som ska hänga ihop med varandra på olika vis och som ofta utvecklas av allt fler programmerare, så måste de följa en viss struktur för att det inte ska bli ett stort kaos av obegriplig kod och för att modulerna ska fungera korrekt med varandra. Till exempel användande av kodstandarder och designmönster för att de som utvecklar och även nya utvecklare lättare ska kunna sätta sig in och förstå sig på dem.
 \newline
 \newline
-En annan viktig del är även att dagens mjukvara ofta fortsätts att utvecklas lång tid efter första versionen med kontinuerligt nya uppdatering. Detta kräver att koden från början har en bra struktur och är ordentligt genomtänkt för sin uppgift och för framtida förändringar, så att inte allt för mycket behöver skrivas om då något nytt ska läggas till.
+En annan viktig del är även att dagens mjukvara vanligtvis fortsätts att utvecklas lång tid efter första versionen med kontinuerligt nya uppdatering. Detta kräver att systemet från början har en bra struktur och är ordentligt genomtänkt för sin uppgift och för framtida förändringar, så att inte allt för mycket behöver skrivas om då något nytt ska läggas till.
 \newline
 \newline
 Arkitekturen kan ses som skelettet man bygger koden utifrån. Den ska fungera som en beskrivning för hur varje modul hänger ihop med resten av systemet.
@@ -11,5 +11,8 @@ Arkitekturen kan ses som skelettet man bygger koden utifrån. Den ska fungera so
 Syftet med projektet var att implementera en optimeringsalgoritm för lösande av kvadratiska optimeringsproblem. Vilket är grunden till själva prediktionsregleringen som används för låta stridsflygplanet beräkna pilotens framtida manövrer, så det i ett tidigare skede kan optimera alla roder för att få ut maximal prestanda.
 \newline
 \newline
-Arkitekturen beskrev just hur implementationen av optimeringsalgoritmen skulle fungera, vilka komponenter som behövdes och hur de skulle hänga ihop med varandra för att få ett fungerande system.
+%Uppdraget i kandidatprojektet var att göra en optimeringsalgoritm för prediktionsreglering, denna algoritm skulle anropas via en funktion i matlab eller via det egenutvecklade grafiska gränssnittet som via en parser genererade koden som lösaren behövde för att lösa optimeringsproblemet. Det var dessa delar som arkitekturen behövde beskriva hur de skulle hänga ihop med varandra.
+%\newline
+%\newline
+Just i detta projekt så skulle algoritmen kunna anropas via MATLAB samt gruppens egna grafiska gränssnitt, där det senare skulle använda sig av en parser för att göra om det inmatade optimeringsproblemet, så att det skulle kunna beräknas med algoritmen. Arkitekturen beskrev just hur implementationen av dessa delar skulle fungera, vilka komponenter som behövdes och hur de skulle hänga ihop med varandra för att få ett fungerande system.
 

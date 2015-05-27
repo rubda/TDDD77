@@ -1,0 +1,133 @@
+\hypertarget{trans__con_8c}{}\section{T\+D\+D\+D77/quadopt/src/trans\+\_\+con.c File Reference}
+\label{trans__con_8c}\index{T\+D\+D\+D77/quadopt/src/trans\+\_\+con.\+c@{T\+D\+D\+D77/quadopt/src/trans\+\_\+con.\+c}}
+{\ttfamily \#include $<$trans\+\_\+con.\+h$>$}\\*
+{\ttfamily \#include $<$assert.\+h$>$}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{trans__con_8c_a014038701d0fd3639c39db33b094f722}{insert\+\_\+x\+\_\+identity\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$F, size\+\_\+t card\+\_\+x, size\+\_\+t N)
+\item 
+bool \hyperlink{trans__con_8c_a114c3ae4286d3b087549a75dfef878b4}{insert\+\_\+fx} (\hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$Fx, size\+\_\+t card\+\_\+x, size\+\_\+t N)
+\item 
+bool \hyperlink{trans__con_8c_a403d9885cfa9d65d009ece2aa013a6f6}{insert\+\_\+u\+\_\+identity\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$F, size\+\_\+t card\+\_\+u, size\+\_\+t N)
+\item 
+bool \hyperlink{trans__con_8c_a5f43e62d0692ba74d55b047229158746}{fix\+\_\+g} (\hyperlink{structmatrix}{matrix} $\ast$g, \hyperlink{structmatrix}{matrix} $\ast$gx, \hyperlink{structmatrix}{matrix} $\ast$x\+\_\+lim, \hyperlink{structmatrix}{matrix} $\ast$u\+\_\+lim, size\+\_\+t N)
+\item 
+bool \hyperlink{trans__con_8c_aa0e1db03ee70849f3a228d3ccf70946e}{insert\+\_\+identity\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$E, size\+\_\+t card\+\_\+x)
+\item 
+bool \hyperlink{trans__con_8c_a9809ee12a5f17752e746ff1ca1956bb0}{insert\+\_\+\+A\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$A)
+\item 
+bool \hyperlink{trans__con_8c_a0bcfd7a0a93a8ec90c3acc45a382b808}{insert\+\_\+\+B\+\_\+matrices} (\hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$B, size\+\_\+t N)
+\item 
+bool \hyperlink{trans__con_8c_ad13112446caaeb7a9f3b8909bbe36beb}{trans\+\_\+dyn\+\_\+cons} (\hyperlink{structmatrix}{matrix} $\ast$A, \hyperlink{structmatrix}{matrix} $\ast$B, \hyperlink{structmatrix}{matrix} $\ast$k, \hyperlink{structmatrix}{matrix} $\ast$E, \hyperlink{structmatrix}{matrix} $\ast$h, size\+\_\+t card\+\_\+x)
+\item 
+bool \hyperlink{trans__con_8c_a4910f60b8b0d8e95ae818e5f0b46166f}{trans\+\_\+ineq\+\_\+cons} (\hyperlink{structmatrix}{matrix} $\ast$Fx, \hyperlink{structmatrix}{matrix} $\ast$gx, \hyperlink{structmatrix}{matrix} $\ast$F, \hyperlink{structmatrix}{matrix} $\ast$g, size\+\_\+t card\+\_\+x, size\+\_\+t card\+\_\+u, size\+\_\+t N, \hyperlink{structmatrix}{matrix} $\ast$x\+\_\+lim, \hyperlink{structmatrix}{matrix} $\ast$u\+\_\+lim)
+\item 
+bool \hyperlink{trans__con_8c_a75449aebd37264090f89bfb5fa1149ff}{create\+\_\+objective} (int n, \hyperlink{structmatrix}{matrix} $\ast$Qin, \hyperlink{structmatrix}{matrix} $\ast$P, \hyperlink{structmatrix}{matrix} $\ast$R, \hyperlink{structmatrix}{matrix} $\ast$Q)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{trans__con_8c_a75449aebd37264090f89bfb5fa1149ff}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!create\+\_\+objective@{create\+\_\+objective}}
+\index{create\+\_\+objective@{create\+\_\+objective}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{create\+\_\+objective}]{\setlength{\rightskip}{0pt plus 5cm}bool create\+\_\+objective (
+\begin{DoxyParamCaption}
+\item[{int}]{n, }
+\item[{{\bf matrix} $\ast$}]{Qin, }
+\item[{{\bf matrix} $\ast$}]{P, }
+\item[{{\bf matrix} $\ast$}]{R, }
+\item[{{\bf matrix} $\ast$}]{Q}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a75449aebd37264090f89bfb5fa1149ff}
+Creates quadratic matrix from Qin, P, R. \hypertarget{trans__con_8c_a5f43e62d0692ba74d55b047229158746}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!fix\+\_\+g@{fix\+\_\+g}}
+\index{fix\+\_\+g@{fix\+\_\+g}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{fix\+\_\+g}]{\setlength{\rightskip}{0pt plus 5cm}bool fix\+\_\+g (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{g, }
+\item[{{\bf matrix} $\ast$}]{gx, }
+\item[{{\bf matrix} $\ast$}]{x\+\_\+lim, }
+\item[{{\bf matrix} $\ast$}]{u\+\_\+lim, }
+\item[{size\+\_\+t}]{N}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a5f43e62d0692ba74d55b047229158746}
+\hypertarget{trans__con_8c_a9809ee12a5f17752e746ff1ca1956bb0}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+\+A\+\_\+matrices@{insert\+\_\+\+A\+\_\+matrices}}
+\index{insert\+\_\+\+A\+\_\+matrices@{insert\+\_\+\+A\+\_\+matrices}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+\+A\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+\+A\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{E, }
+\item[{{\bf matrix} $\ast$}]{A}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a9809ee12a5f17752e746ff1ca1956bb0}
+\hypertarget{trans__con_8c_a0bcfd7a0a93a8ec90c3acc45a382b808}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+\+B\+\_\+matrices@{insert\+\_\+\+B\+\_\+matrices}}
+\index{insert\+\_\+\+B\+\_\+matrices@{insert\+\_\+\+B\+\_\+matrices}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+\+B\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+\+B\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{E, }
+\item[{{\bf matrix} $\ast$}]{B, }
+\item[{size\+\_\+t}]{N}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a0bcfd7a0a93a8ec90c3acc45a382b808}
+\hypertarget{trans__con_8c_a114c3ae4286d3b087549a75dfef878b4}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+fx@{insert\+\_\+fx}}
+\index{insert\+\_\+fx@{insert\+\_\+fx}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+fx}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+fx (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{F, }
+\item[{{\bf matrix} $\ast$}]{Fx, }
+\item[{size\+\_\+t}]{card\+\_\+x, }
+\item[{size\+\_\+t}]{N}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a114c3ae4286d3b087549a75dfef878b4}
+\hypertarget{trans__con_8c_aa0e1db03ee70849f3a228d3ccf70946e}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+identity\+\_\+matrices@{insert\+\_\+identity\+\_\+matrices}}
+\index{insert\+\_\+identity\+\_\+matrices@{insert\+\_\+identity\+\_\+matrices}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+identity\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+identity\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{E, }
+\item[{size\+\_\+t}]{card\+\_\+x}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_aa0e1db03ee70849f3a228d3ccf70946e}
+\hypertarget{trans__con_8c_a403d9885cfa9d65d009ece2aa013a6f6}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+u\+\_\+identity\+\_\+matrices@{insert\+\_\+u\+\_\+identity\+\_\+matrices}}
+\index{insert\+\_\+u\+\_\+identity\+\_\+matrices@{insert\+\_\+u\+\_\+identity\+\_\+matrices}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+u\+\_\+identity\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+u\+\_\+identity\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{F, }
+\item[{size\+\_\+t}]{card\+\_\+u, }
+\item[{size\+\_\+t}]{N}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a403d9885cfa9d65d009ece2aa013a6f6}
+\hypertarget{trans__con_8c_a014038701d0fd3639c39db33b094f722}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!insert\+\_\+x\+\_\+identity\+\_\+matrices@{insert\+\_\+x\+\_\+identity\+\_\+matrices}}
+\index{insert\+\_\+x\+\_\+identity\+\_\+matrices@{insert\+\_\+x\+\_\+identity\+\_\+matrices}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{insert\+\_\+x\+\_\+identity\+\_\+matrices}]{\setlength{\rightskip}{0pt plus 5cm}bool insert\+\_\+x\+\_\+identity\+\_\+matrices (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{F, }
+\item[{size\+\_\+t}]{card\+\_\+x, }
+\item[{size\+\_\+t}]{N}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a014038701d0fd3639c39db33b094f722}
+\hypertarget{trans__con_8c_ad13112446caaeb7a9f3b8909bbe36beb}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!trans\+\_\+dyn\+\_\+cons@{trans\+\_\+dyn\+\_\+cons}}
+\index{trans\+\_\+dyn\+\_\+cons@{trans\+\_\+dyn\+\_\+cons}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{trans\+\_\+dyn\+\_\+cons}]{\setlength{\rightskip}{0pt plus 5cm}bool trans\+\_\+dyn\+\_\+cons (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{A, }
+\item[{{\bf matrix} $\ast$}]{B, }
+\item[{{\bf matrix} $\ast$}]{k, }
+\item[{{\bf matrix} $\ast$}]{E, }
+\item[{{\bf matrix} $\ast$}]{h, }
+\item[{size\+\_\+t}]{card\+\_\+x}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_ad13112446caaeb7a9f3b8909bbe36beb}
+Dynamic constraints (A and B with initial values K) transforms to equality constraints (E and h). \hypertarget{trans__con_8c_a4910f60b8b0d8e95ae818e5f0b46166f}{}\index{trans\+\_\+con.\+c@{trans\+\_\+con.\+c}!trans\+\_\+ineq\+\_\+cons@{trans\+\_\+ineq\+\_\+cons}}
+\index{trans\+\_\+ineq\+\_\+cons@{trans\+\_\+ineq\+\_\+cons}!trans\+\_\+con.\+c@{trans\+\_\+con.\+c}}
+\subsubsection[{trans\+\_\+ineq\+\_\+cons}]{\setlength{\rightskip}{0pt plus 5cm}bool trans\+\_\+ineq\+\_\+cons (
+\begin{DoxyParamCaption}
+\item[{{\bf matrix} $\ast$}]{Fx, }
+\item[{{\bf matrix} $\ast$}]{gx, }
+\item[{{\bf matrix} $\ast$}]{F, }
+\item[{{\bf matrix} $\ast$}]{g, }
+\item[{size\+\_\+t}]{card\+\_\+x, }
+\item[{size\+\_\+t}]{card\+\_\+u, }
+\item[{size\+\_\+t}]{N, }
+\item[{{\bf matrix} $\ast$}]{x\+\_\+lim, }
+\item[{{\bf matrix} $\ast$}]{u\+\_\+lim}
+\end{DoxyParamCaption}
+)}\label{trans__con_8c_a4910f60b8b0d8e95ae818e5f0b46166f}
+Transforms inequality constraints Fx, gx, xlim, ulim to F and g. 

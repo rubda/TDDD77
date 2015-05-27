@@ -1,140 +1,208 @@
 import re
 
+def parse_mpc(filename, outfile, datafile):
 
-start_text = "#include <matLib.h>\n#include <solver.h>\n\n"
+    with open(filename, 'r') as mpcfile, open(datafile, 'r') as datafile, open(outfile, 'w') as outfile:
+
+        matrix_data = get_matrix_data(datafile)
+        matrix_dimensions, N, card_x, card_u, settings = get_mpc_data(mpcfile)
+
+        matrix_data["x_lim"], matrix_dimensions["x_lim"] = create_limits(matrix_dimensions, matrix_data, "x_max", "x_min")
+        matrix_data["u_lim"], matrix_dimensions["u_lim"] = create_limits(matrix_dimensions, matrix_data, "u_max", "u_min")
+
+        out = "#include <matLib.h>\n#include <solver.h>\n#include <trans_con.h>\n#include <assert.h>\n\nint main(){\n\n"
+        outfile.write(out)
+
+        out = "size_t N = " + N + ";\n"
+        outfile.write(out)
+
+        out = "size_t card_x = " + card_x + ";\n"
+        outfile.write(out)
+
+        out = "size_t card_u = " + card_u + ";\n\n"
+        outfile.write(out)
+
+        out = "size_t n_vars = card_x*(N+1) + card_u*N;\n\n"
+        outfile.write(out)
+
+        out = "/* Variables */\nmatrix* z = create_matrix(n_vars, 1);\n\n" 
+        outfile.write(out)
+
+        out = "/* Coeffients */\n"
+        outfile.write(out)
+
+        for key in matrix_dimensions:
+            if key != "x_max" and key != "x_min" and key != "u_max" and key != "u_min":
+                out = create_matrix(key, matrix_dimensions[key], matrix_data[key])
+                outfile.write(out)
+
+        out = "matrix* q = create_zero_matrix(n_vars, 1);\n\n"
+        outfile.write(out)
+
+        out = """
+/* Transform matrix stuff */
+matrix* E = create_zero_matrix(card_x*(N + 1), n_vars);
+matrix* h = create_zero_matrix(card_x*(N + 1), 1);
+assert(trans_dyn_cons(A, B, k, E, h, card_x));
+
+size_t rows = 2*card_x*N + Fx->rows + 2*card_u*N;
+size_t cols = card_x*(N + 1) + card_u*N;
+matrix* F = create_zero_matrix(rows, cols);
+matrix* g = create_zero_matrix(rows, 1);
+assert(trans_ineq_cons(Fx, gx, F, g, card_x, card_u, N, x_lim, u_lim));
+
+multiply_matrix_with_scalar(-1, F);
+multiply_matrix_with_scalar(-1, g);
+
+matrix* Qfinal = create_zero_matrix(n_vars, n_vars);
+create_objective(N, Q, P, R, Qfinal);
+
+/* Solveranrop */  
+"""
+        outfile.write(out)
+
+        out = "problem* problem = create_problem(Qfinal, q, E, h, F, g, NULL," + settings + ");\n"# 0, 0);
+        outfile.write(out)
+
+        out = "quadopt_solver(problem);\nprint_solution(problem);\n\n"
+        outfile.write(out)
+
+        for key in matrix_dimensions:
+            if key != "x_max" and key != "x_min" and key != "u_max" and key != "u_min":
+                out = create_free(key)
+                outfile.write(out)
+
+        out = """free_matrix(z);\nfree_problem(problem);\n"""
+        outfile.write(out) 
+
+        out = "\n}"
+        outfile.write(out)
 
 
-def parse_qp(filename, out_filename, data_filename):
-
-    with open(filename) as in_file, open(data_filename) as data_file, open(out_filename, 'w') as out_file:
-
-        out_file.write(start_text)
-        out_file.write("int main(){\n\n")
-
-        indent = " "*2
-
-        problem = ""
-        found_min = False
-        copy = False
-        copy_limits = False
-
-        max_iterations = -1
-        max_ms = -1
-
-        for line in in_file:
-            line = line.strip()
-            if line == "parameters":
-                out_file.write(indent + "/* Parameters */\n\n")
-                copy = True
-            elif line == "variables":
-                out_file.write(indent + "/* Variables */\n\n")
-                copy = True
-            elif line == "dimensions":
-                copy_limits = True
-            elif line == "minimize":
-                found_min = True
-            elif line == "subject to":
-                pass
-            elif line == "end":
-                out = "\n"
-                out_file.write(out)
-                copy = False
-                copy_limits = False
-            elif found_min:
-                problem = line
-                found_min = False
-            elif copy_limits:
-                if line.startswith("max_iterations"):
-                    max_iterations = get_limits(line)
-                elif line.startswith("max_ms"):
-                    max_ms = get_limits(line)
-            elif copy:
-                out = create_matrices(line)
-                out_file.write(out)
-
-        matrix_variables = fill_matrices(data_file, out_file)
-        create_solver_call(out_file, problem, matrix_variables, max_iterations, max_ms)
-
-        out_file.write("}")
-
-def get_limits(line):
-    return_value = re.findall(r'\d+', line)
-    return_value = list(map(int, return_value))[0]
-    return return_value
+def create_free(name):
+    return "free_matrix(" + str(name) + ");\n"
 
 
-def create_matrices(line):
-    indent = " "*2
-    line = line.replace(' ', '')
-    name = line.split('(')[0]
-    dimensions = line.split('(')[1]
-    dimensions = re.findall(r'\d+', dimensions)
-    dimensions = list(map(int, dimensions))
+def create_limits(matrix_dimensions, matrix_data, upper, lower):
+    vals = matrix_data[lower].split(',')
 
-    string = indent + "matrix* " + name + "; \n" + indent
-    if len(dimensions) == 2:
-        string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + str(dimensions[1]) + ");\n"
-    else:
-        string = string + name + " = create_matrix(" + str(dimensions[0]) + ", " + "1" + ");\n"
-    return string
+    neg_vals = ""
+    for val in vals:
+        neg_vals += str(-int(val)) + ","
+
+    neg_vals = neg_vals[:-1]
+
+    data = matrix_data[upper] + "," + neg_vals
+    rows = matrix_dimensions[upper][0] + matrix_dimensions[upper][0]
+    cols = matrix_dimensions[upper][1]
+
+    return data, [rows, cols]
 
 
-def fill_matrices(data_file, out_file):
-    # Parse the dataFile and insert into matrices
-    # using insert_array(array, matrix) from matLib.h
+"""
+Extract the mpc parameters and dimensions
+"""
+def get_mpc_data(mpcfile):
+    matrix_dimensions = {}
+    N = ""
+    card_x = ""
+    card_u = ""
+    settings = ""
+    copy_parameters = False
+    copy_dimensions = False
+    copy_vars = False
+    copy_settings = False
+    data = ""
+    name = ""
+    value = ""
 
-    indent = " "*2
-    data = "{"
-    data_name = ""
-    matrix_name = ""
-    out_file.write(indent + "/* Insert values into matrices */\n\n")
-    finding_data = False
-
-    matrix_variables = []
-
-    for line in data_file:
+    for line in mpcfile:
         line = line.strip()
+        line = re.sub(r'\s+', '', line)
+        if line == 'parameters':
+            copy_parameters = True
+        elif line == 'dimensions':
+            copy_dimensions = True
+        elif line == 'variables':
+            copy_vars = True
+        elif line == 'settings':
+            copy_settings = True
+        elif line == 'end':
+            copy_parameters = False
+            copy_dimensions = False
+            copy_vars = False
+            copy_settings = False
+        elif copy_parameters:
+            try:
+                #name = line.split('(')[0]
+                #dimensions = line.split('(')[1]
 
+                name, dimensions = line.split('(')
+                dimensions = re.findall(r'\d+', dimensions)
+                dimensions = list(map(int, dimensions))
+                if len(dimensions) != 2:
+                    dimensions += [1]
+                matrix_dimensions[name] = dimensions
+            except: 
+                name = line.split('=')[0]
+                matrix_dimensions[name] = [1,1]    
+        elif copy_dimensions:
+            val = line.split('=')[1]
+            N = val
+        elif copy_vars:
+            if line.startswith('x'):
+                card_x = line.split('(')[1].split(')')[0]
+            elif line.startswith('u'):
+                card_u = line.split('(')[1].split(')')[0]
+        elif copy_settings:
+            name, val = line.split('=')
+            settings += " " + val + ","
+
+    settings = settings[:-1]
+
+    return matrix_dimensions, N, card_x, card_u, settings
+
+
+"""
+Creates a dictionary with the matrix data
+"""
+def get_matrix_data(datafile):
+    matrix_data = {}
+    copy = False
+    data = ""
+    name = ""
+
+    for line in datafile:
+        line = line.strip()
         if line[:1].isalpha():
-            if finding_data:
+            if copy == True:
+                data = data.strip()
                 data = re.sub(r'\s+', ' ', data)
                 data = re.sub(r'\s+', ',', data)
-                out_file.write(indent + "value " + data_name + "[" + str(data[:-1].count(',') + 1) + "]" + " = " + data[:-1] + "};\n")
-                out_file.write(indent + "insert_array(" + data_name + ", " + matrix_name[:-1] + ");\n")
-                data = "{"
-                finding_data = not finding_data
+                matrix_data[name] = data 
+                copy = not copy
 
-            matrix_name = line[:-1]
-            data_name = matrix_name[:-1] + "_data"
-            finding_data = not finding_data
-            matrix_variables.append(matrix_name)
+            name = re.sub(r'\s+', '', line)
+            name = name.split('=')[0]
+            data = ""
+            copy = not copy
         else:
-            data = data + line + " "
+            data += ' ' + line 
 
-    return matrix_variables
+    data = data.strip()
+    data = re.sub(r'\s+', ' ', data)
+    data = re.sub(r'\s+', ',', data)
+    matrix_data[name] = data 
 
+    return matrix_data
 
-def create_solver_call(out_file, problem, matrix_variables, max_iterations, max_ms):
-        indent = " "*2
-        out_file.write("\n\n" + indent + "/* Solveranropp */ \n\n")
+def create_matrix(name, dimensions, data):
+    rows = str(dimensions[0])
+    cols = str(dimensions[1])
+    size = str(dimensions[0]*dimensions[1])
 
-        iter_range = re.findall(r'\d+', problem)
-        
-        out_file.write(indent + "int i; \n")
-        out_file.write(indent + "for(i = " + iter_range[0] + "; i <= " + iter_range[1] + "; i++){ \n")
-        
-        
-        create_problem = indent*2 + "problem* problem = create_problem("
+    matrix_init = "matrix* " + name + " = create_matrix(" + rows + "," + cols + ");\n"
+    matrix_fill = "value " + name + "_data[" + size + "] = {" + data + "};\n"
+    matrix_insert = "insert_array(" + name + "_data, " + name + ");\n"
 
-        for var in matrix_variables:
-            create_problem += var + ","
-
-        create_problem = create_problem + str(max_iterations) + "," + str(max_ms) + ");\n"
-        solver_call = indent*2 + "quadopt_solver(problem);\n"
-        print_solution = indent*2 + "print_solution(problem);\n "+indent+"} \n"
-
-        out_file.write(create_problem)
-        out_file.write(solver_call)
-        out_file.write(print_solution)
-
-        
+    return matrix_init + matrix_fill + matrix_insert + "\n"

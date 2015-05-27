@@ -8,7 +8,7 @@ Här beskrivs matematiken bakom de problem som programvaran ska lösa. Olika alg
 &G  \quad \text{Matris med målfunktionens alla kvadratiska termer}\\
 &d  \quad \text{Matris med målfunktionens alla linjära termer}\\
 &F  \quad \text{Matris med alla olikhetsbivillkoren}\\
-&d  \quad \text{Vektor med olikhetsbivillkorens högerled}\\
+&g  \quad \text{Vektor med olikhetsbivillkorens högerled}\\
 &E  \quad \text{Matris med alla likhetsbivillkoren}\\
 &h  \quad \text{Vektor med likhetsbivillkorens högerled}
 \end{aligned}
@@ -36,38 +36,38 @@ Problemen som ska lösas är kvadratiska konvexa optimeringsproblem som är defi
 
 
 \subsection{Startpunkt}
-Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase I''. Problemet med denna metod är att den bygger på simplexmetoden, vilket innebär att det krävs en Simplex-lösare för att kunna implementera algoritmen. \citep{numericaloptimization}.
+Att hitta en tillåten startpunkt är ett lika svårt problem som optimeringsproblemet, men nödvändigt då alla algoritmer kräver en giltigt punkt att börja i. Det finns fler olika metoder för att hitta en startpunkt till exempel ''Phase I''. Problemet med denna metod är att den bygger på simplexmetoden, vilket innebär att det krävs en Simplex-lösare för att kunna implementera algoritmen. \citep{numericaloptimization}
 
 \subsection{Simplex}
 Simplexmetoden är en algoritm som ofta används för att lösa konvexa linjära optimeringsproblem. Algoritmen löser ett problem genom att iterativt gå mellan olika uppsättningar av bivillkor för att hitta den uppsättning som ger en optimal lösning. Detta innebär att algoritmens tidskomplexitet är $\mathcal{O}(2^n)$ \citep{numericaloptimization}, vilket betyder att algoritmen kan bli långsam för större problem. \\
 Algoritmen går att dela upp i två faser, ''Phase I'' och ''Phase II'', där den första fasen hittar en tillåten startpunkt och den andra hittar den optimala lösningspunkten.
 
 \subsubsection{Phase I}
-''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den\citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
-Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan.
+''Phase I'' bygger på att man relaxerar problemet så att en en vald punkt är tillåten. Oftast väljs punkten till origo eftersom det förenklar tänkandet och är den punkt som simplexmetoden vanligtvis utgår ifrån. \citep{numericaloptimization} \\
+Andra lösare, som till exempel MATLAB, kan utgå från en användarinmatad gissning och låter en sedan utgå från den \citep{quadprog}. Om gissningen är bra kan detta medföra att problemet blir lättare och går att lösa snabbare. \\
+Till att börja med skrivs alla bivillkor om så att de står på standardform, vilket ser ut enligt nedan:
 $$Ex = h, \quad Fx \leq g$$
 \raggedright där $E$ och $F$ är matriser innehållande $x$-variablernas koefficienter i bivillkoren. vektorerna $h$ och $g$ innehåller bivillkorens högerled. Ett krav är dessutom att alla element i $h$ måste vara positiva.
-Bivillkoren kan ha följande form:
+Bivillkoren kan ha följande form: \citep{numericaloptimization}
 $$Ex = h, \quad Fx \geq g$$
 vilket innebär att både $F$ och $g$ måste multipliceras med $-1$ för att de ska vara på rätt form. För att uppfylla att $h$ är positiv måste de element däri som är negativa, och motsvarande rad i $E$-matrisen, multipliceras med $-1$.
 När problemet sedan är på rätt form kan simplex-delen börja. \\
-Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. De nya variabler döps till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form:
+Först adderas en slackvariabel till varje olikhetsbivillkor för göra om dessa till likhetsbivillkor precis som i vanliga simplexmetoden. De nya variabler döps till $s$ som slackvariabel. Bivillkoren till problemet ser nu ut på följande form: \citep{numericaloptimization}
 $$Ex = h, \quad -Fx+Ds = -g$$
-Där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
-När alla slackvariabler är tillagda ska virtuella variablerna läggas till. Det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta görs för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form:
+där $D$ är matrisen innehållande $s$:s koefficienter i bivillkoren.
+När alla slackvariabler är tillagda ska virtuella variablerna läggas till. Det är dessa variabler som relaxerar problemet. På varje bivillkor som var ett likhetsbivillkor från början läggs en virtuell variabel på. Detta gör att villkoret nu passerar genom origo, alltså blir origo en giltig punkt. På alla bivillkor som var olikhetsbivillkor från början och som har negativt värde i högerledet (negativt värde i $g$-matrisen), läggs en negativ virtuell variabel på. Detta görs för att relaxera dessa så att punkten origo är giltig. På de som positivt värde i högerledet behövs inte detta. Anledningen till det är att slackvariablerna alltid måste vara positiva, vilket gör att i de bivillkoren, som har positivt högerled, är origo alltid är en giltig punkt. Bivillkoren ser nu ut på följande form: \citep{numericaloptimization}
 $$Ex+Ca = h, \quad -Fx + Ds - Ba = -g$$
-Där $C$ och $B$ innehåller virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
-Simplexmetoden kräver också att alla variabler måste vara större/lika med noll. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel:
+där $C$ och $B$ innehåller virtuella variablernas koefficienter, och $a$ är virtuella variabelvektorn. \\ 
+Simplexmetoden kräver också att alla variabler måste vara större/lika med noll. Därför måste varje variabel som kan vara negativ ersättas med två nya variabler, till exempel: \citep{numericaloptimization}
 $$x_i = x_{i_1} - x_{i_2}$$
 där $x_{i_1}\geq 0$ och $x_{i_2}\geq 0$ är uppfyllt. \\
-Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är relaxationen av problemet. Simplexmetoden kan nu användas för att bli av med relaxationen . Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av virtuella variablerna.
+Det enda som saknas nu är en målfunktion. Det som gör att punkten origo är giltig just nu är relaxationen av problemet. Simplexmetoden kan nu användas för att bli av med relaxationen . Därför sätts målfunktionen till att minimera relexationen, alltså minimera summan av virtuella variablerna. \citep{numericaloptimization}
 $$min \: z = \sum^{\#a_i}_{i=1} {a_i} \quad  \Leftrightarrow \quad min \: z - \sum^{\#a_i}_{i=1} {a_i} = 0$$
 Efter att ha satt in målfunktionen i tablån är det sista som måste göras att eliminera alla virtuella variabler i målfunktionen. \citep{numericaloptimization}
 
 \subsection{Active set method}   
 Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i optimeringsproblemet som ska vara aktiva och söker efter den mängd aktiva bivillkor som ger ett globalt minimum. Metoden påminner väldigt mycket om Simplex och det är för att Simplex är specialvariant av Active set. Skillnaden är att Active set är mycket mer generell och kräver inte att man hela tiden står på något bivillkor. Detta gör att man även kan lösa kvadratiska optimeringsproblem istället för bara linjära. Dessutom kräver inte Active set att alla variabler är större än/lika med noll. I algoritm~\ref{alg:activeset} visas pseudokod för algoritmen. 
 \citep{numericaloptimization}
-\textcolor{red}{skriv mer}
 
 \begin{algorithm}[H]
 \caption{Active set method}
@@ -102,13 +102,13 @@ Metoden har fått sitt namn efter att den iterativt väljer vilka bivillkor i op
 \end{algorithm}
 
 \subsubsection{Subproblem}
-Subproblemet är det problem som uppstår när riktningen mot den globala optimala punkten ska hittas. Till att börja med så är det som kallas ett ''Subproblem'' till Active set metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också då målfunktionens globala minimum har flyttats, relativt till position den står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). \citep{numericaloptimization}
+Subproblemet är det problem som uppstår när riktningen mot den globala optimala punkten ska hittas. Till att börja med så är det som kallas ett ''Subproblem'' till Active set metoden inget annat än ett annat optimeringsproblem. Dock skiljer sig det från huvudproblemet då det endast har ekvivalensbivillkor. Målfunktionens linjära termer skiljer sig också då målfunktionens globala minimum har flyttats, relativt till position den står i. Detta för att det ska gå att ta ut en stegriktning som inte pekar rakt in i en vägg (bivillkor). Syftet med stegriktningen är att hamna i en bättre punkt. \citep{numericaloptimization}
 \newline
 \newline
 Det finns flera olika metoder för att lösa subproblemet.
-Till exempel ''Range-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' kräver att problemet var väldigt specifikt och såg ut på ett visst sätt. ''Range-space'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
+Till exempel ''Range-space'', ''KKT'' och ''Conjugacy method''. ''Conjugacy method'' kräver att problemet är väldigt specifikt och ser ut på ett visst sätt. ''Range-space'' bygger på att lösa två ekvationssystem. Till att börja med löses följande ekvation för att få ut värdet på $\lambda^*$:
 $$({A_k}G^{-1}A_k^T)\lambda^* = ({A_k}G^{-1}g-c)$$
-där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikatorer. Förövrigt så är
+där $A_k$ är vänsterleden för de aktiva bivillkoren och $\lambda^*$ är en vektor bestående utav de aktiva bivillkorens lagrangemultiplikatorer. För övrigt så är
 $g = Gx+d$ och $c = A_kx - b$ där $b$ är högerleden i de aktiva bivillkoren. \\ Efter det löses denna ekvation för att få ut stegriktningen $p$:
 $$Gp = A^T\lambda^* - q$$
 Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör att metoden riskerar att bli långsam för stora matriser om ingen intern symmetri i matriserna utnyttjas. \citep{numericaloptimization}
@@ -117,7 +117,7 @@ Sedan är subproblemet löst. Många matrismultiplikationer utförs, vilket gör
 KKT står för Karush-Kuhn-Tucker. Metoden löser följande system:
 
 $$\begin{bmatrix}
-K & A^T \\
+G & A^T \\
 A & 0
 \end{bmatrix}
 \begin{bmatrix}
@@ -136,7 +136,7 @@ Där submatriserna är som beskriva i ''Range-space''\citep{numericaloptimizatio
 Lagrangemultiplikatorerna ($\hat{\lambda_i}$) är det kvadratiska optimeringsproblemets slackvariabler, och de kan beräknas på följande sätt: \\ 
 \begin{equation*}
 \begin{aligned}
-\sum_{i \in W_k} a_i \hat{\lambda_i} = g = G x_k + d
+\sum_{i \in W_k} a_i \lambda_i^* = g = G x_k + d
 \end{aligned}
 \end{equation*}
 där $x_k$ är den punkt som lösaren står i, och $W_k$ är den uppsättning av bivillkor som är aktiva.
@@ -153,7 +153,7 @@ där $\alpha_k$ är steglängden.
 
 \subsection{MEX}
 \label{sec:mex}
-MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
+MEX står för \textbf{M}atlab \textbf{ex}ecutable. Det är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen \citep{mathworks}, se figur~\ref{fig:mex}. 
 
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/mex.c}
@@ -168,19 +168,19 @@ Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prh
 \end{itemize}
 
 \subsection{Programspråket C}
-Programspråket C är ett av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C är ett relativt ''låg nivå'' språk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren, annars kan minnesläckor uppstå. \citep{cbible}
+Programspråket C är ett av de äldre och mest använda språken i världen. Det gavs ut år 1972 och är under utveckling än idag. C skapades som ett högnivåspråk men räknas idag som ett lågnivåspråk. Enkelt menat betyder det att C behandlar samma sorts objekt som datorer gör, nämligen tecken, nummer och adresser. Det innehåller inga sammansatta datatyper som strängar och listor eller funktioner för att hantera dessa. Dock ingår allt det i standardbiblioteket vilket finns med samtliga versioner. Då det inte sker någon automatisk minneshantering i C behövs detta göras av programmeraren, annars kan minnesläckor uppstå. \citep{cbible}
 
-\subsection{Fortran}
-Fortran var en av de första etablerade ''hög nivå'' språken och är än idag en av de främsta språken för vetenskapliga och tekniska applikationer. Det har blivit populärt och utbrett tack vare dess unika kombination av egenskaper. Program skrivna i Fortran är generellt mer portabla än de skrivna i andra större språk och effektiviteten av den kompilerade koden tenderar till att vara relativt hög eftersom språket är enkelt att kompilera. Fortran har dock en del svagheter och nackdelar, till exempel att namn på deklarerade variabler och funktioner maximalt får vara sex tecken. \citep{fortran}     
+\subsection{Programspråket Fortran}
+Fortran var en av de första etablerade högnivåspråken och är än idag en av de främsta språken för vetenskapliga och tekniska applikationer. Idag räknas det dock som ett lågnivåspråk. Det har blivit populärt och utbrett tack vare dess unika kombination av egenskaper. Program skrivna i Fortran är generellt mer portabla än de skrivna i andra större språk och effektiviteten av den kompilerade koden tenderar till att vara relativt hög eftersom språket är enkelt att kompilera. Fortran har dock en del svagheter och nackdelar, till exempel att namn på deklarerade variabler och funktioner maximalt får vara sex tecken. \citep{fortran}     
 
 \subsection{Python och tkinter}
-Python är ett ''hög nivå'' språk med fokus på läsbarhet. Det innehåller ett omfattande standard kod bibliotek och är plattformsoberoende. \citep{python}  
+Python är ett högnivåspråk med fokus på läsbarhet. Det innehåller ett omfattande standardkodbibliotek och är plattformsoberoende. \citep{python}  
 \newline
 \newline
-Tkinter är ett paket som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
+Tkinter är ett standardpaket i python som innehåller funktioner för att göra grafiska gränssnitt i python. \citep{tkinter}   
 
 \subsection{CVXGEN}
-CVXGEN är ett program för att generera kod för att lösa små kvadratiska konvexa optimeringsproblem genom ett online gränssnitt. Gränssnittet används för att beskriva problemen med enkelt kraftfullt språk. \citep{cvxgen} \newline
+CVXGEN är ett program för att generera kod för att lösa små kvadratiska konvexa optimeringsproblem genom ett webbgränssnitt. Gränssnittet används för att beskriva problemen med enkelt kraftfullt språk. \citep{cvxgen} \newline
 \newline
 I figur~\ref{fig:cvxgen} visas ett exempel på CVXGEN språket för ett kvadratiskt konvext optimeringsproblem som härstammar från ett prediktionsregleringsproblem.   
 
@@ -192,11 +192,30 @@ I figur~\ref{fig:cvxgen} visas ett exempel på CVXGEN språket för ett kvadrati
 
 
 \subsection{Matrisbibliotek}
-\textcolor{red}{Skriv om de olika matrisbiblioteken som vi jämför}
-textcolor{red}{kom ihåg att skriva att ATLAS använder hårvaruoptimerad kod}
+För att kunna utföra matrisoperationer i språket C så behövs ett matrisbibliotek. Här listas de vanligaste biblioteken.
+\subsubsection{ATLAS}
+ATLAS är ett bibliotek som automatiskt ställer in sig själv för maximal prestande beroende på hårdvaran som den körs på. Det bygger på BLAS och är skivet dels i C och Fortran77.\citep{ATLAS}
+\subsubsection{BLAS}
+BLAS är en specifikation som beskriver ett antal rutiner för diverse matris och vektoroperationer. Detta grundade sig i ett Fortranbibliotek som anses vara referensimplementationen.\citep{BLAS}
+\subsubsection{GSL}
+GNU Scientific Library är ett C-bibliotek för tillämpad matematik och vetenskap. Det är modernare än BLAS och ATLAS då det släpptes för första gången 1996.\citep{GNU}
+
 
 \subsection{Tidskomplexitet för matrisoperation}
-\textcolor{red}{Skriv även om sparsematrisoperationer samt den ökade minnesanvändningen}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Operation} & \textbf{Tidskomplexitet} \\ \hline
+    Addition & $\mathcal{O}(n^2)$ \\ \hline
+    Subtraktion & $\mathcal{O}(n^2)$\\ \hline
+    Multiplikation & $\mathcal{O}(n^3)$\\ \hline
+    Invers  & $\mathcal{O}(n^3)$\\ \hline
+  \end{tabular}
+  \caption{Tidskomplexitet för matematiska operationer på matriser.}
+  \label{tabell:matrisopkomplexitet}
+\end{table}
+\citep{razvan}
 \subsection{Scrum}
 ''Scrum'' är ett agilt arbetssätt för projekt, metodiken används främst i mjukvarusammanhang, men kan även användas för projekt med annan inriktning. Metodiken innehåller flera delmoment som ''Scrum table'' och ''Burn down chart''. En ''Scrum table'' är en tavla som kategoriserar aktiviteter i ett projekt enligt följande: 
 \begin{itemize}

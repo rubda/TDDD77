@@ -3,11 +3,13 @@ I detta avsnitt beskrivs hur arbetet har gått tillväga under projektet samt hu
 
 \subsection{Algoritmer och metoder} 
 \label{sec:algmet}
-Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+Den huvudsakliga källan till information om de algoritmer och metoder som använts kommer från boken \emph{Numerical Optimization} \citep{numericaloptimization}. Denna bok var ett tips från kunden eftersom den innehöll tre algoritmer som han tyckte skulle lämpa sig bäst för problemet. Dessa var Gradient projection, Active set och Interior point . Det var sedan kandidatgruppens uppgift att välja en av dessa algoritmer som skulle vara snabbast, enklast att implementera och utveckla för projektets problem.
+\newline
+\newline
+Kunden ansåg att Gradient projection var en komplicerad algoritm och skulle troligtvis vara svår att implementera.
+När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. Active set och Interior point skiljer sig mycket från varandra. Den största skillnaden är att Active set söker efter den optimala punkten i punkter längs med bivillkoren först medan Interior point söker först mitt i lösningsrummet.
 \\
-När en lösningsalgoritm för konvexa kvadratiska problem skulle väljas fanns det två som var intressanta, Interior point metoden och Active set metoden. Metoderna återfinns i boken \emph{Numerical Optimization} \citep{numericaloptimization} och det var kunden som rekommenderade dessa. Enligt kunden var båda ungefär lika komplicerade att implementera men trodde att ändå att Active set metoden kunde vara enklare. Detta gjorde så att kandidatgruppen tillslut valde att gå vidare med just Active set. 
-\\
-\subsection{Vår lösning}
+\subsection{QuadOpts lösare}
 I algoritm~\ref{alg:quadoptsolver} visas pseudokod för implementering av Active set method algoritmen från \emph{Numerical Optimization}.
 
 \begin{algorithm}[H]
@@ -53,10 +55,18 @@ Detta sågs som relativt effektivt då kandidatgruppen trodde att $e \approx n-1
 $${222 \choose 30} \approx 1.19*10^{37}$$
 
 \subsubsection{Problem}
-''Problem''-strukturen (inparametern P i pseudokoden i Algoritm 1) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna i fråga är bland annat problemets bivillkor, målfunktion och aktiva mängden bivillkor.
+''Problem''-strukturen (inparametern P i pseudokoden i Algoritm~\ref{alg:quadoptsolver}) är som namnet säger en struktur för att lagra det kvadratiska problemet, och därmed alla dess parametrar. Parametrarna kan ses i funktionen ''create\_problem'' som visas i figur~\ref{fig:createproblem}. 
+
+\begin{figure}[H]
+\lstinputlisting[language=C]{tex/createproblem.c}
+\caption{Create problem}
+\label{fig:createproblem}
+\end{figure}  
+
+Alla parametrar med ''matrix *'' framför sig är matriserna för optimeringsproblemet. Parametern ''max\_iter'' är hur många iterationer algoritmen får göra och parametern ''max\_micro\_sec'' är antalet mikrosekunder algoritmen har på sig att lösa optimeringsproblemet. 
 
 \subsubsection{Working set}
-''Working set'' är den struktur som implementerats för att kunna avgöra vilka bivillkor som aktiva (activeSet i Algoritm 1). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
+''Working set'' är den struktur som implementerats för att kunna avgöra vilka bivillkor som aktiva (activeSet i Algoritm~\ref{alg:quadoptsolver}). Strukturen är egentligen endast en mängd utav tal där varje tal representerar bivillkorets position i den totala uppsättningen av bivillkor. Till denna struktur finns det olika funktioner för att modifiera mängden, bland annat ''append'' som lägger till ett element, ''remove'' som tar bort ett element, och ''clear'' som tar bort alla element.
 
 
 \input{tex/kandidatrapport-matrisbibliotek}

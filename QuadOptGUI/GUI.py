@@ -2,9 +2,12 @@ from tkinter.filedialog import *
 from tkinter.messagebox import *
 from CustomText import *
 from parser import *
+import subprocess
 import os
 
 filename = None
+data_filename = None
+generated_c = False
 clipboard = None
 start_file = """parameters
     
@@ -64,7 +67,7 @@ def save_as(event=None):
                         message="Unable to save file...")
 
 
-def open_file(event=None):
+def open_mpc_file(event=None):
     global filename
     try:
         f = askopenfile(mode='r')
@@ -78,10 +81,18 @@ def open_file(event=None):
     except:
         pass
 
+def open_data_file(event=None):
+    global data_filename
+    try:
+        f = askopenfile(mode='r')
+        data_filename = f.name
+    except:
+        pass
+
 def init_text(event=None):
     global filename
     try:
-        f = open("test.qopt")
+        f = open("mpc.qopt")
         t = f.read()
         filename = f.name
 
@@ -147,35 +158,31 @@ def highlight(event=None):
 
 def generate_c(event=None):
     global filename
+    global data_filename
+    global generated_c
+    problem_file = filename
+    res_file = "solution.c"
+    data_file = data_filename
     try:
-        parse_qp("test.qopt", "result.c", "problem_data.qopt")
-
-        f = open("result.c")
-        t = f.read()
+        parse_mpc(problem_file, res_file, data_file )
 
         showinfo(title="C code generation",
-                 message="The generated C code was written to " + "result.c")
+                 message="The generated C code was written to " + res_file)
+        generated_c = True
     except:
         showerror(title="Error", message="Something went wrong!")
 
 
 def run_code(event=None):
-    showerror()
-
-
-def edit_problem(event=None):
     global filename
-    try:
-        text.config(state=NORMAL)
-        f = open(filename)
-        t = f.read()
-
-        text.delete(0.0, END)
-        text.insert(0.0, t)
-        root.title(filename)
-        highlight()
-    except:
-        pass
+    global data_filename
+    if None in (filename, data_filename):
+        showerror(title="Error", message="Both a data file and MPC file must be specified!")
+        return
+    elif not generated_c:
+        generate_c()
+    cmd_line = "make && ./solution"
+    os.system(cmd_line)
 
 
 def quit(event=None):
@@ -218,7 +225,6 @@ codegenLabel.pack()
 cButton = Button(sideBar, text="C code", width=15, command=generate_c)
 cButton.pack()
 
-# FIX, RUN CURRENTLY CALLS NOTHING. SHOULD CALL MAKE OR SOMETHING!
 runButton = Button(sideBar, text="Run code", width=15, command=run_code)
 runButton.pack()
 
@@ -229,7 +235,8 @@ exitButton.pack(side=BOTTOM)
 menuBar = Menu(root)
 fileMenu = Menu(menuBar)
 fileMenu.add_command(label="New", command=new_file)
-fileMenu.add_command(label="Open", command=open_file)
+fileMenu.add_command(label="Open MPC file", command=open_mpc_file)
+fileMenu.add_command(label="Open data file", command=open_data_file)
 fileMenu.add_command(label="Save", command=save_file)
 fileMenu.add_command(label="Save As...", command=save_as)
 fileMenu.add_separator()
@@ -258,7 +265,6 @@ text.bind("<Control-v>", paste)
 text.bind("<Control-x>", cut)
 text.bind("<Control-s>", save_file)
 text.bind("<Control-S>", save_as)
-text.bind("<Control-o>", open_file)
 text.bind("<Control-n>", new_file)
 text.bind("<Control-a>", select_all)
 text.bind("<Control-q>", quit)

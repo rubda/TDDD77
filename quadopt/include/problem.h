@@ -25,17 +25,17 @@ struct problem{
 
   matrix* q; /**< The matrix containing the linear optimization problem. */
 
-  int variable_count; /**< The number of variables in the problem. */
+  size_t variable_count; /**< The number of variables in the problem. */
 
   /* Equality constraints */
-  int equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
+  size_t equality_count; /**< Number of equality constraints (Rows in the equality constraints matrices). */
   matrix* E; /**< Equality constraints left-hand side coefficient. */
   sparse_matrix* sparse_E;
 
   matrix* h; /**< Equality constraints right-hand side constraint. */
 
   /* Larger-than constraints */
-  int inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
+  size_t inequality_count; /**< Number of larger-than constraints (Rows in the larger-than constraints matrices). */
   matrix* F; /**< Larger-than constraints left-hand side coefficient. */
   sparse_matrix* sparse_F;
 
@@ -46,7 +46,7 @@ struct problem{
   sparse_matrix** sparse_A;
 
   matrix* b; /**< All constraints right-hand side constraints. */
-  int constraints_count; /**< Total number of constraints. */
+  size_t constraints_count; /**< Total number of constraints. */
 
   /* Variables */
   bool has_start_point;
@@ -92,7 +92,7 @@ void free_problem(problem* prob);
 /** Returns a matrix with the currently active constraints */
 matrix* get_active_conditions(problem* prob);
 
-/* Returns a sparse matrix with the currently active constraints */
+/** Returns a sparse matrix with the currently active constraints */
 sparse_matrix* get_sparse_active_conditions(problem* prob);
 
 /** Returns a matrix with the right hand side of the currently active constraints */
@@ -107,7 +107,7 @@ void print_solution(problem* prob);
 /** Exits solver if maximal iterations or microseconds have been fullfilled */
 bool time_to_exit(problem* prob, double time_spent);
 
-/* Checks if a point is feasible subject to the constraints in a problem */
+/** Checks if a point is feasible subject to the constraints in a problem */
 bool is_feasible_point(matrix* z, problem* prob);
 
 #endif /* PROBLEM_H */

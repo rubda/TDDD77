@@ -22,19 +22,21 @@ void range_space_sparse(sparse_matrix* A, problem* prob){
   prob->lagrange = create_zero_matrix(AQg->rows, AQg->columns);   
 
   /* Solve to retrieve lagrange multiplicators */
-  conjugate_gradient(s_AQAt, prob->lagrange, h1);
+  //conjugate_gradient(s_AQAt, prob->lagrange, h1);
+  gauss_jordan_solver(AQAt, prob->lagrange, h1);
 
   transpose_sparse_matrix(A);
   matrix* ht = multiply_sparse_matrix_matrix(A, prob->lagrange);
   matrix* h2 = subtract_matrices_with_return(ht, prob->gk);
 
   /* Solve to retrieve p */
-  conjugate_gradient(prob->sparse_Q, prob->p, h2);
+  //conjugate_gradient(prob->sparse_Q, prob->p, h2);
+  gauss_jordan_solver(prob->Q, prob->p, h2);
   
   matrix* Qp = multiply_sparse_matrix_matrix(prob->sparse_Q, prob->p);
   
   if(compare_matrices(Qp, prob->gk)){
-    int i;
+    size_t i;
     for(i = 1; i <= prob->p->rows; i++){
       insert_value_without_check(0, i, 1, prob->p);
     }
@@ -79,7 +81,7 @@ void range_space(matrix* A, problem* prob){
   matrix* Qp = multiply_matrices_with_return(prob->Q, prob->p);
   
   if(compare_matrices(Qp, prob->gk)){
-    int i;
+    size_t i;
     for(i = 1; i <= prob->p->rows; i++){
       insert_value_without_check(0, i, 1, prob->p);
     }
@@ -104,7 +106,7 @@ void range_space(matrix* A, problem* prob){
 void KKT_sub_sparse(sparse_matrix* A, problem* prob){
 
   sparse_matrix* s_K = create_empty_sparse_matrix(A->size + A->size + prob->sparse_Q->size);
-  int i;
+  size_t i;
 
   int dest = 0;
   /* Copy Q */
@@ -200,7 +202,7 @@ void KKT_sub(matrix* A, problem* prob){
   gauss_jordan_solver(K, pl, gc);
 
   /* Retrieve p */
-  int i;
+  size_t i;
   for (i = 1; i <= prob->p->rows; i++){
     insert_value_without_check(-get_value_without_check(i, 1, pl), i, 1, prob->p);
   }
@@ -227,7 +229,7 @@ void solve_subproblem(problem* prob){
     /* Solve derivative and get vector pointing towards the global minimum */
     value sum, d_val;
 
-    int r, c;
+    size_t r, c;
     for (c = 1; c <= prob->Q->columns; c++){
       sum = 0;
       for (r = 1; r <= prob->Q->rows; r++){
@@ -242,7 +244,7 @@ void solve_subproblem(problem* prob){
   /* Solve system as long as we get the the zero vector */
   while (prob->active_set->count >= prob->variable_count){
     if (!remove_constraint(prob)){
-        int i;
+        size_t i;
         for(i = 1; i <= prob->p->rows; i++){
           insert_value_without_check(0, i, 1, prob->p);
         }

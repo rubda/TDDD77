@@ -1,19 +1,41 @@
 \section{Grafiskt användargränssnitt}
-Beskrivning för installation och användande av GUI:t till QuadOpt.
+Beskrivning av användande av GUI:t till QuadOpt. En bild på hur det grafiska användargränssnittet ser ut kan ses i figur \ref{fig:gui}.
 
-\subsection{Installation}
-För att kunna använda QuadOpt via det grafiska användargränssnittet så behöver endast Python vXXX eller senare vara installerad.
 
 \subsection{Användning}
 \begin{enumerate}
-	\item Packa upp \emph{quadopt.zip} i en valfri mapp.
-	\item Öppna en kommandotolk i samma mapp.
-	\item Starta programmet genom att skriva \textbf{python GUI.py}. Om du använder Windows och detta inte skulle fungera, så kan det bero på att du inte har sökvägen till Python inlagt i \emph{Environment variables}. Skriv då istället sökvägen till där du har Python installerat innan anropet. Exempelvis \textbf{C:/Python33/python GUI.py}
-	\item Nu visas ett fönster enligt figur 1. 
-	\item Klart! QuadOpt är nu installerat i Matlab och är redo att köras.
+\item Öppna GUI.py på valfritt sätt. Vi rekommenderar att du gör det genom en terminal-applikation genom att skriva \emph{python3 GUI.py}.
+\newline
+\newline
+\textbf{OBS!} Det kan hända att användargränssnittet inte startar på grund av felmeddelandet \emph{ImportError: No module named '\_tkinter'}. Då måste \emph{tkinter} installeras.
+\item Välj MPC-data som beskriver problemet under fliken \emph{File}. Se exempel på MPC-data under bilaga A.
+\item Välj problem-data som innehåller de nödvändiga matriserna för problemet under fliken \emph{File}. Se exempel på problem-data under bilaga B.
+\item När problemet väl är inskrivet kan knappen \emph{Generate C code} användas. Denna knapp skapar filen solution.c som består av problemet som skall lösas.
+\newline
+\newline
+\textbf{OBS!} Både MPC-data och problem-data måste bli valda för att \emph{Generate C code} ska fungera.
+\item När en fil väl är genererad kan knappen \emph{Run code} användas. Denna knapp kompilerar och kör filen solution.c i terminal-applikationen och presenterar optimallösningen. 
+\newline
+\newline
+\textbf{Alternativt} kan anropet \emph{make} köras i terminalen och solution.c kommer då att kompileras till den exekverbara filen solution.
 \end{enumerate}
 
-\begin{figure}[h]
-\includegraphics[scale=0.52]{bilder/gui.png}
+\subsection{Kortkommandon}
+Användargränsnittet stödjer ett fleralet kortkommandon. Noterbart är att ''CTRL''-knappen även gäller för Macintosh användare och inte ''CMD''-knappen. 
+
+\begin{itemize}
+	\item \textbf{New} - CTRL+N. Öppnar en ny fil. 
+	\item \textbf{Save} - CTRL+S. Sparar den öppna filen.
+	\item \textbf{Save As} - CTRL+SHIFT+S. Sparar den öppna filen genom att öppna utforskaren.
+	\item \textbf{Quit} - CTRL+Q. Stänger programmet.
+	\item \textbf{Copy} - CTRL+C. Kopierar markerad text.
+	\item \textbf{Cut} - CTRL+X. Klipper ut markerad text.
+	\item \textbf{Paste} - CTRL+V. Klistrar in text.
+	\item \textbf{Select All} - CTRL+A. Markerar all text.
+\end{itemize}
+
+\begin{figure}[H]
+\includegraphics[scale=0.52]{bilder/macgui.png}
 \caption{Det grafiska gränssnittet.}
+\label{fig:gui}
 \end{figure}

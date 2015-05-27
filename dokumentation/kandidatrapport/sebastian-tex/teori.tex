@@ -21,9 +21,9 @@ Mjukvaruarkitekturer kan också liknas mycket med byggnadsarkitekturer, de har e
 \end{enumerate}
 En byggnadesarkitekt arbetar med kunden i fråga om olika vyer när han vill betona en speciell del på byggnaden. Till exempel finns det förhöjningar och våningar som ger det yttre en ''top-down'' vy. \citep{perry92}
 
-\subsection{Design och Arkitektur}
+\subsection{Design och arkitektur}
 %Det finns många likheter mellan designen och arkitekturen, men det är viktigt att förstå skillnaden.
-Vid designen av arkitekturen så är det bra om kravspecifikationen är skriven på ett sådant vis att det är funktion och inte form som är i fokus. När man ska bygga något är det bra om man har en design som beskriver mer hur komponenterna ska se ut och sedan arkitekturen som beskriver hur de hänger ihop. I det tidiga skedet är dock designen kopplad till arkitekturen, eftersom den beskriver hur arkitekturen ska se ut.
+Vid designen av arkitekturen så ska kravspecifikationen vara skriven på ett sådant vis att det är funktion och inte form som är i fokus, detta för att det ska bli tydligare att se vilka begränsningar som systemet kommer ha. När man ska bygga något så blir det enklast när man har en design som beskriver mer hur komponenterna ska se ut och sedan en arkitektur som beskriver hur de hänger ihop. I det tidiga skedet är dock designen kopplad till arkitekturen, eftersom den beskriver hur arkitekturen ska se ut.
 \newline
 \newline
 Skillnaden mellan design- och arkitekturbeslut, är att arkitekturen ska vara mer strukturell och systematisk för att man ska kunna uppnå kundens krav med hänsyn till t.ex. resurser. Eftersom arkitekturen även kommer vara grunden som man bygger systemet på, så kommer den vara svårast att ändra när man väl börjat. Det är dock inte omöjligt och inte ovanligt att ändra arkitekturen efterhand som nya problem eller förbättringar uppkommer eller om kunden skulle vilja ha någonting annorlunda. Den bästa arkitekturen är ändå den som efterhand går att förändra och anpassa efter nya förutsättningar.
@@ -41,12 +41,12 @@ Ett bra sätt att träna på hur man ska göra smarta designbeslut är att man s
 Det finns flera olika sätt som man kan använda andras lösningar på. Ett är t.ex. att man lånar hela designen inklusive koden och gör mindre förändringar för att det ska passa ens egna problem. Detta kan dock vara lite väl extremt och det finns risk att de strider mot upphovsrätt och annat, men det finns bättre lösningar för att göra ett liknande system med mindre variationer. Ett exempel är att göra designen utifrån en referensmodell, som är snarare en generell lösning för arkitekturen som beskriver hur systemet bör delas upp i de mindre delarna och hur dessa sedan interagerar med varandra. Sedan hur varje komponent ska se ut på detaljnivå och hur kommunikationen ska fungera mellan dem mer detaljerat beror mer på vad det är för typ av program och hur det ska fungera i praktiken. \cite[s. 226--227]{set}
 
 \begin{figure}[h]
-\centerline{\includegraphics[scale=0.6]{sebastian-tex/grafik/designadvice.png}}
+\centerline{\includegraphics[scale=0.6]{sebastian-tex/grafik/designadviceny.png}}
 \caption{Källor till arkitekturdesignen.}
 \label{fig:des}
 \end{figure}
 
-\paragraph{Processen}
+\subsubsection{Processen}
 Att ta fram en fungerande arkitektur är inget som blir klart direkt. Man måste gå fram och tillbaka och göra ändringar när man upptäcker nya problem eller möjligheter. Man vill kontrollera att det fortfarande är genomförbart, upptäcker man nya bättre lösningar kan man presentera dessa för kunden och se om man borde gå på den nya lösningen istället. Det som är allra viktigast är att hela tiden jämföra arkitekturen mot kravspecifikationen så man hela tiden uppfyller alla krav så att inget av dem blir omöjligt att genomföra. \cite[s. 228--230]{set} %Ett exempel på hur denna process går till syns i figur SIFFRA. HA EN FIGUR HÄR S. 229
 
 \subsection{Arkitektoniska mönster}

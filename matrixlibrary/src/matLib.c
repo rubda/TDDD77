@@ -21,7 +21,7 @@
 /* Creates a matrix row x col. So create_matrix(2,2) will return
  * a pointer to a matrix with 2 rows and 2 columns.
  * Returns NULL if row or col are incorrect*/
-matrix* create_matrix(int row, int col) {
+matrix* create_matrix(size_t row, size_t col) {
   if (row < 1 || col < 1) {
     return NULL;
   }
@@ -35,7 +35,7 @@ matrix* create_matrix(int row, int col) {
 }
 
 /* Is normally not needed for this implementation but might be needed on others */
-matrix* create_zero_matrix(int row,int col){
+matrix* create_zero_matrix(size_t row,size_t col){
   if (row < 1 || col < 1) {
     return NULL;
   }
@@ -49,12 +49,12 @@ matrix* create_zero_matrix(int row,int col){
 }
 
 /* Creates a identity matrix */
-matrix* create_identity_matrix(int row,int col){
+matrix* create_identity_matrix(size_t row,size_t col){
   if (row!=col){
     return NULL;
   }
   matrix* to_return=create_zero_matrix(row,col);
-  for (int i=1;i<=row;i++){
+  for (size_t i=1;i<=row;i++){
     insert_value_without_check(1,i,i,to_return);
   }
   return to_return;
@@ -71,7 +71,7 @@ void free_matrix(matrix* mat) {
 /* calculate the dot product */
 value dot_product(matrix* r, matrix* v) {
   value ans = 0;
-  for (int i = 1; i <= r->rows; i++) {
+  for (size_t i = 1; i <= r->rows; i++) {
     ans += get_value_without_check(i,1,r) * get_value_without_check(i,1,v);
   }
   return ans;
@@ -79,8 +79,8 @@ value dot_product(matrix* r, matrix* v) {
 
 /*prints the matrix*/
 void print_matrix(matrix* mat) {
-  int col = 1;
-  int row = 1;
+  size_t col = 1;
+  size_t row = 1;
   size_t i = 1;
   for (; i <= mat->size; i++) {
     printf(FORMAT_STRING, get_value_without_check(row, col, mat));
@@ -95,7 +95,7 @@ void print_matrix(matrix* mat) {
 }
 
 /* Checks if the position exists in the matrix */
-bool check_boundaries(int row, int col, matrix* mat) {
+bool check_boundaries(size_t row, size_t col, matrix* mat) {
   return ((row >= 1) && (col >= 1) && (col <= mat->columns)
 	  && (row <= mat->rows));
 }
@@ -103,8 +103,8 @@ bool check_boundaries(int row, int col, matrix* mat) {
 /* Insert a array into the matrix, the array must have the same size as number of total elements in the matrix */
 bool insert_array(value arr[], matrix* mat) {
   size_t size = mat->size;
-  int row = 1;
-  int col = 1;
+  size_t row = 1;
+  size_t col = 1;
   size_t i = 0;
   for (; i < size; i++) {
     insert_value_without_check(arr[i], row, col, mat);
@@ -123,8 +123,8 @@ bool compare_matrices(matrix* a, matrix* b) {
     return false;
   }
   
-  for(int i = 1; i <= a->rows; i++){
-    for(int j = 1; j <= a->columns; j++){
+  for(size_t i = 1; i <= a->rows; i++){
+    for(size_t j = 1; j <= a->columns; j++){
       value a_val = get_value_without_check(i, j, a);
       value b_val = get_value_without_check(i, j, b);
       if(!(matlib_fabs(a_val - b_val) <= PRECISION)){
@@ -143,7 +143,7 @@ bool is_matrix(matrix* a, matrix* b) {
 
 
 /* Inserts value at pos rowm,col in matrix mat */
-bool insert_value(value insert,int row, int col, matrix* mat) {
+bool insert_value(value insert,size_t row, size_t col, matrix* mat) {
   if (!check_boundaries(row, col, mat)) {
     return false;
   }
@@ -153,13 +153,13 @@ bool insert_value(value insert,int row, int col, matrix* mat) {
 }
 
 /* As insert_value without check */
-void insert_value_without_check(value insert, int row, int col, matrix* mat) {
+void insert_value_without_check(value insert, size_t row, size_t col, matrix* mat) {
   *(mat->start + mat->columns * (row - 1) + (col - 1)) = insert;
 }
 
 /* Returns value on location row,col in matrix mat.
  * WARNING: Only returns 0 if outside of the matrix */
-value get_value(int row, int col, matrix* mat) {
+value get_value(size_t row, size_t col, matrix* mat) {
   if (!check_boundaries(row, col, mat)) {
     return false;
   }
@@ -167,7 +167,7 @@ value get_value(int row, int col, matrix* mat) {
 }
 
 /* As get_value without check */
-value get_value_without_check(int row, int col, matrix* mat) {
+value get_value_without_check(size_t row, size_t col, matrix* mat) {
   return *(mat->start + mat->columns * (row - 1) + (col - 1));
 }
 
@@ -175,7 +175,7 @@ value get_value_without_check(int row, int col, matrix* mat) {
 bool add_matrices(matrix* a, matrix* b, matrix* c) {
   size_t size;
   size_t i;
-  int check = a->columns;
+  size_t check = a->columns;
   if (check != b->columns || check != c->columns) {
     return false;
   }
@@ -207,7 +207,7 @@ matrix* add_matrices_with_return(matrix* a, matrix* b) {
 bool subtract_matrices(matrix* a, matrix* b, matrix* c) {
   size_t size;
   size_t i;
-  int check = a->columns;
+  size_t check = a->columns;
   if (check != b->columns || check != c->columns) {
     return false;
   }
@@ -247,9 +247,9 @@ bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c) {
       || (b->columns != c->columns)) {
     return false;
   }
-  int j = 1;
-  int i = 1;
-  int k = 1;
+  size_t j = 1;
+  size_t i = 1;
+  size_t k = 1;
   value sum = 0;
   for (; i <= a->rows; i++) {
     k = 1;
@@ -272,9 +272,9 @@ bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c) {
     return false;
   }
   matrix* b_trans= transpose_matrix_with_return(b);
-  int j = 1;
-  int i = 1;
-  int k = 1;
+  size_t j = 1;
+  size_t i = 1;
+  size_t k = 1;
   value sum = 0;
   for (; i <= a->rows; i++) {
     k = 1;
@@ -1100,14 +1100,14 @@ bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c) {
   return true;
 }
 
-/** Initializes parallel variables */
+/* Initializes parallel variables */
 void initialize_parallelization(){
   pthread_mutex_init(&lock, NULL);
   thread_counter=(int*)malloc(sizeof(int));
   *thread_counter=0;
 }
 
-/** Free parallel variables */
+/* Free parallel variables */
 void deinitialize_parallelization(){
   free(thread_counter);
   pthread_mutex_destroy(&lock);
@@ -1163,9 +1163,9 @@ bool get_inverse(matrix* a, matrix* c) {
   matrix* b = create_matrix(a->rows, 1);
 
   /* Solve for each column */
-  for (int i = 1; i <= a->columns; i++) {
+  for (size_t i = 1; i <= a->columns; i++) {
     /* Fill the b vector */
-    for (int j = 1; j <= a->columns; j++) {
+    for (size_t j = 1; j <= a->columns; j++) {
       if (j == i) {
         insert_value(1.0, j, 1, b);
       }
@@ -1243,7 +1243,7 @@ bool crout(matrix* a, matrix* l, matrix* u) {
   if (a->rows != a->columns) {
     return false;
   }
-  int check = a->rows;
+  size_t check = a->rows;
   if (check != l->rows || check != u->rows) {
     return false;
   }
@@ -1251,9 +1251,9 @@ bool crout(matrix* a, matrix* l, matrix* u) {
   if (check != l->columns || check != u->columns) {
     return false;
   }
-  int i, j, k;
+  size_t i, j, k;
   double sum = 0;
-  int n = a->columns;
+  size_t n = a->columns;
   for (i = 1; i <= n; i++) {
     insert_value(1, i, i, u);
   }
@@ -1294,9 +1294,9 @@ void forward_backward(matrix* l, matrix* u, matrix* x, matrix* b) {
     return;
   }
 
-  int i = 1;
-  int j = 1;
-  int n = l->rows;
+  size_t i = 1;
+  size_t j = 1;
+  size_t n = l->rows;
   value temp;
   matrix* y = create_matrix(x->rows, x->columns);
   for (i = 1; i <= n; i++) {
@@ -1330,7 +1330,7 @@ void least_square(matrix* a, matrix* x, matrix* b) {
   
   multiply_matrices(trans_a, a, lhs);
   multiply_matrices(trans_a, b, rhs);
-  solve_linear(lhs, x, rhs);
+  gauss_jordan_solver(lhs, x, rhs);
 
   free_matrix(trans_a);
   free_matrix(lhs);
@@ -1341,8 +1341,8 @@ void least_square(matrix* a, matrix* x, matrix* b) {
 bool gauss_jordan(matrix* a) {
   if(a->rows != a->columns) return false;
 
-  for (int k = 1; k <= min(a->rows, a->columns); k++) {
-    int pivot = largest_element_in_column_index(k,k, a);
+  for (size_t k = 1; k <= min(a->rows, a->columns); k++) {
+    size_t pivot = largest_element_in_column_index(k,k, a);
     if (get_value(pivot, k, a) == 0) {
       pivot=smallest_element_in_column_index(k,k, a);
       if (get_value(pivot, k, a) == 0){
@@ -1351,8 +1351,8 @@ bool gauss_jordan(matrix* a) {
       multiply_row_with_scalar(-1,pivot,a);
     }
     switch_rows(k, pivot, a);
-    for (int i = k + 1; i <= a->rows; i++) {
-      for (int j = k + 1; j <= a->columns; j++) {
+    for (size_t i = k + 1; i <= a->rows; i++) {
+      for (size_t j = k + 1; j <= a->columns; j++) {
         value temp1=get_value(i,j,a)-get_value(k,j,a)*(get_value(i,k,a)/get_value(k,k,a));
         insert_value(temp1,i,j,a);
       }
@@ -1362,7 +1362,7 @@ bool gauss_jordan(matrix* a) {
   return true;
 }
 
-/** Solves the system of linear equations using gauss jordan */
+/* Solves the system of linear equations using gauss jordan */
 bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
   if (a->columns!=x->rows||a->rows!=b->rows||x->columns!=b->columns||a->columns!=a->rows){
     return false;
@@ -1371,9 +1371,9 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
   matrix* B=matrix_copy(b);
   value multiplier;
   value temp;
-  for(int j=1;j<=A->columns-1;j++){
+  for(size_t j=1;j<=A->columns-1;j++){
 
-    int pivot = largest_element_in_column_index(j,j, A);
+    size_t pivot = largest_element_in_column_index(j,j, A);
     if (get_value(pivot, j, A) == 0) {
       pivot=smallest_element_in_column_index(j,j, A);
       if (get_value(pivot, j, A) == 0){
@@ -1384,9 +1384,9 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
     }
     switch_rows(j, pivot, A);
     switch_rows(j, pivot, B);
-    for (int i=j+1;i<=A->columns;i++){
+    for (size_t i=j+1;i<=A->columns;i++){
       multiplier=get_value_without_check(i,j,A)/get_value_without_check(j,j,A);
-      for (int k=j+1;k<=A->columns;k++){
+      for (size_t k=j+1;k<=A->columns;k++){
         temp=get_value_without_check(i,k,A)-multiplier*get_value_without_check(j,k,A);
         insert_value_without_check(temp,i,k,A);
       }
@@ -1396,9 +1396,9 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
     }
 
   }
-  for (int i=A->rows;i>=1;i--){
+  for (size_t i=A->rows;i>=1;i--){
     insert_value_without_check(get_value_without_check(i,1,B),i,1,x);
-    for (int j=i+1;j<=A->columns;j++){
+    for (size_t j=i+1;j<=A->columns;j++){
       temp=get_value_without_check(i,1,x)-get_value_without_check(i,j,A)*get_value_without_check(j,1,x);
       insert_value_without_check(temp,i,1,x);
     }
@@ -1413,9 +1413,9 @@ bool gauss_jordan_solver(matrix* a,matrix* x,matrix* b) {
 matrix* get_matrix_with_only_pivots(matrix* a){
   matrix* temp=create_matrix(a->rows,a->columns);
   matrix* temp_vector=create_matrix(1,a->columns);
-  int pivot=0;
-  for (int i=1;i<=a->rows;i++){
-    for (int j=1;j<=a->columns;j++){
+  size_t pivot=0;
+  for (size_t i=1;i<=a->rows;i++){
+    for (size_t j=1;j<=a->columns;j++){
       if (get_value(i,j,a)!=0){
         pivot++;
         get_row_vector(i,a,temp_vector);
@@ -1443,14 +1443,14 @@ value min(value a,value b){
 }
 
 /* Returns on which row the largest element in the column is after start */
-int largest_element_in_column_index(int column,int start,matrix* a){
+size_t largest_element_in_column_index(size_t column,size_t start,matrix* a){
   if (column > a->columns || column < 1) {
     return false;
   }
   value max = get_value(start, column, a);
   value temp = 0;
-  int index = start;
-  for (int i =start+1; i <= a->rows; i++) {
+  size_t index = start;
+  for (size_t i =start+1; i <= a->rows; i++) {
     temp = get_value(i, column, a);
     if (temp > max) {
       max = temp;
@@ -1461,14 +1461,14 @@ int largest_element_in_column_index(int column,int start,matrix* a){
 }
 
 /* Returns on which row the smallest element in the column is after start */
-int smallest_element_in_column_index(int column,int start,matrix* a){
+size_t smallest_element_in_column_index(size_t column,size_t start,matrix* a){
   if (column > a->columns || column < 1) {
     return false;
   }
   value min = get_value(start, column, a);
   value temp = 0;
-  int index = start;
-  for (int i = start+1; i <= a->rows; i++) {
+  size_t index = start;
+  for (size_t i = start+1; i <= a->rows; i++) {
     temp = get_value(i, column, a);
     if (temp < min) {
       min = temp;
@@ -1480,11 +1480,11 @@ int smallest_element_in_column_index(int column,int start,matrix* a){
 
 /* Returns on which row the first nonezero element is in the column is after start returns -1
  * if no nonezero element is found */
-int first_nonezero_in_column_index(int column, int start, matrix* a) {
+size_t first_nonezero_in_column_index(size_t column, size_t start, matrix* a) {
   if (column > a->columns || column < 1) {
     return false;
   }
-  for (int i = start; i <= a->rows; i++) {
+  for (size_t i = start; i <= a->rows; i++) {
     if ( 0!=get_value(i, column, a)) {
       return i;
     }
@@ -1494,11 +1494,11 @@ int first_nonezero_in_column_index(int column, int start, matrix* a) {
 
 /* Returns on which column the first nonezero element is in the column is after start returns 0
  * if no nonezero element is found */
-int first_nonezero_in_row_index(int row,int start, matrix* a) {
+size_t first_nonezero_in_row_index(size_t row,size_t start, matrix* a) {
   if (row > a->rows || row < 1) {
     return false;
   }
-  for (int i = start; i <= a->columns; i++) {
+  for (size_t i = start; i <= a->columns; i++) {
     if (0 != get_value(row, i, a)) {
       return i;
     }
@@ -1507,10 +1507,10 @@ int first_nonezero_in_row_index(int row,int start, matrix* a) {
 }
 
 /* Adds each element in row1 and row 2 and puts the result on row2 */
-void add_rows(int row1, int row2, matrix* a) {
+void add_rows(size_t row1, size_t row2, matrix* a) {
   value* start1 = a->start + a->columns * (row1 - 1);
   value* start2 = a->start + a->columns * (row2 - 1);
-  int i = 0;
+  size_t i = 0;
   for (; i < a->columns; i++) {
     *(start2 + i) += *(start1 + i);
   }
@@ -1522,8 +1522,8 @@ bool transpose_matrix(matrix* a, matrix*b) {
     return false;
   }
   size_t size = a->size;
-  int row = 1;
-  int col = 1;
+  size_t row = 1;
+  size_t col = 1;
   size_t i = 0;
   for (; i < size; i++) {
     insert_value_without_check(*(a->start + i), row, col, b);
@@ -1544,11 +1544,11 @@ matrix* transpose_matrix_with_return(matrix* a){
 }
 
 /* Return the sum of a row in matrix mat */
-value sum_of_row(int row, matrix* mat) {
+value sum_of_row(size_t row, matrix* mat) {
   if (!check_boundaries(row, 1, mat)) {
     return false;
   }
-  int i = 0;
+  size_t i = 0;
   value *start = mat->start + (row - 1) * mat->columns;
   value to_return = 0;
   for (; i < mat->columns; i++) {
@@ -1560,11 +1560,11 @@ value sum_of_row(int row, matrix* mat) {
 
 
 /* Return the sum of a column in matrix mat */
-value sum_of_column(int column, matrix* mat) {
+value sum_of_column(size_t column, matrix* mat) {
   if (!check_boundaries(1, column, mat)) {
     return false;
   }
-  int i = 0;
+  size_t i = 0;
   value *start = mat->start + (column - 1);
   value to_return = 0;
   for (; i < mat->rows; i++) {
@@ -1574,11 +1574,11 @@ value sum_of_column(int column, matrix* mat) {
 }
 
 /* Return the product of a row in matrix mat */
-value product_of_row(int row, matrix* mat) {
+value product_of_row(size_t row, matrix* mat) {
   if (!check_boundaries(row, 1, mat)) {
     return false;
   }
-  int i = 0;
+  size_t i = 0;
   value *start = mat->start + (row - 1) * mat->columns;
   value to_return = 1;
   for (; i < mat->columns; i++) {
@@ -1588,11 +1588,11 @@ value product_of_row(int row, matrix* mat) {
 }
 
 /* Return the product of a column in matrix mat */
-value product_of_column(int column, matrix* mat) {
+value product_of_column(size_t column, matrix* mat) {
   if (!check_boundaries(1, column, mat)) {
     return false;
   }
-  int i = 0;
+  size_t i = 0;
   value *start = mat->start + (column - 1);
   value to_return = 1;
   for (; i < mat->rows; i++) {
@@ -1625,44 +1625,44 @@ void divide_matrix_with_scalar(value scal, matrix* mat)
 }
 
 /* Multiplies a row with a scalar */
-void multiply_row_with_scalar(value scal, int row, matrix* mat) {
+void multiply_row_with_scalar(value scal, size_t row, matrix* mat) {
   value* start = mat->start + (row - 1) * mat->columns;
-  int i = 0;
+  size_t i = 0;
   for (; i < mat->columns; i++) {
     *(start + i) *= scal;
   }
 }
 
 /* Divides a row with a scalar */
-void divide_row_with_scalar(value scal, int row, matrix* mat) {
+void divide_row_with_scalar(value scal, size_t row, matrix* mat) {
   if (scal==0){
     return;
   }
   value* start = mat->start + (row - 1) * mat->columns;
-  int i = 0;
+  size_t i = 0;
   for (; i < mat->columns; i++) {
     *(start + i) /= scal;
   }
 }
 
 /* Multiplies a column with a scalar */
-void multiply_column_with_scalar(value scal, int col, matrix* mat) {
+void multiply_column_with_scalar(value scal, size_t col, matrix* mat) {
   value* start = mat->start + (col - 1);
-  int i = 0;
-  int step = mat->rows ;
+  size_t i = 0;
+  size_t step = mat->rows ;
   for (; i < mat->rows; i++){
     *(start + i * step) *= scal;
   }
 }
 
 /* Divides a column with a scalar */
-void divide_column_with_scalar(value scal, int col, matrix* mat){
+void divide_column_with_scalar(value scal, size_t col, matrix* mat){
   if (scal==0){
     return;
   }
   value* start = mat->start + (col - 1);
-  int i = 0;
-  int step = mat->rows ;
+  size_t i = 0;
+  size_t step = mat->rows ;
   for (; i < mat->rows; i++){
     *(start + i * step) /= scal;
   }
@@ -1670,14 +1670,14 @@ void divide_column_with_scalar(value scal, int col, matrix* mat){
 
 /* Takes row vector from matrix a and puts it into b which also is a row vector
  *however get_sub_matrix should be faster */
-bool get_row_vector(int row, matrix* a, matrix* b){
+bool get_row_vector(size_t row, matrix* a, matrix* b){
   if (!check_boundaries(row, 1, a)) {
     return false;
   }
   if (b->rows != 1 || b->columns != a->columns){
     return false;
   }
-  int i = 0;
+  size_t i = 0;
   value *start = a->start + (row - 1) * a->columns;
   for (; i < a->columns; i++) {
     *(b->start + i ) = *(start + i);
@@ -1686,7 +1686,7 @@ bool get_row_vector(int row, matrix* a, matrix* b){
 }
 
 /* Returns row vector row from matrix a with a pointer to a matrix */
-matrix* get_row_vector_with_return(int row,matrix* a){
+matrix* get_row_vector_with_return(size_t row,matrix* a){
   matrix* b=create_matrix(1, a->columns);
   if(get_row_vector(row, a, b)){
     return b;
@@ -1699,7 +1699,7 @@ matrix* get_row_vector_with_return(int row,matrix* a){
 
 
 /* Inserts row vector a into b:s row */
-bool insert_row_vector(int row, matrix* a, matrix* b) {
+bool insert_row_vector(size_t row, matrix* a, matrix* b) {
   if ((a->columns != b->columns) || (a->rows != 1)) {
     return false;
   }
@@ -1710,7 +1710,7 @@ bool insert_row_vector(int row, matrix* a, matrix* b) {
 }
 
 /* Switches rows in a */
-bool switch_rows(int row1, int row2, matrix* a) {
+bool switch_rows(size_t row1, size_t row2, matrix* a) {
   matrix* b = create_matrix(1, a->columns);
   if (!get_row_vector(row1, a, b)) {
     return false;
@@ -1728,7 +1728,7 @@ bool switch_rows(int row1, int row2, matrix* a) {
 
 /* Takes column vector from matrix a and puts it into b which also is a column vector
  *however get_sub_matrix should be faster */
-bool get_column_vector(int column, matrix* a, matrix* b) {
+bool get_column_vector(size_t column, matrix* a, matrix* b) {
   if (!check_boundaries(1, column, a)) {
     return false;
   }
@@ -1736,7 +1736,7 @@ bool get_column_vector(int column, matrix* a, matrix* b) {
     return false;
   }
 
-  int i = 0;
+  size_t i = 0;
   value *start = a->start + (column - 1);
   for (; i < a->rows; i++) {
     *(b->start + i) = *(start + i * a->columns);
@@ -1745,7 +1745,7 @@ bool get_column_vector(int column, matrix* a, matrix* b) {
 }
 /* Takes column vector from matrix a and puts it into b which also is a column vector
  *however get_sub_matrix should be faster */
-matrix* get_column_vector_with_return(int column, matrix* a){
+matrix* get_column_vector_with_return(size_t column, matrix* a){
   matrix* b=create_matrix(a->rows,1);
   get_column_vector(column,a,b);
   return b;
@@ -1755,12 +1755,12 @@ matrix* get_column_vector_with_return(int column, matrix* a){
 
 
 /* Inserts column vector a into matrix b at position column */
-bool insert_column_vector(int column, matrix *a, matrix* b) {
+bool insert_column_vector(size_t column, matrix *a, matrix* b) {
   if (a->columns != 1 || b->rows != a->rows) {
     return false;
   }
   
-  for(int i = 1; i <= b->rows; i++){
+  for(size_t i = 1; i <= b->rows; i++){
     value val = get_value_without_check(i, 1, a);
     insert_value_without_check(val, i, column, b);
   }
@@ -1769,7 +1769,7 @@ bool insert_column_vector(int column, matrix *a, matrix* b) {
 }
 
 /* Takes the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
-bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* a, matrix* b) {
+bool get_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t end_col, matrix* a, matrix* b) {
   if (!check_boundaries(start_row, start_col, a)
       || !check_boundaries(end_row, end_col, a)) {
     return false;
@@ -1784,13 +1784,13 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
   start_col -= 1;
   end_col -= 1;
 
-  int a_row_size = a->columns;
-  int b_row_size = b->columns;
-  int offset = a_row_size * start_row + start_col;
-  int num_rows = end_row - start_row + 1;
+  size_t a_row_size = a->columns;
+  size_t b_row_size = b->columns;
+  size_t offset = a_row_size * start_row + start_col;
+  size_t num_rows = end_row - start_row + 1;
   size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
-  for(int i = 0; i < num_rows; i++){
+  for(size_t i = 0; i < num_rows; i++){
     void* to = b->start + b_row_size * i;
     void* from = a->start + offset + a_row_size * i;
     memcpy(to, from, bytes_per_row);
@@ -1800,7 +1800,7 @@ bool get_sub_matrix(int start_row, int end_row, int start_col, int end_col, matr
 }
 
 /* inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
-bool insert_sub_matrix(int start_row, int end_row, int start_col, int end_col, matrix* b, matrix* a) {
+bool insert_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t end_col, matrix* b, matrix* a) {
   if (!check_boundaries(start_row, start_col, a)
       || !check_boundaries(end_row, end_col, a)) {
     return false;
@@ -1815,13 +1815,13 @@ bool insert_sub_matrix(int start_row, int end_row, int start_col, int end_col, m
   start_col -= 1;
   end_col -= 1;
 
-  int a_row_size = a->columns;
-  int b_row_size = b->columns;
-  int offset = a_row_size * start_row + start_col;
-  int num_rows = end_row - start_row + 1;
-  int bytes_per_row = (end_col - start_col + 1) * sizeof(value);
+  size_t a_row_size = a->columns;
+  size_t b_row_size = b->columns;
+  size_t offset = a_row_size * start_row + start_col;
+  size_t num_rows = end_row - start_row + 1;
+  size_t bytes_per_row = (end_col - start_col + 1) * sizeof(value);
 
-  for(int i = 0; i < num_rows; i++){
+  for(size_t i = 0; i < num_rows; i++){
     void* from = b->start + b_row_size * i;
     void* to = a->start + offset + a_row_size * i;
     memcpy(to, from, bytes_per_row);
@@ -1848,8 +1848,8 @@ void matrix_copy_data(matrix* a, matrix* b) {
 
 /* checks if all elements in a matrix is equal to zero */
 bool is_zero_matrix(matrix* v) {
-  for (int i = 1; i <= v->rows; i++) {
-    for(int j = 1; j <= v->columns; j++){
+  for (size_t i = 1; i <= v->rows; i++) {
+    for(size_t j = 1; j <= v->columns; j++){
       if (matlib_fabs(get_value_without_check(i,j,v)) > 0.0001) {
 	return false;
       }
@@ -1860,8 +1860,8 @@ bool is_zero_matrix(matrix* v) {
 
 /* checks if all elements in a matrix is positive */
 bool is_non_negative_matrix(matrix* v) {
-  for (int i = 1; i <= v->rows; i++) {
-    for(int j = 1; j <= v->columns; j++){
+  for (size_t i = 1; i <= v->rows; i++) {
+    for(size_t j = 1; j <= v->columns; j++){
       if (get_value_without_check(i,j,v) < 0) {
 	return false;
       }
@@ -1872,7 +1872,7 @@ bool is_non_negative_matrix(matrix* v) {
 
 /* checks if all elements along the diagonal in a symmetric matrix is positiv */
 bool is_non_negative_diagonal_matrix(matrix* A) {
-  for (int i = 1; i <= A->rows; i++) {
+  for (size_t i = 1; i <= A->rows; i++) {
     if (get_value_without_check(i,i,A) < 0) {
       return false;
     }
@@ -1885,20 +1885,20 @@ bool get_diagonal(matrix* a,matrix* b) {
   if (a->rows != a->columns || b->columns != a->columns) {
     return false;
   }
-  for (int i = 1; i <= a->columns; i++) {
+  for (size_t i = 1; i <= a->columns; i++) {
     insert_value_without_check(get_value_without_check(i, i, a), 1, i, b);
   }
   return true;
 }
 
 /* Returns a pointer to a matrix with the derivative of var if the a matrix second order coefficiants */
-matrix* derivate_matrix_with_return(int var,matrix* a){
-  if (a->rows!=a->columns ||var<0||var>a->columns){
+matrix* derivate_matrix_with_return(size_t var,matrix* a){
+  if (a->rows!=a->columns || var>a->columns){
     return NULL;
   }
   matrix* to_return=create_matrix(a->rows,a->columns);
-  for (int i=1;i<=a->rows;i++){
-    for (int j=1;j<=a->columns;j++){
+  for (size_t i=1;i<=a->rows;i++){
+    for (size_t j=1;j<=a->columns;j++){
       if(i==var &&j==var){
         insert_value(2*get_value(i,j,a),i,j,to_return);
       }
@@ -1922,14 +1922,14 @@ matrix* derivate_matrix_with_return(int var,matrix* a){
  *  M doesn't need to be a square matrix
  */
 void transform_to_reduced_row_echelon_form(matrix* M) {
-  int lead = 1;
-  int i = 1;
+  size_t lead = 1;
+  size_t i = 1;
 
   matrix* row1 = create_matrix(1,M->columns);
   matrix* row2 = create_matrix(1,M->columns);
   matrix* row3 = create_matrix(1,M->columns);
 
-  for (int r = 1; r <= M->rows; r++){
+  for (size_t r = 1; r <= M->rows; r++){
     if (M->columns+1 <= lead){
       free_matrix(row1);
       free_matrix(row2);
@@ -1972,8 +1972,8 @@ void transform_to_reduced_row_echelon_form(matrix* M) {
 
 /* return true if b contains value a */
 bool matrix_contains(value a,matrix* b){
-  for (int i=1;i<=b->rows;i++){
-    for (int j=1;j<=b->columns;j++){
+  for (size_t i=1;i<=b->rows;i++){
+    for (size_t j=1;j<=b->columns;j++){
       if (get_value(i,j,b)==a){
         return true;
       }
@@ -1999,7 +1999,7 @@ int compare_elements(value a, value b) {
 }
 
 /* Creates new matrix with zero values */
-matrix* get_zero_matrix(int rows, int columns){
+matrix* get_zero_matrix(size_t rows, size_t columns){
   matrix* zero = create_matrix(rows, columns);
   free(zero->start);
   zero->start = calloc(rows*columns, sizeof(value));

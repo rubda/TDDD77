@@ -13,14 +13,12 @@
 #include <simplex.h>
 
 bool fill_active_set(problem* prob);
-
 bool take_step(problem* prob);
-
 void copy_solution(problem* prob);
 
 
 void prefill_set(problem* prob){
-  int i;
+  size_t i;
   for (i = 1; i <= prob->equality_count; i++) {
     work_set_append(prob->active_set, i);
   }
@@ -32,11 +30,11 @@ bool fill_active_set(problem* prob){
 
   if (prob->is_sparse){
     /* Fill */
-    int i;
+    size_t i;
     for (i = prob->equality_count; i < prob->constraints_count; i++){
       value ans = 0;    
 
-      int j;
+      size_t j;
       for (j = 0; j < prob->sparse_A[i]->size; j++){
         ans += prob->sparse_A[i]->A[j]*get_value_without_check(prob->sparse_A[i]->cA[j], 1, prob->z);
       }
@@ -47,11 +45,11 @@ bool fill_active_set(problem* prob){
     }
   }else{
     /* Fill */
-    int i;
+    size_t i;
     for (i = prob->equality_count+1; i <= prob->constraints_count; i++){
       value ans = 0;    
 
-      int j;
+      size_t j;
       for (j = 1; j <= prob->variable_count; j++){
         ans += get_value(i, j, prob->A)*get_value_without_check(j, 1, prob->z);
       }
@@ -80,7 +78,7 @@ bool remove_constraint(problem* prob){
     prob->lagrange = create_matrix(prob->active_set->count, 1);
 
     /* Create right and left hand side of system */
-    int i;
+    size_t i;
     for (i = 1; i <= prob->active_set->count; i++){
       ai = get_row_vector_with_return(prob->active_set->data[i-1], prob->A);
       ait = transpose_matrix_with_return(ai);
@@ -97,11 +95,11 @@ bool remove_constraint(problem* prob){
   }
   
   /* Find most negative and remove (if not equality constraint) */
-  int small;
+  int small = 0;
   value tmp;
   value val = 0;
 
-  int j;
+  size_t j;
   for (j = 1; j <= prob->lagrange->rows; j++){
     if (prob->active_set->data[j-1] <= prob->equality_count){
       continue;
@@ -118,7 +116,7 @@ bool remove_constraint(problem* prob){
   /* Check if value is negative */
   if (val < 0) {
     /* Remove */
-    work_set_remove(prob->active_set,small);
+    work_set_remove(prob->active_set, small);
     return true;
   }
 
@@ -136,7 +134,7 @@ bool take_step(problem* prob){
   value bi, nom, dnom, temp_step, step = 1;
 
   /* Only go through the inequality constraints */
-  int i, j;
+  size_t i, j;
   bool cont;
   for (i = prob->equality_count+1; i <= prob->A->rows; i++){
     cont = false;

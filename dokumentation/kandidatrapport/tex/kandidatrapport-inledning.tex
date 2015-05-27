@@ -3,14 +3,14 @@ Idag designas många flygplan så att de är instabila om de skulle flyga ut reg
 \newline
 \newline
 Prediktionsreglering (eng. model predictive control, MPC) är en reglerleringsmetod som 
-bygger på att man med hjälp av en modell av systemet antar hur systemet kommer reagera på styrningen och på så sätt reglera systemets framtida tillstånd beroende på nuvarande och tidigare tillstånd. Detta har stor industriell relevans.\citep[2]{ir}
+bygger på att man med hjälp av en modell av systemet antar hur systemet kommer reagera på styrningen och på så sätt reglera systemets framtida tillstånd beroende på nuvarande och tidigare tillstånd. Detta har stor industriell relevans. \citep[2]{ir}
 \newline
 \newline
 Projektuppgiften från Saab är att välja ut och implementera en optimeringsalgoritm som löser detta optimeringsproblem. Då det redan finns kommersiella produkter som löser detta problem ska slutprodukten jämföras med en av dessa. Kunden gav förslaget Gurobi som är en av de mer välkända och etablerade optimeringsprogrammen.
 
 \subsection{Syfte}
-Ett av de syften som finns är att projektgruppens medlemmar systematiskt ska tillämpa de kunskaper som förvärvats under studietiden framför allt inom programmering och datalogi men även utvecklingsmetodik. Dessutom ska medlemmarna tillgodogöra sig innehållet i relevant facklitteratur samt relatera denna till sitt arbete. 
-Det finns även ett syfte från ett annat perspektiv där projektgruppen ska skapa en produkt som skapar värde för kunden samt att projektgruppen ska få en inblick i arbetslivet och hur en utvecklingsprocess kan se ut där. Att lära känna nya människor och lära sig att samarbeta med dem är också en viktig del av projektet. \citep{tddd77}
+Projektgruppens medlemmar ska systematiskt tillämpa de kunskaper som förvärvats under studietiden framför allt inom programmering och datalogi men även utvecklingsmetodik. Dessutom ska medlemmarna tillgodogöra sig innehållet i relevant facklitteratur samt relatera denna till sitt arbete. 
+Projektgruppen ska även skapa en produkt som skapar värde för kunden samt att projektgruppen ska få en inblick i arbetslivet och hur en utvecklingsprocess kan se ut där. Att lära känna nya människor och lära sig att samarbeta med dem är också en viktig del av projektet. \citep{tddd77}
 
 
 \subsection{Frågeställning}
@@ -21,7 +21,7 @@ Det finns även ett syfte från ett annat perspektiv där projektgruppen ska ska
 	\end{enumerate}
 
 \subsection{Avgränsningar}
-I ett projekt med denna omfattning behövs avgränsningar som begränsar projektet i olika avseenden. De avgränsningar som finns i detta projekt rör främst tillgängliga resurser och den ämneskunskap som krävs samt krav från kunden.
+De avgränsningar som finns i detta projekt rör främst tillgängliga resurser och den ämneskunskap som krävs samt krav från kunden.
 \newline
 \newline
 I denna rapport behandlas endast kvadratiska konvexa optimeringsproblem där målfunktionen är kvadratisk och bivillkoren är linjära. En avgränsning som var ett krav från kunden var att lösaren skulle vara implementerad i programmeringsspråket C så det görs inget aktivt val av språk. Parserns grafiska gränssnitt var också tvunget att efterlikna CVXGEN så det behövdes inte tas fram ett nytt gränssnitt. 

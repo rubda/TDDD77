@@ -1,20 +1,20 @@
 parameters
     A (2,2)
     B (2)
-    F (12,2)
-    g (12)
+    Fx (12,2)
+    gx (12)
     P (2,2)
     Q (2,2)
-    x0 (2)
+    k (2)
     x_max (2)
     x_min (2)
+    R (1)  
+    u_max (1)
+    u_min (1)
 end
 
 dimensions
     N = 30  
-    R = 8
-    u_max = 25
-    u_min = -25
 end
 
 variables
@@ -32,7 +32,7 @@ minimize
 subject to
     x[0] = x0
     x[k+1] = A*x[k] + B*u[k], k = 0..N-1
-    x_min <= x{[k] <= x_max , k = 0..N-1
+    x_min <= x[k] <= x_max, k = 0..N-1
     u_min <= u[k] <= u_max, k= 0..N-1
     F*x[N] <= g
-end 
+end
