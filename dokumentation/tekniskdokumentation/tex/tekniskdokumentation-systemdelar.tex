@@ -1,65 +1,106 @@
-\section{Systemdelar}
+\section{Systemets moduler}
 QuadOpt innehåller ett flertal olika moduler som används för att lösa och tolka optimeringsproblemet, förklaringar av hur dessa är uppbyggda och fungerar kommer att ges i detta avsnitt.
-%(OBS kan möjligtvis vara bra att ha egna filer för dessa underrubriker om det blir mycket)
 
-\subsection{Lösaren}
-Nedan följer på algoritmform en beskrivning av hur QuadOpt arbetar utgående ifrån Active set metoden. 
+\subsection{Solvern}
+Alla filer som rör solvern finns i mappen ''quadopt'' under projektets rotmapp.
+
+\subsubsection{Datatyper}
+Filen ''src/problem.c'' och ''include/problem.h'' definierar datatypen ''problem'' samt funktioner för hantering av denna. Den innehåller all information som definierar optimeringsproblemet, matriser, antal variabler, antal bivillkor samt externa iteration- och tidsbegränsningar. Datatypen ''problem'' används av algoritmen beskriven i avsnitt \ref{sec:algoritm} samt hjälpfunktionerna beskrivna i avsnitt \ref{sec:helpfun}.
+\newline
+\newline
+Datatypen ''work\_set'' definieras i ''include/work\_set.h'' och dess tillhörande funktioner i ''src/work\_set.c''. Den beskriver en mängd av heltal och används av algoritmen för att hålla koll på aktiva bivillkor. Den används även för att hålla kolla på rader i simplextablån när startpunkten beräknas, detta finns beskrivet i avsnitt \ref{sec:helpfun}.
+
+\subsubsection{Algoritm} \label{sec:algoritm}
+ I algoritm \ref{alg:quadoptsolver} finns på pseudokodsform en beskrivning av hur solvern löser problemet med Active set metoden. Algoritm \ref{alg:quadoptsolver} finns implementerad i filen ''src/solver.c''.
+
 \begin{algorithm}[H]
-\caption{Active set method}
-\label{alg:activeset}
 \begin{algorithmic}
-\Procedure{Active set method}{}
-\State Compute a feasible starting point $x_0$;
-\State Set $W_0$ to be a subset of the active constraints at $x_0$;
-\For{$k = 0, 1, 2,...$}
-	\State Solve subproblem to find $p_k$;
-	\If{$p_k = 0$}
-		\State Compute Lagrange multipliers $\hat{\lambda_i}$,
-		\State set $\hat{W} = W_k$; 
-		\If{$\hat{\lambda_i} \ge 0$ for all $i \in W_k \cap I$}
-			\State \textbf{STOP} with solution $x^* = x_k$;
-		\Else
-			\State Set $j =$ argmin$_{j \in W_k \cap I}\hat{\lambda_j}$;
-			\State $x_{k+1} = x_k; W_{k+1} \gets W_k$ \textbackslash \{$j$\};		
+\Procedure{QuadOpt-solver}{$problem$ $P$}
+\If{$P$ has not feasible starting point $z_0$}
+	\State Compute a feasible starting point $z_0$;
+\EndIf	
+\State Set $activeSet$ to be a subset of the active constraints at $z_0$ in $P$;
+\While{$\textbf{true}$}
+	\State Solve subproblem to find step direction $p$;
+	\If{$p$ is zero vector}
+		\If{$activeSet$ has zero constraints}
+			\State \textbf{break};
+		\EndIf		
+		\If{Could not remove constraints from $activeSet$}
+			\State \textbf{break}
 		\EndIf
-	\Else		
-		\State Compute $\alpha_k$ from stepformula;
-		\State $x_{k+1} \gets x_k + \alpha_k p_k$;
-		\If{There are blocking constraints}
-			\State Obtain $W_{k+1}$ by adding one of the blocking constraints to $W_{k+1}$;
-		\Else
-			\State $W_{k+1} \gets W_k$;	
-		\EndIf 	
+	\Else
+		\State Take step to better feasible point $z$ in $P$;
+		\If{Could not step}
+			\State \textbf{break};
+		\EndIf
+		\State Set $activeSet$ with new active constraints at $z$;	
 	\EndIf
-\EndFor 
+\EndWhile
+\State  $solution$ in $P\gets z$;
+\State \textbf{return} $solution$ in $P$;
 \EndProcedure
 \end{algorithmic}
+\caption{QuadOpt-solver}
+\label{alg:quadoptsolver}
 \end{algorithm}
 
+\noindent Pseudokod för hur subproblemet i algoritm \ref{alg:quadoptsolver} löses finns i algoritm \ref{alg:subproblem}
+
+\begin{algorithm}[H]
+
+\begin{algorithmic}
+\Procedure{Subproblem}{$problem$ $P$}
+\If{$activeSet$ has zero constraints}
+\State set $p$ pointing towards global optimum;
+\Else
+\While{number of constraints in $activeSet$ $\geq$ number of variables}
+\State remove constraint with most negative Lagrange multiplier;
+\If{could not remove constraint}
+\State set $p$ to zero vector;
+\State Return;
+\EndIf
+\EndWhile
+\State use ''Range-space'' to find $p$;
+\EndIf
+\EndProcedure
+\end{algorithmic}
+
+\caption{Subproblem}
+\label{alg:subproblem}
+\end{algorithm}
+
+\noindent ''Range-space'' innehåller ett antal matrisoperationer för att ta reda på riktningsvektor $p$. Teorin bakom denna metod kan läsas om i Numerical Optimization av J Nocedal och S Wright.
+
+\subsubsection{Hjälpfunktioner} \label{sec:helpfun}
+I filen ''src/trans\_con.c'' finns funktioner för att göra om ett problem på parser-form till solver-form. Den används av parsern när problemet har matats in i GUI:t och C-kod ska genereras.
+\newline
+\newline
+I filen ''src/simplex.c'' finns funktioner för att lösa ett linjärt problem med simplexmetoden. Det finns även hjälpfunktioner för att bygga upp en simplextablå så att en giltig startpunkt till solvern kan tas fram. 
+
 \subsection{MATLAB - MEX} \label{subsec:mex}
+All kod rörande MATLAB-gränssnittet ligger i mappen ''matlab'' under projektets rotkatalog. För att kompilera MATLAB-gränssnittet körs skriptet build.m i MATLAB. Om en ny fil läggs till i solvern (i ''quadopt/src'') måste build.m uppdateras. Innan build.m körs måste matrisbiblioteket kompileras.
 
 MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks och används för att bygga MATLAB funktioner från C/C++ och Fortran funktioner. Det innehåller ett bibliotek med funktioner för att konvertera och skicka datatyper mellan MATLAB och C. För att kunna använda en C funktion i MATLAB behöver en mexfunktion användas i C filen, se figur~\ref{fig:mex2}. 
 
 \begin{figure}[H]
 \lstinputlisting[language=C]{tex/mex.c}
-\caption{MEX gateway routine}
+\caption{Exempel på gränssnitt mellan MATLAB och C}
 \label{fig:mex2}
 \end{figure}  
 
-Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Med hjälp av olika funktioner i MEX-biblioteket kan dessa datatyper konverteras till datatyper som C kan använda och tillbaka. Några händiga funktioner följer:
-\begin{itemize}
-\item mxGetM(mxArray) - returnerar mxArray rader
-\item mxCreateDoubleMatrix(rader, kolumner, mxREAL) - returnerar en mxArray
-\end{itemize}
-
+\noindent Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Gränssnittskodens uppgift är att konvertera MATLAB-datatyper till solver-datatyper och anropa solvern. Resultatet konverteras sedan tillbaka till MATLAB-datatyper.
 
 
 \subsection{Matlib}
-%Förklaring av viktiga saker i matrisbiblioteket, så det kan vidareutvecklas. beskrivningar av funktioner kommer finnas i doxygen dokumentet.
-Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva, där många utav dessa har blivit optimerade för att få ut bästa prestanda på de storlekar av matriser som det är tänkt att QuadOpt kommer att arbeta på. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. %När operationer utförs på matriserna så är det matrisernas pekare som skickas... optimera prestandan ... FYLL I HÄR
+Alla filer rörande matrisbiblioteket finns i mappen ''matrixlibrary'' under projektets rotmapp.
+\newline
+\newline
+Matrisbiblioteket innehåller alla de matrisoperationer som QuadOpt kan tänkas behöva. Nedan syns en C-kod implementation av hur matrisernas grundläggande datastruktur ser ut. Matriserna är sparade i row-major ordning.
 
 \lstinputlisting[language=C]{tex/matrix_struct.c}
 
+\noindent Det finns även en till matrisstruktur som används för att spara glesa matriser. Detta format använder formatet ''Coordinate list'' (COO) som innebär att alla nollskilda element, samt deras position i matrisen, sparas i tre fält. Ett fält för värdet, ett fält för deras rad-koordinat och ett sista fält för deras column-koordinat.
 
 \subsection{Byggsystem}
 Byggsystemet är skrivet i Make och består av en huvudfil och sex underfiler enligt strukturen i figur \ref{fig:byggsystem}. De viktiga filerna för att bygga kod är huvudfilen i rotkatalogen, ''quadopt/Makefile'', ''matrixlibrary/Makefile'' och ''matlab/Makefile''. Resterande filer används enbart för att bygga dokumentation. För att bygga allting krävs gcc, MATLAB, pdflatex samt en gedigen \LaTeX-distribution.
@@ -128,6 +169,8 @@ Om MATLAB-tillägget ska byggas med Make måste variabeln MATLAB\_BIN sättas ti
 \newline
 Den Makefile som används av parsern är ''QuadOptGUI/package\_makefile.mk''. När ''make package'' körs från projektets rotkatalog kopieras denna fil till QuadOpts zip-fil.
 
-
-\subsection{Parser}
-Parsern är ett alternativ som möjliggör för användaren att generera en C-fil med vilken lösaren löser optimeringsproblemet. För att generera C-filen krävs det att parsern får två olika filer, en datafil med matrisdata och en fil med optimeringsproblemet där bland annat matrisernas dimensioner definieras. Dessa båda filer skickas till parsern från GUI:t. Anledning till parsern är att underlätta för användaren då många matriser som lösaren använder sig av är väldigt stora och innehåller många nollor. Parsern tar istället in mindre matriser som innehåller den data som dessa större matriser innehåller, bortsett från nollorna.
+\subsection{GUI och parser}
+GUI:t är byggt med tkinter. Dess uppgift är att ge parsern information och anropa en Makefil för att bygga solution.c tillsammans med solvern och matrisbiblioteket. GUI:t kör även den färdiga filen så att lösningen skrivs ut i terminalen.
+\newline
+\newline
+Parsern tar in datan från GUI:t och genererar en C-fil (solution.c) som definierar matriserna och skapar problemdatatypen ''problem''. Därefter anropas solvern och lösningen skrivs ut.
