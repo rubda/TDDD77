@@ -59,11 +59,7 @@ struct problem{
   bool has_solution;
 
   matrix* p; /**< Current step direction towards the solution. */
-  matrix* gk; /**< gk = Qz + q, help matrix for the subproblem.
-  * @see Q
-  * @see z
-  * @see q
-  */
+  matrix* gk; /**< gk = Qz + q, help matrix for the subproblem.  */
   value step; /**< How far we will step towards the solution. */
   matrix* lagrange; /**< The lagrange multipliers. */
 

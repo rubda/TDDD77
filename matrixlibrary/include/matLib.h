@@ -145,45 +145,45 @@ matrix* subtract_matrices_with_return(matrix* a, matrix* b);
 /** Multiply a and b into c. c=a*b */
 bool multiply_matrices(matrix* a, matrix* b, matrix* c);
 
-/* Multiply a and b into c using the naive algorithm. c=a*b */
+/** Multiply a and b into c using the naive algorithm. c=a*b */
 bool multiply_matrices_naive(matrix* a, matrix* b, matrix* c);
 
-/* Multiply a and b into c. Uses row-major optimization. c=a*b */
+/** Multiply a and b into c. Uses row-major optimization. c=a*b */
 bool multiply_matrices_optimized(matrix* a, matrix* b, matrix* c);
 
-/* Multiply a and b using the Strassen algorithm and return a pointer to matrix c. c=a*b */
+/** Multiply a and b using the Strassen algorithm and return a pointer to matrix c. c=a*b */
 matrix* strassen_matrices_with_return(matrix* a, matrix* b);
 
-/* Multiply a and b into c using the Strassen algorithm. c=a*b */
+/** Multiply a and b into c using the Strassen algorithm. c=a*b */
 bool strassen_matrices(matrix* a, matrix* b, matrix* c);
 
 #ifdef PARALLEL
 
-/* Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
+/** Multiply a and b using the Strassen algorithm in parallel, returns a pointer to c. c=a*b */
 matrix* strassen_matrices_parallel_with_return(matrix* a, matrix* b);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_one(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_two(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_three(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_four(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_five(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_six(void* arg);
 
-/* Help function to strassen parallel */
+/** Help function to strassen parallel */
 void *calculation_seven(void* arg);
 
-/* Multiply a and b into c using the Strassen algorithm running in parallel. c=a*b */
+/** Multiply a and b into c using the Strassen algorithm running in parallel. c=a*b */
 bool strassen_matrices_parallel(matrix* a, matrix* b, matrix* c);
 
 /** Initializes parallel variables */
@@ -209,8 +209,10 @@ value get_determinant(matrix* a);
 /** Calculates the inverse of a and puts it into c */
 bool get_inverse(matrix* a, matrix* c);
 
+/** Calculates the invers of a 2x2 matrix and returns it */
 matrix* get_inverse_of_2x2_with_return(matrix* a);
 
+/** Calculates the invers of a 2x2 matrix and returns it in matrix b  */
 bool get_inverse_of_2x2(matrix* a,matrix* b);
 
 /** Solves Ax=B */
@@ -317,7 +319,7 @@ bool insert_column_vector(size_t column, matrix *a, matrix* b);
 /** Get a sub matrix from a */
 bool get_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t end_col, matrix* a, matrix* b);
 
-/* inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
+/** Inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
 bool insert_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t end_col, matrix* b, matrix* a);
 
 /** Copy and return new matrix. */
@@ -341,7 +343,7 @@ bool get_diagonal(matrix* a,matrix* b);
 /** Returns a pointer to a matrix with the derivative of var if the a matrix second order coefficiants */
 matrix* derivate_matrix_with_return(size_t var,matrix* a);
 
-/* Fucks shit up */
+/** Transforms matrix to reduced row echelon form */
 void transform_to_reduced_row_echelon_form(matrix* M);
 
 /** Return true if b contains value a */

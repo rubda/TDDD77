@@ -1183,6 +1183,7 @@ bool get_inverse(matrix* a, matrix* c) {
   return true;
 }
 
+/** Calculates the invers of a 2x2 matrix and returns it */
 matrix* get_inverse_of_2x2_with_return(matrix* a){
   matrix* b=create_matrix(2,2);
   if (get_inverse_of_2x2(a,b)){
@@ -1194,6 +1195,7 @@ matrix* get_inverse_of_2x2_with_return(matrix* a){
   }
 }
 
+/** Calculates the invers of a 2x2 matrix and returns it in matrix b  */
 bool get_inverse_of_2x2(matrix* a,matrix* b){
   if (a->columns!=2||a->rows!=2||b->columns!=2||b->rows!=2){
     return false;
@@ -1799,7 +1801,7 @@ bool get_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t e
   return true;
 }
 
-/* inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
+/* Inserts the submatrix defined by start_row,end_row,start_col,end_col and put it into matrix b */
 bool insert_sub_matrix(size_t start_row, size_t end_row, size_t start_col, size_t end_col, matrix* b, matrix* a) {
   if (!check_boundaries(start_row, start_col, a)
       || !check_boundaries(end_row, end_col, a)) {
