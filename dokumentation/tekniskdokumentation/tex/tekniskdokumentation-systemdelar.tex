@@ -170,7 +170,68 @@ Om MATLAB-tillägget ska byggas med Make måste variabeln MATLAB\_BIN sättas ti
 Den Makefile som används av parsern är ''QuadOptGUI/package\_makefile.mk''. När ''make package'' körs från projektets rotkatalog kopieras denna fil till QuadOpts zip-fil.
 
 \subsection{GUI och parser}
-GUI:t är byggt med tkinter. Dess uppgift är att ge parsern information och anropa en Makefil för att bygga solution.c tillsammans med solvern och matrisbiblioteket. GUI:t kör även den färdiga filen så att lösningen skrivs ut i terminalen.
+QuadOpts GUI är implementerat i Python med hjälp av Tkinter där koden finns i filen ''GUI.py'' där alla grafiska komponenter skapats samt funktioner för den inbyggda texteditorn. Även QuadOpts parser är implementerad i Python och denna ligger i filen ''parser.py'' där alla funktioner för att parsa problemet i problemfilen samt parsa data från en datafil till lösbar C-kod.
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+parameters
+    A (2,2)
+    B (2)
+    Fx (12,2)
+    gx (12)
+    P (2,2)
+    Q (2,2)
+    k (2)
+    x_max (2)
+    x_min (2)
+    R (1)  
+    u_max (1)
+    u_min (1)
+end
+
+dimensions
+    N = 30  
+end
+
+variables
+    x[t] (2), t=1..N+1
+    u[t] (1), t=0..N
+end
+
+settings
+    iterations = 0
+    time = 0
+end
+
+minimize 
+    sum[k=0..N-1](x[k]’*Q*x[k] + u[k]’*R*u[k]) + x[N]’*P*x[N]
+subject to
+    x[0] = x0
+    x[k+1] = A*x[k] + B*u[k], k = 0..N-1
+    x_min <= x[k] <= x_max, k = 0..N-1
+    u_min <= u[k] <= u_max, k= 0..N-1
+    F*x[N] <= g
+end
+  \end{verbatim}
+  \caption{Problemfilens struktur.}
+  \label{fig:problemstruktur}
+\end{figure}
+\noindent Figur \ref{fig:problemstruktur} visar hur problemfilen är uppbyggd och hur de olika delarna ska fyllas i. Parsern är uppbyggd på ett relativt enkelt sätt vilket innebär att den förutsätter att all information om matriser så som dimensioner och matrisnamn stämmer överens mellan datafilen och problemfilen samt att matrisnamn och variabelnamn inte är valfria utan måste vara A, B, Fx, Gx, N, P, Q, R, u\_max, u\_min, k, x\_max och x\_min. Dessutom hanterar parsern endast ett givet problem vilket innebär att den inte parsar det som står under ''variables'' och ''minimize''. 
+\begin{figure}[H]
+  \centering
+  \begin{verbatim}
+A =
+
+    0.9721    0.0155
+    0.2114    0.9705
+  \end{verbatim}
+  \caption{Datafilens struktur.}
+  \label{fig:datafilstruktur}
+\end{figure}
+\noindent Figur \ref{fig:datafilstruktur} visar hur en matris ska skrivas i datafilen där matrisnamnet följs av en blankrad och värdena skrivs med minst ett mellanslag mellan sig.
 \newline
 \newline
-Parsern tar in datan från GUI:t och genererar en C-fil (solution.c) som definierar matriserna och skapar problemdatatypen ''problem''. Därefter anropas solvern och lösningen skrivs ut.
+GUI:t består av tre huvudsakliga komponenter ett textfält som används för att skriva in eller ändra problemet som ska lösas, en knapp med texten ''C code'' och en knapp med texten ''Run code''. Den förstnämnda knappen anropar parsern med problemfilen och datafilen samt skapar filen ''solution.c''. Denna fil är uppbyggd på så sätt att det först skapas matriser som definierats i problemfilen som sedan fylls med data från datafilen. Därefeter sker anrop till funktionerna ''trans\_dyn\_cons'' och ''trans\_ineq\_cons'' som skapar matriser innehållandes ekvivalensbivilkor respektive inekvivalensbivilkor. Därefter skapas problemdatatypen ''problem'', ett anrop till lösaren samt kod för att frigöra skapade matriser.
+\newline
+\newline
+Den andra knappen, ''Run code'', exekverar kommandot ''make \&\& ./solution'' i terminalen vilket exekverar ''solution.c'' som parsern skapar vilket i sin tur leder till ett anrop till själva lösaren och skriver till sist ut resultatet i terminalen.
