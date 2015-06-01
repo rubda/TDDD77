@@ -10,10 +10,9 @@
 #include <work_set.h>
 
 /* Creates a new work set */
-work_set* work_set_create(size_t ws_max) {
-  /*TODO validate indata*/
+work_set* work_set_create(size_t ws_max){
   work_set* ws = (work_set*)malloc(sizeof(work_set));
-  if (ws_max > 0) {
+  if (ws_max > 0){
     ws->data = malloc(ws_max*sizeof(size_t));
   }
   ws->max_count = ws_max;
@@ -22,21 +21,18 @@ work_set* work_set_create(size_t ws_max) {
 }
 
 /* Adds an element to the set */
-bool work_set_append(work_set* ws, size_t val) {
-  /*TODO validate indata*/
+bool work_set_append(work_set* ws, size_t val){
   ws->data[ws->count] = val;
   ws->count++;
   return true;
 }
 
 /* Removes an element from the set */
-bool work_set_remove(work_set* ws, size_t val) {
-  /*TODO validate indata*/
-  /*maybe want to keep order of conditions, but for now: mess up order on remove!*/
+bool work_set_remove(work_set* ws, size_t val){
   size_t i;
-  for (i = 0; i < ws->count; i++) {
-    if (ws->data[i] == val) {
-      if (i == ws->count-1) {
+  for (i = 0; i < ws->count; i++){
+    if (ws->data[i] == val){
+      if (i == ws->count-1){
 	ws->count--;
 	return true;
       }else{
@@ -50,8 +46,8 @@ bool work_set_remove(work_set* ws, size_t val) {
 }
 
 /* Removes and deallocates the set */
-bool work_set_free(work_set* ws) {
-  if (ws != NULL && ws->max_count != 0) {
+bool work_set_free(work_set* ws){
+  if (ws != NULL && ws->max_count != 0){
     free(ws->data);
     ws->data = NULL;
   }
@@ -61,10 +57,10 @@ bool work_set_free(work_set* ws) {
 }
 
 /* Prints all current elements in the set */
-void work_set_print(work_set* ws) {
+void work_set_print(work_set* ws){
   printf("work_set: ");
   size_t i;
-  for (i = 0; i < ws->count-1; i++) {
+  for (i = 0; i < ws->count-1; i++){
     printf("%u, ", (unsigned int)(ws->data[i]));
   }
   if (ws->count > 0) {
@@ -73,10 +69,10 @@ void work_set_print(work_set* ws) {
 }
 
 /* Checks if the set is containing the item */
-bool work_set_contains(work_set* ws, size_t item) {
+bool work_set_contains(work_set* ws, size_t item){
   size_t i;
-  for (i = 0; i < ws->count; i++) {
-    if (item == ws->data[i]) {
+  for (i = 0; i < ws->count; i++){
+    if (item == ws->data[i]){
       return true;
     }
   }
@@ -84,6 +80,6 @@ bool work_set_contains(work_set* ws, size_t item) {
 }
 
 /* Clears the set */
-void work_set_clear(work_set* ws) {
+void work_set_clear(work_set* ws){
   ws->count = 0;
 }

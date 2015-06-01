@@ -6,4 +6,4 @@ F = [-0.5 -1; 1 0; 0 1]
 g = [-8; 0; 0]
 z = [1; 1]
 
-  quadopt(Q,q,E,h,F,g,z, 0, 0)
+quadopt(Q, q, E, h, F, g, z, 0, 0)

@@ -41,9 +41,6 @@
 #For bachelorrepor
 !dokumentation/kandidatrapport/pdf/*.pdf
 
-#For technical documentation
-!dokumentation/doxygen/pdf/*.pdf
-
 # Emacs backup files
 *~
 

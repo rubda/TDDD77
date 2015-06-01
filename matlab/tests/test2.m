@@ -64,14 +64,6 @@ z0 = [0.055178
      -0.626807 
       1.588966 
       0.246905]; 
-     
-%options = optimoptions(@quadprog, 'Algorithm', 'active-set');
-%options = optimoptions(@quadprog, 'Display', 'iter-detailed');
-%[x, val] = quadprog(Q, q, F, g, A, b, [], [], [0; 0; 0; 0;], options)
-
-%options = optimoptions(@quadprog, 'Algorithm', 'active-set');
-%q = @() quadprog(Q, q, F, g, A, b, [], [], [], options);
-%t = timeit(q)
 
 quadopt(Q, q, A, b, -F, -g, [], 0, 0)
 

@@ -14,34 +14,35 @@
 */
 void mexFunction(int nlhs, mxArray* plhs[],
 		 int nrhs, const mxArray* prhs[]){ 
-  /* Declare variables */
-  int nr_of_matrices = nrhs-2; /* Number of matrices */
-  mxArray* mat_matrix; /* Used to store the incoming matrices from MATLAB when converting to Matlib matrices. */
-  double* out_matrix; /* Used to return the result back to MATLAB. */
-  matrix* lib_matrix; /* Used to temporarily store the Matlib matrix that is created when converting the MATLAB matrix. */
-  matrix* result_matrix; /* The Matlib matrix containing the result returned from the solver. */
-  matrix* lib_matrices[nr_of_matrices]; /* An array of all the matrices that should be sent to the solver. */
   
   /* Check for proper number of arguments */
   if(nrhs != 9){
     mexErrMsgIdAndTxt("MyToolbox:quadopt:nrhs","Nine inputs required.");
   }
 
+  /* Declare variables */
+  size_t nr_of_matrices = nrhs-2; /* Number of matrices */
+  mxArray* mat_matrix; /* Used to store the incoming matrices from MATLAB when converting to Matlib matrices. */
+  double* out_matrix; /* Used to return the result back to MATLAB. */
+  matrix* lib_matrix; /* Used to temporarily store the Matlib matrix that is created when converting the MATLAB matrix. */
+  matrix* result_matrix; /* The Matlib matrix containing the result returned from the solver. */
+  matrix* lib_matrices[nr_of_matrices]; /* An array of all the matrices that should be sent to the solver. */
+
   /* Convert MATLAB matrises to library matrices */
-  int i;
+  size_t i;
   for(i = 0; i < nr_of_matrices; i++){
     mat_matrix = prhs[i];
 
     /* If matrix is not empty, create_matrix else set it to NULL */
     if(!mxIsEmpty(mat_matrix)){
-      int rows = (int)mxGetM(mat_matrix);
-      int columns = (int)mxGetN(mat_matrix);
+      size_t rows = mxGetM(mat_matrix);
+      size_t columns = mxGetN(mat_matrix);
       lib_matrix = create_matrix(rows, columns);
       double* element_ptr = mxGetPr(mat_matrix);
       
-      int x;
+      size_t x;
       for(x = 0; x < columns; x++){
-	int y;
+	size_t y;
 	for(y = 0; y < rows; y++){
 	  insert_value(*element_ptr, y+1, x+1, lib_matrix);
 	  element_ptr++;
@@ -72,9 +73,9 @@ void mexFunction(int nlhs, mxArray* plhs[],
 
   out_matrix = mxGetPr(plhs[0]);
   
-  int x;
+  size_t x;
   for(x = 0; x < result_matrix->columns; x++){
-    int y;
+    size_t y;
     for(y = 0; y < result_matrix->rows; y++){
       *out_matrix = get_value(y+1, x+1, result_matrix);
       out_matrix++;
