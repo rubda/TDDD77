@@ -90,6 +90,9 @@ MEX står för \textbf{M}atlab \textbf{ex}ecutable är utvecklat av MathWorks oc
 \end{figure}  
 
 \noindent Denna funktion ger tillgång till inskickade objekt från MATLAB i fältet ''prhs[]'' och utgående objekt ska läggas i fältet ''plhs[]''. Dessa objekt är av typen ''mxArray'' vilket är en datatyp som används av MATLAB. Gränssnittskodens uppgift är att konvertera MATLAB-datatyper till solver-datatyper och anropa solvern. Resultatet konverteras sedan tillbaka till MATLAB-datatyper.
+\newline
+\newline
+\textbf{OBS!} All kod som berörs av MATLAB-delen måste vara skriven i C89-standard. I regel måste all kod i quadopt.c filen samt all kod i quadopt-mappen vara i skriven i C89-standard. 
 
 
 \subsection{Matlib}
